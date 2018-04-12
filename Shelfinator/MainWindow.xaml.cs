@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -16,7 +15,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			curLights = new LightsBuffer(97, 97);
+			curLights = new LightsBuffer(Layout.WIDTH, Layout.HEIGHT);
 			MyBitmap = new WriteableBitmap(curLights.Width, curLights.Height, 96, 96, PixelFormats.Bgr32, null);
 			InitializeComponent();
 			pattern = new Spiral();

@@ -11,6 +11,9 @@ namespace Shelfinator.Patterns
 
 		public void AddLight(LightData lightData)
 		{
+			if (!Layout.IsValid(lightData.X, lightData.Y))
+				return;
+
 			lights.Add(lightData);
 			if (!lightsByPosition.ContainsKey(lightData.X))
 				lightsByPosition[lightData.X] = new Dictionary<int, List<LightData>>();

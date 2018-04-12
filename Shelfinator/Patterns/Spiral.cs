@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Shelfinator.Patterns
 {
@@ -8,78 +9,72 @@ namespace Shelfinator.Patterns
 		{
 			var points = new List<List<int[]>>();
 
-			for (var x = 0; x <= 94; ++x)
-				points.Add(new List<int[]> { new int[] { x, 0 }, new int[] { x, 1 } });
+			var width = Layout.SPACEBETWEENROWS + 2;
+			var size = Layout.WIDTH - 1;
 
-			points.Add(new List<int[]> { new int[] { 95, 0 } });
-			points.Add(new List<int[]> { new int[] { 96, 0 }, new int[] { 95, 1 } });
-			points.Add(new List<int[]> { new int[] { 96, 1 } });
+			var x2_4 = Layout.GetX2(4);
+			for (var x = 0; x < x2_4; ++x)
+				points.Add(Enumerable.Range(0, width).Select(y => new int[] { x, y }).ToList());
+			for (var x = x2_4; x < Layout.WIDTH; ++x)
+				points[points.Count - 1].AddRange(Enumerable.Range(0, width).Select(y => new int[] { x, y }));
 
-			for (var y = 2; y <= 94; ++y)
-				points.Add(new List<int[]> { new int[] { 95, y }, new int[] { 96, y } });
+			var y2_4 = Layout.GetY2(4);
+			for (var y = width; y < y2_4; ++y)
+				points.Add(Enumerable.Range(x2_4 - 1, width).Select(x => new int[] { x, y }).ToList());
+			for (var y = y2_4; y < Layout.HEIGHT; ++y)
+				points[points.Count - 1].AddRange(Enumerable.Range(x2_4 - 1, width).Select(x => new int[] { x, y }).ToList());
 
-			points.Add(new List<int[]> { new int[] { 96, 95 } });
-			points.Add(new List<int[]> { new int[] { 95, 95 }, new int[] { 96, 96 } });
-			points.Add(new List<int[]> { new int[] { 95, 96 } });
+			for (var x = Layout.HEIGHT - width - 1; x >= width - 1; --x)
+				points.Add(Enumerable.Range(y2_4 - 1, width).Select(y => new int[] { x, y }).ToList());
+			for (var x = width - 2; x >= 0; --x)
+				points[points.Count - 1].AddRange(Enumerable.Range(y2_4 - 1, width).Select(y => new int[] { x, y }).ToList());
 
-			for (var x = 94; x >= 2; --x)
-				points.Add(new List<int[]> { new int[] { x, 95 }, new int[] { x, 96 } });
+			var y1_1 = Layout.GetY1(1);
+			for (var y = Layout.HEIGHT - width - 1; y >= y1_1; --y)
+				points.Add(Enumerable.Range(0, width).Select(x => new int[] { x, y }).ToList());
+			for (var y = y1_1 - 1; y > y1_1 - width; --y)
+				points[points.Count - 1].AddRange(Enumerable.Range(0, width).Select(x => new int[] { x, y }).ToList());
 
-			points.Add(new List<int[]> { new int[] { 1, 96 } });
-			points.Add(new List<int[]> { new int[] { 1, 95 }, new int[] { 0, 96 } });
-			points.Add(new List<int[]> { new int[] { 0, 95 } });
+			var x2_3 = Layout.GetX2(3);
+			for (var x = width; x < x2_3; ++x)
+				points.Add(Enumerable.Range(y1_1 - width + 1, width).Select(y => new int[] { x, y }).ToList());
+			for (var x = x2_3; x < x2_3 + width - 1; ++x)
+				points[points.Count - 1].AddRange(Enumerable.Range(y1_1 - width + 1, width).Select(y => new int[] { x, y }).ToList());
 
-			for (var y = 94; y >= 21; --y)
-				points.Add(new List<int[]> { new int[] { 0, y }, new int[] { 1, y } });
+			var y2_3 = Layout.GetY2(3);
+			var y1_4 = Layout.GetY1(4);
+			for (var y = y1_1 + 1; y < y2_3; ++y)
+				points.Add(Enumerable.Range(x2_3 - 1, width).Select(x => new int[] { x, y }).ToList());
+			for (var y = y2_3; y <= y1_4; ++y)
+				points[points.Count - 1].AddRange(Enumerable.Range(x2_3 - 1, width).Select(x => new int[] { x, y }).ToList());
 
-			points.Add(new List<int[]> { new int[] { 0, 20 } });
-			points.Add(new List<int[]> { new int[] { 0, 19 }, new int[] { 1, 20 } });
-			points.Add(new List<int[]> { new int[] { 1, 19 } });
+			var x1_1 = Layout.GetX1(1);
+			for (var x = x2_3 - 2; x >= x1_1; --x)
+				points.Add(Enumerable.Range(y1_4 - width + 1, width).Select(y => new int[] { x, y }).ToList());
+			for (var x = x1_1 - 1; x >= x1_1 - width + 1; --x)
+				points[points.Count - 1].AddRange(Enumerable.Range(y1_4 - width + 1, width).Select(y => new int[] { x, y }).ToList());
 
-			for (var x = 2; x <= 75; ++x)
-				points.Add(new List<int[]> { new int[] { x, 19 }, new int[] { x, 20 } });
+			var y1_2 = Layout.GetY1(2);
+			for (var y = y1_4 - width; y >= y1_2; --y)
+				points.Add(Enumerable.Range(x1_1 - width + 1, width).Select(x => new int[] { x, y }).ToList());
+			for (var y = y1_2 - 1; y >= y1_2 - width + 1; --y)
+				points[points.Count - 1].AddRange(Enumerable.Range(x1_1 - width + 1, width).Select(x => new int[] { x, y }).ToList());
 
-			points.Add(new List<int[]> { new int[] { 76, 19 } });
-			points.Add(new List<int[]> { new int[] { 77, 19 }, new int[] { 76, 20 } });
-			points.Add(new List<int[]> { new int[] { 77, 20 } });
+			var x2_2 = Layout.GetX2(2);
+			for (var x = x1_1 + 1; x < x2_2; ++x)
+				points.Add(Enumerable.Range(y1_2 - width + 1, width).Select(y => new int[] { x, y }).ToList());
+			for (var x = x2_2; x < x2_2 + width - 1; ++x)
+				points[points.Count - 1].AddRange(Enumerable.Range(y1_2 - width + 1, width).Select(y => new int[] { x, y }).ToList());
 
-			for (var y = 21; y <= 75; ++y)
-				points.Add(new List<int[]> { new int[] { 76, y }, new int[] { 77, y } });
+			var y2_2 = Layout.GetY2(2);
+			for (var y = y1_2 + 1; y < y2_2; ++y)
+				points.Add(Enumerable.Range(x2_2 - 1, width).Select(x => new int[] { x, y }).ToList());
+			for (var y = y2_2; y < y2_2 + width - 1; ++y)
+				points[points.Count - 1].AddRange(Enumerable.Range(x2_2 - 1, width).Select(x => new int[] { x, y }).ToList());
 
-			points.Add(new List<int[]> { new int[] { 77, 76 } });
-			points.Add(new List<int[]> { new int[] { 76, 76 }, new int[] { 77, 77 } });
-			points.Add(new List<int[]> { new int[] { 76, 77 } });
-
-			for (var x = 75; x >= 21; --x)
-				points.Add(new List<int[]> { new int[] { x, 76 }, new int[] { x, 77 } });
-
-			points.Add(new List<int[]> { new int[] { 20, 77 } });
-			points.Add(new List<int[]> { new int[] { 20, 76 }, new int[] { 19, 77 } });
-			points.Add(new List<int[]> { new int[] { 19, 76 } });
-
-			for (var y = 75; y >= 40; --y)
-				points.Add(new List<int[]> { new int[] { 19, y }, new int[] { 20, y } });
-
-			points.Add(new List<int[]> { new int[] { 19, 39 } });
-			points.Add(new List<int[]> { new int[] { 19, 38 }, new int[] { 20, 39 } });
-			points.Add(new List<int[]> { new int[] { 20, 38 } });
-
-			for (var x = 21; x <= 56; ++x)
-				points.Add(new List<int[]> { new int[] { x, 38 }, new int[] { x, 39 } });
-
-			points.Add(new List<int[]> { new int[] { 57, 38 } });
-			points.Add(new List<int[]> { new int[] { 58, 38 }, new int[] { 57, 39 } });
-			points.Add(new List<int[]> { new int[] { 58, 39 } });
-
-			for (var y = 40; y <= 56; ++y)
-				points.Add(new List<int[]> { new int[] { 57, y }, new int[] { 58, y } });
-
-			points.Add(new List<int[]> { new int[] { 58, 57 } });
-			points.Add(new List<int[]> { new int[] { 57, 57 }, new int[] { 58, 58 } });
-			points.Add(new List<int[]> { new int[] { 57, 58 } });
-
-			for (var x = 56; x >= 38; --x)
-				points.Add(new List<int[]> { new int[] { x, 57 }, new int[] { x, 58 } });
+			var x1_2 = Layout.GetX1(2);
+			for (var x = x2_2 - 2; x >= x1_2 - width + 1; --x)
+				points.Add(Enumerable.Range(y2_2 - 1, width).Select(y => new int[] { x, y }).ToList());
 
 			var seqStart = 0;
 			var color = 0xff0000;
@@ -102,7 +97,7 @@ namespace Shelfinator.Patterns
 				int startTime = 900 * ctr / points.Count;
 				foreach (var point in points[ctr])
 				{
-					var x = 96 - point[1];
+					var x = size - point[1];
 					var y = point[0];
 					AddLight(new LightData { X = x, Y = y, StartColor = 0x000000, EndColor = color, StartTime = seqStart + startTime, Duration = 300 });
 					AddLight(new LightData { X = x, Y = y, StartColor = color, EndColor = 0x000000, StartTime = seqStart + startTime + 1200, Duration = 300 });
@@ -116,8 +111,8 @@ namespace Shelfinator.Patterns
 				int startTime = 900 * ctr / points.Count;
 				foreach (var point in points[ctr])
 				{
-					var x = 96 - point[0];
-					var y = 96 - point[1];
+					var x = size - point[0];
+					var y = size - point[1];
 					AddLight(new LightData { X = x, Y = y, StartColor = 0x000000, EndColor = color, StartTime = seqStart + startTime, Duration = 300 });
 					AddLight(new LightData { X = x, Y = y, StartColor = color, EndColor = 0x000000, StartTime = seqStart + startTime + 1200, Duration = 300 });
 				}
@@ -131,7 +126,7 @@ namespace Shelfinator.Patterns
 				foreach (var point in points[ctr])
 				{
 					var x = point[1];
-					var y = 96 - point[0];
+					var y = size - point[0];
 					AddLight(new LightData { X = x, Y = y, StartColor = 0x000000, EndColor = color, StartTime = seqStart + startTime, Duration = 300 });
 					AddLight(new LightData { X = x, Y = y, StartColor = color, EndColor = 0x000000, StartTime = seqStart + startTime + 1200, Duration = 300 });
 				}
