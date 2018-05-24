@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="stdafx">
+      <UniqueIdentifier>{3ea307dc-44b7-48a7-bfc6-5e1b09bea187}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>stdafx</Filter>
+    </ClCompile>
+    <ClInclude Include="stdafx.h">
+      <Filter>stdafx</Filter>
+    </ClInclude>
+    <ClCompile Include="Lights.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="LightItem.cpp">
+      <Filter>LightItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <Filter Include="Program">
+      <UniqueIdentifier>{7023f8ef-6cc0-4cbb-8ccf-785aac5b0dd4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{a3734376-b9c7-41cf-a2b4-573c27747963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LightItem">
+      <UniqueIdentifier>{7a6edec6-081c-43f9-be4d-7fd640e5458e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{983376cd-2591-4853-b9de-c4cd553516df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lights.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightItem.h">
+      <Filter>LightItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Program</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Program.cpp">
+      <Filter>Program</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
