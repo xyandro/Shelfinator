@@ -3,5 +3,5 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	Title="MainWindow" Height="350" Width="525">
 
-	<Image Source="{Binding MyBitmap, ElementName=self}" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+	<Image Source="{Binding MyBitmap, ElementName=self}"/>
 </Window>

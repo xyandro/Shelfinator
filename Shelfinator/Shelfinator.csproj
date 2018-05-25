@@ -61,8 +61,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Layout.cs" />
-    <Compile Include="LightsBuffer.cs" />
+    <Compile Include="DotStar.cs" />
+    <EmbeddedResource Include="Layout\DotStar.png" />
+    <EmbeddedResource Include="Layout\Layout-Body.png" />
+    <EmbeddedResource Include="Layout\Layout-Body.xml" />
+    <EmbeddedResource Include="Layout\Layout-Header.png" />
+    <EmbeddedResource Include="Layout\Layout-Header.xml" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
