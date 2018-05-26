@@ -62,11 +62,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DotStar.cs" />
-    <EmbeddedResource Include="Layout\DotStar.png" />
-    <EmbeddedResource Include="Layout\Layout-Body.png" />
-    <EmbeddedResource Include="Layout\Layout-Body.xml" />
-    <EmbeddedResource Include="Layout\Layout-Header.png" />
-    <EmbeddedResource Include="Layout\Layout-Header.xml" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Layout.cs" />
+    <EmbeddedResource Include="LayoutData\Body.png" />
+    <EmbeddedResource Include="LayoutData\DotStar.png" />
+    <EmbeddedResource Include="LayoutData\Header.png" />
+    <EmbeddedResource Include="LayoutData\Hello.png" />
+    <EmbeddedResource Include="LayoutData\Squares.png" />
+    <Compile Include="LightData.cs" />
+    <Compile Include="Lights.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,7 +79,8 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Patterns\LightData.cs" />
+    <Compile Include="MoreLinq.cs" />
+    <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\Pattern.cs" />
     <Compile Include="Patterns\Spiral.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

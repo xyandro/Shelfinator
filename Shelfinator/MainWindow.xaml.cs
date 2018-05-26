@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using Shelfinator.Patterns;
 
@@ -13,8 +12,8 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			var dotstarName = typeof(MainWindow).Assembly.GetManifestResourceNames().Single(x => x.Contains("DotStar.png"));
-			dotStar = new DotStar(typeof(MainWindow).Assembly.GetManifestResourceStream(dotstarName));
+			new Hello();
+			dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
 			MyBitmap = dotStar.Bitmap;
 
 			InitializeComponent();
@@ -27,7 +26,7 @@ namespace Shelfinator
 			var ctr = 0;
 			while (true)
 			{
-				dotStar.SetLight(ctr++, 0xffff0000);
+				dotStar.SetLight(ctr++, 0xff0000);
 				dotStar.Show();
 				await Task.Delay(1);
 			}

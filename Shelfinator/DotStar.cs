@@ -12,24 +12,25 @@ namespace Shelfinator.Patterns
 		readonly uint[] buffer;
 		readonly Dictionary<int, List<int>> bufferPosition;
 
-		public DotStar(Stream stream)
+		public DotStar(BitmapSource source)
 		{
-			Bitmap = new WriteableBitmap(BitmapFrame.Create(stream));
+			Bitmap = new WriteableBitmap(source);
 
 			buffer = new uint[Bitmap.PixelWidth * Bitmap.PixelHeight];
 			Bitmap.CopyPixels(buffer, Bitmap.BackBufferStride, 0);
 
 			bufferPosition = new Dictionary<int, List<int>>();
-			var index = 0;
+			var index = -1;
 			for (var y = 0; y < Bitmap.PixelHeight; ++y)
 				for (var x = 0; x < Bitmap.PixelWidth; ++x)
 				{
-					var value = (int)(buffer[index++] & 0xffffff);
-					if (value == 0xffffff)
+					++index;
+					if ((buffer[index] & 0xff000000) == 0)
 						continue;
-					if (!bufferPosition.ContainsKey(value))
-						bufferPosition[value] = new List<int>();
-					bufferPosition[value].Add(index);
+					var light = (int)(buffer[index] & 0xffffff);
+					if (!bufferPosition.ContainsKey(light))
+						bufferPosition[light] = new List<int>();
+					bufferPosition[light].Add(index);
 				}
 
 			NumLights = bufferPosition.Count;
@@ -44,12 +45,12 @@ namespace Shelfinator.Patterns
 				buffer[ctr] = 0xff000000;
 		}
 
-		public void SetLight(int light, uint color)
+		public void SetLight(int light, int color)
 		{
 			if (!bufferPosition.ContainsKey(light))
 				return;
 			foreach (var position in bufferPosition[light])
-				buffer[position] = color;
+				buffer[position] = (uint)(0xff000000 | color);
 		}
 
 		public void Show() => Bitmap.WritePixels(new Int32Rect(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight), buffer, Bitmap.BackBufferStride, 0);
