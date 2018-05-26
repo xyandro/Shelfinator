@@ -16,7 +16,11 @@ namespace Shelfinator
 
 		public static int AddColor(int color1, int color2) => (((byte)Math.Min(255, ((color1 >> 16) & 0xff) + ((color2 >> 16) & 0xff))) << 16) | (((byte)Math.Min(255, ((color1 >> 8) & 0xff) + ((color2 >> 8) & 0xff))) << 8) | (((byte)Math.Min(255, ((color1 >> 0) & 0xff) + ((color2 >> 0) & 0xff))) << 0);
 
-		public static int MixColor(double percent, int color) => (byte)Math.Min(255, ((color >> 16) & 0xff) * percent + 0.5) << 16 | (byte)Math.Min(255, ((color >> 8) & 0xff) * percent + 0.5) << 8 | (byte)Math.Min(255, ((color >> 0) & 0xff) * percent + 0.5) << 0;
+		public static int MixColor(double percent, int color)
+		{
+			percent = Math.Max(0, Math.Min(percent, 1));
+			return (byte)Math.Min(255, ((color >> 16) & 0xff) * percent + 0.5) << 16 | (byte)Math.Min(255, ((color >> 8) & 0xff) * percent + 0.5) << 8 | (byte)Math.Min(255, ((color >> 0) & 0xff) * percent + 0.5) << 0;
+		}
 
 		public static int MixColor(double percent, int color1, int color2) => MixColor(1 - percent, color1) + MixColor(percent, color2);
 
@@ -34,6 +38,16 @@ namespace Shelfinator
 				result = AddColor(result, mixColor);
 			}
 			return result;
+		}
+
+		public static double Cycle(double value, double min, double max)
+		{
+			var diff = max - min;
+			while (value < min)
+				value += diff;
+			while (value >= max)
+				value -= diff;
+			return value;
 		}
 	}
 }

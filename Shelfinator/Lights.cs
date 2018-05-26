@@ -17,10 +17,12 @@ namespace Shelfinator
 
 		public void Add(int light, int time, int color) => Add(light, time, int.MaxValue, color, color);
 
-		public void Add(int light, int startTime, int endTime, int startColor, int endColor)
+		public void Add(int light, int startTime, int endTime, int? startColor, int endColor)
 		{
 			if (startTime > endTime)
 				throw new ArgumentException("startTime > endTime");
+
+			startColor = startColor ?? GetColor(light, startTime);
 
 			if (startTime == endTime)
 				startColor = endColor;
@@ -38,7 +40,7 @@ namespace Shelfinator
 			if (list[index].Duration == 0)
 				list.RemoveAt(index);
 
-			list.Add(new LightData(startTime, endTime, startColor, endColor));
+			list.Add(new LightData(startTime, endTime, startColor.Value, endColor));
 			if (endTime != int.MaxValue)
 				list.Add(new LightData(endTime, int.MaxValue, endColor, endColor));
 		}

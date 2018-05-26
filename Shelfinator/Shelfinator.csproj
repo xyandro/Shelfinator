@@ -64,11 +64,19 @@
     <Compile Include="DotStar.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Layout.cs" />
+    <EmbeddedResource Include="LayoutData\Benji.png" />
     <EmbeddedResource Include="LayoutData\Body.png" />
     <EmbeddedResource Include="LayoutData\DotStar.png" />
     <EmbeddedResource Include="LayoutData\Header.png" />
     <EmbeddedResource Include="LayoutData\Hello.png" />
+    <EmbeddedResource Include="LayoutData\I.png" />
+    <EmbeddedResource Include="LayoutData\Kate.png" />
+    <EmbeddedResource Include="LayoutData\Love.png" />
+    <EmbeddedResource Include="LayoutData\Megan.png" />
+    <EmbeddedResource Include="LayoutData\Phoebe.png" />
+    <EmbeddedResource Include="LayoutData\Sophie.png" />
     <EmbeddedResource Include="LayoutData\Squares.png" />
+    <EmbeddedResource Include="LayoutData\Timo.png" />
     <Compile Include="LightData.cs" />
     <Compile Include="Lights.cs" />
     <Page Include="MainWindow.xaml">
@@ -81,6 +89,7 @@
     </Compile>
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Patterns\Hello.cs" />
+    <Compile Include="Patterns\Love.cs" />
     <Compile Include="Patterns\Pattern.cs" />
     <Compile Include="Patterns\Spiral.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

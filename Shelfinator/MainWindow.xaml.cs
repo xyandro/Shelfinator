@@ -12,7 +12,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			new Hello();
+			new Love();
 			dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
 			MyBitmap = dotStar.Bitmap;
 
