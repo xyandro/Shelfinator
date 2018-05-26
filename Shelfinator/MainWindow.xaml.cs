@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using Shelfinator.Patterns;
 
@@ -6,63 +7,36 @@ namespace Shelfinator
 {
 	partial class MainWindow
 	{
-		public ImageSource MyBitmap { get; set; }
-		readonly DotStar dotStar;
-		//Pattern pattern;
+		public static DependencyProperty MyBitmapProperty = DependencyProperty.Register(nameof(MyBitmap), typeof(ImageSource), typeof(MainWindow));
+
+		public ImageSource MyBitmap { get => (ImageSource)GetValue(MyBitmapProperty); set => SetValue(MyBitmapProperty, value); }
+		Lights lights;
 
 		public MainWindow()
 		{
-			new Love();
-			dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
-			MyBitmap = dotStar.Bitmap;
+			lights = Love.Render();
+			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
+			//Environment.Exit(0);
 
 			InitializeComponent();
-			//pattern = new Spiral();
 			DrawBitmap();
 		}
 
 		async void DrawBitmap()
 		{
-			var ctr = 0;
+			var dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
+			MyBitmap = dotStar.Bitmap;
+
+			var time = 0;
 			while (true)
 			{
-				dotStar.SetLight(ctr++, 0xff0000);
+				for (var light = 0; light < dotStar.NumLights; ++light)
+					dotStar.SetLight(light, (lights.GetColor(light, time) * 16).Color);
 				dotStar.Show();
+
 				await Task.Delay(1);
+				time += 7;
 			}
-			//	var start = DateTime.Now;
-			//	var lastTime = -1;
-			//	var lightIndex = 0;
-			//	var lights = pattern.Lights;
-			//	var active = new List<LightData>();
-			//	while (true)
-			//	{
-			//		var time = (int)(DateTime.Now - start).TotalMilliseconds;
-			//		if (time <= lastTime)
-			//		{
-			//			await Task.Delay(1);
-			//			continue;
-			//		}
-			//		lastTime = time;
-
-			//		while ((lightIndex < lights.Count) && (time >= lights[lightIndex].StartTime))
-			//		{
-			//			active.Add(lights[lightIndex]);
-			//			curLights[lights[lightIndex].X, lights[lightIndex].Y] = lights[lightIndex].EndColor;
-			//			++lightIndex;
-			//		}
-
-			//		for (var ctr = 0; ctr < active.Count;)
-			//			if (time >= active[ctr].EndTime)
-			//				active.RemoveAt(ctr);
-			//			else
-			//			{
-			//				curLights[active[ctr].X, active[ctr].Y] = active[ctr].ColorAtTime(time);
-			//				++ctr;
-			//			}
-
-			//		curLights.WriteBitmap(MyBitmap);
-			//	}
 		}
 	}
 }

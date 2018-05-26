@@ -26,9 +26,6 @@ namespace Shelfinator
 			if (time >= EndTime)
 				throw new Exception("Time >= EndTime");
 
-			if (StartColor == EndColor)
-				return StartColor;
-
 			return PixelColor.MixColor(StartColor, EndColor, (time - StartTime) / (double)Duration);
 		}
 

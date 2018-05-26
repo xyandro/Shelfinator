@@ -25,7 +25,7 @@ namespace Shelfinator.Patterns
 				for (var x = 0; x < Bitmap.PixelWidth; ++x)
 				{
 					++index;
-					if ((buffer[index] & 0xff000000) == 0)
+					if ((buffer[index] & 0xff000000) != 0x01000000)
 						continue;
 					var light = (int)(buffer[index] & 0xffffff);
 					if (!bufferPosition.ContainsKey(light))
@@ -41,8 +41,9 @@ namespace Shelfinator.Patterns
 
 		public void Clear()
 		{
-			for (var ctr = 0; ctr < buffer.Length; ++ctr)
-				buffer[ctr] = 0xff000000;
+			foreach (var data in bufferPosition)
+				foreach (var value in data.Value)
+					buffer[value] = 0xff000000;
 		}
 
 		public void SetLight(int light, int color)

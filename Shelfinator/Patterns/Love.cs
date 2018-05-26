@@ -9,7 +9,7 @@ namespace Shelfinator.Patterns
 	{
 		const double Brightness = 1f / 16;
 		const double FlashBrightness = .5;
-		public Love()
+		public static Lights Render()
 		{
 			var lights = new Lights();
 			var header = new Layout("Shelfinator.LayoutData.Header.png");
@@ -80,8 +80,7 @@ namespace Shelfinator.Patterns
 				lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), 0x000000);
 			}
 
-			lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
-			Environment.Exit(0);
+			return lights;
 		}
 	}
 }
