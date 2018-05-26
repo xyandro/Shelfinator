@@ -18,12 +18,12 @@ namespace Shelfinator.Patterns
 			var bottomRight = ordered.Last();
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
-			var rainbow7 = Helpers.Rainbow7.Select(c => Helpers.MixColor(1f / 16, c)).ToList();
-			var useColors = allLocations.Select(p => Helpers.MixColor(p.X, topLeft.X, bottomRight.X, rainbow7)).ToList();
-			////var cir = allLocations.Select(p => (new Point(p.X, p.Y) - center).Length).ToList();
-			////var useColors = cir.Select(p => Helpers.MixColor(p, cir.Min(), cir.Max(), rainbow7)).ToList();
+			var rainbow7 = Helpers.Rainbow7.Select(c => c / 16).ToList();
+			var useColors = allLocations.Select(p => PixelColor.MixColor(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
+			//var cir = allLocations.Select(p => (new Point(p.X, p.Y) - center).Length).ToList();
+			//var useColors = cir.Select(p => PixelColor.MixColor(rainbow7, p, cir.Min(), cir.Max())).ToList();
 			//var col = rainbow7.AsEnumerable().Reverse().Concat(rainbow7.Skip(1)).ToList();
-			//var useColors = allLocations.Select(p => Helpers.MixColor(p.X, topLeft.X, bottomRight.X, col)).ToList();
+			//var useColors = allLocations.Select(p => PixelColor.MixColor(col, p.X, topLeft.X, bottomRight.X)).ToList();
 
 			var xPos = allLocations.Select(p => p.X + p.Y).ToList();
 			xPos = xPos.Select(x => Helpers.Scale(x, xPos.Min(), xPos.Max(), 0, 500)).ToList();
@@ -74,7 +74,7 @@ namespace Shelfinator.Patterns
 			var flashShow = flashDelay * 5;
 			for (var ctr = 0; ctr < flash.Count; ++ctr)
 			{
-				lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay), Helpers.MixColor(1 - ctr * flashDelay / 2500, 0x808080));
+				lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay), new PixelColor(0xffffff) * .5 * (1 - ctr * flashDelay / 2500));
 				lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), 0x000000);
 			}
 

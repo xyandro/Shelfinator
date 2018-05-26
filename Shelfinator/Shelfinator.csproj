@@ -92,6 +92,7 @@
     <Compile Include="Patterns\Love.cs" />
     <Compile Include="Patterns\Pattern.cs" />
     <Compile Include="Patterns\Spiral.cs" />
+    <Compile Include="PixelColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

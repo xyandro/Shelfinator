@@ -15,9 +15,9 @@ namespace Shelfinator
 			return lights[light];
 		}
 
-		public void Add(int light, int time, int color) => Add(light, time, int.MaxValue, color, color);
+		public void Add(int light, int time, PixelColor color) => Add(light, time, int.MaxValue, color, color);
 
-		public void Add(int light, int startTime, int endTime, int? startColor, int endColor)
+		public void Add(int light, int startTime, int endTime, PixelColor? startColor, PixelColor endColor)
 		{
 			if (startTime > endTime)
 				throw new ArgumentException("startTime > endTime");
@@ -26,7 +26,7 @@ namespace Shelfinator
 
 			if (startTime == endTime)
 				startColor = endColor;
-			if (startColor == endColor)
+			if (startColor.Value == endColor)
 				endTime = int.MaxValue;
 
 			var list = GetLightDatas(light);
@@ -45,7 +45,7 @@ namespace Shelfinator
 				list.Add(new LightData(endTime, int.MaxValue, endColor, endColor));
 		}
 
-		public int GetColor(int light, int time)
+		public PixelColor GetColor(int light, int time)
 		{
 			var list = GetLightDatas(light);
 			var index = 0;
