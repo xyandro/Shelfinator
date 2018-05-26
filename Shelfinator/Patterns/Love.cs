@@ -7,6 +7,7 @@ namespace Shelfinator.Patterns
 {
 	class Love
 	{
+		const double Brightness = 1f / 16;
 		public Love()
 		{
 			var lights = new Lights();
@@ -18,7 +19,7 @@ namespace Shelfinator.Patterns
 			var bottomRight = ordered.Last();
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
-			var rainbow7 = Helpers.Rainbow7.Select(c => c / 16).ToList();
+			var rainbow7 = Helpers.Rainbow7.Select(c => c * Brightness).ToList();
 			var useColors = allLocations.Select(p => PixelColor.MixColor(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
 			//var cir = allLocations.Select(p => (new Point(p.X, p.Y) - center).Length).ToList();
 			//var useColors = cir.Select(p => PixelColor.MixColor(rainbow7, p, cir.Min(), cir.Max())).ToList();
@@ -63,7 +64,7 @@ namespace Shelfinator.Patterns
 
 			foreach (var light in personLights)
 			{
-				lights.Add(light, 4500, 4750, null, 0x101010);
+				lights.Add(light, 4500, 4750, null, new PixelColor(0xffffff) * Brightness);
 				lights.Add(light, 4750, 5000, null, 0x000000);
 			}
 
