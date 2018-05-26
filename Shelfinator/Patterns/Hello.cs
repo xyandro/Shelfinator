@@ -7,6 +7,8 @@ namespace Shelfinator.Patterns
 {
 	class Hello
 	{
+		const double ColorBrightness = 1f / 16;
+		const double WhiteBrightness = 1f / 8;
 		public Hello()
 		{
 			var lights = new Lights();
@@ -18,7 +20,8 @@ namespace Shelfinator.Patterns
 			var bottomRight = ordered.Last();
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
-			var useColors = allLocations.Select(p => PixelColor.MixColor(Helpers.Rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
+			var rainbow7 = Helpers.Rainbow7.Multiply(ColorBrightness).ToList();
+			var useColors = allLocations.Select(p => PixelColor.MixColor(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
 
 			var origin = new Point(0, 0);
 			var distances = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => (p - origin).Length).ToList();
@@ -35,7 +38,7 @@ namespace Shelfinator.Patterns
 
 			foreach (var light in helloLights)
 			{
-				lights.Add(light, 2000, 2500, lights.GetColor(light, 2000), 0xffffff);
+				lights.Add(light, 2000, 2500, lights.GetColor(light, 2000), new PixelColor(0xffffff) * WhiteBrightness);
 				lights.Add(light, 3000, 3500, lights.GetColor(light, 3000), 0x000000);
 			}
 

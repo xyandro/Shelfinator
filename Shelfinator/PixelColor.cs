@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shelfinator
 {
@@ -62,5 +63,10 @@ namespace Shelfinator
 		public override bool Equals(object obj) => obj is PixelColor pixel2 ? this == pixel2 : false;
 
 		public override int GetHashCode() => color;
+	}
+
+	static class PixelColorExtensions
+	{
+		public static IEnumerable<PixelColor> Multiply(this IEnumerable<PixelColor> colors, double multiplier) => colors.Select(color => color * multiplier);
 	}
 }
