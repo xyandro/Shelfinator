@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -7,10 +6,11 @@ namespace Shelfinator.Patterns
 {
 	class Hello
 	{
-		const double ColorBrightness = 1f / 16;
-		const double WhiteBrightness = 1f / 8;
-		public Hello()
+		public static Lights Render()
 		{
+			const double ColorBrightness = 1f / 16;
+			const double WhiteBrightness = 1f / 8;
+
 			var lights = new Lights();
 			var header = new Layout("Shelfinator.LayoutData.Header.png");
 			var allLights = header.GetAllLights();
@@ -42,8 +42,8 @@ namespace Shelfinator.Patterns
 				lights.Add(light, 3000, 3500, lights.GetColor(light, 3000), 0x000000);
 			}
 
-			lights.Save(@"Z:\a\Pattern.dat", 3600, 2440);
-			Environment.Exit(0);
+			lights.Length = 3500;
+			return lights;
 		}
 	}
 }
