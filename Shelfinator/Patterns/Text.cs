@@ -44,11 +44,11 @@ namespace Shelfinator.Patterns
 			['-'] = new List<byte> { 0x00, 0x00, 0x70, 0x00, 0x00 },
 			['?'] = new List<byte> { 0x70, 0x88, 0x30, 0x00, 0x20 },
 		};
-		const double Brightness = 1f / 16;
-		const double FlashBrightness = .5;
 
-		public static Lights Render(string text, int duration, int quantize, List<PixelColor> colors, string outputFile)
+		public static Lights Render(string text, int duration, int quantize, List<PixelColor> colors)
 		{
+			const double Brightness = 1f / 16;
+
 			var lights = new Lights();
 			var header = new Layout("Shelfinator.LayoutData.Header.png");
 			var width = text.Length * 6 - 1;
@@ -70,7 +70,7 @@ namespace Shelfinator.Patterns
 				for (var y = 0; y < 5; ++y)
 					for (var x = 0; x < width; ++x)
 						if (display[x, y])
-							SetColor(grid, xofs + x, y + 1, PixelColor.MixColor(colors, x, 0, width));
+							SetColor(grid, xofs + x, y + 1, PixelColor.MixColor(colors, x, 0, width) * Brightness);
 
 				for (var y = 0; y < grid.GetLength(1); ++y)
 					for (var x = 0; x < grid.GetLength(0); ++x)
@@ -81,16 +81,16 @@ namespace Shelfinator.Patterns
 				for (var x = 0; x < posLight.GetLength(0); ++x)
 					lights.Add(posLight[x, y], duration, 0x000000);
 
-			lights.Save(outputFile, duration, 2440);
-			//Environment.Exit(0);
+			lights.Length = duration;
 
 			return lights;
 		}
 
 		static void SetColor(PixelColor[,] grid, double x, int y, PixelColor color)
 		{
-			SetValue(grid, (int)x, y, color * (1 - (x - (int)x)));
-			SetValue(grid, (int)x + 1, y, color * (x - (int)x));
+			var xStart = (int)Math.Floor(x);
+			SetValue(grid, xStart, y, color * (1 - (x - xStart)));
+			SetValue(grid, xStart + 1, y, color * (x - xStart));
 		}
 
 		static void SetValue(PixelColor[,] grid, int x, int y, PixelColor color)

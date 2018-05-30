@@ -14,7 +14,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			lights = Spiral.Render();
+			lights = Text.Render("THIS IS A TEST", 5000, 14, Helpers.Rainbow7);
 			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
 			//Environment.Exit(0);
 
