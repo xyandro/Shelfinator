@@ -19,6 +19,10 @@ namespace Shelfinator
 			EndColor = endColor;
 		}
 
+		public LightData()
+		{
+		}
+
 		public PixelColor ColorAtTime(int time)
 		{
 			if (time < StartTime)
@@ -37,6 +41,16 @@ namespace Shelfinator
 			output.Write(EndTime);
 			output.Write(StartColor.Color);
 			output.Write(EndColor.Color);
+		}
+
+		public static LightData Read(BinaryReader input)
+		{
+			var result = new LightData();
+			result.StartTime = input.ReadInt32();
+			result.EndTime = input.ReadInt32();
+			result.StartColor = new PixelColor(input.ReadInt32());
+			result.EndColor = new PixelColor(input.ReadInt32());
+			return result;
 		}
 	}
 }

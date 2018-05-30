@@ -7,6 +7,7 @@ namespace Shelfinator
 	class Lights
 	{
 		readonly Dictionary<int, List<LightData>> lights = new Dictionary<int, List<LightData>>();
+		public int Length { get; set; }
 
 		List<LightData> GetLightDatas(int light)
 		{
@@ -73,6 +74,30 @@ namespace Shelfinator
 				foreach (var lightData in lightDatas)
 					lightData.Write(output);
 			}
+		}
+
+		public static Lights Load(string fileName)
+		{
+			using (var input = new BinaryReader(File.OpenRead(fileName)))
+				return Load(input);
+		}
+
+		public static Lights Load(BinaryReader input)
+		{
+			var result = new Lights();
+			result.Length = input.ReadInt32();
+			var numLights = input.ReadInt32();
+			for (var light = 0; light < numLights; ++light)
+			{
+				var lightDatasCount = input.ReadInt32();
+				for (var lightData = 0; lightData < lightDatasCount; ++lightData)
+				{
+					if (!result.lights.ContainsKey(light))
+						result.lights[light] = new List<LightData>();
+					result.lights[light].Add(LightData.Read(input));
+				}
+			}
+			return result;
 		}
 	}
 }
