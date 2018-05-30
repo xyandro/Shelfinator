@@ -75,6 +75,7 @@
     <EmbeddedResource Include="LayoutData\Megan.png" />
     <EmbeddedResource Include="LayoutData\Phoebe.png" />
     <EmbeddedResource Include="LayoutData\Sophie.png" />
+    <EmbeddedResource Include="LayoutData\Spiral.png" />
     <EmbeddedResource Include="LayoutData\Squares.png" />
     <EmbeddedResource Include="LayoutData\Timo.png" />
     <Compile Include="LightData.cs" />

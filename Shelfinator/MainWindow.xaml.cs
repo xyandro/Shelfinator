@@ -14,7 +14,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			lights = Rotate.Render();
+			lights = Spiral.Render();
 			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
 			//Environment.Exit(0);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Shelfinator
 {
@@ -107,5 +108,7 @@ namespace Shelfinator
 			}
 			return result;
 		}
+
+		public int GetMaxTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.GetMaxTime()));
 	}
 }

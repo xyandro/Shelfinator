@@ -60,5 +60,7 @@ namespace Shelfinator
 			if (EndTime != int.MaxValue)
 				EndTime = (int)(EndTime * multiplier);
 		}
+
+		public int GetMaxTime() => EndTime != int.MaxValue ? EndTime : StartTime;
 	}
 }

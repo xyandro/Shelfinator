@@ -10,6 +10,8 @@ namespace Shelfinator
 		readonly Dictionary<int, List<Point>> lightLocations = new Dictionary<int, List<Point>>();
 
 		readonly Dictionary<int, Dictionary<int, int>> locationLights = new Dictionary<int, Dictionary<int, int>>();
+		public int Width { get; }
+		public int Height { get; }
 
 		public Layout(string embeddedName) : this(Helpers.GetEmbeddedBitmap(embeddedName))
 		{
@@ -36,11 +38,18 @@ namespace Shelfinator
 						locationLights[x] = new Dictionary<int, int>();
 					locationLights[x][y] = light;
 				}
+
+			Width = bitmap.PixelWidth;
+			Height = bitmap.PixelHeight;
 		}
 
-		public int? GetPositionLight(Point point) => GetPositionLight((int)(point.X + .5), (int)(point.Y + .5));
+		public int GetPositionLight(Point point) => TryGetPositionLight(point).Value;
 
-		public int? GetPositionLight(int x, int y)
+		public int GetPositionLight(int x, int y) => TryGetPositionLight(x, y).Value;
+
+		public int? TryGetPositionLight(Point point) => GetPositionLight((int)(point.X + .5), (int)(point.Y + .5));
+
+		public int? TryGetPositionLight(int x, int y)
 		{
 			if (!locationLights.ContainsKey(x))
 				return null;
@@ -63,7 +72,7 @@ namespace Shelfinator
 			return lightLocations[light];
 		}
 
-		public List<int> GetMappedLights(Layout layout, int light) => layout.GetLightPositions(light).Select(point => GetPositionLight(point)).NonNull().ToList();
+		public List<int> GetMappedLights(Layout layout, int light) => layout.GetLightPositions(light).Select(point => GetPositionLight(point)).ToList();
 
 		public List<int> GetAllLights() => lightLocations.Keys.ToList();
 	}

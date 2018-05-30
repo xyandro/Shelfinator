@@ -61,7 +61,7 @@ namespace Shelfinator.Patterns
 			var posLight = new int[WIDTH, 8];
 			for (var y = 0; y < posLight.GetLength(1); ++y)
 				for (var x = 0; x < posLight.GetLength(0); ++x)
-					posLight[x, y] = header.GetPositionLight(new Point(x, y)).Value;
+					posLight[x, y] = header.GetPositionLight(new Point(x, y));
 
 			for (var time = 0; time < duration; time += quantize)
 			{
