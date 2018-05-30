@@ -10,5 +10,12 @@ namespace Shelfinator
 				if (item.HasValue)
 					yield return item.Value;
 		}
+
+		static public IEnumerable<T> Concat<T>(this IEnumerable<T> items, T addItem)
+		{
+			foreach (var item in items)
+				yield return item;
+			yield return addItem;
+		}
 	}
 }

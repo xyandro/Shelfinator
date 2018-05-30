@@ -67,6 +67,14 @@ namespace Shelfinator
 
 		public static IEnumerable<int> Round(this IEnumerable<double> values) => values.Select(value => (int)(value + .5));
 
+		public static IEnumerable<PixelColor> MixColors(this IEnumerable<int> values, List<PixelColor> colors, int? min = null, int? max = null)
+		{
+			min = min ?? values.DefaultIfEmpty(0).Min();
+			max = max ?? values.DefaultIfEmpty(0).Max();
+			return values.Select(value => PixelColor.MixColor(colors, value, min.Value, max.Value));
+
+		}
+
 		public static IEnumerable<PixelColor> MixColors(this IEnumerable<double> values, List<PixelColor> colors, double? min = null, double? max = null)
 		{
 			min = min ?? values.DefaultIfEmpty(0).Min();
