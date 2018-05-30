@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Shelfinator.Patterns;
@@ -12,11 +10,11 @@ namespace Shelfinator
 		public static DependencyProperty MyBitmapProperty = DependencyProperty.Register(nameof(MyBitmap), typeof(ImageSource), typeof(MainWindow));
 
 		public ImageSource MyBitmap { get => (ImageSource)GetValue(MyBitmapProperty); set => SetValue(MyBitmapProperty, value); }
-		//Lights lights;
+		Lights lights;
 
 		public MainWindow()
 		{
-			lights = Love.Render();
+			lights = Spin.Render();
 			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
 			//Environment.Exit(0);
 
@@ -29,54 +27,19 @@ namespace Shelfinator
 			var dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
 			MyBitmap = dotStar.Bitmap;
 
-			var files = new List<string>
+			var time = 0;
+			while (time < lights.Length)
 			{
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-				@"C:\Users\Randon\Google Drive\Shelfinator\Show\Hello10.dat",
-			};
+				for (var light = 0; light < dotStar.NumLights; ++light)
+					dotStar.SetLight(light, (lights.GetColor(light, time) * 16).Color);
+				dotStar.Show();
 
-			foreach (var file in files)
-			{
-				var lights = Lights.Load(file);
-				var time = 0;
-				while (time < lights.Length)
-				{
-					for (var light = 0; light < dotStar.NumLights; ++light)
-						dotStar.SetLight(light, (lights.GetColor(light, time) * 16).Color);
-					dotStar.Show();
-
-					await Task.Delay(1);
-					time += 14;
-				}
+				await Task.Delay(1);
+				time += 14;
 			}
+
+			dotStar.Clear();
+			dotStar.Show();
 		}
 	}
 }

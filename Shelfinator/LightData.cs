@@ -52,5 +52,13 @@ namespace Shelfinator
 			result.EndColor = new PixelColor(input.ReadInt32());
 			return result;
 		}
+
+		public void AdjustSpeed(double multiplier)
+		{
+			if (StartTime != int.MaxValue)
+				StartTime = (int)(StartTime * multiplier);
+			if (EndTime != int.MaxValue)
+				EndTime = (int)(EndTime * multiplier);
+		}
 	}
 }

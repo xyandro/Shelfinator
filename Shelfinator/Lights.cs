@@ -63,6 +63,14 @@ namespace Shelfinator
 				Save(output, length, numLights);
 		}
 
+		public void AdjustSpeed(double multiplier)
+		{
+			foreach (var pair in lights)
+				foreach (var light in pair.Value)
+					light.AdjustSpeed(multiplier);
+			Length = (int)(Length * multiplier);
+		}
+
 		public void Save(BinaryWriter output, int length, int numLights)
 		{
 			output.Write(length);

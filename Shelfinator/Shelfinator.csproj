@@ -91,6 +91,7 @@
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\Love.cs" />
     <Compile Include="Patterns\Pattern.cs" />
+    <Compile Include="Patterns\Spin.cs" />
     <Compile Include="Patterns\Spiral.cs" />
     <Compile Include="Patterns\Text.cs" />
     <Compile Include="PixelColor.cs" />
