@@ -12,7 +12,7 @@ namespace Shelfinator.Patterns
 		public static Lights Render()
 		{
 			var lights = new Lights();
-			var header = new Layout("Shelfinator.LayoutData.Header.png");
+			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
 			var allLocations = allLights.Select(light => header.GetLightPosition(light)).NonNull().ToList();
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
@@ -30,7 +30,7 @@ namespace Shelfinator.Patterns
 			var xPos = allLocations.Select(p => p.X + p.Y).ToList();
 			xPos = xPos.Select(x => Helpers.Scale(x, xPos.Min(), xPos.Max(), 0, 500)).ToList();
 			var xPosInts = xPos.Select(x => (int)(x + .5)).ToList();
-			var textI = new Layout("Shelfinator.LayoutData.I.png");
+			var textI = new Layout("Shelfinator.Patterns.Love.I.png");
 			var iLights = new HashSet<int>(header.GetMappedLights(textI, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
@@ -42,7 +42,7 @@ namespace Shelfinator.Patterns
 			var angles = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => Helpers.Cycle(Math.Atan2(p.Y, p.X), 0, Math.PI / 2)).ToList();
 			angles = angles.Select(x => Helpers.Scale(x, angles.Min(), angles.Max(), 1000, 1500)).ToList();
 			var anglesInts = angles.Select(l => Helpers.Scale(l, angles.Min(), angles.Max(), 1000, 1500)).Select(l => (int)(l + 0.5)).ToList();
-			var textLove = new Layout("Shelfinator.LayoutData.Love.png");
+			var textLove = new Layout("Shelfinator.Patterns.Love.Love.png");
 			var loveLights = new HashSet<int>(header.GetMappedLights(textLove, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
@@ -54,7 +54,7 @@ namespace Shelfinator.Patterns
 			var origin = new Point(0, 0);
 			var distances = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => (p - origin).Length).ToList();
 			var distanceInts = distances.Select(l => Helpers.Scale(l, distances.Min(), distances.Max(), 2000, 2500)).Select(l => (int)(l + 0.5)).ToList();
-			var textPerson = new Layout("Shelfinator.LayoutData.Benji.png");
+			var textPerson = new Layout("Shelfinator.Patterns.Love.Benji.png");
 			var personLights = new HashSet<int>(header.GetMappedLights(textPerson, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
@@ -80,6 +80,7 @@ namespace Shelfinator.Patterns
 				lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), 0x000000);
 			}
 
+			lights.Length = 5600;
 			return lights;
 		}
 	}

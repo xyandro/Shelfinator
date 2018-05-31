@@ -12,7 +12,7 @@ namespace Shelfinator.Patterns
 		public static Lights Render()
 		{
 			var lights = new Lights();
-			var layout = new Layout("Shelfinator.LayoutData.Body.png");
+			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
 			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).NonNull().ToList();
 			var topLeft = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).First();

@@ -12,8 +12,8 @@ namespace Shelfinator.Patterns
 		public static Lights Render()
 		{
 			var lights = new Lights();
-			var layout = new Layout("Shelfinator.LayoutData.Body.png");
-			var squares = new Layout("Shelfinator.LayoutData.Squares.png");
+			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
 
 			foreach (var square in squares.GetAllLights())
 			{

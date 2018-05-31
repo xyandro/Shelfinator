@@ -50,7 +50,7 @@ namespace Shelfinator.Patterns
 			const double Brightness = 1f / 16;
 
 			var lights = new Lights();
-			var header = new Layout("Shelfinator.LayoutData.Header.png");
+			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var width = text.Length * 6 - 1;
 			var display = new bool[width, 5];
 			for (var ctr = 0; ctr < text.Length; ++ctr)

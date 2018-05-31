@@ -14,7 +14,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			lights = Text.Render("THIS IS A TEST", 5000, 14, Helpers.Rainbow7);
+			lights = Love.Render();
 			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
 			//Environment.Exit(0);
 
@@ -24,7 +24,7 @@ namespace Shelfinator
 
 		async void DrawBitmap()
 		{
-			var dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.LayoutData.DotStar.png"));
+			var dotStar = new DotStar(Helpers.GetEmbeddedBitmap("Shelfinator.Patterns.Layout.DotStar.png"));
 			MyBitmap = dotStar.Bitmap;
 
 			var time = 0;

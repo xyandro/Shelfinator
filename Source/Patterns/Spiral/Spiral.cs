@@ -11,8 +11,8 @@ namespace Shelfinator.Patterns
 		{
 			const double Brightness = 1f / 16;
 			var lights = new Lights();
-			var layout = new Layout("Shelfinator.LayoutData.Body.png");
-			var spiral = new Layout("Shelfinator.LayoutData.Spiral.png");
+			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var spiral = new Layout("Shelfinator.Patterns.Spiral.Spiral.png");
 
 			var points = spiral.GetAllLights().OrderBy(light => light).Select(light => spiral.GetLightPositions(light)).ToList();
 

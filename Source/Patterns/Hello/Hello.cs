@@ -12,7 +12,7 @@ namespace Shelfinator.Patterns
 			const double WhiteBrightness = 1f / 8;
 
 			var lights = new Lights();
-			var header = new Layout("Shelfinator.LayoutData.Header.png");
+			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
 			var allLocations = allLights.Select(light => header.GetLightPosition(light)).NonNull().ToList();
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
@@ -27,7 +27,7 @@ namespace Shelfinator.Patterns
 			var distances = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => (p - origin).Length).ToList();
 			var distanceInts = distances.Select(l => Helpers.Scale(l, distances.Min(), distances.Max(), 0, 500)).Select(l => (int)(l + 0.5)).ToList();
 
-			var hello = new Layout("Shelfinator.LayoutData.Hello.png");
+			var hello = new Layout("Shelfinator.Patterns.Hello.Hello.png");
 			var helloLights = new HashSet<int>(header.GetMappedLights(hello, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
