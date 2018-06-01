@@ -5,11 +5,12 @@ using System.Windows;
 
 namespace Shelfinator.Patterns
 {
-	class Spiral
+	class Spiral : IPattern
 	{
-		public static Lights Render()
+		public Lights Render()
 		{
 			const double Brightness = 1f / 16;
+
 			var lights = new Lights();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var spiral = new Layout("Shelfinator.Patterns.Spiral.Spiral.png");

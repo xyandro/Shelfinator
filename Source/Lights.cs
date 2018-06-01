@@ -58,23 +58,16 @@ namespace Shelfinator
 			return list[index].ColorAtTime(time);
 		}
 
-		public void Save(string fileName, int length, int numLights)
+		public void Save(string fileName)
 		{
 			using (var output = new BinaryWriter(File.Create(fileName)))
-				Save(output, length, numLights);
+				Save(output);
 		}
 
-		public void AdjustSpeed(double multiplier)
+		public void Save(BinaryWriter output)
 		{
-			foreach (var pair in lights)
-				foreach (var light in pair.Value)
-					light.AdjustSpeed(multiplier);
-			Length = (int)(Length * multiplier);
-		}
-
-		public void Save(BinaryWriter output, int length, int numLights)
-		{
-			output.Write(length);
+			var numLights = lights.Keys.Max() + 1;
+			output.Write(Length);
 			output.Write(numLights);
 			for (var light = 0; light < numLights; ++light)
 			{
@@ -83,6 +76,14 @@ namespace Shelfinator
 				foreach (var lightData in lightDatas)
 					lightData.Write(output);
 			}
+		}
+
+		public void AdjustSpeed(double multiplier)
+		{
+			foreach (var pair in lights)
+				foreach (var light in pair.Value)
+					light.AdjustSpeed(multiplier);
+			Length = (int)(Length * multiplier);
 		}
 
 		public static Lights Load(string fileName)

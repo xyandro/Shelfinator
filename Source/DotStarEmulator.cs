@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Shelfinator
 {
-	class DotStar
+	class DotStarEmulator : IDotStar
 	{
 		public WriteableBitmap Bitmap { get; }
 		public int NumLights { get; }
+
+		readonly Dispatcher dispatcher;
 		readonly uint[] buffer;
 		readonly Dictionary<int, List<int>> bufferPosition;
 
-		public DotStar(BitmapSource source)
+		public DotStarEmulator(Dispatcher dispatcher, BitmapSource source)
 		{
+			this.dispatcher = dispatcher;
 			Bitmap = new WriteableBitmap(source);
 
 			buffer = new uint[Bitmap.PixelWidth * Bitmap.PixelHeight];
@@ -46,15 +51,20 @@ namespace Shelfinator
 					buffer[value] = 0xff000000;
 		}
 
-		public void SetLight(int light, int color)
+		public void SetPixelColor(int light, int color)
 		{
 			if (!bufferPosition.ContainsKey(light))
 				return;
+			color = (new PixelColor(color) * 16).Color;
 			foreach (var position in bufferPosition[light])
 				buffer[position] = (uint)(0xff000000 | color);
 		}
 
-		public void Show() => Bitmap.WritePixels(new Int32Rect(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight), buffer, Bitmap.BackBufferStride, 0);
+		public void Show()
+		{
+			dispatcher.Invoke(() => Bitmap.WritePixels(new Int32Rect(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight), buffer, Bitmap.BackBufferStride, 0));
+			Thread.Sleep(1);
+		}
 
 		public void Save(string fileName)
 		{

@@ -3,14 +3,15 @@ using System.Windows;
 
 namespace Shelfinator.Patterns
 {
-	class Rotate
+	class Rotate : IPattern
 	{
-		const double Brightness = 1f / 16;
-		const int BladeCount = 8;
-		const int Fade = 100;
-		const int Delay = 150;
-		public static Lights Render()
+		public Lights Render()
 		{
+			const double Brightness = 1f / 16;
+			const int BladeCount = 8;
+			const int Fade = 100;
+			const int Delay = 150;
+
 			var lights = new Lights();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");

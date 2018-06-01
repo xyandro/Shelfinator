@@ -5,12 +5,13 @@ using System.Windows;
 
 namespace Shelfinator.Patterns
 {
-	class Love
+	class Love : IPattern
 	{
-		const double Brightness = 1f / 16;
-		const double FlashBrightness = .5;
-		public static Lights Render()
+		public Lights Render()
 		{
+			const double Brightness = 1f / 16;
+			const double FlashBrightness = .5;
+
 			var lights = new Lights();
 			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();

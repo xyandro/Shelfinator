@@ -4,9 +4,9 @@ using System.Windows;
 
 namespace Shelfinator.Patterns
 {
-	class Hello
+	class Hello : IPattern
 	{
-		public static Lights Render()
+		public Lights Render()
 		{
 			const double ColorBrightness = 1f / 16;
 			const double WhiteBrightness = 1f / 8;

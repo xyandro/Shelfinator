@@ -3,11 +3,12 @@ using System.Linq;
 
 namespace Shelfinator.Patterns
 {
-	class Sine
+	class Sine : IPattern
 	{
-		const double Brightness = 1f / 16;
-		public static Lights Render()
+		public Lights Render()
 		{
+			const double Brightness = 1f / 16;
+
 			var lights = new Lights();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
@@ -22,13 +23,18 @@ namespace Shelfinator.Patterns
 
 				for (var x = 0; x <= 96; ++x)
 				{
+					if ((x % 19) >= 2)
+						continue;
 					var val = (Math.Sin(2 * Math.PI * (time / 1000f + x / 96f)) + 1) * 87 / 2;
 					for (var yCtr = 0; yCtr < 10; ++yCtr)
 					{
 						var y = yCtr + val;
 						var light = layout.TryGetPositionLight(x, y);
 						if (light.HasValue)
-							lights.Add(light.Value, time, new PixelColor(0xffffff) * Brightness);
+							lights.Add(light.Value, time, new PixelColor(0xff0000) * Brightness);
+						light = layout.TryGetPositionLight(y, x);
+						if (light.HasValue)
+							lights.Add(light.Value, time, new PixelColor(0x0000ff) * Brightness);
 					}
 				}
 			}
