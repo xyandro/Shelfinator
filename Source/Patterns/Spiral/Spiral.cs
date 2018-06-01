@@ -9,11 +9,11 @@ namespace Shelfinator.Patterns
 	{
 		public int PatternNumber => 14;
 
-		public Lights Render()
+		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
 
-			var lights = new Lights();
+			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var spiral = new Layout("Shelfinator.Patterns.Spiral.Spiral.png");
 
@@ -39,14 +39,14 @@ namespace Shelfinator.Patterns
 					foreach (var point in points[ctr])
 					{
 						var light = GetLight(point);
-						lights.Add(light, startTime, startTime + 300, 0x000000, color);
-						lights.Add(light, startTime + 1200, startTime + 1200 + 300, color, 0x000000);
+						pattern.Lights.Add(light, startTime, startTime + 300, 0x000000, color);
+						pattern.Lights.Add(light, startTime + 1200, startTime + 1200 + 300, color, 0x000000);
 					}
 				}
 			}
-			lights.Length = 6900;
+			pattern.Sequences.Add(new Sequence(0, 6900));
 
-			return lights;
+			return pattern;
 		}
 	}
 }

@@ -7,14 +7,14 @@ namespace Shelfinator.Patterns
 	{
 		public int PatternNumber => 11;
 
-		public Lights Render()
+		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
 			const int BladeCount = 8;
 			const int Fade = 100;
 			const int Delay = 150;
 
-			var lights = new Lights();
+			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
 
@@ -33,14 +33,12 @@ namespace Shelfinator.Patterns
 				for (var ctr = 0; ctr < allLights.Count; ++ctr)
 					for (var repeat = 0; repeat < 9000; repeat += 500)
 					{
-						lights.Add(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, useColors[ctr]);
-						lights.Add(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, 0x000000);
+						pattern.Lights.Add(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, useColors[ctr]);
+						pattern.Lights.Add(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, 0x000000);
 					}
 			}
-
-			lights.Length = 10000;
-			lights.AdjustSpeed(2);
-			return lights;
+			pattern.Sequences.Add(new Sequence(0, 10000));
+			return pattern;
 		}
 	}
 }

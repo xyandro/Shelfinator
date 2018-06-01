@@ -7,13 +7,12 @@ namespace Shelfinator
 {
 	class Lights
 	{
-		readonly Dictionary<int, List<LightData>> lights = new Dictionary<int, List<LightData>>();
-		public int Length { get; set; }
+		readonly Dictionary<int, List<Light>> lights = new Dictionary<int, List<Light>>();
 
-		List<LightData> GetLightDatas(int light)
+		List<Light> GetLightDatas(int light)
 		{
 			if (!lights.ContainsKey(light))
-				lights[light] = new List<LightData> { new LightData(0, int.MaxValue, 0x000000, 0x000000) };
+				lights[light] = new List<Light> { new Light(0, int.MaxValue, 0x000000, 0x000000) };
 			return lights[light];
 		}
 
@@ -42,9 +41,9 @@ namespace Shelfinator
 			if (list[index].Duration == 0)
 				list.RemoveAt(index);
 
-			list.Add(new LightData(startTime, endTime, startColor.Value, endColor));
+			list.Add(new Light(startTime, endTime, startColor.Value, endColor));
 			if (endTime != int.MaxValue)
-				list.Add(new LightData(endTime, int.MaxValue, endColor, endColor));
+				list.Add(new Light(endTime, int.MaxValue, endColor, endColor));
 		}
 
 		public PixelColor GetColor(int light, int time)
@@ -58,16 +57,9 @@ namespace Shelfinator
 			return list[index].ColorAtTime(time);
 		}
 
-		public void Save(string fileName)
-		{
-			using (var output = new BinaryWriter(File.Create(fileName)))
-				Save(output);
-		}
-
 		public void Save(BinaryWriter output)
 		{
 			var numLights = lights.Keys.Max() + 1;
-			output.Write(Length);
 			output.Write(numLights);
 			for (var light = 0; light < numLights; ++light)
 			{
@@ -76,38 +68,6 @@ namespace Shelfinator
 				foreach (var lightData in lightDatas)
 					lightData.Write(output);
 			}
-		}
-
-		public void AdjustSpeed(double multiplier)
-		{
-			foreach (var pair in lights)
-				foreach (var light in pair.Value)
-					light.AdjustSpeed(multiplier);
-			Length = (int)(Length * multiplier);
-		}
-
-		public static Lights Load(string fileName)
-		{
-			using (var input = new BinaryReader(File.OpenRead(fileName)))
-				return Load(input);
-		}
-
-		public static Lights Load(BinaryReader input)
-		{
-			var result = new Lights();
-			result.Length = input.ReadInt32();
-			var numLights = input.ReadInt32();
-			for (var light = 0; light < numLights; ++light)
-			{
-				var lightDatasCount = input.ReadInt32();
-				for (var lightData = 0; lightData < lightDatasCount; ++lightData)
-				{
-					if (!result.lights.ContainsKey(light))
-						result.lights[light] = new List<LightData>();
-					result.lights[light].Add(LightData.Read(input));
-				}
-			}
-			return result;
 		}
 
 		public int GetMaxTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.GetMaxTime()));

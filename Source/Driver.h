@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <memory>
-#include "Lights.h"
+#include "Pattern.h"
 
 namespace Shelfinator
 {
@@ -12,7 +12,7 @@ namespace Shelfinator
 		static ptr Create(char *fileName, DotStar::ptr dotStar);
 		void Run();
 	private:
-		Lights::ptr lights;
+		Pattern::ptr pattern;
 		DotStar::ptr dotStar;
 		Driver(char *fileName, DotStar::ptr dotStar);
 	};

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Shelfinator
 {
-	class LightData
+	class Light
 	{
 		public int StartTime { get; set; }
 		public int EndTime { get; set; }
@@ -11,7 +11,7 @@ namespace Shelfinator
 		public PixelColor StartColor { get; set; }
 		public PixelColor EndColor { get; set; }
 
-		public LightData(int startTime, int endTime, PixelColor startColor, PixelColor endColor)
+		public Light(int startTime, int endTime, PixelColor startColor, PixelColor endColor)
 		{
 			StartTime = startTime;
 			EndTime = endTime;
@@ -19,7 +19,7 @@ namespace Shelfinator
 			EndColor = endColor;
 		}
 
-		public LightData()
+		public Light()
 		{
 		}
 
@@ -43,22 +43,14 @@ namespace Shelfinator
 			output.Write(EndColor.Color);
 		}
 
-		public static LightData Read(BinaryReader input)
+		public static Light Read(BinaryReader input)
 		{
-			var result = new LightData();
+			var result = new Light();
 			result.StartTime = input.ReadInt32();
 			result.EndTime = input.ReadInt32();
 			result.StartColor = new PixelColor(input.ReadInt32());
 			result.EndColor = new PixelColor(input.ReadInt32());
 			return result;
-		}
-
-		public void AdjustSpeed(double multiplier)
-		{
-			if (StartTime != int.MaxValue)
-				StartTime = (int)(StartTime * multiplier);
-			if (EndTime != int.MaxValue)
-				EndTime = (int)(EndTime * multiplier);
 		}
 
 		public int GetMaxTime() => EndTime != int.MaxValue ? EndTime : StartTime;

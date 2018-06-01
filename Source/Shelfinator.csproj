@@ -72,9 +72,10 @@
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Layout.cs" />
-    <Compile Include="LightData.cs" />
+    <Compile Include="Light.cs" />
     <Compile Include="Lights.cs" />
     <Compile Include="MoreLinq.cs" />
+    <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Hello\Hello.cs" />
     <EmbeddedResource Include="Patterns\Hello\Hello.png" />
     <Compile Include="Patterns\IPattern.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Sequence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Driver.vcxproj">

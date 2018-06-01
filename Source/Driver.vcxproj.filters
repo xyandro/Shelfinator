@@ -20,23 +20,14 @@
     <ClInclude Include="Driver.h">
       <Filter>Driver</Filter>
     </ClInclude>
-    <Filter Include="Light">
-      <UniqueIdentifier>{86f17018-e8b6-4098-b59c-ba34f1040459}</UniqueIdentifier>
+    <Filter Include="Pattern">
+      <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="Light.cpp">
-      <Filter>Light</Filter>
+    <ClCompile Include="Pattern.cpp">
+      <Filter>Pattern</Filter>
     </ClCompile>
-    <ClInclude Include="Light.h">
-      <Filter>Light</Filter>
-    </ClInclude>
-    <Filter Include="Lights">
-      <UniqueIdentifier>{7105dc66-726d-4372-b723-daa6c794210a}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="Lights.cpp">
-      <Filter>Lights</Filter>
-    </ClCompile>
-    <ClInclude Include="Lights.h">
-      <Filter>Lights</Filter>
+    <ClInclude Include="Pattern.h">
+      <Filter>Pattern</Filter>
     </ClInclude>
     <Filter Include="stdafx">
       <UniqueIdentifier>{4d4404f5-0a1c-45df-a2cb-108ba2598cee}</UniqueIdentifier>

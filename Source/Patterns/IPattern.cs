@@ -3,6 +3,6 @@
 	interface IPattern
 	{
 		int PatternNumber { get; }
-		Lights Render();
+		Pattern Render();
 	}
 }

@@ -8,12 +8,12 @@ namespace Shelfinator.Patterns
 	{
 		public int PatternNumber => 1;
 
-		public Lights Render()
+		public Pattern Render()
 		{
 			const double ColorBrightness = 1f / 16;
 			const double WhiteBrightness = 1f / 8;
 
-			var lights = new Lights();
+			var pattern = new Pattern();
 			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
 			var allLocations = allLights.Select(light => header.GetLightPosition(light)).NonNull().ToList();
@@ -33,19 +33,19 @@ namespace Shelfinator.Patterns
 			var helloLights = new HashSet<int>(header.GetMappedLights(hello, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				lights.Add(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, 0x000000, useColors[ctr]);
+				pattern.Lights.Add(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, 0x000000, useColors[ctr]);
 				if (!helloLights.Contains(allLights[ctr]))
-					lights.Add(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, useColors[ctr], 0x000000);
+					pattern.Lights.Add(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, useColors[ctr], 0x000000);
 			}
 
 			foreach (var light in helloLights)
 			{
-				lights.Add(light, 2000, 2500, lights.GetColor(light, 2000), new PixelColor(0xffffff) * WhiteBrightness);
-				lights.Add(light, 3000, 3500, lights.GetColor(light, 3000), 0x000000);
+				pattern.Lights.Add(light, 2000, 2500, pattern.Lights.GetColor(light, 2000), new PixelColor(0xffffff) * WhiteBrightness);
+				pattern.Lights.Add(light, 3000, 3500, pattern.Lights.GetColor(light, 3000), 0x000000);
 			}
 
-			lights.Length = 3500;
-			return lights;
+			pattern.Sequences.Add(new Sequence(0, 3500));
+			return pattern;
 		}
 	}
 }

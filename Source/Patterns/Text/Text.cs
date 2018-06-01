@@ -45,11 +45,11 @@ namespace Shelfinator.Patterns
 			['?'] = new List<byte> { 0x70, 0x88, 0x30, 0x00, 0x20 },
 		};
 
-		public static Lights Render(string text, int duration, int quantize, List<PixelColor> colors)
+		public static Pattern Render(string text, int duration, int quantize, List<PixelColor> colors)
 		{
 			const double Brightness = 1f / 16;
 
-			var lights = new Lights();
+			var pattern = new Pattern();
 			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var width = text.Length * 6 - 1;
 			var display = new bool[width, 5];
@@ -74,16 +74,15 @@ namespace Shelfinator.Patterns
 
 				for (var y = 0; y < grid.GetLength(1); ++y)
 					for (var x = 0; x < grid.GetLength(0); ++x)
-						lights.Add(posLight[x, y], time, grid[x, y]);
+						pattern.Lights.Add(posLight[x, y], time, grid[x, y]);
 			}
 
 			for (var y = 0; y < posLight.GetLength(1); ++y)
 				for (var x = 0; x < posLight.GetLength(0); ++x)
-					lights.Add(posLight[x, y], duration, 0x000000);
+					pattern.Lights.Add(posLight[x, y], duration, 0x000000);
+			pattern.Sequences.Add(new Sequence(0, duration));
 
-			lights.Length = duration;
-
-			return lights;
+			return pattern;
 		}
 
 		static void SetColor(PixelColor[,] grid, double x, int y, PixelColor color)

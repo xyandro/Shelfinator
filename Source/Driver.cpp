@@ -15,19 +15,23 @@ namespace Shelfinator
 
 	Driver::Driver(char *fileName, DotStar::ptr dotStar)
 	{
-		lights = Lights::Read(fileName);
+		pattern = Pattern::Read(fileName);
 		this->dotStar = dotStar;
 	}
 
 	void Driver::Run()
 	{
-		int time = 0;
-		while (time < lights->GetLength())
-		{
-			lights->SetLights(time, dotStar);
-			dotStar->Show();
-			time += 10;
-		}
+		for (auto sequenceCtr = 0; sequenceCtr < pattern->GetNumSequences(); ++sequenceCtr)
+			for (auto repeat = 0; repeat < pattern->GetSequenceRepeat(sequenceCtr); ++repeat)
+			{
+				int time = pattern->GetSequenceStartTime(sequenceCtr);
+				while (time < pattern->GetSequenceEndTime(sequenceCtr))
+				{
+					pattern->SetLights(time, dotStar);
+					dotStar->Show();
+					time += 10;
+				}
+			}
 	}
 
 #ifdef _WIN32
