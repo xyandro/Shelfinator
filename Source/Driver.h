@@ -17,9 +17,11 @@ namespace Shelfinator
 		Driver(char *fileName, DotStar::ptr dotStar);
 	};
 
+#ifdef _WIN32
 	public ref class DriverRunner
 	{
 	public:
 		static void Run(System::String ^fileName, IDotStar ^iDotStar);
 	};
+#endif
 }

@@ -1,6 +1,8 @@
-﻿*.user
+﻿*.o
+*.user
 .vs
 bin
 Debug
 obj
 Release
+shelfinator

@@ -1,27 +1,46 @@
 ﻿#pragma once
 
+#ifdef _WIN32
 #include <vcclr.h>
+#else
+#include <fcntl.h>
+#include <linux/spi/spidev.h>
+#endif
 #include <memory>
 
 namespace Shelfinator
 {
+#ifdef _WIN32
 	public interface class IDotStar
 	{
 		void Clear();
 		void SetPixelColor(int led, int color);
 		void Show();
 	};
+#endif
 
 	class DotStar
 	{
 	public:
 		typedef std::shared_ptr<DotStar> ptr;
-		static ptr Create(IDotStar^);
 		void Clear();
 		void SetPixelColor(int led, int color);
 		void Show();
+#ifdef _WIN32
+	public:
+		static ptr Create(IDotStar^);
 	private:
-		DotStar(IDotStar ^dotStar);
 		gcroot<IDotStar^> dotStar;
+		DotStar(IDotStar ^dotStar);
+#else
+	public:
+		static ptr Create(int ledCount);
+		~DotStar();
+	private:
+		spi_ioc_transfer xfer[3];
+		int numLEDs, fd;
+		int *pixels;
+		DotStar(int ledCount);
+#endif
 	};
 }
