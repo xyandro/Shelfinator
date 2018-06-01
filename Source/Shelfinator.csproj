@@ -91,6 +91,7 @@
     <EmbeddedResource Include="Patterns\Love\Sophie.png" />
     <EmbeddedResource Include="Patterns\Love\Timo.png" />
     <Compile Include="Patterns\Rotate\Rotate.cs" />
+    <Compile Include="Patterns\Sine\Sine.cs" />
     <Compile Include="Patterns\Spin\Spin.cs" />
     <Compile Include="Patterns\Spiral\Spiral.cs" />
     <EmbeddedResource Include="Patterns\Spiral\Spiral.png" />

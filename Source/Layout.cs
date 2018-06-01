@@ -47,7 +47,9 @@ namespace Shelfinator
 
 		public int GetPositionLight(int x, int y) => TryGetPositionLight(x, y).Value;
 
-		public int? TryGetPositionLight(Point point) => GetPositionLight((int)(point.X + .5), (int)(point.Y + .5));
+		public int GetPositionLight(double x, double y) => TryGetPositionLight(x, y).Value;
+
+		public int? TryGetPositionLight(Point point) => TryGetPositionLight((int)(point.X + .5), (int)(point.Y + .5));
 
 		public int? TryGetPositionLight(int x, int y)
 		{
@@ -57,6 +59,8 @@ namespace Shelfinator
 				return null;
 			return locationLights[x][y];
 		}
+
+		public int? TryGetPositionLight(double x, double y) => TryGetPositionLight((int)(x + .5), (int)(y + .5));
 
 		public Point? GetLightPosition(int light)
 		{

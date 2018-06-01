@@ -14,7 +14,7 @@ namespace Shelfinator
 
 		public MainWindow()
 		{
-			lights = Love.Render();
+			lights = Sine.Render();
 			//lights.Save(@"Z:\a\Pattern.dat", 6000, 2440);
 			//Environment.Exit(0);
 
