@@ -7,6 +7,8 @@ namespace Shelfinator.Patterns
 {
 	class Spiral : IPattern
 	{
+		public int PatternNumber => 14;
+
 		public Lights Render()
 		{
 			const double Brightness = 1f / 16;

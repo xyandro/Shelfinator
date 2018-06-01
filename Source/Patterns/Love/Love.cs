@@ -7,6 +7,8 @@ namespace Shelfinator.Patterns
 {
 	class Love : IPattern
 	{
+		public int PatternNumber => 10;
+
 		public Lights Render()
 		{
 			const double Brightness = 1f / 16;

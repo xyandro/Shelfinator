@@ -31,8 +31,20 @@ namespace Shelfinator
 			var fileName = e.Args[0];
 			if (e.Args.Length >= 2)
 			{
-				var type = typeof(IPattern).Assembly.DefinedTypes.Where(t => t.Name == e.Args[1]).Single();
-				((IPattern)Activator.CreateInstance(type)).Render().Save(fileName);
+				var patterns = typeof(IPattern).Assembly.DefinedTypes.Where(t => (!t.IsInterface) && (typeof(IPattern).IsAssignableFrom(t))).Select(t => Activator.CreateInstance(t)).Cast<IPattern>().ToList();
+
+				var dups = string.Join("\n", patterns.GroupBy(p => p.PatternNumber).Where(group => group.Skip(1).Any()).Select(group => $"{group.Key}: {string.Join(", ", group.Select(p => p.GetType().Name))}"));
+				if (dups != "")
+					throw new Exception($"Found duplicate pattern numbers:\n{dups}");
+
+				if (!int.TryParse(e.Args[1], out var patternNumber))
+					throw new Exception($"Failed to parse int {e.Args[1]}");
+
+				var pattern = patterns.FirstOrDefault(p => p.PatternNumber == patternNumber);
+				if (pattern == null)
+					throw new Exception($"Pattern {patternNumber} not found");
+
+				pattern.Render().Save(fileName);
 			}
 
 			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Patterns.Layout.DotStar.png"));

@@ -2,6 +2,7 @@
 {
 	interface IPattern
 	{
+		int PatternNumber { get; }
 		Lights Render();
 	}
 }

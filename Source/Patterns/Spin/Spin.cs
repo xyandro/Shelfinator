@@ -5,6 +5,8 @@ namespace Shelfinator.Patterns
 {
 	class Spin : IPattern
 	{
+		public int PatternNumber => 13;
+
 		public Lights Render()
 		{
 			const double Brightness = 1f / 16;

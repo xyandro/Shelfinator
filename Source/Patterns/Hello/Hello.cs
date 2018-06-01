@@ -6,6 +6,8 @@ namespace Shelfinator.Patterns
 {
 	class Hello : IPattern
 	{
+		public int PatternNumber => 1;
+
 		public Lights Render()
 		{
 			const double ColorBrightness = 1f / 16;

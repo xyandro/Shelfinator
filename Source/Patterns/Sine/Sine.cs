@@ -5,6 +5,8 @@ namespace Shelfinator.Patterns
 {
 	class Sine : IPattern
 	{
+		public int PatternNumber => 12;
+
 		public Lights Render()
 		{
 			const double Brightness = 1f / 16;
