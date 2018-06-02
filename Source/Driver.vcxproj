@@ -85,6 +85,8 @@
     <ClInclude Include="DotStar.h" />
     <ClCompile Include="Driver.cpp" />
     <ClInclude Include="Driver.h" />
+    <ClCompile Include="DriverRunner.cpp" />
+    <ClInclude Include="DriverRunner.h" />
     <ClCompile Include="Pattern.cpp" />
     <ClInclude Include="Pattern.h" />
     <ClCompile Include="Remote.cpp" />

@@ -20,6 +20,15 @@
     <ClInclude Include="Driver.h">
       <Filter>Driver</Filter>
     </ClInclude>
+    <Filter Include="DriverRunner">
+      <UniqueIdentifier>{15e7034d-f468-41ad-95e5-963e6fa92fb9}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="DriverRunner.cpp">
+      <Filter>DriverRunner</Filter>
+    </ClCompile>
+    <ClInclude Include="DriverRunner.h">
+      <Filter>DriverRunner</Filter>
+    </ClInclude>
     <Filter Include="Pattern">
       <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
     </Filter>

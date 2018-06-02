@@ -1,4 +1,4 @@
-﻿OBJS = DotStar.o Driver.o Pattern.o Remote.o
+﻿OBJS = DotStar.o Driver.o DriverRunner.o Pattern.o Remote.o
 
 all: shelfinator
 
