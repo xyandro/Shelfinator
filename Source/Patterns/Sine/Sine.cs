@@ -18,7 +18,7 @@ namespace Shelfinator.Patterns
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(Brightness).ToList();
-			for (var time = 0; time < 5000; time += 20)
+			for (var time = 0; time < 1000; time += 20)
 			{
 				foreach (var light in allLights)
 					pattern.Lights.Add(light, time, 0x000000);
@@ -40,7 +40,7 @@ namespace Shelfinator.Patterns
 					}
 				}
 			}
-			pattern.Sequences.Add(new Sequence(0, 56000));
+			pattern.Sequences.Add(new Sequence(0, 1000, 5, 2000));
 			return pattern;
 		}
 	}
