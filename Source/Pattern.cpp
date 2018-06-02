@@ -3,7 +3,7 @@
 
 namespace Shelfinator
 {
-	Pattern::ptr Pattern::Read(char *fileName)
+	Pattern::ptr Pattern::Read(const char *fileName)
 	{
 		auto file = fopen(fileName, "rb");
 		auto result = ptr(new Pattern(file));

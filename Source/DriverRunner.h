@@ -9,7 +9,7 @@ namespace Shelfinator
 	public ref class DriverRunner
 	{
 	public:
-		static void Run(System::String ^fileName, IDotStar ^iDotStar, IRemote ^remote);
+		static void Run(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote);
 	};
 #endif
 }

@@ -10,7 +10,7 @@ namespace Shelfinator
 	public:
 		typedef std::shared_ptr<Pattern> ptr;
 
-		static ptr Read(char *fileName);
+		static ptr Read(const char *fileName);
 		~Pattern();
 
 		int GetNumSequences();
