@@ -6,6 +6,8 @@ namespace Shelfinator
 	None,\
 	Play,\
 	Pause,\
+	Rewind,\
+	FastForward,\
 
 	enum RemoteCode { OPTIONS };
 

@@ -32,8 +32,8 @@ namespace Shelfinator
 
 	void Remote::RunThread()
 	{
-		static const char *lircNames[] = { "KEY_PLAY", "KEY_PAUSE" };
-		static RemoteCode remoteCodes[] = { Play, Pause };
+		static const char *lircNames[] = { "KEY_PLAY", "KEY_PAUSE", "KEY_REWIND", "KEY_FASTFORWARD" };
+		static RemoteCode remoteCodes[] = { Play, Pause, Rewind, FastForward };
 
 		while (true)
 		{

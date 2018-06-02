@@ -104,10 +104,12 @@ namespace Shelfinator
 
 	void Driver::Run()
 	{
+		static const double multipliers[] = { -5, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 5 };
+		static const char *multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "0", "1/8", "1/4", "1/2", "3/4", "1", "2", "3", "5" };
 		int onPattern = 0, loadedPattern = 0, patternIndex = -1, time = 0;
 		Pattern::ptr pattern;
 		std::shared_ptr<std::chrono::steady_clock::time_point> lastTime;
-		double multiplier = 1;
+		int multiplierIndex = 13;
 		while (true)
 		{
 			auto code = remote->GetCode();
@@ -115,8 +117,16 @@ namespace Shelfinator
 			{
 				switch (code)
 				{
-				case Play: multiplier = 1; break;
-				case Pause: multiplier = 0; break;
+				case Play: multiplierIndex = 13; break;
+				case Pause: multiplierIndex = 8; break;
+				case Rewind:
+					if (multiplierIndex > 0)
+						--multiplierIndex;
+					break;
+				case FastForward:
+					if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
+						++multiplierIndex;
+					break;
 				}
 				continue;
 			}
@@ -155,10 +165,7 @@ namespace Shelfinator
 			dotStar->Show();
 			std::shared_ptr<std::chrono::steady_clock::time_point> now(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
 			if (lastTime)
-			{
-				auto elapsed = (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*now - *lastTime).count() * multiplier);
-				time += elapsed;
-			}
+				time += (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*now - *lastTime).count() * multipliers[multiplierIndex]);
 			lastTime = now;
 		}
 	}

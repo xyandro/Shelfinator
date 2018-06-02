@@ -25,6 +25,8 @@ namespace Shelfinator
 			{
 				case Key.Enter: remote.Add(RefRemoteCode.Play); break;
 				case Key.Space: remote.Add(RefRemoteCode.Pause); break;
+				case Key.Left: remote.Add(RefRemoteCode.Rewind); break;
+				case Key.Right: remote.Add(RefRemoteCode.FastForward); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
