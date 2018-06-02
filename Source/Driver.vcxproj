@@ -87,6 +87,9 @@
     <ClInclude Include="Driver.h" />
     <ClCompile Include="Pattern.cpp" />
     <ClInclude Include="Pattern.h" />
+    <ClCompile Include="Remote.cpp" />
+    <ClInclude Include="Remote.h" />
+    <ClInclude Include="RemoteCode.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

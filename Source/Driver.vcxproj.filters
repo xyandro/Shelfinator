@@ -29,6 +29,16 @@
     <ClInclude Include="Pattern.h">
       <Filter>Pattern</Filter>
     </ClInclude>
+    <Filter Include="Remote">
+      <UniqueIdentifier>{8e3b4709-aba4-48ea-a62c-36f12aa78766}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Remote.cpp">
+      <Filter>Remote</Filter>
+    </ClCompile>
+    <ClInclude Include="Remote.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoteCode.h" />
     <Filter Include="stdafx">
       <UniqueIdentifier>{4d4404f5-0a1c-45df-a2cb-108ba2598cee}</UniqueIdentifier>
     </Filter>

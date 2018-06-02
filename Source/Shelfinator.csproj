@@ -103,6 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RemoteEmulator.cs" />
     <Compile Include="Sequence.cs" />
   </ItemGroup>
   <ItemGroup>

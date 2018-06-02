@@ -1,9 +1,9 @@
-﻿OBJS = DotStar.o Driver.o Pattern.o
+﻿OBJS = DotStar.o Driver.o Pattern.o Remote.o
 
 all: shelfinator
 
 shelfinator: $(OBJS)
-	g++ -o $@ $^
+	g++ -o $@ $^ -llirc_client -pthread
 
 %.o: %.cpp %.h
 	g++ -c -o $@ $<

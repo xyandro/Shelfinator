@@ -48,9 +48,10 @@ namespace Shelfinator
 			}
 
 			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Patterns.Layout.DotStar.png"));
-			var window = new DotStarEmulatorWindow(dotStar.Bitmap);
+			var remote = new RemoteEmulator();
+			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
 			window.Show();
-			new Thread(() => DriverRunner.Run(fileName, dotStar)).Start();
+			new Thread(() => DriverRunner.Run(fileName, dotStar, remote)).Start();
 		}
 
 		protected override void OnExit(ExitEventArgs e)

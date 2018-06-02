@@ -8,15 +8,16 @@
 
 namespace Shelfinator
 {
-	Driver::ptr Driver::Create(char *fileName, DotStar::ptr dotStar)
+	Driver::ptr Driver::Create(char *fileName, DotStar::ptr dotStar, Remote::ptr remote)
 	{
-		return ptr(new Driver(fileName, dotStar));
+		return ptr(new Driver(fileName, dotStar, remote));
 	}
 
-	Driver::Driver(char *fileName, DotStar::ptr dotStar)
+	Driver::Driver(char *fileName, DotStar::ptr dotStar, Remote::ptr remote)
 	{
 		pattern = Pattern::Read(fileName);
 		this->dotStar = dotStar;
+		this->remote = remote;
 	}
 
 	void Driver::Run()
@@ -27,6 +28,9 @@ namespace Shelfinator
 				int time = pattern->GetSequenceStartTime(sequenceCtr);
 				while (time < pattern->GetSequenceEndTime(sequenceCtr))
 				{
+					auto code = remote->GetCode();
+					if (code != None)
+						fprintf(stderr, "Code is %i\n", code);
 					pattern->SetLights(time, dotStar);
 					dotStar->Show();
 					time += 10;
@@ -35,11 +39,11 @@ namespace Shelfinator
 	}
 
 #ifdef _WIN32
-	void DriverRunner::Run(System::String ^fileName, IDotStar ^dotStar)
+	void DriverRunner::Run(System::String ^fileName, IDotStar ^dotStar, IRemote ^remote)
 	{
 		auto bytes = System::Text::Encoding::UTF8->GetBytes(fileName);
 		cli::pin_ptr<unsigned char> fileNamePtr = &bytes[0];
-		auto driver = Driver::Create((char*)fileNamePtr, DotStar::Create(dotStar));
+		auto driver = Driver::Create((char*)fileNamePtr, DotStar::Create(dotStar), Remote::Create(remote));
 		driver->Run();
 	}
 #endif
@@ -76,7 +80,7 @@ int main(int argc, char **argv)
 
 	SetupBreakhandler();
 
-	Shelfinator::Driver::Create(argv[1], dotStar)->Run();
+	Shelfinator::Driver::Create(argv[1], dotStar, Shelfinator::Remote::Create())->Run();
 
 	return 0;
 }
