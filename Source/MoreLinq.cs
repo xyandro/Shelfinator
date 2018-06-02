@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Shelfinator
 {
@@ -17,6 +18,23 @@ namespace Shelfinator
 				yield return item;
 			foreach (var item in addItems)
 				yield return item;
+		}
+
+		static public Dictionary<T1, T2> ToDictionary<T1, T2>(this IEnumerable<T1> items1, IEnumerable<T2> items2)
+		{
+			var result = new Dictionary<T1, T2>();
+			using (var enum1 = items1.GetEnumerator())
+			using (var enum2 = items2.GetEnumerator())
+				while (true)
+				{
+					var move1 = enum1.MoveNext();
+					if (move1 != enum2.MoveNext())
+						throw new Exception("Enumerables must have the same number of elements");
+					if (!move1)
+						break;
+					result[enum1.Current] = enum2.Current;
+				}
+			return result;
 		}
 	}
 }

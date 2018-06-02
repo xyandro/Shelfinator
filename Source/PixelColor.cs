@@ -40,7 +40,7 @@ namespace Shelfinator
 
 		public static PixelColor MixColor(PixelColor color1, PixelColor color2, double percent) => color1 == color2 ? color1 : color1 * (1 - percent) + color2 * percent;
 
-		public static PixelColor MixColor(List<PixelColor> colors, double value, double min, double max)
+		public static PixelColor MixColor(IReadOnlyList<PixelColor> colors, double value, double min, double max)
 		{
 			if (colors.Count == 0)
 				throw new ArgumentException("Must provide at least one color");

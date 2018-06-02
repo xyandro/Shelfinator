@@ -35,7 +35,7 @@ namespace Shelfinator
 
 				var dups = string.Join("\n", patterns.GroupBy(p => p.PatternNumber).Where(group => group.Skip(1).Any()).Select(group => $"{group.Key}: {string.Join(", ", group.Select(p => p.GetType().Name))}"));
 				if (dups != "")
-					throw new Exception($"Found duplicate pattern numbers:\n{dups}");
+					throw new Exception($"Found duplicate pattern numbers:\n\n{dups}\n\nNext available is {patterns.Select(p => p.PatternNumber).DefaultIfEmpty(0).Max() + 1}.");
 
 				if (!int.TryParse(e.Args[1], out var patternNumber))
 					throw new Exception($"Failed to parse int {e.Args[1]}");

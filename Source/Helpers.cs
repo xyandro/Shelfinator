@@ -9,8 +9,8 @@ namespace Shelfinator
 {
 	static class Helpers
 	{
-		static public List<PixelColor> Rainbow6 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x8b00ff };
-		static public List<PixelColor> Rainbow7 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3 };
+		static public IReadOnlyList<PixelColor> Rainbow6 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x8b00ff };
+		static public IReadOnlyList<PixelColor> Rainbow7 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3 };
 
 		static public Stream GetEmbeddedStream(string embeddedName) => typeof(Helpers).Assembly.GetManifestResourceStream(embeddedName);
 		static public BitmapSource GetEmbeddedBitmap(string embeddedName) => BitmapFrame.Create(GetEmbeddedStream(embeddedName));
