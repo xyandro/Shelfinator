@@ -16,7 +16,7 @@ namespace Shelfinator.Patterns
 			var pattern = new Pattern();
 			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
-			var allLocations = allLights.Select(light => header.GetLightPosition(light)).NonNull().ToList();
+			var allLocations = allLights.Select(light => header.GetLightPosition(light)).ToList();
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
 			var topLeft = ordered.First();
 			var bottomRight = ordered.Last();

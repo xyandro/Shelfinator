@@ -17,7 +17,7 @@ namespace Shelfinator.Patterns
 			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
-			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).NonNull().ToList();
+			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
 			var topLeft = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).First();
 			var bottomRight = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).Last();
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);

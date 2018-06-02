@@ -6,17 +6,16 @@ namespace Shelfinator
 {
 	struct PixelColor
 	{
-		public byte Red { get => red; set { red = value; color = value << 16 | color & 0x00ffff; } }
-		public byte Green { get => green; set { green = value; color = value << 8 | color & 0xff00ff; } }
-		public byte Blue { get => blue; set { blue = value; color = value | color & 0xffff00; } }
-		public int Color { get => color; set { color = value; red = (byte)(color >> 16 & 0xff); green = (byte)(color >> 8 & 0xff); blue = (byte)(color & 0xff); } }
+		public byte Red { get => (byte)(color >> 16 & 0xff); set => color = value << 16 | color & 0x00ffff; }
+		public byte Green { get => (byte)(color >> 8 & 0xff); set => color = value << 8 | color & 0xff00ff; }
+		public byte Blue { get => (byte)(color & 0xff); set => color = value | color & 0xffff00; }
+		public int Color { get => color; set => color = value; }
 
-		byte red, green, blue;
 		int color;
 
 		public PixelColor(byte red, byte green, byte blue)
 		{
-			color = this.red = this.green = this.blue = 0;
+			color = 0;
 			Red = red;
 			Green = green;
 			Blue = blue;
@@ -24,7 +23,7 @@ namespace Shelfinator
 
 		public PixelColor(int color)
 		{
-			this.color = red = green = blue = 0;
+			this.color = 0;
 			Color = color;
 		}
 
@@ -63,6 +62,8 @@ namespace Shelfinator
 		public override bool Equals(object obj) => obj is PixelColor pixel2 ? this == pixel2 : false;
 
 		public override int GetHashCode() => color;
+
+		public override string ToString() => $"{color:x6}";
 	}
 
 	static class PixelColorExtensions

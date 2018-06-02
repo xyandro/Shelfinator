@@ -11,11 +11,12 @@ namespace Shelfinator
 					yield return item.Value;
 		}
 
-		static public IEnumerable<T> Concat<T>(this IEnumerable<T> items, T addItem)
+		static public IEnumerable<T> Concat<T>(this IEnumerable<T> items, params T[] addItems)
 		{
 			foreach (var item in items)
 				yield return item;
-			yield return addItem;
+			foreach (var item in addItems)
+				yield return item;
 		}
 	}
 }

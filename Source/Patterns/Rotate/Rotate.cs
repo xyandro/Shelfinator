@@ -21,7 +21,7 @@ namespace Shelfinator.Patterns
 			foreach (var square in squares.GetAllLights())
 			{
 				var allLights = layout.GetMappedLights(squares, square);
-				var allLocations = allLights.Select(light => layout.GetLightPosition(light)).NonNull().ToList();
+				var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
 				var topLeft = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).First();
 				var bottomRight = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).Last();
 				var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);

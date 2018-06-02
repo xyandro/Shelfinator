@@ -62,7 +62,9 @@ namespace Shelfinator
 
 		public int? TryGetPositionLight(double x, double y) => TryGetPositionLight((int)(x + .5), (int)(y + .5));
 
-		public Point? GetLightPosition(int light)
+		public Point GetLightPosition(int light) => TryGetLightPosition(light).Value;
+
+		public Point? TryGetLightPosition(int light)
 		{
 			if (!lightLocations.ContainsKey(light))
 				return null;
