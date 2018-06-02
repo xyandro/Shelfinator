@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <string>
+#include <chrono>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -105,12 +106,18 @@ namespace Shelfinator
 	{
 		int onPattern = 0, loadedPattern = 0, patternIndex = -1, time = 0;
 		Pattern::ptr pattern;
+		std::shared_ptr<std::chrono::steady_clock::time_point> lastTime;
+		double multiplier = 1;
 		while (true)
 		{
 			auto code = remote->GetCode();
 			if (code != None)
 			{
-				fprintf(stderr, "Code is %i\n", code);
+				switch (code)
+				{
+				case Play: multiplier = 1; break;
+				case Pause: multiplier = 0; break;
+				}
 				continue;
 			}
 
@@ -123,6 +130,7 @@ namespace Shelfinator
 					patternIndex -= (int)patternNumbers.size();
 				onPattern = patternNumbers[patternIndex];
 				time = 0;
+				lastTime.reset();
 				continue;
 			}
 
@@ -132,18 +140,26 @@ namespace Shelfinator
 				pattern = Pattern::Read(fileName.c_str());
 				loadedPattern = onPattern;
 				time = 0;
+				lastTime.reset();
 				continue;
 			}
 
 			if (time >= pattern->GetLength())
 			{
 				onPattern = 0;
+				lastTime.reset();
 				continue;
 			}
 
 			pattern->SetLights(time, dotStar);
 			dotStar->Show();
-			time += 10;
+			std::shared_ptr<std::chrono::steady_clock::time_point> now(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
+			if (lastTime)
+			{
+				auto elapsed = (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*now - *lastTime).count() * multiplier);
+				time += elapsed;
+			}
+			lastTime = now;
 		}
 	}
 }
