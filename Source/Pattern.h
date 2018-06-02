@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include <memory>
+#include "DotStar.h"
+
 namespace Shelfinator
 {
 	class Pattern

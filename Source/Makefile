@@ -1,4 +1,4 @@
-﻿OBJS = DotStar.o Driver.o Light.o Lights.o
+﻿OBJS = DotStar.o Driver.o Pattern.o
 
 all: shelfinator
 
