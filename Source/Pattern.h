@@ -13,15 +13,11 @@ namespace Shelfinator
 		static ptr Read(const char *fileName);
 		~Pattern();
 
-		int GetNumSequences();
-		int GetSequenceStartTime(int sequence);
-		int GetSequenceEndTime(int sequence);
-		int GetSequenceRepeat(int sequence);
-
 		void SetLights(int time, DotStar::ptr dotStar);
+		int GetLength();
 	private:
-		int numSequences;
-		int *sequenceStartTime, *sequenceEndTime, *sequenceRepeat;
+		int length = 0, currentSequence = 0;
+		int *sequenceLightStartTime, *sequenceLightEndTime, *sequenceStartTime, *sequenceEndTime;
 
 		int numLights;
 		int **lightStartTime, **lightEndTime, **lightStartColor, **lightEndColor;

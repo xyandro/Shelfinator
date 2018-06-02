@@ -13,15 +13,29 @@ namespace Shelfinator
 
 	Pattern::Pattern(FILE *file)
 	{
+		int numSequences;
 		fread(&numSequences, 1, sizeof(numSequences), file);
+		sequenceLightStartTime = new int[numSequences];
+		sequenceLightEndTime = new int[numSequences];
 		sequenceStartTime = new int[numSequences];
 		sequenceEndTime = new int[numSequences];
-		sequenceRepeat = new int[numSequences];
-		for (auto sequenceCtr = 0; sequenceCtr < numSequences; ++sequenceCtr)
+		auto sequenceCtr = 0, time = 0;
+		while (sequenceCtr < numSequences)
 		{
-			fread(&sequenceStartTime[sequenceCtr], 1, sizeof(sequenceStartTime[sequenceCtr]), file);
-			fread(&sequenceEndTime[sequenceCtr], 1, sizeof(sequenceEndTime[sequenceCtr]), file);
-			fread(&sequenceRepeat[sequenceCtr], 1, sizeof(sequenceRepeat[sequenceCtr]), file);
+			int lightStartTime, lightEndTime, duration, repeat;
+			fread(&lightStartTime, 1, sizeof(lightStartTime), file);
+			fread(&lightEndTime, 1, sizeof(lightEndTime), file);
+			fread(&duration, 1, sizeof(duration), file);
+			fread(&repeat, 1, sizeof(repeat), file);
+			for (auto ctr = 0; ctr < repeat; ++ctr)
+			{
+				sequenceLightStartTime[sequenceCtr] = lightStartTime;
+				sequenceLightEndTime[sequenceCtr] = lightEndTime;
+				sequenceStartTime[sequenceCtr] = time;
+				sequenceEndTime[sequenceCtr] = length = time + duration;
+				++sequenceCtr;
+				time += duration;
+			}
 		}
 
 		fread(&numLights, 1, sizeof(numLights), file);
@@ -56,7 +70,8 @@ namespace Shelfinator
 	{
 		delete[] sequenceStartTime;
 		delete[] sequenceEndTime;
-		delete[] sequenceRepeat;
+		delete[] sequenceLightStartTime;
+		delete[] sequenceLightEndTime;
 
 		for (auto ctr = 0; ctr < numLights; ++ctr)
 		{
@@ -72,26 +87,33 @@ namespace Shelfinator
 		delete[] currentIndex;
 	}
 
-	int Pattern::GetNumSequences() { return numSequences; }
-	int Pattern::GetSequenceStartTime(int sequence) { return sequenceStartTime[sequence]; }
-	int Pattern::GetSequenceEndTime(int sequence) { return sequenceEndTime[sequence]; }
-	int Pattern::GetSequenceRepeat(int sequence) { return sequenceRepeat[sequence]; }
-
 	void Pattern::SetLights(int time, DotStar::ptr dotStar)
 	{
 		if (time < 0)
 			return;
 
+		while (time < sequenceStartTime[currentSequence])
+			--currentSequence;
+		while (time >= sequenceEndTime[currentSequence])
+			++currentSequence;
+
+		auto lightTime = (time - sequenceStartTime[currentSequence]) * (sequenceLightEndTime[currentSequence] - sequenceLightStartTime[currentSequence]) / (sequenceEndTime[currentSequence] - sequenceStartTime[currentSequence]) + sequenceLightStartTime[currentSequence];
+
 		for (auto light = 0; light < numLights; ++light)
 		{
-			while (time < lightStartTime[light][currentIndex[light]])
+			while (lightTime < lightStartTime[light][currentIndex[light]])
 				--currentIndex[light];
-			while (time >= lightEndTime[light][currentIndex[light]])
+			while (lightTime >= lightEndTime[light][currentIndex[light]])
 				++currentIndex[light];
 
-			auto mult = (double)(time - lightStartTime[light][currentIndex[light]]) / (lightEndTime[light][currentIndex[light]] - lightStartTime[light][currentIndex[light]]);
+			auto mult = (double)(lightTime - lightStartTime[light][currentIndex[light]]) / (lightEndTime[light][currentIndex[light]] - lightStartTime[light][currentIndex[light]]);
 			auto result = ((int)(((lightStartColor[light][currentIndex[light]] >> 16) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 16) & 0xff) * mult) << 16) | ((int)(((lightStartColor[light][currentIndex[light]] >> 8) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 8) & 0xff) * mult) << 8) | ((int)(((lightStartColor[light][currentIndex[light]] >> 0) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 0) & 0xff) * mult) << 0);
 			dotStar->SetPixelColor(light, result);
 		}
+	}
+
+	int Pattern::GetLength()
+	{
+		return length;
 	}
 }

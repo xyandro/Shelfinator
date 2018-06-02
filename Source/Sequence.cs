@@ -4,25 +4,28 @@ namespace Shelfinator
 {
 	class Sequence
 	{
-		public int StartTime { get; set; }
-		public int EndTime { get; set; }
+		public int LightStartTime { get; set; }
+		public int LightEndTime { get; set; }
 		public int Repeat { get; set; }
+		public int Duration { get; set; }
 
 		public Sequence()
 		{
 		}
 
-		public Sequence(int startTime, int endTime, int repeat = 1)
+		public Sequence(int startTime, int endTime, int repeat = 1, int? duration = null)
 		{
-			StartTime = startTime;
-			EndTime = endTime;
+			LightStartTime = startTime;
+			LightEndTime = endTime;
 			Repeat = repeat;
+			Duration = duration ?? LightEndTime - LightStartTime;
 		}
 
 		public void Save(BinaryWriter output)
 		{
-			output.Write(StartTime);
-			output.Write(EndTime);
+			output.Write(LightStartTime);
+			output.Write(LightEndTime);
+			output.Write(Duration);
 			output.Write(Repeat);
 		}
 	}

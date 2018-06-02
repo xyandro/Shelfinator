@@ -103,7 +103,7 @@ namespace Shelfinator
 
 	void Driver::Run()
 	{
-		int onPattern = 0, lastPattern = 0, onSequence = 0, patternIndex = 0, onRepeat = 0, time = -1;
+		int onPattern = 0, loadedPattern = 0, patternIndex = -1, time = 0;
 		Pattern::ptr pattern;
 		while (true)
 		{
@@ -116,38 +116,28 @@ namespace Shelfinator
 
 			if (onPattern == 0)
 			{
-				onPattern = patternNumbers[patternIndex++];
+				patternIndex++;
+				while (patternIndex < 0)
+					patternIndex += (int)patternNumbers.size();
+				while (patternIndex >= patternNumbers.size())
+					patternIndex -= (int)patternNumbers.size();
+				onPattern = patternNumbers[patternIndex];
+				time = 0;
 				continue;
 			}
 
-			if (onPattern != lastPattern)
+			if (onPattern != loadedPattern)
 			{
 				auto fileName = patternsPath + std::to_string(onPattern) + ".dat";
 				pattern = Pattern::Read(fileName.c_str());
-				lastPattern = onPattern;
-				onSequence = onRepeat = 0;
-				time = -1;
+				loadedPattern = onPattern;
+				time = 0;
 				continue;
 			}
 
-			if (time == -1)
+			if (time >= pattern->GetLength())
 			{
-				time = pattern->GetSequenceStartTime(onSequence);
-				continue;
-			}
-
-			if (time >= pattern->GetSequenceEndTime(onSequence))
-			{
-				++onRepeat;
-				time = -1;
-				continue;
-			}
-
-			if (onRepeat >= pattern->GetSequenceRepeat(onSequence))
-			{
-				++onSequence;
-				onRepeat = 0;
-				time = -1;
+				onPattern = 0;
 				continue;
 			}
 

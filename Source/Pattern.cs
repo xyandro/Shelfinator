@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Shelfinator
 {
@@ -17,7 +17,7 @@ namespace Shelfinator
 
 		public void Save(BinaryWriter output)
 		{
-			output.Write(Sequences.Count);
+			output.Write(Sequences.Sum(sequence => sequence.Repeat));
 			foreach (var sequence in Sequences)
 				sequence.Save(output);
 			Lights.Save(output);
