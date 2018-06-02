@@ -34,21 +34,24 @@ namespace Shelfinator
 
 			var args = e.Args.ToList();
 			var build = args.Contains("build", StringComparer.OrdinalIgnoreCase);
-			if (build)
-				args.RemoveAll(arg => string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase));
+			var all = args.Contains("all", StringComparer.OrdinalIgnoreCase);
+			if ((build) || (all))
+				args.RemoveAll(arg => (string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "all", StringComparison.OrdinalIgnoreCase)));
 
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 			if (build)
-				foreach (var patternNumber in patternNumbers)
-				{
-					var pattern = patterns.FirstOrDefault(p => p.PatternNumber == patternNumber);
-					if (pattern == null)
-						throw new Exception($"Pattern {patternNumber} not found");
+			{
+				var match = patterns.Where(p => (all) || (patternNumbers.Contains(p.PatternNumber)));
+				if (!match.Any())
+					throw new Exception($"Pattern(s) not found");
 
-					var fileName = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(App).Assembly.Location)))), "Patterns", $"{patternNumber}.dat");
+				foreach (var pattern in match)
+				{
+					var fileName = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(App).Assembly.Location)))), "Patterns", $"{pattern.PatternNumber}.dat");
 					Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 					pattern.Render().Save(fileName);
 				}
+			}
 
 			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Patterns.Layout.DotStar.png"));
 			var remote = new RemoteEmulator();
