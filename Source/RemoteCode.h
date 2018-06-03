@@ -9,6 +9,8 @@ namespace Shelfinator
 	Rewind,\
 	FastForward,\
 	Enter,\
+	Previous,\
+	Next,\
 	D0,\
 	D1,\
 	D2,\

@@ -135,6 +135,19 @@ namespace Shelfinator
 			if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
 				++multiplierIndex;
 			break;
+		case Previous:
+			if (time < 2000)
+			{
+				--patternIndex;
+				LoadPattern();
+			}
+			else
+				time = 0;
+			break;
+		case Next:
+			++patternIndex;
+			LoadPattern();
+			break;
 		case Enter: useSelectedNumber = true; break;
 		case D0:
 		case D1:

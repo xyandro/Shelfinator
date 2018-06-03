@@ -18,6 +18,8 @@ namespace Shelfinator
 			DotStar = bitmap;
 		}
 
+		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			e.Handled = true;
@@ -25,8 +27,8 @@ namespace Shelfinator
 			{
 				case Key.Escape: remote.Add(RefRemoteCode.Play); break;
 				case Key.Space: remote.Add(RefRemoteCode.Pause); break;
-				case Key.Left: remote.Add(RefRemoteCode.Rewind); break;
-				case Key.Right: remote.Add(RefRemoteCode.FastForward); break;
+				case Key.Left: remote.Add(ControlDown ? RefRemoteCode.Previous : RefRemoteCode.Rewind); break;
+				case Key.Right: remote.Add(ControlDown ? RefRemoteCode.Next : RefRemoteCode.FastForward); break;
 				case Key.Enter: remote.Add(RefRemoteCode.Enter); break;
 				case Key.D0: remote.Add(RefRemoteCode.D0); break;
 				case Key.D1: remote.Add(RefRemoteCode.D1); break;
