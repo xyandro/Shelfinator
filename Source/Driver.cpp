@@ -222,6 +222,7 @@ namespace Shelfinator
 				continue;
 			}
 
+			dotStar->Clear();
 			pattern->SetLights(time, dotStar);
 
 			if (banner)
