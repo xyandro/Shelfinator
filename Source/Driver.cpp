@@ -14,6 +14,9 @@
 
 namespace Shelfinator
 {
+	const double Driver::multipliers[] = { -5, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 5 };
+	const char *Driver::multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "0", "1/8", "1/4", "1/2", "3/4", "1", "2", "3", "5" };
+
 	Driver::ptr Driver::Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote)
 	{
 		return ptr(new Driver(patternNumbers, patternNumberCount, dotStar, remote));
@@ -23,6 +26,7 @@ namespace Shelfinator
 	{
 		this->dotStar = dotStar;
 		this->remote = remote;
+
 		SetupPatternsPath();
 		SetupPatternNumbers();
 
@@ -55,6 +59,18 @@ namespace Shelfinator
 		patternsPath = buf;
 	}
 
+	void Driver::AddIfPatternFile(std::string fileName)
+	{
+		std::transform(fileName.begin(), fileName.end(), fileName.begin(), tolower);
+		if ((fileName.length() >= 4) && (fileName.substr(fileName.length() - 4, 4) == ".dat"))
+		{
+			fileName = fileName.substr(0, fileName.length() - 4);
+			auto patternNumber = atoi(fileName.c_str());
+			if (patternNumber != 0)
+				patternNumbers.push_back(patternNumber);
+		}
+	}
+
 	void Driver::SetupPatternNumbers()
 	{
 #ifdef _WIN32
@@ -69,7 +85,10 @@ namespace Shelfinator
 			if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				continue;
 
-			std::string found = findData.cFileName;
+			AddIfPatternFile(findData.cFileName);
+		} while (FindNextFileA(hFind, &findData) != 0);
+
+		FindClose(hFind);
 #else
 		DIR *dir;
 		struct dirent *ent;
@@ -78,22 +97,7 @@ namespace Shelfinator
 
 		while ((ent = readdir(dir)) != nullptr)
 		{
-			std::string found = ent->d_name;
-#endif
-
-			std::transform(found.begin(), found.end(), found.begin(), tolower);
-			if ((found.length() >= 4) && (found.substr(found.length() - 4, 4) == ".dat"))
-			{
-				found = found.substr(0, found.length() - 4);
-				auto patternNumber = atoi(found.c_str());
-				if (patternNumber != 0)
-					patternNumbers.push_back(patternNumber);
-			}
-#ifdef _WIN32
-		} while (FindNextFileA(hFind, &findData) != 0);
-
-		FindClose(hFind);
-#else
+			AddIfPatternFile(ent->d_name);
 		}
 
 		closedir(dir);
@@ -102,71 +106,62 @@ namespace Shelfinator
 		std::random_shuffle(patternNumbers.begin(), patternNumbers.end());
 	}
 
+	bool Driver::HandleRemote()
+	{
+		switch (remote->GetCode())
+		{
+		case Play: multiplierIndex = 13; break;
+		case Pause: multiplierIndex = 8; break;
+		case Rewind:
+			if (multiplierIndex > 0)
+				--multiplierIndex;
+			break;
+		case FastForward:
+			if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
+				++multiplierIndex;
+			break;
+		default: return false;
+		}
+
+		return true;
+	}
+
+	void Driver::LoadPattern(bool startAtEnd)
+	{
+		while (patternIndex < 0)
+			patternIndex += (int)patternNumbers.size();
+		while (patternIndex >= patternNumbers.size())
+			patternIndex -= (int)patternNumbers.size();
+
+		auto fileName = patternsPath + std::to_string(patternNumbers[patternIndex]) + ".dat";
+		pattern = Pattern::Read(fileName.c_str());
+		time = startAtEnd ? pattern->GetLength() - 1 : 0;
+	}
+
 	void Driver::Run()
 	{
-		static const double multipliers[] = { -5, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 5 };
-		static const char *multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "0", "1/8", "1/4", "1/2", "3/4", "1", "2", "3", "5" };
-		int onPattern = 0, loadedPattern = 0, patternIndex = -1, time = 0;
-		Pattern::ptr pattern;
-		std::shared_ptr<std::chrono::steady_clock::time_point> lastTime;
-		int multiplierIndex = 13;
+		LoadPattern();
+		std::shared_ptr<std::chrono::steady_clock::time_point> startTime, nextTime;
 		while (true)
 		{
-			auto code = remote->GetCode();
-			if (code != None)
-			{
-				switch (code)
-				{
-				case Play: multiplierIndex = 13; break;
-				case Pause: multiplierIndex = 8; break;
-				case Rewind:
-					if (multiplierIndex > 0)
-						--multiplierIndex;
-					break;
-				case FastForward:
-					if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
-						++multiplierIndex;
-					break;
-				}
-				continue;
-			}
+			startTime = nextTime;
+			nextTime.reset();
 
-			if (onPattern == 0)
-			{
-				patternIndex++;
-				while (patternIndex < 0)
-					patternIndex += (int)patternNumbers.size();
-				while (patternIndex >= patternNumbers.size())
-					patternIndex -= (int)patternNumbers.size();
-				onPattern = patternNumbers[patternIndex];
-				time = 0;
-				lastTime.reset();
+			if (HandleRemote())
 				continue;
-			}
 
-			if (onPattern != loadedPattern)
+			if ((time < 0) || (time >= pattern->GetLength()))
 			{
-				auto fileName = patternsPath + std::to_string(onPattern) + ".dat";
-				pattern = Pattern::Read(fileName.c_str());
-				loadedPattern = onPattern;
-				time = 0;
-				lastTime.reset();
-				continue;
-			}
-
-			if (time >= pattern->GetLength())
-			{
-				onPattern = 0;
-				lastTime.reset();
+				patternIndex += time < 0 ? -1 : 1;
+				LoadPattern(time < 0);
 				continue;
 			}
 
 			pattern->SetLights(time, dotStar);
 			dotStar->Show();
-			std::shared_ptr<std::chrono::steady_clock::time_point> now(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
-			if (lastTime)
-				time += (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*now - *lastTime).count() * multipliers[multiplierIndex]);
-			lastTime = now;
+			nextTime = std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
+			if (startTime)
+				time += (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*nextTime - *startTime).count() * multipliers[multiplierIndex]);
 		}
 	}
 }

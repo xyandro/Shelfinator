@@ -13,13 +13,22 @@ namespace Shelfinator
 		static ptr Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
 		void Run();
 	private:
+		static const double multipliers[];
+		static const char *multiplierNames[];
+
 		std::vector<int> patternNumbers;
 		DotStar::ptr dotStar;
 		Remote::ptr remote;
 		std::string patternsPath;
+		int time = 0, multiplierIndex = 13, patternIndex = 0;
+		Pattern::ptr pattern;
 
 		Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
+		void AddIfPatternFile(std::string fileName);
 		void SetupPatternsPath();
 		void SetupPatternNumbers();
+
+		bool HandleRemote();
+		void LoadPattern(bool startAtEnd = false);
 	};
 }
