@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Banner.cpp" />
+    <ClInclude Include="Banner.h" />
     <ClCompile Include="DotStar.cpp" />
     <ClInclude Include="DotStar.h" />
     <ClCompile Include="Driver.cpp" />

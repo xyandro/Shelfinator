@@ -15,7 +15,7 @@
 namespace Shelfinator
 {
 	const double Driver::multipliers[] = { -5, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 5 };
-	const char *Driver::multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "0", "1/8", "1/4", "1/2", "3/4", "1", "2", "3", "5" };
+	const char *Driver::multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "A", "1/8", "1/4", "1/2", "3/4", "P", "2", "3", "5" };
 
 	Driver::ptr Driver::Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote)
 	{
@@ -108,6 +108,7 @@ namespace Shelfinator
 
 	bool Driver::HandleRemote()
 	{
+		auto lastMultiplierIndex = multiplierIndex;
 		switch (remote->GetCode())
 		{
 		case Play: multiplierIndex = 13; break;
@@ -122,6 +123,9 @@ namespace Shelfinator
 			break;
 		default: return false;
 		}
+
+		if (lastMultiplierIndex != multiplierIndex)
+			banner = Banner::Create(multiplierNames[multiplierIndex], 1000);
 
 		return true;
 	}
@@ -158,10 +162,23 @@ namespace Shelfinator
 			}
 
 			pattern->SetLights(time, dotStar);
+
+			if (banner)
+				banner->SetLights(dotStar);
+
 			dotStar->Show();
 			nextTime = std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
 			if (startTime)
-				time += (int)(std::chrono::duration_cast<std::chrono::milliseconds>(*nextTime - *startTime).count() * multipliers[multiplierIndex]);
+			{
+				auto elapsed = (int)std::chrono::duration_cast<std::chrono::milliseconds>(*nextTime - *startTime).count();
+				time += (int)(elapsed * multipliers[multiplierIndex]);
+				if (banner)
+				{
+					banner->AddElapsed(elapsed);
+					if (banner->Expired())
+						banner.reset();
+				}
+			}
 		}
 	}
 }

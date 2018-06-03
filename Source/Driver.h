@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <vector>
+#include "Banner.h"
 #include "Pattern.h"
 #include "Remote.h"
 
@@ -19,6 +20,7 @@ namespace Shelfinator
 		std::vector<int> patternNumbers;
 		DotStar::ptr dotStar;
 		Remote::ptr remote;
+		Banner::ptr banner;
 		std::string patternsPath;
 		int time = 0, multiplierIndex = 13, patternIndex = 0;
 		Pattern::ptr pattern;

@@ -2,6 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <Filter Include="Banner">
+      <UniqueIdentifier>{6839f4d7-bb71-4af0-8911-893673dd6050}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Banner.cpp">
+      <Filter>Banner</Filter>
+    </ClCompile>
+    <ClInclude Include="Banner.h">
+      <Filter>Banner</Filter>
+    </ClInclude>
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>
