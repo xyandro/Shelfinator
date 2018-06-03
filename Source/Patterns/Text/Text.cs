@@ -70,7 +70,7 @@ namespace Shelfinator.Patterns
 				for (var y = 0; y < 5; ++y)
 					for (var x = 0; x < width; ++x)
 						if (display[x, y])
-							SetColor(grid, xofs + x, y + 1, PixelColor.MixColor(colors, x, 0, width) * Brightness);
+							SetColor(grid, xofs + x, y + 1, PixelColor.Gradient(colors, x, 0, width) * Brightness);
 
 				for (var y = 0; y < grid.GetLength(1); ++y)
 					for (var x = 0; x < grid.GetLength(0); ++x)

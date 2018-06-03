@@ -71,7 +71,7 @@ namespace Shelfinator
 		{
 			min = min ?? values.DefaultIfEmpty(0).Min();
 			max = max ?? values.DefaultIfEmpty(0).Max();
-			return values.Select(value => PixelColor.MixColor(colors, value, min.Value, max.Value));
+			return values.Select(value => PixelColor.Gradient(colors, value, min.Value, max.Value));
 
 		}
 
@@ -79,7 +79,7 @@ namespace Shelfinator
 		{
 			min = min ?? values.DefaultIfEmpty(0).Min();
 			max = max ?? values.DefaultIfEmpty(0).Max();
-			return values.Select(value => PixelColor.MixColor(colors, value, min.Value, max.Value));
+			return values.Select(value => PixelColor.Gradient(colors, value, min.Value, max.Value));
 
 		}
 	}

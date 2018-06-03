@@ -30,7 +30,7 @@ namespace Shelfinator
 			if (time >= EndTime)
 				throw new Exception("Time >= EndTime");
 
-			return PixelColor.MixColor(StartColor, EndColor, (time - StartTime) / (double)Duration);
+			return PixelColor.Gradient(StartColor, EndColor, (time - StartTime) / (double)Duration);
 		}
 
 		public override string ToString() => $"{StartTime}-{EndTime}, {StartColor:X6}-{EndColor:X6}";

@@ -38,9 +38,9 @@ namespace Shelfinator
 
 		public static PixelColor operator +(PixelColor pixel1, PixelColor pixel2) => new PixelColor(ToByte(pixel1.Red + pixel2.Red), ToByte(pixel1.Green + pixel2.Green), ToByte(pixel1.Blue + pixel2.Blue));
 
-		public static PixelColor MixColor(PixelColor color1, PixelColor color2, double percent) => color1 == color2 ? color1 : color1 * (1 - percent) + color2 * percent;
+		public static PixelColor Gradient(PixelColor color1, PixelColor color2, double percent) => color1 == color2 ? color1 : color1 * (1 - percent) + color2 * percent;
 
-		public static PixelColor MixColor(IReadOnlyList<PixelColor> colors, double value, double min, double max)
+		public static PixelColor Gradient(IReadOnlyList<PixelColor> colors, double value, double min, double max)
 		{
 			if (colors.Count == 0)
 				throw new ArgumentException("Must provide at least one color");

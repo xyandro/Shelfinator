@@ -29,6 +29,15 @@
     <ClInclude Include="DriverRunner.h">
       <Filter>DriverRunner</Filter>
     </ClInclude>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{a6809c57-e542-47cb-b7dc-3a824d84e18f}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClInclude Include="Helpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
     <Filter Include="Pattern">
       <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
     </Filter>

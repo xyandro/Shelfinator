@@ -24,7 +24,7 @@ namespace Shelfinator.Patterns
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(Brightness).ToList();
-			var useColors = allLocations.Select(p => PixelColor.MixColor(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
+			var useColors = allLocations.Select(p => PixelColor.Gradient(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
 			//var cir = allLocations.Select(p => (new Point(p.X, p.Y) - center).Length).ToList();
 			//var useColors = cir.Select(p => PixelColor.MixColor(rainbow7, p, cir.Min(), cir.Max())).ToList();
 			//var col = rainbow7.AsEnumerable().Reverse().Concat(rainbow7.Skip(1)).ToList();

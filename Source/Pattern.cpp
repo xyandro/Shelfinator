@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Pattern.h"
 
+#include "Helpers.h"
+
 namespace Shelfinator
 {
 	Pattern::ptr Pattern::Read(const char *fileName)
@@ -107,7 +109,7 @@ namespace Shelfinator
 				++currentIndex[light];
 
 			auto mult = (double)(lightTime - lightStartTime[light][currentIndex[light]]) / (lightEndTime[light][currentIndex[light]] - lightStartTime[light][currentIndex[light]]);
-			auto result = ((int)(((lightStartColor[light][currentIndex[light]] >> 16) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 16) & 0xff) * mult) << 16) | ((int)(((lightStartColor[light][currentIndex[light]] >> 8) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 8) & 0xff) * mult) << 8) | ((int)(((lightStartColor[light][currentIndex[light]] >> 0) & 0xff) * (1 - mult) + ((lightEndColor[light][currentIndex[light]] >> 0) & 0xff) * mult) << 0);
+			auto result = Helpers::GradientColor(lightStartColor[light][currentIndex[light]], lightEndColor[light][currentIndex[light]], mult);
 			dotStar->SetPixelColor(light, result);
 		}
 	}

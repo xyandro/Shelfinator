@@ -29,7 +29,7 @@ namespace Shelfinator.Patterns
 			var times = lights.Select(light => layout.GetLightPosition(light)).GetDistance(center).Scale(0, null, 0, StartTime).Round().ToList();
 			var lightTimes = lights.ToDictionary(times);
 			foreach (var pair in lightTimes)
-				pattern.Lights.Add(pair.Key, pair.Value, PixelColor.MixColor(colors, layout.GetLightPosition(pair.Key).X, -96, 192));
+				pattern.Lights.Add(pair.Key, pair.Value, PixelColor.Gradient(colors, layout.GetLightPosition(pair.Key).X, -96, 192));
 
 			for (var angle = 0; angle <= 360; angle += RotateIncrement)
 			{
@@ -40,7 +40,7 @@ namespace Shelfinator.Patterns
 				{
 					var location = layout.GetLightPosition(light);
 					var newX = (location.X - 48) * cos - (location.Y - 48) * sin + 48;
-					var newColor = PixelColor.MixColor(colors, newX, -96, 192);
+					var newColor = PixelColor.Gradient(colors, newX, -96, 192);
 					pattern.Lights.Add(light, time, newColor);
 				}
 			}
