@@ -61,17 +61,17 @@ namespace Shelfinator
 		{ 7, 8, 23, 24, 39, 40, 55, 56, 71, 72, 87, 88, 103, 104, 119, 120, 135, 136, 151, 152, 167, 168, 183, 184, 199, 200, 215, 216, 231, 232, 247, 248 },
 	};
 
-	Banner::ptr Banner::Create(const char *text, int time)
+	Banner::ptr Banner::Create(std::string text, int time)
 	{
 		return ptr(new Banner(text, time));
 	}
 
-	Banner::Banner(const char *text, int time)
+	Banner::Banner(std::string text, int time)
 	{
 		this->time = time;
 		width = -1;
-		for (auto ch = text; *ch != 0; ++ch)
-			width += GetChar(*ch).width + 1;
+		for (auto ctr = 0; ctr < text.length(); ++ctr)
+			width += GetChar(text[ctr]).width + 1;
 		if (width < 0)
 			width = 0;
 
@@ -83,9 +83,9 @@ namespace Shelfinator
 		}
 
 		auto xOfs = 0;
-		for (auto ch = text; *ch != 0; ++ch)
+		for (auto ctr = 0; ctr < text.length(); ++ctr)
 		{
-			auto charData = GetChar(*ch);
+			auto charData = GetChar(text[ctr]);
 			for (auto y = 0; y < 8; ++y)
 				for (auto x = 0; x < 8; ++x)
 					grid[y][xOfs + x] = (charData.data[y] & (1 << (7 - x))) != 0;
