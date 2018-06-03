@@ -1,13 +1,5 @@
 ﻿#pragma once
 
-#ifdef _WIN32
-#include <vcclr.h>
-#else
-#include <fcntl.h>
-#include <linux/spi/spidev.h>
-#endif
-#include <memory>
-
 namespace Shelfinator
 {
 #ifdef _WIN32

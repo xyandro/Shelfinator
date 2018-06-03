@@ -1,17 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Driver.h"
 
-#include <algorithm>
-#include <string>
-#include <chrono>
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#include <dirent.h>
-#include <string.h>
-#endif
-
 namespace Shelfinator
 {
 	const double Driver::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };

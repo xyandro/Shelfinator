@@ -20,8 +20,6 @@ namespace Shelfinator
 
 #else
 
-#include <signal.h>
-
 Shelfinator::DotStar::ptr dotStar;
 
 void BreakHandler(int s)

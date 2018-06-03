@@ -1,10 +1,6 @@
 ﻿#include "stdafx.h"
 #include "DotStar.h"
 
-#ifndef _WIN32
-#include <sys/ioctl.h>
-#endif
-
 namespace Shelfinator
 {
 #ifdef _WIN32

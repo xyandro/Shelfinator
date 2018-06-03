@@ -1,11 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Remote.h"
 
-#ifndef _WIN32
-#include <lirc/lirc_client.h>
-#include <thread>
-#endif
-
 namespace Shelfinator
 {
 #ifdef _WIN32

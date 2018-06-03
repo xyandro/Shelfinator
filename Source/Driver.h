@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <vector>
 #include "Banner.h"
 #include "Pattern.h"
 #include "Remote.h"

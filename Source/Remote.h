@@ -1,13 +1,5 @@
 ﻿#pragma once
 
-#include <memory>
-#ifdef _WIN32
-#include <vcclr.h>
-#else
-#include <queue>
-#include <mutex>
-#endif
-
 #include "RemoteCode.h"
 
 namespace Shelfinator
