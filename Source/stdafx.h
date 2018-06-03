@@ -22,10 +22,3 @@
 #include <memory>
 #include <string>
 #include <vector>
-
-#include "DotStar.h"
-#include "Driver.h"
-#include "DriverRunner.h"
-#include "Pattern.h"
-#include "Remote.h"
-#include "RemoteCode.h"
