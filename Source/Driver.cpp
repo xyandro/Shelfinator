@@ -115,8 +115,15 @@ namespace Shelfinator
 
 	bool Driver::HandleRemote()
 	{
+		auto result = true;
+		auto useSelectedNumber = false;
+		auto now = Millis();
+		if ((selectedNumberTime != -1) && (now - selectedNumberTime >= 1000))
+			useSelectedNumber = true;
+
 		auto lastMultiplierIndex = multiplierIndex;
-		switch (remote->GetCode())
+		auto code = remote->GetCode();
+		switch (code)
 		{
 		case Play: multiplierIndex = 13; break;
 		case Pause: multiplierIndex = 8; break;
@@ -128,13 +135,47 @@ namespace Shelfinator
 			if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
 				++multiplierIndex;
 			break;
-		default: return false;
+		case Enter: useSelectedNumber = true; break;
+		case D0:
+		case D1:
+		case D2:
+		case D3:
+		case D4:
+		case D5:
+		case D6:
+		case D7:
+		case D8:
+		case D9:
+			selectedNumberTime = now;
+			selectedNumber = selectedNumber * 10 + code - D0;
+			if (selectedNumber >= 10000)
+			{
+				selectedNumber = 0;
+				selectedNumberTime = -1;
+			}
+			else
+				banner = Banner::Create(std::to_string(selectedNumber), 1000);
+			break;
+		default: result = false; break;
 		}
 
 		if (lastMultiplierIndex != multiplierIndex)
 			banner = Banner::Create(multiplierNames[multiplierIndex], 1000);
 
-		return true;
+		if (useSelectedNumber)
+		{
+			auto found = std::find(patternNumbers.begin(), patternNumbers.end(), selectedNumber);
+			if (found != patternNumbers.end())
+			{
+				patternIndex = (int)std::distance(patternNumbers.begin(), found);
+				LoadPattern();
+			}
+
+			selectedNumber = 0;
+			selectedNumberTime = -1;
+		}
+
+		return result;
 	}
 
 	void Driver::LoadPattern(bool startAtEnd)

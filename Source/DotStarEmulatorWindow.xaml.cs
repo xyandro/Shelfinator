@@ -23,10 +23,21 @@ namespace Shelfinator
 			e.Handled = true;
 			switch (e.Key)
 			{
-				case Key.Enter: remote.Add(RefRemoteCode.Play); break;
+				case Key.Escape: remote.Add(RefRemoteCode.Play); break;
 				case Key.Space: remote.Add(RefRemoteCode.Pause); break;
 				case Key.Left: remote.Add(RefRemoteCode.Rewind); break;
 				case Key.Right: remote.Add(RefRemoteCode.FastForward); break;
+				case Key.Enter: remote.Add(RefRemoteCode.Enter); break;
+				case Key.D0: remote.Add(RefRemoteCode.D0); break;
+				case Key.D1: remote.Add(RefRemoteCode.D1); break;
+				case Key.D2: remote.Add(RefRemoteCode.D2); break;
+				case Key.D3: remote.Add(RefRemoteCode.D3); break;
+				case Key.D4: remote.Add(RefRemoteCode.D4); break;
+				case Key.D5: remote.Add(RefRemoteCode.D5); break;
+				case Key.D6: remote.Add(RefRemoteCode.D6); break;
+				case Key.D7: remote.Add(RefRemoteCode.D7); break;
+				case Key.D8: remote.Add(RefRemoteCode.D8); break;
+				case Key.D9: remote.Add(RefRemoteCode.D9); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);

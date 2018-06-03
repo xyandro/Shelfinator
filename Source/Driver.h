@@ -23,7 +23,7 @@ namespace Shelfinator
 		Remote::ptr remote;
 		Banner::ptr banner;
 		std::string patternsPath;
-		int time = 0, multiplierIndex = 13, patternIndex = 0;
+		int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
 		Pattern::ptr pattern;
 
 		Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
