@@ -17,6 +17,7 @@ namespace Shelfinator
 		static const double multipliers[];
 		static const char *multiplierNames[];
 
+		std::shared_ptr<std::chrono::steady_clock::time_point> start;
 		std::vector<int> patternNumbers;
 		DotStar::ptr dotStar;
 		Remote::ptr remote;
@@ -33,5 +34,9 @@ namespace Shelfinator
 
 		bool HandleRemote();
 		void LoadPattern(bool startAtEnd = false);
+
+		std::shared_ptr<std::chrono::steady_clock::time_point> GetTime();
+		int Millis();
+		int Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime);
 	};
 }

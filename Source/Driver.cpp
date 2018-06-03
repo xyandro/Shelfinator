@@ -26,6 +26,7 @@ namespace Shelfinator
 	{
 		this->dotStar = dotStar;
 		this->remote = remote;
+		start = GetTime();
 
 		SetupPatternsPath();
 		SetupPatternNumbers();
@@ -151,11 +152,11 @@ namespace Shelfinator
 	void Driver::Run()
 	{
 		LoadPattern();
-		std::shared_ptr<std::chrono::steady_clock::time_point> startTime, nextTime;
+		int startTime, nextTime = -1;
 		while (true)
 		{
 			startTime = nextTime;
-			nextTime.reset();
+			nextTime = -1;
 
 			if (HandleRemote())
 				continue;
@@ -173,10 +174,10 @@ namespace Shelfinator
 				banner->SetLights(dotStar);
 
 			dotStar->Show();
-			nextTime = std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
-			if (startTime)
+			nextTime = Millis();
+			if (startTime != -1)
 			{
-				auto elapsed = (int)std::chrono::duration_cast<std::chrono::milliseconds>(*nextTime - *startTime).count();
+				auto elapsed = nextTime - startTime;
 				time += (int)(elapsed * multipliers[multiplierIndex]);
 				if (banner)
 				{
@@ -186,5 +187,22 @@ namespace Shelfinator
 				}
 			}
 		}
+	}
+
+	std::shared_ptr<std::chrono::steady_clock::time_point> Driver::GetTime()
+	{
+		return std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
+	}
+
+	int Driver::Millis()
+	{
+		return Millis(GetTime());
+	}
+
+	int Driver::Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime)
+	{
+		if (!atTime)
+			atTime = GetTime();
+		return (int)std::chrono::duration_cast<std::chrono::milliseconds>(*atTime - *start).count();
 	}
 }
