@@ -104,13 +104,13 @@ namespace Shelfinator
 
 	void Driver::MakeFirst(int patternNumber)
 	{
-		auto found = std::find(this->patternNumbers.begin(), this->patternNumbers.end(), patternNumber);
-		if (found == this->patternNumbers.end())
+		auto found = std::find(patternNumbers.begin(), patternNumbers.end(), patternNumber);
+		if (found == patternNumbers.end())
 			return;
 
 		auto result = *found;
-		this->patternNumbers.erase(found);
-		this->patternNumbers.insert(this->patternNumbers.begin(), result);
+		patternNumbers.erase(found);
+		patternNumbers.insert(patternNumbers.begin(), result);
 	}
 
 	bool Driver::HandleRemote()
