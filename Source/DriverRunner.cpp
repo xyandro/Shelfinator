@@ -40,6 +40,8 @@ void SetupBreakhandler()
 
 int main(int argc, char **argv)
 {
+	printf("Starting Shelfinator!\n");
+
 	dotStar = Shelfinator::DotStar::Create(2440);
 
 	SetupBreakhandler();
