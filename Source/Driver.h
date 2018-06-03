@@ -28,6 +28,7 @@ namespace Shelfinator
 		Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
 		void AddIfPatternFile(std::string fileName);
 		void SetupPatternsPath();
+		void MakeFirst(int patternNumber);
 		void SetupPatternNumbers();
 
 		bool HandleRemote();

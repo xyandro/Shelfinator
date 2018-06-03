@@ -30,16 +30,11 @@ namespace Shelfinator
 		SetupPatternsPath();
 		SetupPatternNumbers();
 
-		for (auto ctr = 0; ctr < patternNumberCount; ++ctr)
-		{
-			auto found = std::find(this->patternNumbers.begin(), this->patternNumbers.end(), patternNumbers[ctr]);
-			if (found != this->patternNumbers.end())
-			{
-				auto result = *found;
-				this->patternNumbers.erase(found);
-				this->patternNumbers.insert(this->patternNumbers.begin() + ctr, result);
-			}
-		}
+		if (patternNumberCount == 0)
+			MakeFirst(1); // Hello
+		else
+			for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
+				MakeFirst(patternNumbers[ctr]);
 	}
 
 	void Driver::SetupPatternsPath()
@@ -104,6 +99,17 @@ namespace Shelfinator
 #endif
 
 		std::random_shuffle(patternNumbers.begin(), patternNumbers.end());
+	}
+
+	void Driver::MakeFirst(int patternNumber)
+	{
+		auto found = std::find(this->patternNumbers.begin(), this->patternNumbers.end(), patternNumber);
+		if (found == this->patternNumbers.end())
+			return;
+
+		auto result = *found;
+		this->patternNumbers.erase(found);
+		this->patternNumbers.insert(this->patternNumbers.begin(), result);
 	}
 
 	bool Driver::HandleRemote()
