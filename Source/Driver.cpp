@@ -14,8 +14,8 @@
 
 namespace Shelfinator
 {
-	const double Driver::multipliers[] = { -5, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 5 };
-	const char *Driver::multiplierNames[] = { "-5", "-3", "-2", "-1", "-3/4", "-1/2", "-1/4", "-1/8", "A", "1/8", "1/4", "1/2", "3/4", "P", "2", "3", "5" };
+	const double Driver::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
+	const char *Driver::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
 
 	Driver::ptr Driver::Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote)
 	{
@@ -167,7 +167,7 @@ namespace Shelfinator
 				selectedNumberTime = -1;
 			}
 			else
-				banner = Banner::Create(std::to_string(selectedNumber), 1000);
+				banner = Banner::Create(std::to_string(selectedNumber), 1000, 1);
 			break;
 		default: result = false; break;
 		}

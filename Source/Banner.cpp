@@ -34,9 +34,9 @@ namespace Shelfinator
 			'8', 6, 0x78, 0xfc, 0xcc, 0x78, 0xfc, 0xcc, 0xfc, 0x78,
 			'9', 6, 0x78, 0xfc, 0xcc, 0xfc, 0x7c, 0x0c, 0x7c, 0x78,
 			'/', 5, 0x18, 0x18, 0x30, 0x30, 0x60, 0x60, 0xc0, 0xc0,
-			'-', 6, 0x00, 0x00, 0x00, 0xfc, 0xfc, 0x00, 0x00, 0x00,
-			'P', 8, 0xc0, 0xf0, 0xfc, 0xff, 0xff, 0xfc, 0xf0, 0xc0,
-			'A', 8, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7,
+			'F', 8, 0xc0, 0xf0, 0xfc, 0xff, 0xff, 0xfc, 0xf0, 0xc0,
+			'R', 8, 0x03, 0x0f, 0x3f, 0xff, 0xff, 0x3f, 0x0f, 0x03,
+			'P', 8, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7,
 		};
 
 		fontdata::fontchardata &GetChar(char ch)
@@ -61,19 +61,21 @@ namespace Shelfinator
 		{ 7, 8, 23, 24, 39, 40, 55, 56, 71, 72, 87, 88, 103, 104, 119, 120, 135, 136, 151, 152, 167, 168, 183, 184, 199, 200, 215, 216, 231, 232, 247, 248 },
 	};
 
-	Banner::ptr Banner::Create(std::string text, int time)
+	Banner::ptr Banner::Create(std::string text, int time, int spacing)
 	{
-		return ptr(new Banner(text, time));
+		return ptr(new Banner(text, time, spacing));
 	}
 
-	Banner::Banner(std::string text, int time)
+	Banner::Banner(std::string text, int time, int spacing)
 	{
 		this->time = time;
-		width = -1;
+		width = 0;
 		for (auto ctr = 0; ctr < text.length(); ++ctr)
-			width += GetChar(text[ctr]).width + 1;
-		if (width < 0)
-			width = 0;
+			width += GetChar(text[ctr]).width;
+
+		if (spacing == -1)
+			spacing = (32 - width) / ((int)text.length() + 1);
+		width += spacing * ((int)text.length() - 1);
 
 		grid = new bool*[8];
 		for (auto ctr = 0; ctr < 8; ++ctr)
@@ -89,7 +91,7 @@ namespace Shelfinator
 			for (auto y = 0; y < 8; ++y)
 				for (auto x = 0; x < 8; ++x)
 					grid[y][xOfs + x] = (charData.data[y] & (1 << (7 - x))) != 0;
-			xOfs += charData.width + 1;
+			xOfs += charData.width + spacing;
 		}
 	}
 

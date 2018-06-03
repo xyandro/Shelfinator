@@ -8,7 +8,7 @@ namespace Shelfinator
 	{
 	public:
 		typedef std::shared_ptr<Banner> ptr;
-		static ptr Create(std::string text, int time);
+		static ptr Create(std::string text, int time, int spacing = -1);
 		~Banner();
 		void SetLights(DotStar::ptr dotStar);
 		void AddElapsed(int delta);
@@ -18,6 +18,6 @@ namespace Shelfinator
 		bool **grid;
 		int elapsed = 0, time, width;
 
-		Banner(std::string text, int time);
+		Banner(std::string text, int time, int spacing = -1);
 	};
 }
