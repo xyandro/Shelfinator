@@ -125,7 +125,7 @@ namespace Shelfinator
 				++multiplierIndex;
 			break;
 		case Previous:
-			if (time < 2000)
+			if ((multipliers[multiplierIndex] == 0) || (time / multipliers[multiplierIndex] < 2000))
 			{
 				--patternIndex;
 				LoadPattern();
