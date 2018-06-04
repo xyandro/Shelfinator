@@ -95,6 +95,8 @@
     <Compile Include="Patterns\RainbowRotate\RainbowRotate.cs" />
     <Compile Include="Patterns\Rotate\Rotate.cs" />
     <Compile Include="Patterns\Sine\Sine.cs" />
+    <Compile Include="Patterns\Snake\Snake.cs" />
+    <EmbeddedResource Include="Patterns\Snake\Snake.png" />
     <Compile Include="Patterns\Spin\Spin.cs" />
     <Compile Include="Patterns\Spiral\Spiral.cs" />
     <EmbeddedResource Include="Patterns\Spiral\Spiral.png" />

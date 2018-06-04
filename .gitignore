@@ -1,9 +1,9 @@
 ﻿*.o
 *.user
 .vs
+/Patterns
 bin
 Debug
 obj
-Patterns
 Release
 shelfinator

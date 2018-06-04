@@ -36,5 +36,16 @@ namespace Shelfinator
 				}
 			return result;
 		}
+
+		static public IEnumerable<int> Indexes<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate)
+		{
+			var index = 0;
+			foreach (var item in source)
+			{
+				if (predicate(item))
+					yield return index;
+				++index;
+			}
+		}
 	}
 }
