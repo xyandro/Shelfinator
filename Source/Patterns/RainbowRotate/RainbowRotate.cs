@@ -34,6 +34,7 @@ namespace Shelfinator.Patterns
 			for (var angle = 0; angle <= 360; angle += RotateIncrement)
 			{
 				var time = StartTime + angle * RotateTime / 360;
+				var nextTime = StartTime + (angle + RotateIncrement) * RotateTime / 360;
 				var sin = Math.Sin(angle * Math.PI / 180);
 				var cos = Math.Cos(angle * Math.PI / 180);
 				foreach (var light in lights)
@@ -41,7 +42,7 @@ namespace Shelfinator.Patterns
 					var location = layout.GetLightPosition(light);
 					var newX = (location.X - 48) * cos - (location.Y - 48) * sin + 48;
 					var newColor = PixelColor.Gradient(colors, newX, -96, 192);
-					pattern.Lights.Add(light, time, newColor);
+					pattern.Lights.Add(light, time, nextTime, null, newColor);
 				}
 			}
 
