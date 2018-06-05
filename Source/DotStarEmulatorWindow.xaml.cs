@@ -40,6 +40,7 @@ namespace Shelfinator
 				case Key.D7: remote.Add(RefRemoteCode.D7); break;
 				case Key.D8: remote.Add(RefRemoteCode.D8); break;
 				case Key.D9: remote.Add(RefRemoteCode.D9); break;
+				case Key.I: remote.Add(RefRemoteCode.Info); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);

@@ -158,6 +158,7 @@ namespace Shelfinator
 			else
 				banner = Banner::Create(std::to_string(selectedNumber), 1000, 1);
 			break;
+		case Info: banner = Banner::Create(std::to_string(patternNumbers[patternIndex]), 1000, 1); break;
 		default: result = false; break;
 		}
 

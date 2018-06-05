@@ -21,6 +21,7 @@ namespace Shelfinator
 	D7,\
 	D8,\
 	D9,\
+	Info,\
 
 	enum RemoteCode { OPTIONS };
 
