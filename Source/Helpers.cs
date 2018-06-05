@@ -65,7 +65,9 @@ namespace Shelfinator
 
 		public static IEnumerable<double> GetAngles(this IEnumerable<Point> points, Point? reference = null) => points.Select(point => Math.Atan2(point.Y - (reference?.Y ?? 0), point.X - (reference?.X ?? 0)) / Math.PI * 180);
 
-		public static IEnumerable<int> Round(this IEnumerable<double> values) => values.Select(value => (int)(value + .5));
+		public static IEnumerable<int> Round(this IEnumerable<double> values) => values.Select(Round);
+
+		public static int Round(this double value) => (int)(value + .5);
 
 		public static IEnumerable<PixelColor> MixColors(this IEnumerable<int> values, List<PixelColor> colors, int? min = null, int? max = null)
 		{

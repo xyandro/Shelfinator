@@ -13,7 +13,7 @@ namespace Shelfinator.Patterns
 			const double SnakeBrightness = 1f / 16;
 			const double PelletBrightness = 1f / 16;
 			const int LengthIncrease = 32;
-			const int ColorLength = 100;
+			const int ColorVariation = 1000;
 
 			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
@@ -30,6 +30,8 @@ namespace Shelfinator.Patterns
 			var addLen = LengthIncrease;
 			var pellet = default(int?);
 			var rand = new Random(0xbadf00d);
+			var color = new LightColor(0, ColorVariation, colors);
+			var white = new LightColor(new PixelColor(0xffffff) * PelletBrightness);
 			while (true)
 			{
 				var busyCount = busy.Count(b => b);
@@ -37,9 +39,8 @@ namespace Shelfinator.Patterns
 				++snakeStart;
 				if (snakeStart >= snakeLights.Count)
 					snakeStart -= snakeLights.Count;
-				var color = PixelColor.Gradient(colors, time % ColorLength, 0, 99);
 				foreach (var light in snakeLights[snakeStart])
-					pattern.Lights.Add(light, time, color);
+					pattern.AddLight(light, time, color, time % ColorVariation);
 
 				busy[snakeStart] = true;
 				if (snakeStart == pellet)
@@ -56,7 +57,7 @@ namespace Shelfinator.Patterns
 					if (snakeEnd >= snakeLights.Count)
 						snakeEnd -= snakeLights.Count;
 					foreach (var light in snakeLights[snakeEnd])
-						pattern.Lights.Add(light, time, 0x000000);
+						pattern.AddLight(light, time, pattern.Black);
 					busy[snakeEnd] = false;
 				}
 
@@ -66,14 +67,16 @@ namespace Shelfinator.Patterns
 					if (pellet == -1)
 						break;
 					foreach (var light in snakeLights[pellet.Value])
-						pattern.Lights.Add(light, time, new PixelColor(0xffffff) * PelletBrightness);
+					{
+						pattern.AddLight(light, time, white);
+					}
 				}
 
 				++time;
 			}
 
-			pattern.Sequences.Add(new Sequence(0, time, duration: 30000));
-			pattern.Sequences.Add(new Sequence(time, time, duration: 2000));
+			pattern.AddLightSequence(0, time, 30000);
+			pattern.AddLightSequence(time, time, 2000);
 
 			return pattern;
 		}

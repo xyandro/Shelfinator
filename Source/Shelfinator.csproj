@@ -72,8 +72,7 @@
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Layout.cs" />
-    <Compile Include="Light.cs" />
-    <Compile Include="Lights.cs" />
+    <Compile Include="LightColor.cs" />
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Hello\Hello.cs" />
@@ -106,7 +105,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RemoteEmulator.cs" />
-    <Compile Include="Sequence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Driver.vcxproj">

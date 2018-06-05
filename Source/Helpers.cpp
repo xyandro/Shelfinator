@@ -10,6 +10,21 @@ namespace Shelfinator
 	int Helpers::MultiplyColor(int color, double multiplier) { return CreateColor(ToByte(GetRed(color) * multiplier), ToByte(GetGreen(color) * multiplier), ToByte(GetBlue(color) * multiplier)); }
 	int Helpers::AddColor(int color1, int color2) { return CreateColor(ToByte(GetRed(color1) + GetRed(color2)), ToByte(GetGreen(color1) + GetGreen(color2)), ToByte(GetBlue(color1) + GetBlue(color2))); }
 	int Helpers::GradientColor(int color1, int color2, double percent) { return AddColor(MultiplyColor(color1, 1 - percent), MultiplyColor(color2, percent)); }
+	int Helpers::GradientColor(double value, int minValue, int maxValue, int *colors, int colorCount)
+	{
+		if (colorCount == 0)
+			return 0x000000;
+		if (colorCount == 1)
+			return colors[0];
+		if (value <= minValue)
+			return colors[0];
+		if (value >= maxValue)
+			return colors[colorCount - 1];
+		auto percent = (value - minValue) / (maxValue - minValue) * (colorCount - 1);
+		auto color = (int)percent;
+		percent -= color;
+		return GradientColor(colors[color], colors[color + 1], percent);
+	}
 
 	int Helpers::ToByte(int value)
 	{

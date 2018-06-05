@@ -24,7 +24,7 @@ namespace Shelfinator.Patterns
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(Brightness).ToList();
-			var useColors = allLocations.Select(p => PixelColor.Gradient(rainbow7, p.X, topLeft.X, bottomRight.X)).ToList();
+			var useColors = allLocations.Select(p => PixelColor.Gradient(rainbow7, p.X, topLeft.X, bottomRight.X)).Select(pc => new LightColor(pc)).ToList();
 			//var cir = allLocations.Select(p => (new Point(p.X, p.Y) - center).Length).ToList();
 			//var useColors = cir.Select(p => PixelColor.MixColor(rainbow7, p, cir.Min(), cir.Max())).ToList();
 			//var col = rainbow7.AsEnumerable().Reverse().Concat(rainbow7.Skip(1)).ToList();
@@ -37,9 +37,9 @@ namespace Shelfinator.Patterns
 			var iLights = new HashSet<int>(header.GetMappedLights(textI, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.Lights.Add(allLights[ctr], xPosInts[ctr], xPosInts[ctr] + 100, null, useColors[ctr]);
+				pattern.AddLight(allLights[ctr], xPosInts[ctr], xPosInts[ctr] + 100, null, useColors[ctr]);
 				if (!iLights.Contains(allLights[ctr]))
-					pattern.Lights.Add(allLights[ctr], xPosInts[ctr] + 150, xPosInts[ctr] + 250, useColors[ctr], 0x000000);
+					pattern.AddLight(allLights[ctr], xPosInts[ctr] + 150, xPosInts[ctr] + 250, useColors[ctr], pattern.Black);
 			}
 
 			var angles = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => Helpers.Cycle(Math.Atan2(p.Y, p.X), 0, Math.PI / 2)).ToList();
@@ -49,9 +49,9 @@ namespace Shelfinator.Patterns
 			var loveLights = new HashSet<int>(header.GetMappedLights(textLove, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.Lights.Add(allLights[ctr], anglesInts[ctr], anglesInts[ctr] + 100, null, useColors[ctr]);
+				pattern.AddLight(allLights[ctr], anglesInts[ctr], anglesInts[ctr] + 100, null, useColors[ctr]);
 				if (!loveLights.Contains(allLights[ctr]))
-					pattern.Lights.Add(allLights[ctr], anglesInts[ctr] + 150, anglesInts[ctr] + 250, useColors[ctr], 0x000000);
+					pattern.AddLight(allLights[ctr], anglesInts[ctr] + 150, anglesInts[ctr] + 250, useColors[ctr], pattern.Black);
 			}
 
 			var origin = new Point(0, 0);
@@ -61,15 +61,16 @@ namespace Shelfinator.Patterns
 			var personLights = new HashSet<int>(header.GetMappedLights(textPerson, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.Lights.Add(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, null, useColors[ctr]);
+				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, null, useColors[ctr]);
 				if (!personLights.Contains(allLights[ctr]))
-					pattern.Lights.Add(allLights[ctr], distanceInts[ctr] + 150, distanceInts[ctr] + 250, useColors[ctr], 0x000000);
+					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 150, distanceInts[ctr] + 250, useColors[ctr], pattern.Black);
 			}
 
+			var white = new LightColor(new PixelColor(0xffffff) * Brightness);
 			foreach (var light in personLights)
 			{
-				pattern.Lights.Add(light, 4500, 4750, null, new PixelColor(0xffffff) * Brightness);
-				pattern.Lights.Add(light, 4750, 5000, null, 0x000000);
+				pattern.AddLight(light, 4500, 4750, null, white);
+				pattern.AddLight(light, 4750, 5000, null, pattern.Black);
 			}
 
 			var rand = new Random();
@@ -77,12 +78,14 @@ namespace Shelfinator.Patterns
 			flash = flash.Concat(flash).Concat(flash).Concat(flash).Concat(flash).Concat(flash).ToList();
 			var flashDelay = 2500f / flash.Count();
 			var flashShow = flashDelay * 5;
+			var flashWhiteColor = new PixelColor(0xffffff) * FlashBrightness;
+			var flashWhite = new LightColor(0, flash.Count, new List<PixelColor> { flashWhiteColor, flashWhiteColor, flashWhiteColor, flashWhiteColor, flashWhiteColor, 0x000000 });
 			for (var ctr = 0; ctr < flash.Count; ++ctr)
 			{
-				pattern.Lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay), new PixelColor(0xffffff) * FlashBrightness * (1 - ctr * flashDelay / 2500));
-				pattern.Lights.Add(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), 0x000000);
+				pattern.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay), flashWhite, ctr);
+				pattern.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), pattern.Black);
 			}
-			pattern.Sequences.Add(new Sequence(0, 5600));
+			pattern.AddLightSequence(0, 5600);
 			return pattern;
 		}
 	}

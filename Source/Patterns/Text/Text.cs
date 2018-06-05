@@ -74,13 +74,13 @@ namespace Shelfinator.Patterns
 
 				for (var y = 0; y < grid.GetLength(1); ++y)
 					for (var x = 0; x < grid.GetLength(0); ++x)
-						pattern.Lights.Add(posLight[x, y], time, grid[x, y]);
+						pattern.AddLight(posLight[x, y], time, new LightColor(grid[x, y]));
 			}
 
 			for (var y = 0; y < posLight.GetLength(1); ++y)
 				for (var x = 0; x < posLight.GetLength(0); ++x)
-					pattern.Lights.Add(posLight[x, y], duration, 0x000000);
-			pattern.Sequences.Add(new Sequence(0, duration));
+					pattern.AddLight(posLight[x, y], duration, pattern.Black);
+			pattern.AddLightSequence(0, duration);
 
 			return pattern;
 		}

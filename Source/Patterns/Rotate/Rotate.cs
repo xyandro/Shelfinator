@@ -29,15 +29,15 @@ namespace Shelfinator.Patterns
 				var angles = allLocations.GetAngles(center).Cycle(0, 360 / BladeCount).AdjustToZero().Scale(0, 360 / BladeCount, 0, 500).Round().ToList();
 
 				var rainbow = Helpers.Rainbow7.Concat(Helpers.Rainbow7[0]).Multiply(Brightness).ToList();
-				var useColors = angles.MixColors(rainbow).ToList();
+				var useColors = new LightColor(angles.Min(), angles.Max(), rainbow);
 				for (var ctr = 0; ctr < allLights.Count; ++ctr)
 					for (var repeat = 0; repeat < 9000; repeat += 500)
 					{
-						pattern.Lights.Add(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, useColors[ctr]);
-						pattern.Lights.Add(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, 0x000000);
+						pattern.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, angles[ctr]);
+						pattern.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, pattern.Black);
 					}
 			}
-			pattern.Sequences.Add(new Sequence(0, 10000));
+			pattern.AddLightSequence(0, 10000);
 			return pattern;
 		}
 	}
