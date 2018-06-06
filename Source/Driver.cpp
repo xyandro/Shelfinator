@@ -219,6 +219,7 @@ namespace Shelfinator
 			if (banner)
 				banner->SetLights(lights);
 
+			lights->CheckOverage();
 			dotStar->Show(lights->lights, lights->count);
 			nextTime = Millis();
 			if (startTime != -1)

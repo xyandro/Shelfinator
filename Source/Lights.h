@@ -13,6 +13,7 @@ namespace Shelfinator
 		~Lights();
 		void Clear();
 		void SetLight(int light, int value);
+		void CheckOverage();
 	private:
 		Lights(int count);
 	};
