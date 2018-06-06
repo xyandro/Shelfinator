@@ -147,6 +147,10 @@ namespace Shelfinator
 			if ((startColorIndex == endColorIndex) && (startColorValue == endColorValue))
 				endTime = int.MaxValue;
 
+			// Check for duplicates on solid colors
+			if ((endTime == int.MaxValue) && (list[index].EndTime == int.MaxValue) && (startColorIndex == list[index].StartColorIndex) && (startColorValue == list[index].StartColorValue))
+				return;
+
 			list.RemoveRange(index + 1, list.Count - index - 1);
 
 			if (list[index].StartTime == startTime)
@@ -158,6 +162,8 @@ namespace Shelfinator
 			if (endTime != int.MaxValue)
 				list.Add(new Light(endTime, int.MaxValue, endColorIndex, endColorValue, endColorIndex, endColorValue));
 		}
+
+		public void Clear(int time) => lights.Keys.ForEach(light => AddLight(light, time, Black));
 
 		public int MaxLightTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.EndTime == int.MaxValue ? lightData.StartTime : lightData.EndTime));
 

@@ -61,7 +61,9 @@ namespace Shelfinator
 			return points.Select(point => (point - reference.Value).Length);
 		}
 
-		public static IEnumerable<double> GetAngles(this IEnumerable<Point> points, Point? reference = null) => points.Select(point => Math.Atan2(point.Y - (reference?.Y ?? 0), point.X - (reference?.X ?? 0)) / Math.PI * 180);
+		public static double GetAngle(Point point, Point? reference = null) => Math.Atan2(point.Y - (reference?.Y ?? 0), point.X - (reference?.X ?? 0)) / Math.PI * 180;
+
+		public static IEnumerable<double> GetAngles(this IEnumerable<Point> points, Point? reference = null) => points.Select(point => GetAngle(point, reference));
 
 		public static IEnumerable<int> Round(this IEnumerable<double> values) => values.Select(Round);
 
