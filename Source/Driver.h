@@ -4,6 +4,7 @@
 #include "DotStar.h"
 #include "Pattern.h"
 #include "Remote.h"
+#include "Semaphore.h"
 
 namespace Shelfinator
 {
@@ -25,6 +26,16 @@ namespace Shelfinator
 		std::string patternsPath;
 		int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
 		Pattern::ptr pattern;
+
+		static const int numBuffers = 2;
+		Semaphore::ptr readSem, writeSem;
+		int readBuf = -1, writeBuf = -1;
+		Lights::ptr lights[numBuffers];
+
+#ifdef _WIN32
+		static DWORD RunUIThread(void *lpThreadParameter);
+#endif
+		void RunUIThread();
 
 		Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
 		void AddIfPatternFile(std::string fileName);

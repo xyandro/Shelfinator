@@ -13,6 +13,12 @@ namespace Shelfinator
 
 	Driver::Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote)
 	{
+		readSem = Semaphore::Create(0);
+		writeSem = Semaphore::Create(numBuffers);
+
+		for (auto ctr = 0; ctr < numBuffers; ++ctr)
+			lights[ctr] = Lights::Create(2440);
+
 		this->dotStar = dotStar;
 		this->remote = remote;
 		start = GetTime();
@@ -193,11 +199,38 @@ namespace Shelfinator
 		time = startAtEnd ? pattern->GetLength() - 1 : 0;
 	}
 
+#ifdef _WIN32
+	DWORD Driver::RunUIThread(void *lpThreadParameter)
+	{
+		((Driver*)lpThreadParameter)->RunUIThread();
+		return 0;
+	}
+#endif
+
+	void Driver::RunUIThread()
+	{
+		while (true)
+		{
+			readSem->Wait();
+			++readBuf;
+			if (readBuf >= numBuffers)
+				readBuf = 0;
+
+			dotStar->Show(lights[readBuf]->lights, lights[readBuf]->count);
+			writeSem->Signal();
+		}
+	}
+
 	void Driver::Run()
 	{
+#ifdef _WIN32
+		CreateThread(NULL, 0, &Driver::RunUIThread, this, 0, NULL);
+#else
+		std::thread(&Driver::RunUIThread, this).detach();
+#endif
+
 		LoadPattern();
 		int startTime, nextTime = -1;
-		auto lights = Lights::Create(2440);
 		while (true)
 		{
 			startTime = nextTime;
@@ -213,14 +246,20 @@ namespace Shelfinator
 				continue;
 			}
 
-			lights->Clear();
-			pattern->SetLights(time, lights);
+			writeSem->Wait();
+			++writeBuf;
+			if (writeBuf >= numBuffers)
+				writeBuf = 0;
+
+			lights[writeBuf]->Clear();
+			pattern->SetLights(time, lights[writeBuf]);
 
 			if (banner)
-				banner->SetLights(lights);
+				banner->SetLights(lights[writeBuf]);
 
-			lights->CheckOverage();
-			dotStar->Show(lights->lights, lights->count);
+			lights[writeBuf]->CheckOverage();
+			readSem->Signal();
+
 			nextTime = Millis();
 			if (startTime != -1)
 			{

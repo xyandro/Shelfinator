@@ -47,7 +47,6 @@ namespace Shelfinator
 						buffer[position] = color;
 				}
 			dispatcher.Invoke(() => Bitmap.WritePixels(new Int32Rect(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight), buffer, Bitmap.BackBufferStride, 0));
-			Thread.Sleep(1);
 		}
 	}
 }

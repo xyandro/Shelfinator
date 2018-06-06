@@ -75,6 +75,15 @@
       <Filter>Remote</Filter>
     </ClInclude>
     <ClInclude Include="RemoteCode.h" />
+    <Filter Include="Semaphore">
+      <UniqueIdentifier>{d421afca-cbe6-4cac-857e-feb99432edc8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Semaphore.cpp">
+      <Filter>Semaphore</Filter>
+    </ClCompile>
+    <ClInclude Include="Semaphore.h">
+      <Filter>Semaphore</Filter>
+    </ClInclude>
     <Filter Include="stdafx">
       <UniqueIdentifier>{4d4404f5-0a1c-45df-a2cb-108ba2598cee}</UniqueIdentifier>
     </Filter>
