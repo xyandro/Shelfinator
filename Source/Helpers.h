@@ -5,17 +5,15 @@ namespace Shelfinator
 	class Helpers
 	{
 	public:
-		static int CreateColor(int red, int green, int blue);
-		static int GetRed(int color);
-		static int GetGreen(int color);
-		static int GetBlue(int color);
+		static void SplitColor(int color, double &red, double &green, double &blue);
+		static int CombineColor(double red, double green, double blue);
+		static void MultiplyColor(double red1, double green1, double blue1, double multiplier, double &red, double &green, double &blue);
+		static void GradientColor(double red1, double green1, double blue1, double red2, double green2, double blue2, double percent, double &red, double &green, double &blue);
+		static void GradientColor(double value, int minValue, int maxValue, int *colors, int colorCount, double &red, double &green, double &blue);
+		static void AddColor(double red1, double green1, double blue1, double red2, double green2, double blue2, double &red, double &green, double &blue);
 
 		static int MultiplyColor(int color, double multiplier);
-		static int AddColor(int color1, int color2);
-		static int GradientColor(int color1, int color2, double percent);
-		static int GradientColor(double value, int minValue, int maxValue, int *colors, int colorCount);
 	private:
-		static int ToByte(int value);
 		static int ToByte(double value);
 	};
 }
