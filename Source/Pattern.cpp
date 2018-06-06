@@ -178,7 +178,7 @@ namespace Shelfinator
 		delete[] paletteSequenceEndColorIndex;
 	}
 
-	void Pattern::SetLights(int time, DotStar::ptr dotStar)
+	void Pattern::SetLights(int time, Lights::ptr lights)
 	{
 		if (time < 0)
 			return;
@@ -229,7 +229,7 @@ namespace Shelfinator
 
 			double red, green, blue;
 			Helpers::GradientColor(redStart, greenStart, blueStart, redEnd, greenEnd, blueEnd, colorPercent, red, green, blue);
-			dotStar->SetPixelColor(light, Helpers::CombineColor(red, green, blue));
+			lights->SetLight(light, Helpers::CombineColor(red, green, blue));
 		}
 	}
 

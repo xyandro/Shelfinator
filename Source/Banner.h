@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "DotStar.h"
+#include "Lights.h"
 
 namespace Shelfinator
 {
@@ -10,7 +10,7 @@ namespace Shelfinator
 		typedef std::shared_ptr<Banner> ptr;
 		static ptr Create(std::string text, int time, int spacing = -1);
 		~Banner();
-		void SetLights(DotStar::ptr dotStar);
+		void SetLights(Lights::ptr lights);
 		void AddElapsed(int delta);
 		bool Expired();
 	private:

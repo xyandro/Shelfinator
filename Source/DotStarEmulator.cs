@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -10,7 +9,6 @@ namespace Shelfinator
 	class DotStarEmulator : IDotStar
 	{
 		public WriteableBitmap Bitmap { get; }
-		public int NumLights { get; }
 
 		readonly Dispatcher dispatcher;
 		readonly uint[] buffer;
@@ -37,42 +35,19 @@ namespace Shelfinator
 						bufferPosition[light] = new List<int>();
 					bufferPosition[light].Add(index);
 				}
-
-			NumLights = bufferPosition.Count;
-
-			Clear();
-			Show();
 		}
 
-		public void Clear()
+		public unsafe void Show(int* lights, int count)
 		{
-			foreach (var data in bufferPosition)
-				foreach (var value in data.Value)
-					buffer[value] = 0xff000000;
-		}
-
-		public void SetPixelColor(int light, int color)
-		{
-			if (!bufferPosition.ContainsKey(light))
-				return;
-			foreach (var position in bufferPosition[light])
-				buffer[position] = (uint)(0xff000000 | Helpers.MultiplyColor(color, 16));
-		}
-
-		public void Show()
-		{
+			for (var light = 0; light < count; ++light)
+				if (bufferPosition.ContainsKey(light))
+				{
+					var color = (uint)(0xff000000 | Helpers.MultiplyColor(lights[light] >> 8, 16));
+					foreach (var position in bufferPosition[light])
+						buffer[position] = color;
+				}
 			dispatcher.Invoke(() => Bitmap.WritePixels(new Int32Rect(0, 0, Bitmap.PixelWidth, Bitmap.PixelHeight), buffer, Bitmap.BackBufferStride, 0));
 			Thread.Sleep(1);
-		}
-
-		public void Save(string fileName)
-		{
-			using (var output = File.Create(fileName))
-			{
-				var encoder = new PngBitmapEncoder();
-				encoder.Frames.Add(BitmapFrame.Create(Bitmap));
-				encoder.Save(output);
-			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿OBJS = Banner.o DotStar.o Driver.o DriverRunner.o Helpers.o Pattern.o Remote.o
+﻿OBJS = Banner.o DotStar.o Driver.o DriverRunner.o Helpers.o Lights.o Pattern.o Remote.o
 
 all: shelfinator
 

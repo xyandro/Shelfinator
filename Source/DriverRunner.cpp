@@ -24,8 +24,8 @@ Shelfinator::DotStar::ptr dotStar;
 
 void BreakHandler(int s)
 {
-	dotStar->Clear();
-	dotStar->Show();
+	auto lights = Shelfinator::Lights::Create(2440);
+	dotStar->Show(lights->lights, lights->count);
 	exit(1);
 }
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 {
 	printf("Starting Shelfinator!\n");
 
-	dotStar = Shelfinator::DotStar::Create(2440);
+	dotStar = Shelfinator::DotStar::Create();
 
 	SetupBreakhandler();
 

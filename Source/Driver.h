@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Banner.h"
+#include "DotStar.h"
 #include "Pattern.h"
 #include "Remote.h"
 

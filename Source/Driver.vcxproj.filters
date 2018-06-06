@@ -47,6 +47,15 @@
     <ClInclude Include="Helpers.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{fe9abc41-3bc8-4233-8573-1b4a7b4b35e1}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Lights.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClInclude Include="Lights.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
     <Filter Include="Pattern">
       <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
     </Filter>

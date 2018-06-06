@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "DotStar.h"
+#include "Lights.h"
 
 namespace Shelfinator
 {
@@ -12,7 +12,7 @@ namespace Shelfinator
 		static ptr Read(const char *fileName);
 		~Pattern();
 
-		void SetLights(int time, DotStar::ptr dotStar);
+		void SetLights(int time, Lights::ptr lights);
 		int GetLength();
 	private:
 		int numLights;

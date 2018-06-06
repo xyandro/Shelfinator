@@ -100,13 +100,13 @@ namespace Shelfinator
 		delete[] grid;
 	}
 
-	void Banner::SetLights(DotStar::ptr dotStar)
+	void Banner::SetLights(Lights::ptr lights)
 	{
 		auto xOfs = (32 - width) / 2;
 		for (auto y = 0; y < 8; ++y)
 			for (auto x = 0; x < width; ++x)
 				if (grid[y][x])
-					dotStar->SetPixelColor(lightPosition[y][xOfs + x], Helpers::MultiplyColor(0x101010, 1 - (double)elapsed / time));
+					lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(0x101010, 1 - (double)elapsed / time));
 	}
 
 	void Banner::AddElapsed(int delta)

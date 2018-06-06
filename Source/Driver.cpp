@@ -197,6 +197,7 @@ namespace Shelfinator
 	{
 		LoadPattern();
 		int startTime, nextTime = -1;
+		auto lights = Lights::Create(2440);
 		while (true)
 		{
 			startTime = nextTime;
@@ -212,13 +213,13 @@ namespace Shelfinator
 				continue;
 			}
 
-			dotStar->Clear();
-			pattern->SetLights(time, dotStar);
+			lights->Clear();
+			pattern->SetLights(time, lights);
 
 			if (banner)
-				banner->SetLights(dotStar);
+				banner->SetLights(lights);
 
-			dotStar->Show();
+			dotStar->Show(lights->lights, lights->count);
 			nextTime = Millis();
 			if (startTime != -1)
 			{

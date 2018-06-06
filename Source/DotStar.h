@@ -5,9 +5,7 @@ namespace Shelfinator
 #ifdef _WIN32
 	public interface class IDotStar
 	{
-		void Clear();
-		void SetPixelColor(int led, int color);
-		void Show();
+		void Show(int *lights, int count);
 	};
 #endif
 
@@ -15,9 +13,7 @@ namespace Shelfinator
 	{
 	public:
 		typedef std::shared_ptr<DotStar> ptr;
-		void Clear();
-		void SetPixelColor(int led, int color);
-		void Show();
+		void Show(int *lights, int count);
 #ifdef _WIN32
 	public:
 		static ptr Create(IDotStar^);
@@ -26,13 +22,12 @@ namespace Shelfinator
 		DotStar(IDotStar ^dotStar);
 #else
 	public:
-		static ptr Create(int ledCount);
-		~DotStar();
+		static ptr Create();
 	private:
 		spi_ioc_transfer xfer[3];
-		int numLEDs, fd;
-		int *pixels;
-		DotStar(int ledCount);
+		int fd, bufsiz;
+		DotStar();
+		int GetBufSiz();
 #endif
 	};
 }
