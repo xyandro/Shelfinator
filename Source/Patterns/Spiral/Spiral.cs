@@ -19,7 +19,7 @@ namespace Shelfinator.Patterns
 
 			var points = spiral.GetAllLights().OrderBy(light => light).Select(light => spiral.GetLightPositions(light)).ToList();
 
-			var colors = new List<PixelColor> { 0xff0000, 0x00ff00, 0x0000ff, 0x800080 }.Multiply(Brightness).Select(pc => new LightColor(pc)).ToList();
+			var colors = new List<int> { 0xff0000, 0x00ff00, 0x0000ff, 0x800080 }.Multiply(Brightness).Select(pc => new LightColor(pc)).ToList();
 
 			for (var pass = 0; pass < 4; ++pass)
 			{

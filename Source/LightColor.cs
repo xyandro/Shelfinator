@@ -8,31 +8,31 @@ namespace Shelfinator
 	{
 		readonly int minValue;
 		readonly int maxValue;
-		readonly List<List<PixelColor>> colors = new List<List<PixelColor>>();
+		readonly List<List<int>> colors = new List<List<int>>();
 
-		public LightColor(int minValue, int maxValue, List<List<PixelColor>> colors)
+		public LightColor(int minValue, int maxValue, List<List<int>> colors)
 		{
 			this.minValue = minValue;
 			this.maxValue = maxValue;
 			this.colors = colors;
 		}
 
-		public LightColor(PixelColor color) : this(0, 0, new List<List<PixelColor>> { new List<PixelColor> { color } }) { }
+		public LightColor(int color) : this(0, 0, new List<List<int>> { new List<int> { color } }) { }
 
-		public LightColor(params List<PixelColor>[] colors) : this(0, 0, colors.ToList()) { }
+		public LightColor(params List<int>[] colors) : this(0, 0, colors.ToList()) { }
 
-		public LightColor(int minValue, int maxValue, params List<PixelColor>[] colors) : this(minValue, maxValue, colors.ToList()) { }
+		public LightColor(int minValue, int maxValue, params List<int>[] colors) : this(minValue, maxValue, colors.ToList()) { }
 
 		public void Save(BinaryWriter output)
 		{
 			output.Write(minValue);
 			output.Write(maxValue);
 			output.Write(colors.Count);
-			foreach (var pixelColors in colors)
+			foreach (var palette in colors)
 			{
-				output.Write(pixelColors.Count);
-				foreach (var pixelColor in pixelColors)
-					output.Write(pixelColor.Color);
+				output.Write(palette.Count);
+				foreach (var color in palette)
+					output.Write(color);
 			}
 		}
 

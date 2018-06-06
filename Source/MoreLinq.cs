@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shelfinator
 {
@@ -47,5 +48,7 @@ namespace Shelfinator
 				++index;
 			}
 		}
+
+		static public IEnumerable<int> Multiply(this IEnumerable<int> colors, double multiplier) => colors.Select(color => Helpers.MultiplyColor(color, multiplier));
 	}
 }

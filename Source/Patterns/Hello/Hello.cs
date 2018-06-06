@@ -23,7 +23,7 @@ namespace Shelfinator.Patterns
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(ColorBrightness).ToList();
-			var useColors = allLocations.Select(p => PixelColor.Gradient(rainbow7, p.X, topLeft.X, bottomRight.X)).Select(pc => new LightColor(pc)).ToList();
+			var useColor = new LightColor(topLeft.X.Round(), bottomRight.X.Round(), rainbow7);
 
 			var origin = new Point(0, 0);
 			var distances = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => (p - origin).Length).ToList();
@@ -33,12 +33,12 @@ namespace Shelfinator.Patterns
 			var helloLights = new HashSet<int>(header.GetMappedLights(hello, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, pattern.Black, useColors[ctr]);
+				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, pattern.Black, 0, useColor, allLocations[ctr].X.Round());
 				if (!helloLights.Contains(allLights[ctr]))
-					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, useColors[ctr], pattern.Black);
+					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, null, pattern.Black);
 			}
 
-			var white = new LightColor(new PixelColor(0xffffff) * WhiteBrightness);
+			var white = new LightColor(Helpers.MultiplyColor(0xffffff, WhiteBrightness));
 			foreach (var light in helloLights)
 			{
 				pattern.AddLight(light, 2000, 2500, null, white);

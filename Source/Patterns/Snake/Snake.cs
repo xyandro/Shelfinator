@@ -25,13 +25,13 @@ namespace Shelfinator.Patterns
 
 			var time = 0;
 			var busy = snakeLights.Select(b => false).ToArray();
-			var snakeStart = -1;
+			var snakeStart = 0;
 			var snakeEnd = -1;
 			var addLen = LengthIncrease;
 			var pellet = default(int?);
 			var rand = new Random(0xbadf00d);
 			var color = new LightColor(0, ColorVariation, colors);
-			var white = new LightColor(new PixelColor(0xffffff) * PelletBrightness);
+			var white = new LightColor(Helpers.MultiplyColor(0xffffff, PelletBrightness));
 			while (true)
 			{
 				var busyCount = busy.Count(b => b);

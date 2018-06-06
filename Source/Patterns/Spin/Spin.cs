@@ -23,8 +23,8 @@ namespace Shelfinator.Patterns
 			var bottomRight = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).Last();
 			var center = new Point((topLeft.X + bottomRight.X) / 2, (topLeft.Y + bottomRight.Y) / 2);
 
-			var blues = new List<PixelColor> { 0x32d0d3, 0x0000ff, 0x66ffff }.Multiply(Brightness).ToList();
-			var reds = new List<PixelColor> { 0xff6969, 0xd34949, 0xda3232, 0xb80000, 0x620000 }.Multiply(Brightness).ToList();
+			var blues = new List<int> { 0x32d0d3, 0x0000ff, 0x66ffff }.Multiply(Brightness).ToList();
+			var reds = new List<int> { 0xff6969, 0xd34949, 0xda3232, 0xb80000, 0x620000 }.Multiply(Brightness).ToList();
 			var rainbow = Helpers.Rainbow7.Multiply(Brightness).Reverse().ToList();
 			var distances = allLocations.GetDistance(center).ToList();
 			var useColors = new LightColor(distances.Min().Round(), distances.Max().Round(), blues, reds, rainbow);

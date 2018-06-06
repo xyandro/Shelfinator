@@ -18,8 +18,8 @@ namespace Shelfinator.Patterns
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(Brightness).ToList();
-			var white = new LightColor(new PixelColor(0xff0000) * Brightness);
-			var blue = new LightColor(new PixelColor(0x0000ff) * Brightness);
+			var white = new LightColor(Helpers.MultiplyColor(0xff0000, Brightness));
+			var blue = new LightColor(Helpers.MultiplyColor(0x0000ff, Brightness));
 			for (var time = 0; time < 1000; time += 20)
 			{
 				foreach (var light in allLights)

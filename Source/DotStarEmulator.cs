@@ -55,9 +55,8 @@ namespace Shelfinator
 		{
 			if (!bufferPosition.ContainsKey(light))
 				return;
-			color = (new PixelColor(color) * 16).Color;
 			foreach (var position in bufferPosition[light])
-				buffer[position] = (uint)(0xff000000 | color);
+				buffer[position] = (uint)(0xff000000 | Helpers.MultiplyColor(color, 16));
 		}
 
 		public void Show()

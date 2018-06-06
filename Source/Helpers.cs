@@ -9,8 +9,8 @@ namespace Shelfinator
 {
 	static class Helpers
 	{
-		static public IReadOnlyList<PixelColor> Rainbow6 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x8b00ff };
-		static public IReadOnlyList<PixelColor> Rainbow7 = new List<PixelColor> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3 };
+		static public IReadOnlyList<int> Rainbow6 = new List<int> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x8b00ff };
+		static public IReadOnlyList<int> Rainbow7 = new List<int> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3 };
 
 		static public Stream GetEmbeddedStream(string embeddedName) => typeof(Helpers).Assembly.GetManifestResourceStream(embeddedName);
 		static public BitmapSource GetEmbeddedBitmap(string embeddedName) => BitmapFrame.Create(GetEmbeddedStream(embeddedName));
@@ -23,8 +23,6 @@ namespace Shelfinator
 			oldMax = oldMax ?? values.DefaultIfEmpty(0).Max();
 			return values.Select(value => Scale(value, oldMin.Value, oldMax.Value, newMin, newMax));
 		}
-
-		static public IEnumerable<Point> Scale(this IEnumerable<Point> points, Point? oldMin, Point? oldMax, Point newMin, Point newMax) => points.Scale(oldMin?.X, oldMin?.Y, oldMax?.X, oldMax?.Y, newMin.X, newMin.Y, newMax.X, newMax.Y);
 
 		static public IEnumerable<Point> Scale(this IEnumerable<Point> points, double? oldMinX, double? oldMinY, double? oldMaxX, double? oldMaxY, double newMinX, double newMinY, double newMaxX, double newMaxY)
 		{
@@ -69,20 +67,16 @@ namespace Shelfinator
 
 		public static int Round(this double value) => (int)(value + .5);
 
-		public static IEnumerable<PixelColor> MixColors(this IEnumerable<int> values, List<PixelColor> colors, int? min = null, int? max = null)
+		public static int ToByte(double value)
 		{
-			min = min ?? values.DefaultIfEmpty(0).Min();
-			max = max ?? values.DefaultIfEmpty(0).Max();
-			return values.Select(value => PixelColor.Gradient(colors, value, min.Value, max.Value));
-
+			var intValue = (int)(value + 0.5);
+			if (intValue < 0)
+				return 0;
+			if (intValue > 255)
+				return 255;
+			return intValue;
 		}
 
-		public static IEnumerable<PixelColor> MixColors(this IEnumerable<double> values, List<PixelColor> colors, double? min = null, double? max = null)
-		{
-			min = min ?? values.DefaultIfEmpty(0).Min();
-			max = max ?? values.DefaultIfEmpty(0).Max();
-			return values.Select(value => PixelColor.Gradient(colors, value, min.Value, max.Value));
-
-		}
+		public static int MultiplyColor(int color, double multiplier) => ToByte((color >> 16 & 0xff) * multiplier) << 16 | ToByte((color >> 8 & 0xff) * multiplier) << 8 | ToByte((color & 0xff) * multiplier);
 	}
 }
