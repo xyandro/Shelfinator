@@ -71,7 +71,7 @@ namespace Shelfinator
 
 		public static int ToByte(double value)
 		{
-			var intValue = (int)(value + 0.5);
+			var intValue = value.Round();
 			if (intValue < 0)
 				return 0;
 			if (intValue > 255)
@@ -80,5 +80,7 @@ namespace Shelfinator
 		}
 
 		public static int MultiplyColor(int color, double multiplier) => ToByte((color >> 16 & 0xff) * multiplier) << 16 | ToByte((color >> 8 & 0xff) * multiplier) << 8 | ToByte((color & 0xff) * multiplier);
+
+		public static int GradientColor(int color1, int color2, double percent) => ToByte((color1 >> 16 & 0xff) * (1 - percent) + (color2 >> 16 & 0xff) * percent) << 16 | ToByte((color1 >> 8 & 0xff) * (1 - percent) + (color2 >> 8 & 0xff) * percent) << 8 | ToByte((color1 & 0xff) * (1 - percent) + (color2 & 0xff) * percent);
 	}
 }

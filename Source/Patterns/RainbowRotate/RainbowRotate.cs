@@ -47,7 +47,7 @@ namespace Shelfinator.Patterns
 			}
 
 			foreach (var pair in lightTimes)
-				pattern.AddLight(pair.Key, StartTime + RotateTime + StartTime - pair.Value, pattern.Black);
+				pattern.AddLight(pair.Key, StartTime + RotateTime + StartTime - pair.Value, pattern.Absolute, 0x000000);
 
 			pattern.AddLightSequence(0, StartTime);
 			pattern.AddLightSequence(StartTime, StartTime + RotateTime, repeat: RotateCount);

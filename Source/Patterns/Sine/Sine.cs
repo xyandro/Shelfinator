@@ -18,12 +18,10 @@ namespace Shelfinator.Patterns
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
 
 			var rainbow7 = Helpers.Rainbow7.Multiply(Brightness).ToList();
-			var white = new LightColor(Helpers.MultiplyColor(0xff0000, Brightness));
-			var blue = new LightColor(Helpers.MultiplyColor(0x0000ff, Brightness));
 			for (var time = 0; time < 1000; time += 20)
 			{
 				foreach (var light in allLights)
-					pattern.AddLight(light, time, pattern.Black);
+					pattern.AddLight(light, time, pattern.Absolute, 0x000000);
 
 				for (var x = 0; x <= 96; ++x)
 				{
@@ -36,13 +34,13 @@ namespace Shelfinator.Patterns
 						var light = layout.TryGetPositionLight(x, y);
 						if (light.HasValue)
 						{
-							pattern.AddLight(light.Value, time, white);
+							pattern.AddLight(light.Value, time, pattern.Absolute, Helpers.MultiplyColor(0xff0000, Brightness));
 						}
 
 						light = layout.TryGetPositionLight(y, x);
 						if (light.HasValue)
 						{
-							pattern.AddLight(light.Value, time, blue);
+							pattern.AddLight(light.Value, time, pattern.Absolute, Helpers.MultiplyColor(0x0000ff, Brightness));
 						}
 					}
 				}

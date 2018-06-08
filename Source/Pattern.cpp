@@ -217,15 +217,27 @@ namespace Shelfinator
 			auto endColorStartPaletteIndex = startPaletteIndex % colorCount[endColorIndex];
 			auto endColorEndPaletteIndex = endPaletteIndex % colorCount[endColorIndex];
 
-			double redStart, greenStart, blueStart, red1, green1, blue1, red2, green2, blue2;
-			Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorStartPaletteIndex], colorColorCount[startColorIndex][startColorStartPaletteIndex], red1, green1, blue1);
-			Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorEndPaletteIndex], colorColorCount[startColorIndex][startColorEndPaletteIndex], red2, green2, blue2);
-			Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redStart, greenStart, blueStart);
+			double redStart, greenStart, blueStart;
+			if (startColorIndex == -1)
+				Helpers::SplitColor(startColorValue, redStart, greenStart, blueStart);
+			else
+			{
+				double red1, green1, blue1, red2, green2, blue2;
+				Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorStartPaletteIndex], colorColorCount[startColorIndex][startColorStartPaletteIndex], red1, green1, blue1);
+				Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorEndPaletteIndex], colorColorCount[startColorIndex][startColorEndPaletteIndex], red2, green2, blue2);
+				Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redStart, greenStart, blueStart);
+			}
 
 			double redEnd, greenEnd, blueEnd;
-			Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorStartPaletteIndex], colorColorCount[endColorIndex][endColorStartPaletteIndex], red1, green1, blue1);
-			Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorEndPaletteIndex], colorColorCount[endColorIndex][endColorEndPaletteIndex], red2, green2, blue2);
-			Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redEnd, greenEnd, blueEnd);
+			if (endColorIndex == -1)
+				Helpers::SplitColor(endColorValue, redEnd, greenEnd, blueEnd);
+			else
+			{
+				double red1, green1, blue1, red2, green2, blue2;
+				Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorStartPaletteIndex], colorColorCount[endColorIndex][endColorStartPaletteIndex], red1, green1, blue1);
+				Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorEndPaletteIndex], colorColorCount[endColorIndex][endColorEndPaletteIndex], red2, green2, blue2);
+				Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redEnd, greenEnd, blueEnd);
+			}
 
 			double red, green, blue;
 			Helpers::GradientColor(redStart, greenStart, blueStart, redEnd, greenEnd, blueEnd, colorPercent, red, green, blue);

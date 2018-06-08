@@ -41,7 +41,6 @@ namespace Shelfinator.Patterns
 
 			var colors = new List<int> { 0x000080, 0x0000ff, 0x008000, 0x008080, 0x0080ff, 0x00ff00, 0x00ff80, 0x00ffff, 0x800000, 0x800080, 0x8000ff, 0x808000, 0x808080, 0x8080ff, 0x80ff00, 0x80ff80, 0x80ffff, 0xff0000, 0xff0080, 0xff00ff, 0xff8000, 0xff8080, 0xff80ff, 0xffff00, 0xffff80 }.Multiply(WatchingBrightness).ToList();
 			var useColors = colors.Select(color => new LightColor(-15, 15, new List<int> { 0x000000, color, 0x000000 })).ToList();
-			var white = new LightColor(Helpers.MultiplyColor(0xffffff, WatchingBrightness));
 			var time = 0;
 			foreach (var list in watchingLights)
 			{

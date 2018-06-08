@@ -33,16 +33,15 @@ namespace Shelfinator.Patterns
 			var helloLights = new HashSet<int>(header.GetMappedLights(hello, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, pattern.Black, 0, useColor, allLocations[ctr].X.Round());
+				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, pattern.Absolute, 0x000000, useColor, allLocations[ctr].X.Round());
 				if (!helloLights.Contains(allLights[ctr]))
-					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, null, pattern.Black);
+					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 250, distanceInts[ctr] + 350, null, pattern.Absolute, 0x000000);
 			}
 
-			var white = new LightColor(Helpers.MultiplyColor(0xffffff, WhiteBrightness));
 			foreach (var light in helloLights)
 			{
-				pattern.AddLight(light, 2000, 2500, null, white);
-				pattern.AddLight(light, 3000, 3500, null, pattern.Black);
+				pattern.AddLight(light, 2000, 2500, null, pattern.Absolute, Helpers.MultiplyColor(0xffffff, WhiteBrightness));
+				pattern.AddLight(light, 3000, 3500, null, pattern.Absolute, 0x000000);
 			}
 
 			pattern.AddLightSequence(0, 3500);

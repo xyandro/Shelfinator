@@ -31,7 +31,6 @@ namespace Shelfinator.Patterns
 			var pellet = default(int?);
 			var rand = new Random(0xbadf00d);
 			var color = new LightColor(0, ColorVariation, colors);
-			var white = new LightColor(Helpers.MultiplyColor(0xffffff, PelletBrightness));
 			while (true)
 			{
 				var busyCount = busy.Count(b => b);
@@ -57,7 +56,7 @@ namespace Shelfinator.Patterns
 					if (snakeEnd >= snakeLights.Count)
 						snakeEnd -= snakeLights.Count;
 					foreach (var light in snakeLights[snakeEnd])
-						pattern.AddLight(light, time, pattern.Black);
+						pattern.AddLight(light, time, pattern.Absolute, 0x000000);
 					busy[snakeEnd] = false;
 				}
 
@@ -68,7 +67,7 @@ namespace Shelfinator.Patterns
 						break;
 					foreach (var light in snakeLights[pellet.Value])
 					{
-						pattern.AddLight(light, time, white);
+						pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, PelletBrightness));
 					}
 				}
 

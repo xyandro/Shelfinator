@@ -34,7 +34,7 @@ namespace Shelfinator.Patterns
 				for (var repeat = 0; repeat < 2000; repeat += 1000)
 				{
 					pattern.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, distances[ctr].Round());
-					pattern.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, pattern.Black);
+					pattern.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, pattern.Absolute, 0x000000);
 				}
 
 			pattern.AddLightSequence(0, 1000);
