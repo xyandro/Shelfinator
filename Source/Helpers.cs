@@ -82,5 +82,29 @@ namespace Shelfinator
 		public static int MultiplyColor(int color, double multiplier) => ToByte((color >> 16 & 0xff) * multiplier) << 16 | ToByte((color >> 8 & 0xff) * multiplier) << 8 | ToByte((color & 0xff) * multiplier);
 
 		public static int GradientColor(int color1, int color2, double percent) => ToByte((color1 >> 16 & 0xff) * (1 - percent) + (color2 >> 16 & 0xff) * percent) << 16 | ToByte((color1 >> 8 & 0xff) * (1 - percent) + (color2 >> 8 & 0xff) * percent) << 8 | ToByte((color1 & 0xff) * (1 - percent) + (color2 & 0xff) * percent);
+
+		public static Point GetCenter(IEnumerable<Point> points)
+		{
+			bool first = true;
+			double xMin = 0, yMin = 0, xMax = 0, yMax = 0;
+			foreach (var point in points)
+			{
+				if (first)
+				{
+					xMin = xMax = point.X;
+					yMin = yMax = point.Y;
+					first = false;
+					continue;
+				}
+
+				xMin = Math.Min(xMin, point.X);
+				xMax = Math.Max(xMax, point.X);
+				yMin = Math.Min(yMin, point.Y);
+				yMax = Math.Max(yMax, point.Y);
+			}
+			if (first)
+				return default(Point);
+			return new Point((xMin + xMax) / 2, (yMin + yMax) / 2);
+		}
 	}
 }

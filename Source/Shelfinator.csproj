@@ -100,6 +100,7 @@
     <Compile Include="Patterns\Spin\Spin.cs" />
     <Compile Include="Patterns\Spiral\Spiral.cs" />
     <EmbeddedResource Include="Patterns\Spiral\Spiral.png" />
+    <Compile Include="Patterns\Squares\Squares.cs" />
     <Compile Include="Patterns\Watching\Watching.cs" />
     <EmbeddedResource Include="Patterns\Watching\Watching.png" />
     <Compile Include="Properties\AssemblyInfo.cs">

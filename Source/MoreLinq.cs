@@ -21,6 +21,14 @@ namespace Shelfinator
 				yield return item;
 		}
 
+		static public IEnumerable<T> Except<T>(this IEnumerable<T> items, params T[] removeItems)
+		{
+			var toRemove = new HashSet<T>(removeItems);
+			foreach (var item in items)
+				if (!toRemove.Contains(item))
+					yield return item;
+		}
+
 		static public Dictionary<T1, T2> ToDictionary<T1, T2>(this IEnumerable<T1> items1, IEnumerable<T2> items2)
 		{
 			var result = new Dictionary<T1, T2>();
