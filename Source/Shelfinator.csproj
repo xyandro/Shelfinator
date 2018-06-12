@@ -76,6 +76,7 @@
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Face\Face.cs" />
+    <Compile Include="Patterns\Flash\Flash.cs" />
     <Compile Include="Patterns\Hello\Hello.cs" />
     <EmbeddedResource Include="Patterns\Hello\Hello.png" />
     <Compile Include="Patterns\IPattern.cs" />
