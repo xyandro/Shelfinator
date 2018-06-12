@@ -31,23 +31,39 @@ namespace Shelfinator.Patterns
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
+			const int DisplayTime = 3000;
+			const int FadeTime = 1000;
 
 			var pattern = new Pattern();
 			GetSquareLights(out var lights, out var centers);
 			var center = Helpers.GetCenter(centers);
 
 			var values = new List<List<int>>();
-			values.Add(centers.Select(p => p.X + p.Y).Scale(null, null, 0, 100).Round().ToList());
 			values.Add(centers.Select(p => (p - center).Length).Scale(null, null, 0, 100).Round().ToList());
+			values.Add(centers.Select(p => (p - center).Length).Scale(null, null, 100, 0).Round().ToList());
+			values.Add(centers.Select(p => p.X).Scale(null, null, 0, 100).Round().ToList());
+			values.Add(centers.Select(p => p.X).Scale(null, null, 100, 0).Round().ToList());
+			values.Add(centers.Select(p => p.Y).Scale(null, null, 0, 100).Round().ToList());
+			values.Add(centers.Select(p => p.Y).Scale(null, null, 100, 0).Round().ToList());
+			values.Add(centers.Select(p => p.X + p.Y).Scale(null, null, 0, 100).Round().ToList());
+			values.Add(centers.Select(p => p.X + p.Y).Scale(null, null, 100, 0).Round().ToList());
 
 			var color = new LightColor(0, 100, Helpers.Rainbow6.Multiply(Brightness).ToList());
 
+			var time = 0;
 			for (var paletteCtr = 0; paletteCtr < values.Count; paletteCtr++)
+			{
 				for (var listCtr = 0; listCtr < lights.Count; listCtr++)
 					foreach (var light in lights[listCtr])
-						pattern.AddLight(light, paletteCtr * 100, paletteCtr * 100 + 50, null, color, values[paletteCtr][listCtr]);
+						pattern.AddLight(light, time, time + FadeTime, null, color, values[paletteCtr][listCtr]);
+				pattern.AddLightSequence(time, time + DisplayTime);
+				time += DisplayTime;
+			}
 
-			pattern.AddLightSequence(100, 150, 5000);
+			for (var listCtr = 0; listCtr < lights.Count; listCtr++)
+				foreach (var light in lights[listCtr])
+					pattern.AddLight(light, time, time + FadeTime, null, pattern.Absolute, 0);
+			pattern.AddLightSequence(time, time + DisplayTime);
 
 			return pattern;
 		}

@@ -16,7 +16,7 @@ namespace Shelfinator
 		int GetLength();
 	private:
 		int numLights;
-		int **lightStartTime, **lightEndTime, **lightOrigEndTime, **lightStartColorIndex, **lightStartColorValue, **lightEndColorIndex, **lightEndColorValue;
+		int **lightStartTime, **lightEndTime, **lightOrigEndTime, **lightStartColorIndex, **lightStartColorValue, **lightEndColorIndex, **lightEndColorValue, **lightIntermediates;
 		int *currentIndex;
 		void ReadLights(FILE *file);
 		void FreeLights();
@@ -37,6 +37,7 @@ namespace Shelfinator
 		void FreePaletteSequences();
 
 		Pattern(FILE *file);
+		static bool ReadBool(FILE *file);
 		static int ReadInt(FILE *file);
 	};
 }

@@ -16,8 +16,9 @@ namespace Shelfinator
 			public int StartColorValue { get; set; }
 			public int EndColorIndex { get; set; }
 			public int EndColorValue { get; set; }
+			public bool Intermediates { get; set; }
 
-			public Light(int startTime, int endTime, int startColorIndex, int startColorValue, int endColorIndex, int endColorValue)
+			public Light(int startTime, int endTime, int startColorIndex, int startColorValue, int endColorIndex, int endColorValue, bool intermediates)
 			{
 				StartTime = startTime;
 				EndTime = OrigEndTime = endTime;
@@ -25,6 +26,7 @@ namespace Shelfinator
 				StartColorValue = startColorValue;
 				EndColorIndex = endColorIndex;
 				EndColorValue = endColorValue;
+				Intermediates = intermediates;
 			}
 
 			public void Save(BinaryWriter output)
@@ -36,6 +38,7 @@ namespace Shelfinator
 				output.Write(StartColorValue);
 				output.Write(EndColorIndex);
 				output.Write(EndColorValue);
+				output.Write(Intermediates);
 			}
 
 			public override string ToString() => $"Time: {StartTime}-{EndTime} ({OrigEndTime}), Color: {StartColorIndex} ({StartColorValue})-{EndColorIndex} ({EndColorValue})";
@@ -106,18 +109,18 @@ namespace Shelfinator
 		List<Light> GetLightList(int light)
 		{
 			if (!lights.ContainsKey(light))
-				lights[light] = new List<Light> { new Light(0, int.MaxValue, -1, 0x000000, -1, 0x000000) };
+				lights[light] = new List<Light> { new Light(0, int.MaxValue, -1, 0x000000, -1, 0x000000, false) };
 			return lights[light];
 		}
 
-		public void AddLight(int light, int time, LightColor color) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), 0, GetColorIndex(color).Value, 0);
-		public void AddLight(int light, int time, LightColor color, int colorValue) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), colorValue, GetColorIndex(color).Value, colorValue);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, 0);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, int endColorValue) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, endColorValue);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, 0);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, int endColorValue) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, endColorValue);
+		public void AddLight(int light, int time, LightColor color, bool intermediates = false) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), 0, GetColorIndex(color).Value, 0, intermediates);
+		public void AddLight(int light, int time, LightColor color, int colorValue, bool intermediates = false) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), colorValue, GetColorIndex(color).Value, colorValue, intermediates);
+		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, 0, intermediates);
+		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, int endColorValue, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, endColorValue, intermediates);
+		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, 0, intermediates);
+		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, int endColorValue, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, endColorValue, intermediates);
 
-		void DoAddLight(int light, int startTime, int endTime, int? startColorIndex, int startColorValue, int endColorIndex, int endColorValue)
+		void DoAddLight(int light, int startTime, int endTime, int? startColorIndex, int startColorValue, int endColorIndex, int endColorValue, bool intermediates)
 		{
 			if (startTime > endTime)
 				throw new ArgumentException("startTime > endTime");
@@ -141,9 +144,16 @@ namespace Shelfinator
 				var percent = (double)(startTime - list[index].StartTime) / (list[index].OrigEndTime - list[index].StartTime);
 				if (list[index].StartColorIndex == -1)
 					startColorValue = Helpers.GradientColor(list[index].StartColorValue, list[index].EndColorValue, percent);
-				else
+				else if (list[index].Intermediates)
 					startColorValue = (int)(list[index].StartColorValue * (1 - percent) + list[index].EndColorValue * percent + 0.5);
+				else if (list[index].StartColorValue == list[index].EndColorValue)
+					startColorValue = list[index].StartColorValue;
+				else
+					throw new Exception("Can't determine start color");
 			}
+
+			if (startColorIndex != endColorIndex)
+				intermediates = false;
 
 			if ((startColorIndex == endColorIndex) && (startColorValue == endColorValue))
 				endTime = int.MaxValue;
@@ -159,9 +169,9 @@ namespace Shelfinator
 			else
 				list[index].EndTime = startTime;
 
-			list.Add(new Light(startTime, endTime, startColorIndex.Value, startColorValue, endColorIndex, endColorValue));
+			list.Add(new Light(startTime, endTime, startColorIndex.Value, startColorValue, endColorIndex, endColorValue, intermediates));
 			if (endTime != int.MaxValue)
-				list.Add(new Light(endTime, int.MaxValue, endColorIndex, endColorValue, endColorIndex, endColorValue));
+				list.Add(new Light(endTime, int.MaxValue, endColorIndex, endColorValue, endColorIndex, endColorValue, false));
 		}
 
 		public void Clear(int time) => lights.Keys.ForEach(light => AddLight(light, time, Absolute, 0x000000));

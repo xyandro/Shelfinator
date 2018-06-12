@@ -101,7 +101,7 @@ namespace Shelfinator.Patterns
 				{
 					var onOffset = time % facePart.Count;
 					foreach (var light in facePart[onOffset])
-						pattern.AddLight(light, time, time + Length, color, 0, color, 100);
+						pattern.AddLight(light, time, time + Length, color, 0, color, 100, true);
 					var offOffset = (time - Length) % facePart.Count;
 					if (offOffset >= 0)
 						foreach (var light in facePart[offOffset])

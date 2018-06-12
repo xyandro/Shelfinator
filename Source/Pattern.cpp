@@ -39,6 +39,7 @@ namespace Shelfinator
 		lightStartColorValue = new int*[numLights];
 		lightEndColorIndex = new int*[numLights];
 		lightEndColorValue = new int*[numLights];
+		lightIntermediates = new int*[numLights];
 		currentIndex = new int[numLights];
 
 		for (auto lightCtr = 0; lightCtr < numLights; ++lightCtr)
@@ -51,6 +52,7 @@ namespace Shelfinator
 			lightStartColorValue[lightCtr] = new int[dataCount];
 			lightEndColorIndex[lightCtr] = new int[dataCount];
 			lightEndColorValue[lightCtr] = new int[dataCount];
+			lightIntermediates[lightCtr] = new int[dataCount];
 			currentIndex[lightCtr] = 0;
 
 			for (auto dataCtr = 0; dataCtr < dataCount; ++dataCtr)
@@ -62,6 +64,7 @@ namespace Shelfinator
 				lightStartColorValue[lightCtr][dataCtr] = ReadInt(file);
 				lightEndColorIndex[lightCtr][dataCtr] = ReadInt(file);
 				lightEndColorValue[lightCtr][dataCtr] = ReadInt(file);
+				lightIntermediates[lightCtr][dataCtr] = ReadBool(file);
 			}
 		}
 	}
@@ -77,6 +80,7 @@ namespace Shelfinator
 			delete[] lightStartColorValue[ctr];
 			delete[] lightEndColorIndex[ctr];
 			delete[] lightEndColorValue[ctr];
+			delete[] lightIntermediates[ctr];
 		}
 		delete[] lightStartTime;
 		delete[] lightEndTime;
@@ -85,6 +89,7 @@ namespace Shelfinator
 		delete[] lightStartColorValue;
 		delete[] lightEndColorIndex;
 		delete[] lightEndColorValue;
+		delete[] lightIntermediates;
 		delete[] currentIndex;
 	}
 
@@ -222,6 +227,8 @@ namespace Shelfinator
 			auto endColorColors = colorColors[endColorIndex];
 			auto endColorColorCount = colorColorCount[endColorIndex];
 
+			auto intermediates = lightIntermediates[light][currentIndex[light]];
+
 			auto colorPercent = (lightTime - startColorTime) / (endColorTime - startColorTime);
 			auto sameIndexColorValue = (lightTime - startColorTime) * (endColorValue - startColorValue) / (endColorTime - startColorTime) + startColorValue;
 
@@ -236,8 +243,8 @@ namespace Shelfinator
 			else
 			{
 				double spscr, spscg, spscb, epscr, epscg, epscb;
-				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useSpscIndex], startColorColorCount[useSpscIndex], spscr, spscg, spscb);
-				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useEpscIndex], startColorColorCount[useEpscIndex], epscr, epscg, epscb);
+				Helpers::GradientColor(intermediates ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useSpscIndex], startColorColorCount[useSpscIndex], spscr, spscg, spscb);
+				Helpers::GradientColor(intermediates ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useEpscIndex], startColorColorCount[useEpscIndex], epscr, epscg, epscb);
 				Helpers::GradientColor(spscr, spscg, spscb, epscr, epscg, epscb, palettePercent, scr, scg, scb);
 			}
 
@@ -247,8 +254,8 @@ namespace Shelfinator
 			else
 			{
 				double specr, specg, specb, epecr, epecg, epecb;
-				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useSpecIndex], endColorColorCount[useSpecIndex], specr, specg, specb);
-				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useEpecIndex], endColorColorCount[useEpecIndex], epecr, epecg, epecb);
+				Helpers::GradientColor(intermediates ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useSpecIndex], endColorColorCount[useSpecIndex], specr, specg, specb);
+				Helpers::GradientColor(intermediates ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useEpecIndex], endColorColorCount[useEpecIndex], epecr, epecg, epecb);
 				Helpers::GradientColor(specr, specg, specb, epecr, epecg, epecb, palettePercent, ecr, ecg, ecb);
 			}
 
@@ -262,6 +269,13 @@ namespace Shelfinator
 	int Pattern::GetLength()
 	{
 		return length;
+	}
+
+	bool Pattern::ReadBool(FILE *file)
+	{
+		bool value;
+		fread(&value, 1, sizeof(value), file);
+		return value;
 	}
 
 	int Pattern::ReadInt(FILE *file)
