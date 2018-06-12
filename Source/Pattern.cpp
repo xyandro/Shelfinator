@@ -206,42 +206,56 @@ namespace Shelfinator
 			while (lightTime >= lightEndTime[light][currentIndex[light]])
 				++currentIndex[light];
 
+			auto startColorTime = lightStartTime[light][currentIndex[light]];
 			auto startColorIndex = lightStartColorIndex[light][currentIndex[light]];
 			auto startColorValue = lightStartColorValue[light][currentIndex[light]];
+			auto startColorMinValue = colorMinValue[startColorIndex];
+			auto startColorMaxValue = colorMaxValue[startColorIndex];
+			auto startColorColors = colorColors[startColorIndex];
+			auto startColorColorCount = colorColorCount[startColorIndex];
+
+			auto endColorTime = lightOrigEndTime[light][currentIndex[light]];
 			auto endColorIndex = lightEndColorIndex[light][currentIndex[light]];
 			auto endColorValue = lightEndColorValue[light][currentIndex[light]];
-			auto colorPercent = (lightTime - lightStartTime[light][currentIndex[light]]) / (lightOrigEndTime[light][currentIndex[light]] - lightStartTime[light][currentIndex[light]]);
+			auto endColorMinValue = colorMinValue[endColorIndex];
+			auto endColorMaxValue = colorMaxValue[endColorIndex];
+			auto endColorColors = colorColors[endColorIndex];
+			auto endColorColorCount = colorColorCount[endColorIndex];
 
-			auto startColorStartPaletteIndex = startPaletteIndex % colorCount[startColorIndex];
-			auto startColorEndPaletteIndex = endPaletteIndex % colorCount[startColorIndex];
-			auto endColorStartPaletteIndex = startPaletteIndex % colorCount[endColorIndex];
-			auto endColorEndPaletteIndex = endPaletteIndex % colorCount[endColorIndex];
+			auto colorPercent = (lightTime - startColorTime) / (endColorTime - startColorTime);
+			auto sameIndexColorValue = (lightTime - startColorTime) * (endColorValue - startColorValue) / (endColorTime - startColorTime) + startColorValue;
 
-			double redStart, greenStart, blueStart;
+			auto useSpscIndex = startPaletteIndex % colorCount[startColorIndex];
+			auto useSpecIndex = startPaletteIndex % colorCount[endColorIndex];
+			auto useEpscIndex = endPaletteIndex % colorCount[startColorIndex];
+			auto useEpecIndex = endPaletteIndex % colorCount[endColorIndex];
+
+			double scr, scg, scb;
 			if (startColorIndex == -1)
-				Helpers::SplitColor(startColorValue, redStart, greenStart, blueStart);
+				Helpers::SplitColor(startColorValue, scr, scg, scb);
 			else
 			{
-				double red1, green1, blue1, red2, green2, blue2;
-				Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorStartPaletteIndex], colorColorCount[startColorIndex][startColorStartPaletteIndex], red1, green1, blue1);
-				Helpers::GradientColor(startColorValue, colorMinValue[startColorIndex], colorMaxValue[startColorIndex], colorColors[startColorIndex][startColorEndPaletteIndex], colorColorCount[startColorIndex][startColorEndPaletteIndex], red2, green2, blue2);
-				Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redStart, greenStart, blueStart);
+				double spscr, spscg, spscb, epscr, epscg, epscb;
+				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useSpscIndex], startColorColorCount[useSpscIndex], spscr, spscg, spscb);
+				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : startColorValue, startColorMinValue, startColorMaxValue, startColorColors[useEpscIndex], startColorColorCount[useEpscIndex], epscr, epscg, epscb);
+				Helpers::GradientColor(spscr, spscg, spscb, epscr, epscg, epscb, palettePercent, scr, scg, scb);
 			}
 
-			double redEnd, greenEnd, blueEnd;
+			double ecr, ecg, ecb;
 			if (endColorIndex == -1)
-				Helpers::SplitColor(endColorValue, redEnd, greenEnd, blueEnd);
+				Helpers::SplitColor(endColorValue, ecr, ecg, ecb);
 			else
 			{
-				double red1, green1, blue1, red2, green2, blue2;
-				Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorStartPaletteIndex], colorColorCount[endColorIndex][endColorStartPaletteIndex], red1, green1, blue1);
-				Helpers::GradientColor(endColorValue, colorMinValue[endColorIndex], colorMaxValue[endColorIndex], colorColors[endColorIndex][endColorEndPaletteIndex], colorColorCount[endColorIndex][endColorEndPaletteIndex], red2, green2, blue2);
-				Helpers::GradientColor(red1, green1, blue1, red2, green2, blue2, palettePercent, redEnd, greenEnd, blueEnd);
+				double specr, specg, specb, epecr, epecg, epecb;
+				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useSpecIndex], endColorColorCount[useSpecIndex], specr, specg, specb);
+				Helpers::GradientColor(startColorIndex == endColorIndex ? sameIndexColorValue : endColorValue, endColorMinValue, endColorMaxValue, endColorColors[useEpecIndex], endColorColorCount[useEpecIndex], epecr, epecg, epecb);
+				Helpers::GradientColor(specr, specg, specb, epecr, epecg, epecb, palettePercent, ecr, ecg, ecb);
 			}
 
-			double red, green, blue;
-			Helpers::GradientColor(redStart, greenStart, blueStart, redEnd, greenEnd, blueEnd, colorPercent, red, green, blue);
-			lights->SetLight(light, Helpers::CombineColor(red, green, blue));
+			double r, g, b;
+			Helpers::GradientColor(scr, scg, scb, ecr, ecg, ecb, colorPercent, r, g, b);
+
+			lights->SetLight(light, Helpers::CombineColor(r, g, b));
 		}
 	}
 
