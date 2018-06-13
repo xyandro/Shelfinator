@@ -43,6 +43,8 @@ namespace Shelfinator
 			Height = bitmap.PixelHeight;
 		}
 
+		public List<int> GetPositionLights(List<Point> list) => list.Select(p => GetPositionLight(p)).ToList();
+
 		public List<int> GetPositionLights(Rect rect) => GetPositionLights(rect.X.Round(), rect.Y.Round(), rect.Width.Round(), rect.Height.Round());
 
 		public List<int> GetPositionLights(int x, int y, int width, int height)
