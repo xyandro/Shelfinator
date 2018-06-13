@@ -64,5 +64,14 @@ namespace Shelfinator
 			foreach (var item in source)
 				action(item);
 		}
+
+		static public IEnumerable<double> Range(double start, double increment, int count)
+		{
+			for (var ctr = 0; ctr < count; ++ctr)
+			{
+				yield return start;
+				start += increment;
+			}
+		}
 	}
 }

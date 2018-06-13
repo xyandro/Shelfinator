@@ -75,6 +75,7 @@
     <Compile Include="LightColor.cs" />
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Pattern.cs" />
+    <Compile Include="Patterns\Bounce.cs" />
     <Compile Include="Patterns\Clock.cs" />
     <Compile Include="Patterns\Face.cs" />
     <Compile Include="Patterns\Flash.cs" />
