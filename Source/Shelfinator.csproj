@@ -79,7 +79,6 @@
     <Compile Include="Patterns\Face\Face.cs" />
     <Compile Include="Patterns\Flash\Flash.cs" />
     <Compile Include="Patterns\Hello\Hello.cs" />
-    <EmbeddedResource Include="Patterns\Hello\Hello.png" />
     <Compile Include="Patterns\IPattern.cs" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
@@ -98,14 +97,11 @@
     <Compile Include="Patterns\Rotate\Rotate.cs" />
     <Compile Include="Patterns\Sine\Sine.cs" />
     <Compile Include="Patterns\Snake\Snake.cs" />
-    <EmbeddedResource Include="Patterns\Snake\Snake.png" />
     <Compile Include="Patterns\Spin\Spin.cs" />
     <Compile Include="Patterns\Spiral\Spiral.cs" />
-    <EmbeddedResource Include="Patterns\Spiral\Spiral.png" />
     <Compile Include="Patterns\SquarePattern\SquarePattern.cs" />
     <Compile Include="Patterns\Squares\Squares.cs" />
     <Compile Include="Patterns\Watching\Watching.cs" />
-    <EmbeddedResource Include="Patterns\Watching\Watching.png" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

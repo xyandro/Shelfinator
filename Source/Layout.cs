@@ -43,13 +43,15 @@ namespace Shelfinator
 			Height = bitmap.PixelHeight;
 		}
 
-		public List<int> GetPositionLights(Rect rect)
+		public List<int> GetPositionLights(Rect rect) => GetPositionLights(rect.X.Round(), rect.Y.Round(), rect.Width.Round(), rect.Height.Round());
+
+		public List<int> GetPositionLights(int x, int y, int width, int height)
 		{
 			var result = new List<int>();
-			for (var y = rect.Y; y < rect.Y + rect.Height; ++y)
-				for (var x = rect.X; x < rect.X + rect.Width; ++x)
+			for (var yCtr = y; yCtr < y + height; ++yCtr)
+				for (var xCtr = x; xCtr < x + width; ++xCtr)
 				{
-					var light = TryGetPositionLight(x, y);
+					var light = TryGetPositionLight(xCtr, yCtr);
 					if (light.HasValue)
 						result.Add(light.Value);
 				}
