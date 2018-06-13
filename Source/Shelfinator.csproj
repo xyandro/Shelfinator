@@ -75,10 +75,10 @@
     <Compile Include="LightColor.cs" />
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Pattern.cs" />
-    <Compile Include="Patterns\Clock\Clock.cs" />
-    <Compile Include="Patterns\Face\Face.cs" />
-    <Compile Include="Patterns\Flash\Flash.cs" />
-    <Compile Include="Patterns\Hello\Hello.cs" />
+    <Compile Include="Patterns\Clock.cs" />
+    <Compile Include="Patterns\Face.cs" />
+    <Compile Include="Patterns\Flash.cs" />
+    <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
@@ -93,15 +93,15 @@
     <EmbeddedResource Include="Patterns\Love\Phoebe.png" />
     <EmbeddedResource Include="Patterns\Love\Sophie.png" />
     <EmbeddedResource Include="Patterns\Love\Timo.png" />
-    <Compile Include="Patterns\RainbowRotate\RainbowRotate.cs" />
-    <Compile Include="Patterns\Rotate\Rotate.cs" />
-    <Compile Include="Patterns\Sine\Sine.cs" />
-    <Compile Include="Patterns\Snake\Snake.cs" />
-    <Compile Include="Patterns\Spin\Spin.cs" />
-    <Compile Include="Patterns\Spiral\Spiral.cs" />
-    <Compile Include="Patterns\SquarePattern\SquarePattern.cs" />
-    <Compile Include="Patterns\Squares\Squares.cs" />
-    <Compile Include="Patterns\Watching\Watching.cs" />
+    <Compile Include="Patterns\RainbowRotate.cs" />
+    <Compile Include="Patterns\Rotate.cs" />
+    <Compile Include="Patterns\Sine.cs" />
+    <Compile Include="Patterns\Snake.cs" />
+    <Compile Include="Patterns\Spin.cs" />
+    <Compile Include="Patterns\Spiral.cs" />
+    <Compile Include="Patterns\SquarePattern.cs" />
+    <Compile Include="Patterns\Squares.cs" />
+    <Compile Include="Patterns\Watching.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
