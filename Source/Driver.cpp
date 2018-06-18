@@ -221,6 +221,7 @@ namespace Shelfinator
 		}
 	}
 
+	int frameCount = 0;
 	void Driver::Run()
 	{
 #ifdef _WIN32
@@ -229,7 +230,10 @@ namespace Shelfinator
 		std::thread(&Driver::RunUIThread, this).detach();
 #endif
 
+		auto startLoad = Millis();
 		LoadPattern();
+		auto loadTime = Millis() - startLoad;
+		auto startDraw = Millis();
 		int startTime, nextTime = -1;
 		while (true)
 		{
@@ -271,6 +275,13 @@ namespace Shelfinator
 					if (banner->Expired())
 						banner.reset();
 				}
+			}
+
+			if (++frameCount == 300)
+			{
+				auto drawTime = Millis() - startDraw;
+				auto fps = (double)frameCount / drawTime * 1000;
+				fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 			}
 		}
 	}
