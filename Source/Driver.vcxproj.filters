@@ -11,6 +11,15 @@
     <ClInclude Include="Banner.h">
       <Filter>Banner</Filter>
     </ClInclude>
+    <Filter Include="BufferFile">
+      <UniqueIdentifier>{20329278-b34b-4d52-b841-319784ccf23a}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="BufferFile.cpp">
+      <Filter>BufferFile</Filter>
+    </ClCompile>
+    <ClInclude Include="BufferFile.h">
+      <Filter>BufferFile</Filter>
+    </ClInclude>
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>

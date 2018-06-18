@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "BufferFile.h"
 #include "Lights.h"
 
 namespace Shelfinator
@@ -18,33 +19,33 @@ namespace Shelfinator
 		{
 		public:
 			int startTime, endTime, origEndTime, startColorIndex, startColorValue, endColorIndex, endColorValue, intermediates;
-			void Read(FILE *file);
+			void Read(BufferFile::ptr file);
 			double GetPercent(double time);
 			double GetSameIndexColorValue(double time);
 		};
 		class Light
 		{
 		public:
-			void Read(FILE *file);
+			void Read(BufferFile::ptr file);
 			LightItem &LightAtTime(double time);
 		private:
 			std::vector<LightItem> lights;
 			int current = 0;
 		};
 		std::vector<Light> lightData;
-		void ReadLights(FILE *file);
+		void ReadLights(BufferFile::ptr file);
 
 		class LightSequence
 		{
 		public:
 			int lightStartTime, lightEndTime, startTime, endTime;
-			void Read(FILE *file, int &length);
+			void Read(BufferFile::ptr file, int &length);
 			double GetLightTime(int time);
 		};
 		class LightSequences
 		{
 		public:
-			void Read(FILE *file, int &length);
+			void Read(BufferFile::ptr file, int &length);
 			LightSequence & SequenceAtTime(int time);
 		private:
 			std::vector<LightSequence> lightSequences;
@@ -58,23 +59,23 @@ namespace Shelfinator
 		public:
 			int minValue, maxValue;
 			std::vector<std::vector<int>> colors;
-			void Read(FILE *file);
+			void Read(BufferFile::ptr file);
 			void GradientColor(double value, int index, double &red, double &green, double &blue);
 		};
 		std::vector<LightColor> lightColors;
-		void ReadColors(FILE *file);
+		void ReadColors(BufferFile::ptr file);
 
 		class PaletteSequence
 		{
 		public:
 			int startTime, endTime, startPaletteIndex, endPaletteIndex;
-			void Read(FILE *file);
+			void Read(BufferFile::ptr file);
 			double GetPercent(int time);
 		};
 		class PaletteSequences
 		{
 		public:
-			void Read(FILE *file);
+			void Read(BufferFile::ptr file);
 			PaletteSequence &SequenceAtTime(int time);
 		private:
 			std::vector<PaletteSequence> paletteSequences;
@@ -82,8 +83,6 @@ namespace Shelfinator
 		};
 		PaletteSequences paletteSequences;
 
-		Pattern(FILE *file);
-		static bool ReadBool(FILE *file);
-		static int ReadInt(FILE *file);
+		Pattern(BufferFile::ptr file);
 	};
 }

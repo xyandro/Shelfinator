@@ -1,0 +1,55 @@
+﻿#include "stdafx.h"
+#include "BufferFile.h"
+
+namespace Shelfinator
+{
+	BufferFile::ptr BufferFile::Open(const char *fileName)
+	{
+		return ptr(new BufferFile(fileName));
+	}
+
+	BufferFile::BufferFile(const char *fileName)
+	{
+		file = fopen(fileName, "rb");
+	}
+
+	BufferFile::~BufferFile()
+	{
+		fclose(file);
+	}
+
+	bool BufferFile::GetBool()
+	{
+		bool value;
+		Copy(&value, sizeof(value));
+		return value;
+	}
+
+	int BufferFile::GetInt()
+	{
+		int value;
+		Copy(&value, sizeof(value));
+		return value;
+	}
+
+	void BufferFile::Copy(void *ptr, int size)
+	{
+		while (bufPos + size > bufUsed)
+		{
+			if (bufPos != 0)
+			{
+				memmove(buffer, buffer + bufPos, bufUsed - bufPos);
+				bufUsed -= bufPos;
+				bufPos = 0;
+			}
+
+			auto block = fread(buffer + bufUsed, 1, sizeof(buffer) / sizeof(*buffer) - bufUsed, file);
+			if (block == 0)
+				throw "Failed to read";
+			bufUsed += (int)block;
+		}
+
+		memcpy(ptr, buffer + bufPos, size);
+		bufPos += size;
+	}
+}

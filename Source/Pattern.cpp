@@ -7,13 +7,10 @@ namespace Shelfinator
 {
 	Pattern::ptr Pattern::Read(const char *fileName)
 	{
-		auto file = fopen(fileName, "rb");
-		auto result = ptr(new Pattern(file));
-		fclose(file);
-		return result;
+		return ptr(new Pattern(BufferFile::Open(fileName)));
 	}
 
-	Pattern::Pattern(FILE *file)
+	Pattern::Pattern(BufferFile::ptr file)
 	{
 		ReadLights(file);
 		lightSequences.Read(file, length);
@@ -21,23 +18,23 @@ namespace Shelfinator
 		paletteSequences.Read(file);
 	}
 
-	void Pattern::ReadLights(FILE *file)
+	void Pattern::ReadLights(BufferFile::ptr file)
 	{
-		lightData.resize(ReadInt(file));
+		lightData.resize(file->GetInt());
 		for (auto ctr = 0; ctr < lightData.size(); ++ctr)
 			lightData[ctr].Read(file);
 	}
 
-	void Pattern::LightItem::Read(FILE *file)
+	void Pattern::LightItem::Read(BufferFile::ptr file)
 	{
-		startTime = ReadInt(file);
-		endTime = ReadInt(file);
-		origEndTime = ReadInt(file);
-		startColorIndex = ReadInt(file);
-		startColorValue = ReadInt(file);
-		endColorIndex = ReadInt(file);
-		endColorValue = ReadInt(file);
-		intermediates = ReadBool(file);
+		startTime = file->GetInt();
+		endTime = file->GetInt();
+		origEndTime = file->GetInt();
+		startColorIndex = file->GetInt();
+		startColorValue = file->GetInt();
+		endColorIndex = file->GetInt();
+		endColorValue = file->GetInt();
+		intermediates = file->GetBool();
 	}
 
 	double Pattern::LightItem::GetPercent(double time)
@@ -50,9 +47,9 @@ namespace Shelfinator
 		return (time - startTime) * (endColorValue - startColorValue) / (origEndTime - startTime) + startColorValue;
 	}
 
-	void Pattern::Light::Read(FILE *file)
+	void Pattern::Light::Read(BufferFile::ptr file)
 	{
-		lights.resize(ReadInt(file));
+		lights.resize(file->GetInt());
 		for (auto ctr = 0; ctr < lights.size(); ++ctr)
 			lights[ctr].Read(file);
 	}
@@ -66,12 +63,12 @@ namespace Shelfinator
 		return lights[current];
 	}
 
-	void Pattern::LightSequence::Read(FILE *file, int &length)
+	void Pattern::LightSequence::Read(BufferFile::ptr file, int &length)
 	{
-		lightStartTime = ReadInt(file);
-		lightEndTime = ReadInt(file);
+		lightStartTime = file->GetInt();
+		lightEndTime = file->GetInt();
 		startTime = length;
-		endTime = length = length + ReadInt(file);
+		endTime = length = length + file->GetInt();
 	}
 
 	double Pattern::LightSequence::GetLightTime(int time)
@@ -79,9 +76,9 @@ namespace Shelfinator
 		return ((double)time - startTime) / (endTime - startTime) * (lightEndTime - lightStartTime) + lightStartTime;
 	}
 
-	void Pattern::LightSequences::Read(FILE *file, int &length)
+	void Pattern::LightSequences::Read(BufferFile::ptr file, int &length)
 	{
-		lightSequences.resize(ReadInt(file));
+		lightSequences.resize(file->GetInt());
 		length = 0;
 		for (auto ctr = 0; ctr < lightSequences.size(); ++ctr)
 			lightSequences[ctr].Read(file, length);
@@ -96,16 +93,16 @@ namespace Shelfinator
 		return lightSequences[current];
 	}
 
-	void Pattern::LightColor::Read(FILE *file)
+	void Pattern::LightColor::Read(BufferFile::ptr file)
 	{
-		minValue = ReadInt(file);
-		maxValue = ReadInt(file);
-		colors.resize(ReadInt(file));
+		minValue = file->GetInt();
+		maxValue = file->GetInt();
+		colors.resize(file->GetInt());
 		for (auto paletteCtr = 0; paletteCtr < colors.size(); ++paletteCtr)
 		{
-			colors[paletteCtr].resize(ReadInt(file));
+			colors[paletteCtr].resize(file->GetInt());
 			for (auto colorCtr = 0; colorCtr < colors[paletteCtr].size(); ++colorCtr)
-				colors[paletteCtr][colorCtr] = ReadInt(file);
+				colors[paletteCtr][colorCtr] = file->GetInt();
 		}
 	}
 
@@ -115,26 +112,26 @@ namespace Shelfinator
 		Helpers::GradientColor(value, minValue, maxValue, colors[index].data(), (int)colors[index].size(), red, green, blue);
 	}
 
-	void Pattern::ReadColors(FILE *file)
+	void Pattern::ReadColors(BufferFile::ptr file)
 	{
-		lightColors.resize(ReadInt(file));
+		lightColors.resize(file->GetInt());
 		for (auto ctr = 0; ctr < lightColors.size(); ++ctr)
 			lightColors[ctr].Read(file);
 	}
 
-	void Pattern::PaletteSequences::Read(FILE *file)
+	void Pattern::PaletteSequences::Read(BufferFile::ptr file)
 	{
-		paletteSequences.resize(ReadInt(file));
+		paletteSequences.resize(file->GetInt());
 		for (auto ctr = 0; ctr < paletteSequences.size(); ++ctr)
 			paletteSequences[ctr].Read(file);
 	}
 
-	void Pattern::PaletteSequence::Read(FILE *file)
+	void Pattern::PaletteSequence::Read(BufferFile::ptr file)
 	{
-		startTime = ReadInt(file);
-		endTime = ReadInt(file);
-		startPaletteIndex = ReadInt(file);
-		endPaletteIndex = ReadInt(file);
+		startTime = file->GetInt();
+		endTime = file->GetInt();
+		startPaletteIndex = file->GetInt();
+		endPaletteIndex = file->GetInt();
 	}
 
 	double Pattern::PaletteSequence::GetPercent(int time)
@@ -201,19 +198,5 @@ namespace Shelfinator
 	int Pattern::GetLength()
 	{
 		return length;
-	}
-
-	bool Pattern::ReadBool(FILE *file)
-	{
-		bool value;
-		fread(&value, 1, sizeof(value), file);
-		return value;
-	}
-
-	int Pattern::ReadInt(FILE *file)
-	{
-		int value;
-		fread(&value, 1, sizeof(value), file);
-		return value;
 	}
 }
