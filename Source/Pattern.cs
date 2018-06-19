@@ -100,6 +100,7 @@ namespace Shelfinator
 		readonly List<LightColor> colors = new List<LightColor>();
 		readonly Dictionary<LightColor, int> colorLookup = new Dictionary<LightColor, int>();
 		readonly List<PaletteSequence> paletteSequences = new List<PaletteSequence>();
+		readonly Dictionary<int, int> currentIndex = new Dictionary<int, int>();
 
 		public Pattern()
 		{
@@ -132,22 +133,26 @@ namespace Shelfinator
 			}
 
 			var list = GetLightList(light);
-			var index = 0;
-			while (startTime >= list[index].EndTime)
-				++index;
+			if (!currentIndex.ContainsKey(light))
+				currentIndex[light] = 0;
+			while (startTime < list[currentIndex[light]].StartTime)
+				--currentIndex[light];
+			while (startTime >= list[currentIndex[light]].EndTime)
+				++currentIndex[light];
+			var lastLight = list[currentIndex[light]];
 
 			if (!startColorIndex.HasValue)
 			{
-				if (list[index].StartColorIndex != list[index].EndColorIndex)
+				if (lastLight.StartColorIndex != lastLight.EndColorIndex)
 					throw new Exception("Can't determine start color");
-				startColorIndex = list[index].StartColorIndex;
-				var percent = (double)(startTime - list[index].StartTime) / (list[index].OrigEndTime - list[index].StartTime);
-				if (list[index].StartColorIndex == -1)
-					startColorValue = Helpers.GradientColor(list[index].StartColorValue, list[index].EndColorValue, percent);
-				else if (list[index].Intermediates)
-					startColorValue = (int)(list[index].StartColorValue * (1 - percent) + list[index].EndColorValue * percent + 0.5);
-				else if (list[index].StartColorValue == list[index].EndColorValue)
-					startColorValue = list[index].StartColorValue;
+				startColorIndex = lastLight.StartColorIndex;
+				var percent = (double)(startTime - lastLight.StartTime) / (lastLight.OrigEndTime - lastLight.StartTime);
+				if (lastLight.StartColorIndex == -1)
+					startColorValue = Helpers.GradientColor(lastLight.StartColorValue, lastLight.EndColorValue, percent);
+				else if (lastLight.Intermediates)
+					startColorValue = (int)(lastLight.StartColorValue * (1 - percent) + lastLight.EndColorValue * percent + 0.5);
+				else if (lastLight.StartColorValue == lastLight.EndColorValue)
+					startColorValue = lastLight.StartColorValue;
 				else
 					throw new Exception("Can't determine start color");
 			}
@@ -159,15 +164,15 @@ namespace Shelfinator
 				endTime = int.MaxValue;
 
 			// Check for duplicates on solid colors
-			if ((endTime == int.MaxValue) && (list[index].EndTime == int.MaxValue) && (startColorIndex == list[index].StartColorIndex) && (startColorValue == list[index].StartColorValue))
+			if ((endTime == int.MaxValue) && lastLight.EndTime == int.MaxValue && (startColorIndex == lastLight.StartColorIndex) && (startColorValue == lastLight.StartColorValue))
 				return;
 
-			list.RemoveRange(index + 1, list.Count - index - 1);
+			list.RemoveRange(currentIndex[light] + 1, list.Count - currentIndex[light] - 1);
 
-			if (list[index].StartTime == startTime)
-				list.RemoveAt(index);
+			if (lastLight.StartTime == startTime)
+				list.RemoveAt(currentIndex[light]);
 			else
-				list[index].EndTime = startTime;
+				lastLight.EndTime = startTime;
 
 			list.Add(new Light(startTime, endTime, startColorIndex.Value, startColorValue, endColorIndex, endColorValue, intermediates));
 			if (endTime != int.MaxValue)
