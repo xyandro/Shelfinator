@@ -164,7 +164,7 @@ namespace Shelfinator
 				endTime = int.MaxValue;
 
 			// Check for duplicates on solid colors
-			if ((endTime == int.MaxValue) && lastLight.EndTime == int.MaxValue && (startColorIndex == lastLight.StartColorIndex) && (startColorValue == lastLight.StartColorValue))
+			if ((endTime == int.MaxValue) && (lastLight.EndTime == int.MaxValue) && (startColorIndex == lastLight.StartColorIndex) && (startColorValue == lastLight.StartColorValue))
 				return;
 
 			list.RemoveRange(currentIndex[light] + 1, list.Count - currentIndex[light] - 1);
