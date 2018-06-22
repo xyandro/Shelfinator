@@ -104,6 +104,7 @@
     <Compile Include="Patterns\SquareFlash.cs" />
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />
+    <Compile Include="Patterns\Test.cs" />
     <Compile Include="Patterns\Watching.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
