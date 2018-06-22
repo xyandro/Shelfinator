@@ -96,10 +96,10 @@ namespace Shelfinator.Patterns
 
 		LightColor GetColor(double Brightness)
 		{
-			var reds = new List<int> { 0xff6969, 0xd34949, 0xda3232, 0xb80000, 0x620000 }.Multiply(Brightness).ToList();
+			var reds = new List<int> { 0xd3d032, 0xff0000, 0xffff66 }.Multiply(Brightness).ToList();
 			var blues = new List<int> { 0x32d0d3, 0x0000ff, 0x66ffff }.Multiply(Brightness).ToList();
-			var greens = new List<int> { 0x01e278, 0x00ff00, 0x7ef482, 0x3cd80d }.Multiply(Brightness).ToList();
-			var random = new List<int> { 0x18ef47, 0x08d051, 0x9bc44a, 0xed768e, 0x548df1, 0x3a2ecb }.Multiply(Brightness).ToList();
+			var greens = new List<int> { 0x32d3d0, 0x00ff00, 0x66ffff }.Multiply(Brightness).ToList();
+			var random = new List<int> { 0x085d10, 0x27da9f, 0x80acc9, 0x940321, 0x61f1f0, 0x4b157d }.Multiply(Brightness).ToList();
 			var rainbow = Helpers.Rainbow6.Multiply(Brightness).ToList();
 			var color = new LightColor(0, 100, new List<List<int>> { reds, blues, greens, random, rainbow });
 			return color;
