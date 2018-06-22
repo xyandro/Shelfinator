@@ -13,6 +13,8 @@ namespace Shelfinator
 		static void AddColor(double red1, double green1, double blue1, double red2, double green2, double blue2, double &red, double &green, double &blue);
 
 		static int MultiplyColor(int color, double multiplier);
+
+		static double FPart(double value);
 	private:
 		static int ToByte(double value);
 	};

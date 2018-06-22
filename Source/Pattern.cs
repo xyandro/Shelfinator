@@ -49,12 +49,14 @@ namespace Shelfinator
 			public int LightStartTime { get; set; }
 			public int LightEndTime { get; set; }
 			public int Duration { get; set; }
+			public int Repeat { get; set; }
 
-			public LightSequence(int startTime, int endTime, int? duration = null)
+			public LightSequence(int startTime, int endTime, int duration, int repeat)
 			{
 				LightStartTime = startTime;
 				LightEndTime = endTime;
-				Duration = duration ?? LightEndTime - LightStartTime;
+				Duration = duration;
+				Repeat = repeat;
 			}
 
 			public void Save(BinaryWriter output)
@@ -62,9 +64,10 @@ namespace Shelfinator
 				output.Write(LightStartTime);
 				output.Write(LightEndTime);
 				output.Write(Duration);
+				output.Write(Repeat);
 			}
 
-			public override string ToString() => $"Time: {LightStartTime}-{LightEndTime}, Duration: {Duration}";
+			public override string ToString() => $"Time: {LightStartTime}-{LightEndTime}, Duration: {Duration}, Repeat: {Repeat}";
 		}
 
 		class PaletteSequence
@@ -183,12 +186,7 @@ namespace Shelfinator
 
 		public int MaxLightTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.EndTime == int.MaxValue ? lightData.StartTime : lightData.EndTime));
 
-		public void AddLightSequence(int startTime, int endTime, int? duration = null, int repeat = 1)
-		{
-			var lightSequence = new LightSequence(startTime, endTime, duration ?? endTime - startTime);
-			for (var ctr = 0; ctr < repeat; ++ctr)
-				lightSequences.Add(lightSequence);
-		}
+		public void AddLightSequence(int startTime, int endTime, int? duration = null, int repeat = 1) => lightSequences.Add(new LightSequence(startTime, endTime, duration ?? endTime - startTime, repeat));
 
 		public int? GetColorIndex(LightColor color)
 		{

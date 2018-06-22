@@ -65,6 +65,11 @@ namespace Shelfinator
 		return CombineColor(red, green, blue);
 	}
 
+	double Helpers::FPart(double value)
+	{
+		return value - (int)value;
+	}
+
 	int Helpers::ToByte(double value)
 	{
 		auto intValue = (int)(value + 0.5);

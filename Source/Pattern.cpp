@@ -67,13 +67,15 @@ namespace Shelfinator
 	{
 		lightStartTime = file->GetInt();
 		lightEndTime = file->GetInt();
+		duration = file->GetInt();
+		auto repeat = file->GetInt();
 		startTime = length;
-		endTime = length = length + file->GetInt();
+		endTime = length = length + duration * repeat;
 	}
 
 	double Pattern::LightSequence::GetLightTime(int time)
 	{
-		return ((double)time - startTime) / (endTime - startTime) * (lightEndTime - lightStartTime) + lightStartTime;
+		return Helpers::FPart(((double)time - startTime) / duration) * (lightEndTime - lightStartTime) + lightStartTime;
 	}
 
 	void Pattern::LightSequences::Read(BufferFile::ptr file, int &length)

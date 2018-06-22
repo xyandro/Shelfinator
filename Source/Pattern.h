@@ -38,7 +38,7 @@ namespace Shelfinator
 		class LightSequence
 		{
 		public:
-			int lightStartTime, lightEndTime, startTime, endTime;
+			int lightStartTime, lightEndTime, duration, startTime, endTime;
 			void Read(BufferFile::ptr file, int &length);
 			double GetLightTime(int time);
 		};
