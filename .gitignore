@@ -1,9 +1,8 @@
 ﻿*.o
 *.user
 .vs
-/Patterns
+/Build
 bin
 Debug
 obj
 Release
-shelfinator

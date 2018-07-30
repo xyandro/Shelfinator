@@ -47,8 +47,7 @@ namespace Shelfinator
 
 				foreach (var pattern in match)
 				{
-					var fileName = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(App).Assembly.Location)))), "Patterns", $"{pattern.PatternNumber}.dat");
-					Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{pattern.PatternNumber}.pat");
 					pattern.Render().Save(fileName);
 				}
 			}

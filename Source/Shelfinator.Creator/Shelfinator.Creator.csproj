@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)\..\Build\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -102,9 +102,9 @@
     <Compile Include="RemoteEmulator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Driver.vcxproj">
+    <ProjectReference Include="..\Shelfinator.Runner\Shelfinator.Runner.vcxproj">
       <Project>{95a660dc-fbfe-4560-a433-0b024494b213}</Project>
-      <Name>Driver</Name>
+      <Name>Shelfinator.Driver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

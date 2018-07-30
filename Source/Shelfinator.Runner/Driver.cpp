@@ -35,14 +35,12 @@ namespace Shelfinator
 		char buf[1024];
 #ifdef _WIN32
 		GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
-		for (auto ctr = 0; ctr < 4; ++ctr)
-			*strrchr(buf, '\\') = 0;
-		strcat(buf, "\\Patterns\\");
+		*strrchr(buf, '\\') = 0;
+		strcat(buf, "\\");
 #else
 		readlink("/proc/self/exe", buf, sizeof(buf) / sizeof(*buf));
-		for (auto ctr = 0; ctr < 2; ++ctr)
-			*strrchr(buf, '/') = 0;
-		strcat(buf, "/Patterns/");
+		*strrchr(buf, '/') = 0;
+		strcat(buf, "/");
 #endif
 		patternsPath = buf;
 	}
@@ -50,7 +48,7 @@ namespace Shelfinator
 	void Driver::AddIfPatternFile(std::string fileName)
 	{
 		std::transform(fileName.begin(), fileName.end(), fileName.begin(), tolower);
-		if ((fileName.length() >= 4) && (fileName.substr(fileName.length() - 4, 4) == ".dat"))
+		if ((fileName.length() >= 4) && (fileName.substr(fileName.length() - 4, 4) == ".pat"))
 		{
 			fileName = fileName.substr(0, fileName.length() - 4);
 			auto patternNumber = atoi(fileName.c_str());
@@ -191,7 +189,7 @@ namespace Shelfinator
 		while (patternIndex >= patternNumbers.size())
 			patternIndex -= (int)patternNumbers.size();
 
-		auto fileName = patternsPath + std::to_string(patternNumbers[patternIndex]) + ".dat";
+		auto fileName = patternsPath + std::to_string(patternNumbers[patternIndex]) + ".pat";
 		pattern = Pattern::Read(fileName.c_str());
 		time = startAtEnd ? pattern->GetLength() - 1 : 0;
 	}
