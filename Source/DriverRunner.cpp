@@ -3,6 +3,11 @@
 
 #include "Driver.h"
 
+namespace
+{
+	Shelfinator::Driver::ptr driver;
+}
+
 #ifdef _WIN32
 
 namespace Shelfinator
@@ -12,21 +17,24 @@ namespace Shelfinator
 		auto nativePatternNumbers = new int[patternNumbers->Count];
 		for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
 			nativePatternNumbers[ctr] = patternNumbers[ctr];
-		auto driver = Driver::Create(nativePatternNumbers, patternNumbers->Count, DotStar::Create(dotStar), Remote::Create(remote));
+		driver = Driver::Create(nativePatternNumbers, patternNumbers->Count, DotStar::Create(dotStar), Remote::Create(remote));
 		driver->Run();
+		driver.reset();
 		delete[] nativePatternNumbers;
+	}
+
+	void DriverRunner::Stop()
+	{
+		if (driver)
+			driver->Stop();
 	}
 }
 
 #else
 
-Shelfinator::DotStar::ptr dotStar;
-
 void BreakHandler(int s)
 {
-	auto lights = Shelfinator::Lights::Create(2440);
-	dotStar->Show(lights->lights, lights->count);
-	exit(1);
+	driver->Stop();
 }
 
 void SetupBreakhandler()
@@ -42,8 +50,6 @@ int main(int argc, char **argv)
 {
 	printf("Starting Shelfinator!\n");
 
-	dotStar = Shelfinator::DotStar::Create();
-
 	SetupBreakhandler();
 
 	auto patternNumbers = new int[argc];
@@ -57,7 +63,8 @@ int main(int argc, char **argv)
 			patternNumbers[patternNumberCount++] = value;
 	}
 
-	Shelfinator::Driver::Create(patternNumbers, patternNumberCount, dotStar, Shelfinator::Remote::Create())->Run();
+	driver = Shelfinator::Driver::Create(patternNumbers, patternNumberCount, Shelfinator::DotStar::Create(), Shelfinator::Remote::Create());
+	driver->Run();
 
 	delete[] patternNumbers;
 

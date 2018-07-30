@@ -10,6 +10,7 @@ namespace Shelfinator
 	{
 	public:
 		static void Run(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote);
+		static void Stop();
 	};
 #endif
 }

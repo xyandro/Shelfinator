@@ -2,9 +2,9 @@
 
 #include "Banner.h"
 #include "DotStar.h"
+#include "LightsQueue.h"
 #include "Pattern.h"
 #include "Remote.h"
-#include "Semaphore.h"
 
 namespace Shelfinator
 {
@@ -14,10 +14,12 @@ namespace Shelfinator
 		typedef std::shared_ptr<Driver> ptr;
 		static ptr Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
 		void Run();
+		void Stop();
 	private:
 		static const double multipliers[];
 		static const char *multiplierNames[];
 
+		bool running = true;
 		std::shared_ptr<std::chrono::steady_clock::time_point> start;
 		std::vector<int> patternNumbers;
 		DotStar::ptr dotStar;
@@ -27,10 +29,8 @@ namespace Shelfinator
 		int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
 		Pattern::ptr pattern;
 
-		static const int numBuffers = 2;
-		Semaphore::ptr readSem, writeSem;
-		int readBuf = -1, writeBuf = -1;
-		Lights::ptr lights[numBuffers];
+		LightsQueue::ptr lightsQueue;
+		Semaphore::ptr stopSem;
 
 #ifdef _WIN32
 		static DWORD RunUIThread(void *lpThreadParameter);

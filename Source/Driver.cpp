@@ -13,11 +13,8 @@ namespace Shelfinator
 
 	Driver::Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote)
 	{
-		readSem = Semaphore::Create(0);
-		writeSem = Semaphore::Create(numBuffers);
-
-		for (auto ctr = 0; ctr < numBuffers; ++ctr)
-			lights[ctr] = Lights::Create(2440);
+		lightsQueue = LightsQueue::Create(2);
+		stopSem = Semaphore::Create(0);
 
 		this->dotStar = dotStar;
 		this->remote = remote;
@@ -211,13 +208,13 @@ namespace Shelfinator
 	{
 		while (true)
 		{
-			readSem->Wait();
-			++readBuf;
-			if (readBuf >= numBuffers)
-				readBuf = 0;
-
-			dotStar->Show(lights[readBuf]->lights, lights[readBuf]->count);
-			writeSem->Signal();
+			auto lights = lightsQueue->Get();
+			if (!lights)
+			{
+				stopSem->Signal();
+				break;
+			}
+			dotStar->Show(lights->lights, lights->count);
 		}
 	}
 
@@ -235,7 +232,7 @@ namespace Shelfinator
 		auto loadTime = Millis() - startLoad;
 		auto startDraw = Millis();
 		int startTime, nextTime = -1;
-		while (true)
+		while (running)
 		{
 			startTime = nextTime;
 			nextTime = -1;
@@ -250,19 +247,12 @@ namespace Shelfinator
 				continue;
 			}
 
-			writeSem->Wait();
-			++writeBuf;
-			if (writeBuf >= numBuffers)
-				writeBuf = 0;
-
-			lights[writeBuf]->Clear();
-			pattern->SetLights(time, lights[writeBuf]);
-
+			auto lights = Lights::Create(2440);
+			pattern->SetLights(time, lights);
 			if (banner)
-				banner->SetLights(lights[writeBuf]);
-
-			lights[writeBuf]->CheckOverage();
-			readSem->Signal();
+				banner->SetLights(lights);
+			lights->CheckOverage();
+			lightsQueue->Add(lights);
 
 			nextTime = Millis();
 			if (startTime != -1)
@@ -284,6 +274,15 @@ namespace Shelfinator
 				fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 			}
 		}
+
+		lightsQueue->Add(Lights::Create(2440));
+		lightsQueue->Add(nullptr);
+		stopSem->Wait();
+	}
+
+	void Driver::Stop()
+	{
+		running = false;
 	}
 
 	std::shared_ptr<std::chrono::steady_clock::time_point> Driver::GetTime()

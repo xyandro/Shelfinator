@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <algorithm>
+#include <queue>
 #ifdef _WIN32
 #include <chrono>
 #include <string>
