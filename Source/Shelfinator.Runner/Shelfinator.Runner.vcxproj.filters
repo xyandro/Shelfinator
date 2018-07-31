@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp" />
     <Filter Include="Banner">
       <UniqueIdentifier>{6839f4d7-bb71-4af0-8911-893673dd6050}</UniqueIdentifier>
     </Filter>
@@ -23,12 +22,6 @@
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="DotStar.cpp">
-      <Filter>DotStar</Filter>
-    </ClCompile>
-    <ClInclude Include="DotStar.h">
-      <Filter>DotStar</Filter>
-    </ClInclude>
     <Filter Include="Driver">
       <UniqueIdentifier>{a030b45a-2f9f-4b33-bf17-fa1f83d5aeff}</UniqueIdentifier>
     </Filter>
@@ -38,15 +31,6 @@
     <ClInclude Include="Driver.h">
       <Filter>Driver</Filter>
     </ClInclude>
-    <Filter Include="DriverRunner">
-      <UniqueIdentifier>{15e7034d-f468-41ad-95e5-963e6fa92fb9}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="DriverRunner.cpp">
-      <Filter>DriverRunner</Filter>
-    </ClCompile>
-    <ClInclude Include="DriverRunner.h">
-      <Filter>DriverRunner</Filter>
-    </ClInclude>
     <Filter Include="Helpers">
       <UniqueIdentifier>{a6809c57-e542-47cb-b7dc-3a824d84e18f}</UniqueIdentifier>
     </Filter>
@@ -55,6 +39,12 @@
     </ClCompile>
     <ClInclude Include="Helpers.h">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="IDotStar.h">
+      <Filter>DotStar</Filter>
+    </ClInclude>
+    <ClInclude Include="IRemote.h">
+      <Filter>Remote</Filter>
     </ClInclude>
     <Filter Include="Lights">
       <UniqueIdentifier>{fe9abc41-3bc8-4233-8573-1b4a7b4b35e1}</UniqueIdentifier>
@@ -86,13 +76,9 @@
     <Filter Include="Remote">
       <UniqueIdentifier>{8e3b4709-aba4-48ea-a62c-36f12aa78766}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="Remote.cpp">
-      <Filter>Remote</Filter>
-    </ClCompile>
-    <ClInclude Include="Remote.h">
+    <ClInclude Include="RemoteCode.h">
       <Filter>Remote</Filter>
     </ClInclude>
-    <ClInclude Include="RemoteCode.h" />
     <Filter Include="Semaphore">
       <UniqueIdentifier>{d421afca-cbe6-4cac-857e-feb99432edc8}</UniqueIdentifier>
     </Filter>

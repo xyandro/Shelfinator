@@ -4,11 +4,11 @@ using namespace System;
 using namespace System::Reflection;
 using namespace System::Runtime::InteropServices;
 
-[assembly:AssemblyTitleAttribute(L"Driver")];
+[assembly:AssemblyTitleAttribute(L"Interop")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"Driver")];
+[assembly:AssemblyProductAttribute(L"Interop")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2018")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];

@@ -5,15 +5,10 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-#ifdef _WIN32
-
-		DotStar::DotStar(IDotStar ^dotStar) { this->dotStar = dotStar; }
-		DotStar::ptr DotStar::Create(IDotStar ^dotStar) { return ptr(new DotStar(dotStar)); }
-		void DotStar::Show(int *lights, int count) { return dotStar->Show(lights, count); }
-
-#else
-
-		DotStar::ptr DotStar::Create() { return ptr(new DotStar()); }
+		DotStar::ptr DotStar::Create()
+		{
+			return ptr(new DotStar());
+		}
 
 		DotStar::DotStar()
 		{
@@ -85,7 +80,5 @@ namespace Shelfinator
 
 			ioctl(fd, SPI_IOC_MESSAGE(3), xfer);
 		}
-
-#endif
 	}
 }

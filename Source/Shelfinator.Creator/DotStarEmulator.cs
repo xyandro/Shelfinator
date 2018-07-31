@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Shelfinator.Runner;
+using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {

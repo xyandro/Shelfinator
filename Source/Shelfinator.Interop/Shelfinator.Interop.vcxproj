@@ -8,18 +8,19 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{95A660DC-FBFE-4560-A433-0B024494B213}</ProjectGuid>
+    <ProjectGuid>{9131E615-8B9B-43ED-B3C2-2B3FC31A1BA5}</ProjectGuid>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
-    <RootNamespace>Runner</RootNamespace>
+    <RootNamespace>Interop</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
-    <ProjectName>Shelfinator.Runner</ProjectName>
+    <ProjectName>Shelfinator.Interop</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -54,29 +55,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Banner.cpp" />
-    <ClInclude Include="Banner.h" />
-    <ClCompile Include="BufferFile.cpp" />
-    <ClInclude Include="BufferFile.h" />
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="DotStar.cpp" />
+    <ClInclude Include="DotStar.h" />
     <ClCompile Include="Driver.cpp" />
     <ClInclude Include="Driver.h" />
-    <ClCompile Include="Helpers.cpp" />
-    <ClInclude Include="Helpers.h" />
     <ClInclude Include="IDotStar.h" />
     <ClInclude Include="IRemote.h" />
-    <ClCompile Include="Lights.cpp" />
-    <ClInclude Include="Lights.h" />
-    <ClCompile Include="LightsQueue.cpp" />
-    <ClInclude Include="LightsQueue.h" />
-    <ClCompile Include="Pattern.cpp" />
-    <ClInclude Include="Pattern.h" />
+    <ClCompile Include="Remote.cpp" />
+    <ClInclude Include="Remote.h" />
     <ClInclude Include="RemoteCode.h" />
-    <ClCompile Include="Semaphore.cpp" />
-    <ClInclude Include="Semaphore.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shelfinator.Runner\Shelfinator.Runner.vcxproj">
+      <Project>{95a660dc-fbfe-4560-a433-0b024494b213}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

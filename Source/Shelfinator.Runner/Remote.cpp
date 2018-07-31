@@ -5,11 +5,6 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-#ifdef _WIN32
-		Remote::ptr Remote::Create(IRemote ^remote) { return ptr(new Remote(remote)); }
-		Remote::Remote(IRemote ^remote) { this->remote = remote; }
-		RemoteCode Remote::GetCode() { return (RemoteCode)remote->GetCode(); }
-#else
 		Remote::ptr Remote::Create()
 		{
 			return ptr(new Remote);
@@ -68,6 +63,5 @@ namespace Shelfinator
 			queue.push_back(code);
 			mlock.unlock();
 		}
-#endif
 	}
 }

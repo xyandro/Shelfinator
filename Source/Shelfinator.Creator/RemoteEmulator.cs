@@ -1,12 +1,12 @@
 ﻿using System.Collections.Concurrent;
-using Shelfinator.Runner;
+using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
 	public class RemoteEmulator : IRemote
 	{
-		readonly ConcurrentQueue<RefRemoteCode> queue = new ConcurrentQueue<RefRemoteCode>();
-		public RefRemoteCode GetCode() => queue.TryDequeue(out var code) ? code : RefRemoteCode.None;
-		public void Add(RefRemoteCode code) => queue.Enqueue(code);
+		readonly ConcurrentQueue<RemoteCode> queue = new ConcurrentQueue<RemoteCode>();
+		public RemoteCode GetCode() => queue.TryDequeue(out var code) ? code : RemoteCode.None;
+		public void Add(RemoteCode code) => queue.Enqueue(code);
 	}
 }

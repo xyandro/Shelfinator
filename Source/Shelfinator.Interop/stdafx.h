@@ -5,6 +5,7 @@
 #ifdef _WIN32
 #include <chrono>
 #include <string>
+#include <vcclr.h>
 #include <vector>
 #include <Windows.h>
 #else

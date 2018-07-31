@@ -1,10 +1,10 @@
 ﻿#pragma once
 
 #include "Banner.h"
-#include "DotStar.h"
+#include "IDotStar.h"
+#include "IRemote.h"
 #include "LightsQueue.h"
 #include "Pattern.h"
-#include "Remote.h"
 
 namespace Shelfinator
 {
@@ -14,7 +14,7 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Driver> ptr;
-			static ptr Create(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
+			static ptr Create(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);
 			void Run();
 			void Stop();
 		private:
@@ -24,8 +24,8 @@ namespace Shelfinator
 			bool running = true;
 			std::shared_ptr<std::chrono::steady_clock::time_point> start;
 			std::vector<int> patternNumbers;
-			DotStar::ptr dotStar;
-			Remote::ptr remote;
+			IDotStar::ptr dotStar;
+			IRemote::ptr remote;
 			Banner::ptr banner;
 			std::string patternsPath;
 			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
@@ -39,7 +39,7 @@ namespace Shelfinator
 #endif
 			void RunUIThread();
 
-			Driver(int *patternNumbers, int patternNumberCount, DotStar::ptr dotStar, Remote::ptr remote);
+			Driver(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);
 			void AddIfPatternFile(std::string fileName);
 			void SetupPatternsPath();
 			void MakeFirst(int patternNumber);

@@ -1,5 +1,4 @@
 ﻿#include "stdafx.h"
-#include "DriverRunner.h"
 
 #include "Driver.h"
 
@@ -7,33 +6,6 @@ namespace
 {
 	Shelfinator::Runner::Driver::ptr driver;
 }
-
-#ifdef _WIN32
-
-namespace Shelfinator
-{
-	namespace Runner
-	{
-		void DriverRunner::Run(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote)
-		{
-			auto nativePatternNumbers = new int[patternNumbers->Count];
-			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
-				nativePatternNumbers[ctr] = patternNumbers[ctr];
-			driver = Driver::Create(nativePatternNumbers, patternNumbers->Count, DotStar::Create(dotStar), Remote::Create(remote));
-			driver->Run();
-			driver.reset();
-			delete[] nativePatternNumbers;
-		}
-
-		void DriverRunner::Stop()
-		{
-			if (driver)
-				driver->Stop();
-		}
-	}
-}
-
-#else
 
 void BreakHandler(int s)
 {
@@ -73,5 +45,3 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-
-#endif

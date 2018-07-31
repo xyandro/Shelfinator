@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using Shelfinator.Creator.Patterns;
-using Shelfinator.Runner;
+using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
@@ -57,7 +57,7 @@ namespace Shelfinator.Creator
 			var remote = new RemoteEmulator();
 			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
 			window.Show();
-			new Thread(() => DriverRunner.Run(patternNumbers, dotStar, remote)).Start();
+			new Thread(() => { using (var driver = new Driver(patternNumbers, dotStar, remote)) driver.Run(); }).Start();
 		}
 
 		protected override void OnExit(ExitEventArgs e)

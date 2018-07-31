@@ -4,7 +4,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-#define OPTIONS\
+#define REMOTE_CODES\
 		None,\
 		Play,\
 		Pause,\
@@ -25,10 +25,6 @@ namespace Shelfinator
 		D9,\
 		Info,\
 
-		enum RemoteCode { OPTIONS };
-
-#ifdef _WIN32
-		public enum class RefRemoteCode { OPTIONS };
-#endif
+		enum RemoteCode { REMOTE_CODES };
 	}
 }

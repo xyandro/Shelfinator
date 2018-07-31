@@ -1,45 +1,24 @@
 ﻿#pragma once
 
-#include "RemoteCode.h"
+#include "IRemote.h"
 
 namespace Shelfinator
 {
 	namespace Runner
 	{
-#ifdef _WIN32
-		public interface class IRemote
-		{
-			RefRemoteCode GetCode();
-		};
-#endif
-
-		class Remote
+		class Remote : public IRemote
 		{
 		public:
 			typedef std::shared_ptr<Remote> ptr;
-
-			RemoteCode GetCode();
-#ifdef _WIN32
-		public:
-			static ptr Create(IRemote ^remote);
-
-		private:
-			gcroot<IRemote^> remote;
-
-			Remote(IRemote ^remote);
-#else
-		public:
 			static ptr Create();
 			~Remote();
-
+			RemoteCode GetCode();
 		private:
 			std::deque<RemoteCode> queue;
 			std::mutex mutex;
-
 			Remote();
 			void RunThread();
 			void AddCode(RemoteCode code);
-#endif
 		};
 	}
 }
