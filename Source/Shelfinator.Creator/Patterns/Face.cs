@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Face : IPattern
 	{
@@ -25,7 +25,7 @@ namespace Shelfinator.Patterns
 ",39/1,38/0,38&1,39/0,39/0,40&1,40/0,41&1,41/0,42&1,42/0,43&1,43/0,44&1,44/0,45&1,45/0,46&1,46/0,47&1,47/0,48&1,48/0,49&1,49/0,50&1,50/0,51&1,51/0,52&1,52/0,53&1,53/0,54&1,54/0,55&1,55/0,56&1,56/0,57/0,58&1,57/1,58/2,57&2,58/3,57&3,58/4,57&4,58/5,57&5,58/6,57&6,58/7,57&7,58/8,57&8,58/9,57&9,58/10,57&10,58/11,57&11,58/12,57&12,58/13,57&13,58/14,57&14,58/15,57&15,58/16,57&16,58/17,57&17,58/18,57&18,58/19,57&19,58/20,57&20,58/21,57&21,58/22,57&22,58/23,57&23,58/24,57&24,58/25,57&25,58/26,57&26,58/27" +
 ",57&27,58/28,57&28,58/29,57&29,58/30,57&30,58/31,57&31,58/32,57&32,58/33,57&33,58/34,57&34,58/35,57&35,58/36,57&36,58/37,57&37,58/38,57&38,58/39,57&39,58/40,57&40,58/41,57&41,58/42,57&42,58/43,57&43,58/44,57&44,58/45,57&45,58/46,57&46,58/47,57&47,58";
 
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			return data.Split('P').Select(part => part.Split('/').Select(l => l.Split('&').Select(p => p.Split(',').Select(int.Parse).ToList()).Select(p => layout.GetPositionLight(p[0], p[1])).ToList()).ToList()).ToList();
 		}
 

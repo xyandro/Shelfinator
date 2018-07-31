@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using Shelfinator.Runner;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	public class RemoteEmulator : IRemote
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Test : IPattern
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Rotate : IPattern
 	{
@@ -15,8 +15,8 @@ namespace Shelfinator.Patterns
 			const int Delay = 150;
 
 			var pattern = new Pattern();
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
-			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
+			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 
 			foreach (var square in squares.GetAllLights())
 			{

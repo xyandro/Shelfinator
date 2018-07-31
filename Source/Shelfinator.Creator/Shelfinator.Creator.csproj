@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{A3CB008F-518D-4BD3-8045-E1B1F5629B0A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Shelfinator</RootNamespace>
+    <RootNamespace>Shelfinator.Creator</RootNamespace>
     <AssemblyName>Shelfinator</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Shelfinator.Runner;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	class DotStarEmulator : IDotStar
 	{

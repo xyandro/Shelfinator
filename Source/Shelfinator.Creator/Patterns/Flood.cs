@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Flood : IPattern
 	{
@@ -64,7 +64,7 @@ namespace Shelfinator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var lights = layout.GetAllLights();
 			var next = lights.Select(l => new { light = l, point = layout.GetLightPosition(l) }).Select(o => new { o.light, points = new List<Point> { new Point(o.point.X - 1, o.point.Y), new Point(o.point.X + 1, o.point.Y), new Point(o.point.X, o.point.Y - 1), new Point(o.point.X, o.point.Y + 1) } }).ToDictionary(o => o.light, o => layout.TryGetPositionLights(o.points));
 			var pattern = new Pattern();

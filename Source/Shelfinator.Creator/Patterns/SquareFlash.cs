@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class SquareFlash : IPattern
 	{
@@ -10,8 +10,8 @@ namespace Shelfinator.Patterns
 
 		List<List<int>> GetLights()
 		{
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
-			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
+			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 			return squares.GetAllLights().Except(0).OrderBy(light => light).Select(light => layout.GetPositionLights(squares.GetLightPositions(light))).ToList();
 		}
 

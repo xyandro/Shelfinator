@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Sine : IPattern
 	{
@@ -12,7 +12,7 @@ namespace Shelfinator.Patterns
 			const double Brightness = 1f / 16;
 
 			var pattern = new Pattern();
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
 			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);

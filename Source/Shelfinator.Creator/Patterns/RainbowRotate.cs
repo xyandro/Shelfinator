@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class RainbowRotate : IPattern
 	{
@@ -17,7 +17,7 @@ namespace Shelfinator.Patterns
 			const int RotateCount = 3;
 
 			var pattern = new Pattern();
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var lights = layout.GetAllLights();
 
 			var colors = Helpers.Rainbow7.ToList();

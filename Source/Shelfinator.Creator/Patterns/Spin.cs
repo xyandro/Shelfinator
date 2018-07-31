@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Spin : IPattern
 	{
@@ -16,7 +16,7 @@ namespace Shelfinator.Patterns
 			const int Delay = 300;
 
 			var pattern = new Pattern();
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
 			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
 			var topLeft = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).First();

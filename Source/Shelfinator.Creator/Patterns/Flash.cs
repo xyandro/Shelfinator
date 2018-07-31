@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Flash : IPattern
 	{
@@ -10,7 +10,7 @@ namespace Shelfinator.Patterns
 
 		List<int> GetLights()
 		{
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var rand = new Random();
 			return layout.GetAllLights().OrderBy(x => rand.Next()).ToList();
 		}

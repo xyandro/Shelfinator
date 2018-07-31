@@ -2,19 +2,22 @@
 
 namespace Shelfinator
 {
-	class Lights
+	namespace Runner
 	{
-	public:
-		typedef std::shared_ptr<Lights> ptr;
+		class Lights
+		{
+		public:
+			typedef std::shared_ptr<Lights> ptr;
 
-		int count, *lights;
+			int count, *lights;
 
-		static ptr Create(int count);
-		~Lights();
-		void Clear();
-		void SetLight(int light, int value);
-		void CheckOverage();
-	private:
-		Lights(int count);
-	};
+			static ptr Create(int count);
+			~Lights();
+			void Clear();
+			void SetLight(int light, int value);
+			void CheckOverage();
+		private:
+			Lights(int count);
+		};
+	}
 }

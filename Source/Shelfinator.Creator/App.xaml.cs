@@ -3,9 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using Shelfinator.Patterns;
+using Shelfinator.Creator.Patterns;
+using Shelfinator.Runner;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	partial class App
 	{
@@ -52,7 +53,7 @@ namespace Shelfinator
 				}
 			}
 
-			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Patterns.Layout.DotStar.png"));
+			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Creator.Patterns.Layout.DotStar.png"));
 			var remote = new RemoteEmulator();
 			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
 			window.Show();

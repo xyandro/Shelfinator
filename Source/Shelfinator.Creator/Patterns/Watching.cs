@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Watching : IPattern
 	{
@@ -37,10 +37,10 @@ namespace Shelfinator.Patterns
 			const double WatchingBrightness = 1f / 16;
 
 			var pattern = new Pattern();
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var watchingLights = GetLights(layout);
 
-			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
+			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 			var lightSquare = new Dictionary<int, int>();
 			var squareLights2 = new Dictionary<int, List<int>>();
 			var squareCenter = new Dictionary<int, Point>();

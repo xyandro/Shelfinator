@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	class LightColor
 	{

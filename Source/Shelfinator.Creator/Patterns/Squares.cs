@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Squares : IPattern
 	{
@@ -10,8 +10,8 @@ namespace Shelfinator.Patterns
 
 		void GetSquareLights(out List<List<int>> lights, out List<Point> centers)
 		{
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
-			var squares = new Layout("Shelfinator.Patterns.Layout.Squares.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
+			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 			var positions = squares.GetAllLights().Except(0).OrderBy(light => light).Select(light => squares.GetLightPositions(light)).ToList();
 			lights = squares.GetAllLights().Except(0).OrderBy(light => light).Select(light => squares.GetLightPositions(light)).Select(list => list.Select(light => layout.GetPositionLight(light)).ToList()).ToList();
 			centers = positions.Select(list => Helpers.GetCenter(list)).ToList();

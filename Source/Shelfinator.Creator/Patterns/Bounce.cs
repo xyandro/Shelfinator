@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Bounce : IPattern
 	{
@@ -13,7 +13,7 @@ namespace Shelfinator.Patterns
 
 			var pattern = new Pattern();
 
-			var layout = new Layout("Shelfinator.Patterns.Layout.Layout-Body.png");
+			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var columns = new List<int> { 0, 19, 38, 57, 76, 95 };
 			var columnTime = new List<int> { 48, 64, 0, 32, 80, 16 };
 

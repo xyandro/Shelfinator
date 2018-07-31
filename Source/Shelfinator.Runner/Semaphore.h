@@ -6,21 +6,24 @@
 
 namespace Shelfinator
 {
-	class Semaphore
+	namespace Runner
 	{
-	public:
-		typedef std::shared_ptr<Semaphore> ptr;
-		static ptr Create(int count);
-		~Semaphore();
-		void Signal();
-		void Wait();
-	private:
+		class Semaphore
+		{
+		public:
+			typedef std::shared_ptr<Semaphore> ptr;
+			static ptr Create(int count);
+			~Semaphore();
+			void Signal();
+			void Wait();
+		private:
 #ifdef _WIN32
-		HANDLE handle;
+			HANDLE handle;
 #else
-		int semaphoreID;
+			int semaphoreID;
 #endif
 
-		Semaphore(int count);
-	};
+			Semaphore(int count);
+		};
+	}
 }

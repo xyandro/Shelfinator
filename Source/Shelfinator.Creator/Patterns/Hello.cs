@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 
-namespace Shelfinator.Patterns
+namespace Shelfinator.Creator.Patterns
 {
 	class Hello : IPattern
 	{
@@ -22,7 +22,7 @@ namespace Shelfinator.Patterns
 			const double WhiteBrightness = 1f / 8;
 
 			var pattern = new Pattern();
-			var header = new Layout("Shelfinator.Patterns.Layout.Layout-Header.png");
+			var header = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
 			var allLocations = allLights.Select(light => header.GetLightPosition(light)).ToList();
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);

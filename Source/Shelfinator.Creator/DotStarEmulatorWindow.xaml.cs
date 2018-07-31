@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Shelfinator.Runner;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	partial class DotStarEmulatorWindow
 	{

@@ -5,28 +5,31 @@
 
 namespace
 {
-	Shelfinator::Driver::ptr driver;
+	Shelfinator::Runner::Driver::ptr driver;
 }
 
 #ifdef _WIN32
 
 namespace Shelfinator
 {
-	void DriverRunner::Run(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote)
+	namespace Runner
 	{
-		auto nativePatternNumbers = new int[patternNumbers->Count];
-		for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
-			nativePatternNumbers[ctr] = patternNumbers[ctr];
-		driver = Driver::Create(nativePatternNumbers, patternNumbers->Count, DotStar::Create(dotStar), Remote::Create(remote));
-		driver->Run();
-		driver.reset();
-		delete[] nativePatternNumbers;
-	}
+		void DriverRunner::Run(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote)
+		{
+			auto nativePatternNumbers = new int[patternNumbers->Count];
+			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
+				nativePatternNumbers[ctr] = patternNumbers[ctr];
+			driver = Driver::Create(nativePatternNumbers, patternNumbers->Count, DotStar::Create(dotStar), Remote::Create(remote));
+			driver->Run();
+			driver.reset();
+			delete[] nativePatternNumbers;
+		}
 
-	void DriverRunner::Stop()
-	{
-		if (driver)
-			driver->Stop();
+		void DriverRunner::Stop()
+		{
+			if (driver)
+				driver->Stop();
+		}
 	}
 }
 

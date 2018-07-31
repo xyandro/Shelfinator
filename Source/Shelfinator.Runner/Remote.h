@@ -4,39 +4,42 @@
 
 namespace Shelfinator
 {
-#ifdef _WIN32
-	public interface class IRemote
+	namespace Runner
 	{
-		RefRemoteCode GetCode();
-	};
+#ifdef _WIN32
+		public interface class IRemote
+		{
+			RefRemoteCode GetCode();
+		};
 #endif
 
-	class Remote
-	{
-	public:
-		typedef std::shared_ptr<Remote> ptr;
+		class Remote
+		{
+		public:
+			typedef std::shared_ptr<Remote> ptr;
 
-		RemoteCode GetCode();
+			RemoteCode GetCode();
 #ifdef _WIN32
-	public:
-		static ptr Create(IRemote ^remote);
+		public:
+			static ptr Create(IRemote ^remote);
 
-	private:
-		gcroot<IRemote^> remote;
+		private:
+			gcroot<IRemote^> remote;
 
-		Remote(IRemote ^remote);
+			Remote(IRemote ^remote);
 #else
-	public:
-		static ptr Create();
-		~Remote();
+		public:
+			static ptr Create();
+			~Remote();
 
-	private:
-		std::deque<RemoteCode> queue;
-		std::mutex mutex;
+		private:
+			std::deque<RemoteCode> queue;
+			std::mutex mutex;
 
-		Remote();
-		void RunThread();
-		void AddCode(RemoteCode code);
+			Remote();
+			void RunThread();
+			void AddCode(RemoteCode code);
 #endif
-	};
+		};
+	}
 }

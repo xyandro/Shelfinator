@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace Shelfinator
+namespace Shelfinator.Creator
 {
 	class Layout
 	{
