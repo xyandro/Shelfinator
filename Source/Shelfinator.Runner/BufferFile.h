@@ -14,12 +14,14 @@ namespace Shelfinator
 			~BufferFile();
 			bool GetBool();
 			int GetInt();
+#ifndef INTEROP
 		private:
 			char buffer[65536];
 			int bufPos = 0, bufUsed = 0;
 			FILE *file;
 			BufferFile(const char *fileName);
 			void Copy(void *ptr, int size);
+#endif
 		};
 	}
 }

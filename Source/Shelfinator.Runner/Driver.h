@@ -18,6 +18,7 @@ namespace Shelfinator
 			static ptr Create(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);
 			void Run();
 			void Stop();
+#ifndef INTEROP
 		private:
 			static const double multipliers[];
 			static const char *multiplierNames[];
@@ -52,6 +53,7 @@ namespace Shelfinator
 			std::shared_ptr<std::chrono::steady_clock::time_point> GetTime();
 			int Millis();
 			int Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime);
+#endif
 		};
 	}
 }

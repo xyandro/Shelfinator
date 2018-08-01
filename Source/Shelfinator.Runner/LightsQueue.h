@@ -15,10 +15,12 @@ namespace Shelfinator
 			static LightsQueue::ptr Create(int maxCapacity);
 			Lights::ptr Get();
 			void Add(Lights::ptr lights);
+#ifndef INTEROP
 		private:
 			Semaphore::ptr getSem, addSem, mutex;
 			std::queue<Lights::ptr> lightsQueue;
 			LightsQueue(int maxCapacity);
+#endif
 		};
 	}
 }
