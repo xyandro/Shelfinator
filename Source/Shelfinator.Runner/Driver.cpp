@@ -16,7 +16,6 @@ namespace Shelfinator
 		Driver::Driver(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
 			lightsQueue = LightsQueue::Create(2);
-			stopSem = Semaphore::Create(0);
 
 			this->dotStar = dotStar;
 			this->remote = remote;
@@ -203,7 +202,9 @@ namespace Shelfinator
 				auto lights = lightsQueue->Get();
 				if (!lights)
 				{
-					stopSem->Signal();
+					std::unique_lock<decltype(stopMutex)> lock(stopMutex);
+					finished = true;
+					stopCondVar.notify_all();
 					break;
 				}
 				dotStar->Show(lights->lights, lights->count);
@@ -265,12 +266,18 @@ namespace Shelfinator
 
 			lightsQueue->Add(Lights::Create(2440));
 			lightsQueue->Add(nullptr);
-			stopSem->Wait();
+
+			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
+			while (!finished)
+				stopCondVar.wait(lock);
 		}
 
 		void Driver::Stop()
 		{
 			running = false;
+			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
+			while (!finished)
+				stopCondVar.wait(lock);
 		}
 
 		std::shared_ptr<std::chrono::steady_clock::time_point> Driver::GetTime()

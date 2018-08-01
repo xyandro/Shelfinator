@@ -1,12 +1,14 @@
 ﻿#pragma once
 
+#ifndef INTEROP
+#include <mutex>
+#endif
 #include <chrono>
 #include "Banner.h"
 #include "IDotStar.h"
 #include "IRemote.h"
 #include "LightsQueue.h"
 #include "Pattern.h"
-#include "Semaphore.h"
 
 namespace Shelfinator
 {
@@ -24,7 +26,7 @@ namespace Shelfinator
 			static const double multipliers[];
 			static const char *multiplierNames[];
 
-			bool running = true;
+			bool running = true, finished = false;
 			std::shared_ptr<std::chrono::steady_clock::time_point> start;
 			std::vector<int> patternNumbers;
 			IDotStar::ptr dotStar;
@@ -35,7 +37,8 @@ namespace Shelfinator
 			Pattern::ptr pattern;
 
 			LightsQueue::ptr lightsQueue;
-			Semaphore::ptr stopSem;
+			std::mutex stopMutex;
+			std::condition_variable stopCondVar;
 
 			void RunUIThread();
 
