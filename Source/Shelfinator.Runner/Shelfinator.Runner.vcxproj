@@ -71,8 +71,6 @@
     <ClCompile Include="Pattern.cpp" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="RemoteCode.h" />
-    <ClCompile Include="Semaphore.cpp" />
-    <ClInclude Include="Semaphore.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
