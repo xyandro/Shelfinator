@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <queue>
 #ifndef INTEROP
 #include <mutex>
 #endif
@@ -16,14 +17,14 @@ namespace Shelfinator
 			static LightsQueue::ptr Create(int maxCapacity);
 			Lights::ptr Get();
 			void Add(Lights::ptr lights);
-#ifndef INTEROP
 		private:
 			int maxCapacity;
+#ifndef INTEROP
 			std::mutex mutex;
 			std::condition_variable getCond, addCond;
+#endif
 			std::queue<Lights::ptr> lightsQueue;
 			LightsQueue(int maxCapacity);
-#endif
 		};
 	}
 }

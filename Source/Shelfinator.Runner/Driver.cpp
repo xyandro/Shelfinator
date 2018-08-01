@@ -1,5 +1,6 @@
-﻿#include "stdafx.h"
-#include "Driver.h"
+﻿#include "Driver.h"
+
+#include <Windows.h>
 
 namespace Shelfinator
 {

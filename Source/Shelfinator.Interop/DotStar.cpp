@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "DotStar.h"
+﻿#include "DotStar.h"
 
 namespace Shelfinator
 {

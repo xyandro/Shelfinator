@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "LightsQueue.h"
+﻿#include "LightsQueue.h"
 
 namespace Shelfinator
 {

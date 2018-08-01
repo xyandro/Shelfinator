@@ -16,14 +16,12 @@ namespace Shelfinator
 			void SetLights(Lights::ptr lights);
 			void AddElapsed(int delta);
 			bool Expired();
-#ifndef INTEROP
 		private:
 			static int lightPosition[8][32];
 			bool **grid;
 			int elapsed = 0, time, width;
 
 			Banner(std::string text, int time, int spacing = -1);
-#endif
 		};
 	}
 }

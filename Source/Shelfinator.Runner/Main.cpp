@@ -1,6 +1,4 @@
-﻿#include "stdafx.h"
-
-#include "Driver.h"
+﻿#include "Driver.h"
 
 namespace
 {

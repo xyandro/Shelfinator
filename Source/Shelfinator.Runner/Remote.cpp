@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Remote.h"
+﻿#include "Remote.h"
 
 namespace Shelfinator
 {

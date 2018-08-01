@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Helpers.h"
+﻿#include "Helpers.h"
 
 namespace Shelfinator
 {

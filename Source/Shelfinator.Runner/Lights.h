@@ -18,10 +18,8 @@ namespace Shelfinator
 			void Clear();
 			void SetLight(int light, int value);
 			void CheckOverage();
-#ifndef INTEROP
 		private:
 			Lights(int count);
-#endif
 		};
 	}
 }

@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Driver.h"
+﻿#include "Driver.h"
 
 #include "DotStar.h"
 #include "Remote.h"

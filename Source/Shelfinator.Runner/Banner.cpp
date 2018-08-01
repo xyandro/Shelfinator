@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Banner.h"
+﻿#include "Banner.h"
 
 #include "Helpers.h"
 

@@ -17,7 +17,6 @@ namespace Shelfinator
 
 			void SetLights(int time, Lights::ptr lights);
 			int GetLength();
-#ifndef INTEROP
 		private:
 			class LightItem
 			{
@@ -88,7 +87,6 @@ namespace Shelfinator
 			PaletteSequences paletteSequences;
 
 			Pattern(BufferFile::ptr file);
-#endif
 		};
 	}
 }

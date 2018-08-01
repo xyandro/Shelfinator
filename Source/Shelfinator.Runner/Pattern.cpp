@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Pattern.h"
+﻿#include "Pattern.h"
 
 #include "Helpers.h"
 
