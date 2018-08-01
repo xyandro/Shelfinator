@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <vcclr.h>
 #include "../Shelfinator.Runner/IDotStar.h"
 #include "IDotStar.h"
 

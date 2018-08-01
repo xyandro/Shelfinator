@@ -1,6 +1,9 @@
 ﻿#pragma once
 
-#ifndef _WIN32
+#ifdef _WIN32
+#include <Windows.h>
+#include <memory>
+#else
 #include <sys/sem.h>
 #endif
 

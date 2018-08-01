@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <vcclr.h>
 #include "../Shelfinator.Runner/IRemote.h"
 #include "IRemote.h"
 

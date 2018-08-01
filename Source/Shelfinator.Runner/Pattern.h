@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <vector>
 #include "BufferFile.h"
 #include "Lights.h"
 

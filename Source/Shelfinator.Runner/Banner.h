@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <string>
 #include "Lights.h"
 
 namespace Shelfinator

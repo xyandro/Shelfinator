@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <queue>
 #include "Lights.h"
 #include "Semaphore.h"
 
