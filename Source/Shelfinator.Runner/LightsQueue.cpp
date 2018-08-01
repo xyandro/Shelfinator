@@ -12,33 +12,30 @@ namespace Shelfinator
 
 		LightsQueue::LightsQueue(int maxCapacity)
 		{
-			getSem = Semaphore::Create(0);
-			addSem = Semaphore::Create(maxCapacity);
-			mutex = Semaphore::Create(1);
+			this->maxCapacity = maxCapacity;
 		}
 
 		Lights::ptr LightsQueue::Get()
 		{
-			getSem->Wait();
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			while (lightsQueue.empty())
+				getCond.wait(lock);
 
-			mutex->Wait();
 			auto result = lightsQueue.front();
 			lightsQueue.pop();
-			mutex->Signal();
+			addCond.notify_one();
 
-			addSem->Signal();
 			return result;
 		}
 
 		void LightsQueue::Add(Lights::ptr lights)
 		{
-			addSem->Wait();
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			while (lightsQueue.size() >= maxCapacity)
+				addCond.wait(lock);
 
-			mutex->Wait();
 			lightsQueue.push(lights);
-			mutex->Signal();
-
-			getSem->Signal();
+			getCond.notify_one();
 		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "IRemote.h"
 #include "LightsQueue.h"
 #include "Pattern.h"
+#include "Semaphore.h"
 
 namespace Shelfinator
 {

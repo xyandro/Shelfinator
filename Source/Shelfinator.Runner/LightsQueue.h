@@ -1,8 +1,9 @@
 ﻿#pragma once
 
-#include <queue>
+#ifndef INTEROP
+#include <mutex>
+#endif
 #include "Lights.h"
-#include "Semaphore.h"
 
 namespace Shelfinator
 {
@@ -17,7 +18,9 @@ namespace Shelfinator
 			void Add(Lights::ptr lights);
 #ifndef INTEROP
 		private:
-			Semaphore::ptr getSem, addSem, mutex;
+			int maxCapacity;
+			std::mutex mutex;
+			std::condition_variable getCond, addCond;
 			std::queue<Lights::ptr> lightsQueue;
 			LightsQueue(int maxCapacity);
 #endif
