@@ -37,9 +37,6 @@ namespace Shelfinator
 			LightsQueue::ptr lightsQueue;
 			Semaphore::ptr stopSem;
 
-#ifdef _WIN32
-			static DWORD RunUIThread(void *lpThreadParameter);
-#endif
 			void RunUIThread();
 
 			Driver(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);

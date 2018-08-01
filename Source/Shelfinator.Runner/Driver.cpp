@@ -196,14 +196,6 @@ namespace Shelfinator
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 
-#ifdef _WIN32
-		DWORD Driver::RunUIThread(void *lpThreadParameter)
-		{
-			((Driver*)lpThreadParameter)->RunUIThread();
-			return 0;
-		}
-#endif
-
 		void Driver::RunUIThread()
 		{
 			while (true)
@@ -221,11 +213,7 @@ namespace Shelfinator
 		int frameCount = 0;
 		void Driver::Run()
 		{
-#ifdef _WIN32
-			CreateThread(NULL, 0, &Driver::RunUIThread, this, 0, NULL);
-#else
 			std::thread(&Driver::RunUIThread, this).detach();
-#endif
 
 			auto startLoad = Millis();
 			LoadPattern();
