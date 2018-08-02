@@ -88,5 +88,14 @@
     <ClInclude Include="RemoteCode.h">
       <Filter>Remote</Filter>
     </ClInclude>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{b4f5f752-a17d-48b1-be1b-4b1ec4a34087}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClInclude Include="Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

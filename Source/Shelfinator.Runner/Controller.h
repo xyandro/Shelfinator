@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include <chrono>
 #include "Banner.h"
 #include "IDotStar.h"
 #include "IRemote.h"
 #include "Patterns.h"
+#include "Timer.h"
 
 namespace Shelfinator
 {
@@ -24,12 +24,11 @@ namespace Shelfinator
 			static std::string multiplierNames[];
 
 			bool running = true;
-			std::shared_ptr<std::chrono::steady_clock::time_point> start;
+			Timer::ptr timer;
 			Patterns::ptr patterns;
 			IDotStar::ptr dotStar;
 			IRemote::ptr remote;
 			Banner::ptr banner;
-			std::string patternsPath;
 			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
 			Pattern::ptr pattern;
 
@@ -37,10 +36,6 @@ namespace Shelfinator
 
 			bool HandleRemote();
 			void LoadPattern(bool startAtEnd = false);
-
-			std::shared_ptr<std::chrono::steady_clock::time_point> GetTime();
-			int Millis();
-			int Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime);
 		};
 	}
 }

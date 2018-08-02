@@ -20,10 +20,8 @@ namespace Shelfinator
 		{
 			this->dotStar = dotStar;
 			this->remote = remote;
-			start = GetTime();
-
-			patternsPath = Helpers::GetRunPath();
-			patterns = Patterns::Create(patternsPath);
+			timer = Timer::Create();
+			patterns = Patterns::Create(Helpers::GetRunPath());
 		}
 
 		Controller::~Controller()
@@ -35,7 +33,7 @@ namespace Shelfinator
 		{
 			auto result = true;
 			auto useSelectedNumber = false;
-			auto now = Millis();
+			auto now = timer->Millis();
 			if ((selectedNumberTime != -1) && (now - selectedNumberTime >= 1000))
 				useSelectedNumber = true;
 
@@ -130,10 +128,10 @@ namespace Shelfinator
 				for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
 					patterns->MakeFirst(patternNumbers[ctr]);
 
-			auto startLoad = Millis();
+			auto startLoad = timer->Millis();
 			LoadPattern();
-			auto loadTime = Millis() - startLoad;
-			auto startDraw = Millis();
+			auto loadTime = timer->Millis() - startLoad;
+			auto startDraw = timer->Millis();
 			int startTime, nextTime = -1;
 			auto driver = Driver::Create(dotStar);
 			while (running)
@@ -157,7 +155,7 @@ namespace Shelfinator
 					banner->SetLights(lights);
 				driver->SetLights(lights);
 
-				nextTime = Millis();
+				nextTime = timer->Millis();
 				if (startTime != -1)
 				{
 					auto elapsed = nextTime - startTime;
@@ -172,7 +170,7 @@ namespace Shelfinator
 
 				if (++frameCount == 300)
 				{
-					auto drawTime = Millis() - startDraw;
+					auto drawTime = timer->Millis() - startDraw;
 					auto fps = (double)frameCount / drawTime * 1000;
 					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 				}
@@ -218,23 +216,6 @@ namespace Shelfinator
 		void Controller::Stop()
 		{
 			running = false;
-		}
-
-		std::shared_ptr<std::chrono::steady_clock::time_point> Controller::GetTime()
-		{
-			return std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
-		}
-
-		int Controller::Millis()
-		{
-			return Millis(GetTime());
-		}
-
-		int Controller::Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime)
-		{
-			if (!atTime)
-				atTime = GetTime();
-			return (int)std::chrono::duration_cast<std::chrono::milliseconds>(*atTime - *start).count();
 		}
 	}
 }
