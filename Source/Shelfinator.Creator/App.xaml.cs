@@ -63,11 +63,11 @@ namespace Shelfinator.Creator
 			window.Show();
 			new Thread(() =>
 			{
-				using (var driver = new Driver(dotStar, remote))
+				using (var controller = new Controller(dotStar, remote))
 					if (test)
-						driver.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2]);
+						controller.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2]);
 					else
-						driver.Run(patternNumbers);
+						controller.Run(patternNumbers);
 			}).Start();
 		}
 

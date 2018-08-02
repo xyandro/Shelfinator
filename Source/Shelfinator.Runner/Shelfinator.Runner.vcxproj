@@ -53,8 +53,8 @@
     <ClInclude Include="Banner.h" />
     <ClCompile Include="BufferFile.cpp" />
     <ClInclude Include="BufferFile.h" />
-    <ClCompile Include="Driver.cpp" />
-    <ClInclude Include="Driver.h" />
+    <ClCompile Include="Controller.cpp" />
+    <ClInclude Include="Controller.h" />
     <ClCompile Include="Helpers.cpp" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="IDotStar.h" />

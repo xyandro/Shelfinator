@@ -1,4 +1,4 @@
-﻿#include "Driver.h"
+﻿#include "Controller.h"
 
 #include <Windows.h>
 #include "Helpers.h"
@@ -7,15 +7,15 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		const double Driver::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
-		std::string Driver::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
+		const double Controller::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
+		std::string Controller::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
 
-		Driver::ptr Driver::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
+		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
-			return ptr(new Driver(dotStar, remote));
+			return ptr(new Controller(dotStar, remote));
 		}
 
-		Driver::Driver(IDotStar::ptr dotStar, IRemote::ptr remote)
+		Controller::Controller(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
 			lightsQueue = LightsQueue::Create(2);
 
@@ -26,15 +26,15 @@ namespace Shelfinator
 			patternsPath = Helpers::GetRunPath();
 			patterns = Patterns::Create(patternsPath);
 
-			std::thread(&Driver::RunLights, this).detach();
+			std::thread(&Controller::RunLights, this).detach();
 		}
 
-		Driver::~Driver()
+		Controller::~Controller()
 		{
 			Stop();
 		}
 
-		bool Driver::HandleRemote()
+		bool Controller::HandleRemote()
 		{
 			auto result = true;
 			auto useSelectedNumber = false;
@@ -113,7 +113,7 @@ namespace Shelfinator
 			return result;
 		}
 
-		void Driver::LoadPattern(bool startAtEnd)
+		void Controller::LoadPattern(bool startAtEnd)
 		{
 			while (patternIndex < 0)
 				patternIndex += patterns->Count();
@@ -124,7 +124,7 @@ namespace Shelfinator
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 
-		void Driver::RunLights()
+		void Controller::RunLights()
 		{
 			while (true)
 			{
@@ -142,7 +142,7 @@ namespace Shelfinator
 		}
 
 		int frameCount = 0;
-		void Driver::Run(int *patternNumbers, int patternNumberCount)
+		void Controller::Run(int *patternNumbers, int patternNumberCount)
 		{
 			if (patternNumberCount == 0)
 				patterns->MakeFirst(1); // Hello
@@ -205,7 +205,7 @@ namespace Shelfinator
 				stopCondVar.wait(lock);
 		}
 
-		void Driver::Test(int lightCount, int concurrency, int delay)
+		void Controller::Test(int lightCount, int concurrency, int delay)
 		{
 			auto current = new int[lightCount];
 			memset(current, 0, sizeof(*current) * lightCount);
@@ -247,7 +247,7 @@ namespace Shelfinator
 				stopCondVar.wait(lock);
 		}
 
-		void Driver::Stop()
+		void Controller::Stop()
 		{
 			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
 			if (!running)
@@ -258,17 +258,17 @@ namespace Shelfinator
 				stopCondVar.wait(lock);
 		}
 
-		std::shared_ptr<std::chrono::steady_clock::time_point> Driver::GetTime()
+		std::shared_ptr<std::chrono::steady_clock::time_point> Controller::GetTime()
 		{
 			return std::shared_ptr<std::chrono::steady_clock::time_point>(new std::chrono::steady_clock::time_point(std::chrono::steady_clock::now()));
 		}
 
-		int Driver::Millis()
+		int Controller::Millis()
 		{
 			return Millis(GetTime());
 		}
 
-		int Driver::Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime)
+		int Controller::Millis(std::shared_ptr<std::chrono::steady_clock::time_point> atTime)
 		{
 			if (!atTime)
 				atTime = GetTime();

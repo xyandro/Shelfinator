@@ -11,12 +11,12 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		class Driver
+		class Controller
 		{
 		public:
-			typedef std::shared_ptr<Driver> ptr;
+			typedef std::shared_ptr<Controller> ptr;
 			static ptr Create(IDotStar::ptr dotStar, IRemote::ptr remote);
-			~Driver();
+			~Controller();
 			void Run(int *patternNumbers, int patternNumberCount);
 			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
@@ -42,7 +42,7 @@ namespace Shelfinator
 
 			void RunLights();
 
-			Driver(IDotStar::ptr dotStar, IRemote::ptr remote);
+			Controller(IDotStar::ptr dotStar, IRemote::ptr remote);
 
 			bool HandleRemote();
 			void LoadPattern(bool startAtEnd = false);

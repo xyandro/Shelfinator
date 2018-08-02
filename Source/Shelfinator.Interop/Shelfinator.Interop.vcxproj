@@ -54,10 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClInclude Include="Controller.h" />
     <ClCompile Include="DotStar.cpp" />
     <ClInclude Include="DotStar.h" />
-    <ClCompile Include="Driver.cpp" />
-    <ClInclude Include="Driver.h" />
     <ClInclude Include="IDotStar.h" />
     <ClInclude Include="IRemote.h" />
     <ClCompile Include="Remote.cpp" />

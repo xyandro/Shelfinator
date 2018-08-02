@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../Shelfinator.Runner/Driver.h"
+#include "../Shelfinator.Runner/Controller.h"
 #include "IDotStar.h"
 #include "IRemote.h"
 
@@ -8,16 +8,16 @@ namespace Shelfinator
 {
 	namespace Interop
 	{
-		public ref class Driver
+		public ref class Controller
 		{
 		public:
-			Driver(IDotStar ^dotStar, IRemote ^remote);
-			~Driver();
+			Controller(IDotStar ^dotStar, IRemote ^remote);
+			~Controller();
 			void Run(System::Collections::Generic::List<int> ^patternNumbers);
 			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
 		private:
-			Runner::Driver::ptr *driver;
+			Runner::Controller::ptr *driver;
 		};
 	}
 }

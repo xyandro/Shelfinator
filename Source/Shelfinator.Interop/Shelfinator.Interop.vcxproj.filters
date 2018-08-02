@@ -2,6 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <Filter Include="Controller">
+      <UniqueIdentifier>{15e7034d-f468-41ad-95e5-963e6fa92fb9}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClInclude Include="Controller.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>
@@ -10,15 +19,6 @@
     </ClCompile>
     <ClInclude Include="DotStar.h">
       <Filter>DotStar</Filter>
-    </ClInclude>
-    <Filter Include="Driver">
-      <UniqueIdentifier>{15e7034d-f468-41ad-95e5-963e6fa92fb9}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="Driver.cpp">
-      <Filter>Driver</Filter>
-    </ClCompile>
-    <ClInclude Include="Driver.h">
-      <Filter>Driver</Filter>
     </ClInclude>
     <ClInclude Include="IDotStar.h">
       <Filter>DotStar</Filter>

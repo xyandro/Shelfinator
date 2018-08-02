@@ -1,4 +1,4 @@
-﻿#include "Driver.h"
+﻿#include "Controller.h"
 
 #include "DotStar.h"
 #include "Remote.h"
@@ -7,17 +7,17 @@ namespace Shelfinator
 {
 	namespace Interop
 	{
-		Driver::Driver(IDotStar ^dotStar, IRemote ^remote)
+		Controller::Controller(IDotStar ^dotStar, IRemote ^remote)
 		{
-			driver = new Runner::Driver::ptr(Runner::Driver::Create(DotStar::Create(dotStar), Remote::Create(remote)));
+			driver = new Runner::Controller::ptr(Runner::Controller::Create(DotStar::Create(dotStar), Remote::Create(remote)));
 		}
 
-		Driver::~Driver()
+		Controller::~Controller()
 		{
 			delete driver;
 		}
 
-		void Driver::Run(System::Collections::Generic::List<int> ^patternNumbers)
+		void Controller::Run(System::Collections::Generic::List<int> ^patternNumbers)
 		{
 			auto nativePatternNumbers = new int[patternNumbers->Count];
 			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
@@ -26,12 +26,12 @@ namespace Shelfinator
 			delete[] nativePatternNumbers;
 		}
 
-		void Driver::Test(int lightCount, int concurrency, int delay)
+		void Controller::Test(int lightCount, int concurrency, int delay)
 		{
 			(*driver)->Test(lightCount, concurrency, delay);
 		}
 
-		void Driver::Stop()
+		void Controller::Stop()
 		{
 			(*driver)->Stop();
 		}

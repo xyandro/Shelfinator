@@ -19,18 +19,18 @@
     <ClInclude Include="BufferFile.h">
       <Filter>BufferFile</Filter>
     </ClInclude>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{a030b45a-2f9f-4b33-bf17-fa1f83d5aeff}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClInclude Include="Controller.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Driver">
-      <UniqueIdentifier>{a030b45a-2f9f-4b33-bf17-fa1f83d5aeff}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="Driver.cpp">
-      <Filter>Driver</Filter>
-    </ClCompile>
-    <ClInclude Include="Driver.h">
-      <Filter>Driver</Filter>
-    </ClInclude>
     <Filter Include="Helpers">
       <UniqueIdentifier>{a6809c57-e542-47cb-b7dc-3a824d84e18f}</UniqueIdentifier>
     </Filter>
