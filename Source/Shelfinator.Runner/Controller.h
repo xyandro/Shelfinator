@@ -24,16 +24,15 @@ namespace Shelfinator
 			static std::string multiplierNames[];
 
 			bool running = true;
-			Timer::ptr timer;
-			Patterns::ptr patterns;
-			IDotStar::ptr dotStar;
-			IRemote::ptr remote;
-			Banner::ptr banner;
 			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
+			Banner::ptr banner;
+			IDotStar::ptr dotStar;
 			Pattern::ptr pattern;
+			Patterns::ptr patterns;
+			IRemote::ptr remote;
+			Timer::ptr timer;
 
 			Controller(IDotStar::ptr dotStar, IRemote::ptr remote);
-
 			bool HandleRemote();
 			void LoadPattern(bool startAtEnd = false);
 		};

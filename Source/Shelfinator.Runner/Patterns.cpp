@@ -2,19 +2,20 @@
 
 #include <algorithm>
 #include <Windows.h>
+#include "Helpers.h"
 
 namespace Shelfinator
 {
 	namespace Runner
 	{
-		Patterns::ptr Patterns::Create(std::string path)
+		Patterns::ptr Patterns::Create()
 		{
-			return ptr(new Patterns(path));
+			return ptr(new Patterns());
 		}
 
-		Patterns::Patterns(std::string path)
+		Patterns::Patterns()
 		{
-			this->path = path;
+			path = Helpers::GetRunPath();
 			SetupPatterns();
 		}
 

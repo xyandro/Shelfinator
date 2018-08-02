@@ -1,8 +1,6 @@
 ﻿#include "Controller.h"
 
-#include <Windows.h>
 #include "Driver.h"
-#include "Helpers.h"
 
 namespace Shelfinator
 {
@@ -21,7 +19,7 @@ namespace Shelfinator
 			this->dotStar = dotStar;
 			this->remote = remote;
 			timer = Timer::Create();
-			patterns = Patterns::Create(Helpers::GetRunPath());
+			patterns = Patterns::Create();
 		}
 
 		Controller::~Controller()
@@ -210,7 +208,7 @@ namespace Shelfinator
 				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 
-			delete current;
+			delete[] current;
 		}
 
 		void Controller::Stop()

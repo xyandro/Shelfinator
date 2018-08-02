@@ -12,7 +12,7 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Patterns> ptr;
-			static ptr Create(std::string path);
+			static ptr Create();
 			void MakeFirst(int patternNumber);
 			int GetValue(int index);
 			int GetIndex(int value);
@@ -21,7 +21,7 @@ namespace Shelfinator
 		private:
 			std::string path;
 			std::vector<int> patternNumbers;
-			Patterns(std::string path);
+			Patterns();
 			void AddIfPatternFile(std::string fileName);
 			void SetupPatterns();
 		};
