@@ -7,7 +7,7 @@ namespace Shelfinator
 	namespace Runner
 	{
 		const double Controller::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
-		std::string Controller::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
+		std::wstring Controller::multiplierNames[] = { L"◀◀◀◀", L"◀◀◀", L"◀◀", L"◀", L"◀3/4", L"◀1/2", L"◀1/4", L"◀1/8", L"‖", L"1/8▶", L"1/4▶", L"1/2▶", L"3/4▶", L"▶", L"▶▶", L"▶▶▶", L"▶▶▶▶" };
 
 		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
@@ -81,14 +81,14 @@ namespace Shelfinator
 					selectedNumberTime = -1;
 				}
 				else
-					banner = Banner::Create(std::to_string(selectedNumber), 1000, 1);
+					banner = Banner::Create(std::to_wstring(selectedNumber), 1000, 1);
 				break;
-			case Info: banner = Banner::Create(std::to_string(patterns->GetValue(patternIndex)), 1000, 1); break;
+			case Info: banner = Banner::Create(std::to_wstring(patterns->GetValue(patternIndex)), 1000, 1); break;
 			default: result = false; break;
 			}
 
 			if (lastMultiplierIndex != multiplierIndex)
-				banner = Banner::Create(multiplierNames[multiplierIndex], 1000);
+				banner = Banner::Create(multiplierNames[multiplierIndex], 0, 1000);
 
 			if (useSelectedNumber)
 			{

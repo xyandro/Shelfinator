@@ -21,7 +21,7 @@ namespace Shelfinator
 			void Stop();
 		private:
 			static const double multipliers[];
-			static std::string multiplierNames[];
+			static std::wstring multiplierNames[];
 
 			bool running = true;
 			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;

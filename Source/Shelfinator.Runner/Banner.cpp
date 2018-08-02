@@ -14,7 +14,7 @@ namespace Shelfinator
 				unsigned char count;
 				struct fontchardata
 				{
-					char ch;
+					wchar_t ch;
 					char width;
 					char data[8];
 				} chars[1];
@@ -23,25 +23,81 @@ namespace Shelfinator
 
 			unsigned char fontbinary[] =
 			{
-				14,
-				'0', 6, 0x78, 0xfc, 0xcc, 0xcc, 0xcc, 0xcc, 0xfc, 0x78,
-				'1', 6, 0x30, 0x70, 0xf0, 0x30, 0x30, 0x30, 0xfc, 0xfc,
-				'2', 6, 0x78, 0xfc, 0xcc, 0x18, 0x30, 0x60, 0xfc, 0xfc,
-				'3', 6, 0xf8, 0xfc, 0x0c, 0x78, 0x78, 0x0c, 0xfc, 0xf8,
-				'4', 6, 0xcc, 0xcc, 0xcc, 0xfc, 0x7c, 0x0c, 0x0c, 0x0c,
-				'5', 6, 0xfc, 0xfc, 0xc0, 0xf8, 0x7c, 0x0c, 0xfc, 0xf8,
-				'6', 6, 0x78, 0xf8, 0xc0, 0xf8, 0xfc, 0xcc, 0xfc, 0x78,
-				'7', 6, 0xf8, 0xfc, 0x0c, 0x18, 0x30, 0x60, 0xc0, 0xc0,
-				'8', 6, 0x78, 0xfc, 0xcc, 0x78, 0xfc, 0xcc, 0xfc, 0x78,
-				'9', 6, 0x78, 0xfc, 0xcc, 0xfc, 0x7c, 0x0c, 0x7c, 0x78,
-				'/', 5, 0x18, 0x18, 0x30, 0x30, 0x60, 0x60, 0xc0, 0xc0,
-				'F', 8, 0xc0, 0xf0, 0xfc, 0xff, 0xff, 0xfc, 0xf0, 0xc0,
-				'R', 8, 0x03, 0x0f, 0x3f, 0xff, 0xff, 0x3f, 0x0f, 0x03,
-				'P', 8, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7, 0xe7,
+				69,
+				32, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0,
+				33, 0, 2, 192, 192, 192, 192, 192, 0, 192, 192,
+				34, 0, 6, 204, 204, 0, 0, 0, 0, 0, 0,
+				35, 0, 7, 108, 108, 254, 108, 108, 254, 108, 108,
+				36, 0, 6, 48, 120, 204, 96, 24, 204, 120, 48,
+				37, 0, 6, 204, 204, 24, 48, 48, 96, 204, 204,
+				38, 0, 6, 120, 192, 112, 96, 204, 204, 120, 60,
+				39, 0, 2, 192, 192, 0, 0, 0, 0, 0, 0,
+				40, 0, 4, 48, 96, 192, 192, 192, 192, 96, 48,
+				41, 0, 4, 192, 96, 48, 48, 48, 48, 96, 192,
+				42, 0, 6, 180, 180, 120, 120, 120, 120, 180, 180,
+				43, 0, 6, 0, 48, 48, 252, 252, 48, 48, 0,
+				44, 0, 3, 0, 0, 0, 0, 0, 96, 96, 192,
+				45, 0, 6, 0, 0, 0, 252, 252, 0, 0, 0,
+				46, 0, 2, 0, 0, 0, 0, 0, 0, 192, 192,
+				47, 0, 5, 24, 24, 48, 48, 96, 96, 192, 192,
+				48, 0, 6, 120, 252, 204, 204, 204, 204, 252, 120,
+				49, 0, 6, 48, 112, 240, 48, 48, 48, 252, 252,
+				50, 0, 6, 120, 252, 204, 24, 48, 96, 252, 252,
+				51, 0, 6, 248, 252, 12, 120, 120, 12, 252, 248,
+				52, 0, 6, 204, 204, 204, 252, 124, 12, 12, 12,
+				53, 0, 6, 252, 252, 192, 248, 124, 12, 252, 248,
+				54, 0, 6, 120, 248, 192, 248, 252, 204, 252, 120,
+				55, 0, 6, 248, 252, 12, 24, 48, 96, 192, 192,
+				56, 0, 6, 120, 252, 204, 120, 252, 204, 252, 120,
+				57, 0, 6, 120, 252, 204, 252, 124, 12, 124, 120,
+				58, 0, 2, 0, 192, 192, 0, 0, 192, 192, 0,
+				59, 0, 3, 0, 0, 96, 96, 0, 96, 96, 192,
+				60, 0, 5, 24, 48, 96, 192, 192, 96, 48, 24,
+				61, 0, 6, 0, 252, 252, 0, 0, 252, 252, 0,
+				62, 0, 5, 192, 96, 48, 24, 24, 48, 96, 192,
+				63, 0, 6, 120, 204, 12, 24, 48, 0, 48, 48,
+				64, 0, 8, 126, 195, 219, 219, 223, 192, 195, 126,
+				65, 0, 6, 48, 120, 252, 204, 204, 252, 204, 204,
+				66, 0, 6, 240, 204, 204, 240, 240, 204, 204, 240,
+				67, 0, 6, 120, 204, 204, 192, 192, 204, 204, 120,
+				68, 0, 6, 248, 204, 204, 204, 204, 204, 204, 248,
+				69, 0, 6, 252, 192, 192, 252, 192, 192, 192, 252,
+				70, 0, 6, 252, 192, 192, 252, 192, 192, 192, 192,
+				71, 0, 6, 120, 204, 204, 192, 220, 204, 204, 120,
+				72, 0, 6, 204, 204, 204, 252, 204, 204, 204, 204,
+				73, 0, 6, 252, 48, 48, 48, 48, 48, 48, 252,
+				74, 0, 6, 252, 12, 12, 12, 12, 12, 204, 120,
+				75, 0, 6, 204, 216, 240, 224, 224, 240, 216, 204,
+				76, 0, 6, 192, 192, 192, 192, 192, 192, 192, 252,
+				77, 0, 8, 195, 247, 255, 219, 195, 195, 195, 195,
+				78, 0, 6, 204, 236, 252, 220, 204, 204, 204, 204,
+				79, 0, 6, 120, 204, 204, 204, 204, 204, 204, 120,
+				80, 0, 6, 248, 204, 204, 204, 248, 192, 192, 192,
+				81, 0, 6, 120, 204, 204, 204, 204, 204, 220, 124,
+				82, 0, 6, 248, 204, 204, 204, 248, 216, 204, 204,
+				83, 0, 6, 120, 204, 192, 120, 12, 12, 204, 120,
+				84, 0, 6, 252, 48, 48, 48, 48, 48, 48, 48,
+				85, 0, 6, 204, 204, 204, 204, 204, 204, 204, 120,
+				86, 0, 6, 204, 204, 204, 204, 204, 204, 120, 48,
+				87, 0, 8, 195, 195, 195, 195, 219, 255, 247, 195,
+				88, 0, 6, 204, 204, 120, 48, 120, 204, 204, 204,
+				89, 0, 6, 204, 204, 120, 48, 48, 48, 48, 48,
+				90, 0, 6, 252, 12, 24, 48, 96, 192, 192, 252,
+				91, 0, 4, 240, 192, 192, 192, 192, 192, 192, 240,
+				92, 0, 5, 192, 192, 96, 96, 48, 48, 24, 24,
+				93, 0, 4, 240, 48, 48, 48, 48, 48, 48, 240,
+				95, 0, 2, 0, 0, 0, 0, 0, 0, 192, 192,
+				123, 0, 6, 60, 48, 48, 224, 224, 48, 48, 60,
+				124, 0, 2, 192, 192, 192, 192, 192, 192, 192, 192,
+				125, 0, 5, 240, 48, 48, 24, 24, 48, 48, 240,
+				22, 32, 8, 231, 231, 231, 231, 231, 231, 231, 231,
+				182, 37, 8, 192, 240, 252, 255, 255, 252, 240, 192,
+				192, 37, 8, 3, 15, 63, 255, 255, 63, 15, 3,
 			};
 
-			fontdata::fontchardata &GetChar(char ch)
+			fontdata::fontchardata &GetChar(wchar_t ch)
 			{
+				ch = towupper(ch);
 				auto font = (fontdata*)&fontbinary;
 				for (auto ctr = 0; ctr < font->count; ++ctr)
 					if (font->chars[ctr].ch == ch)
@@ -62,20 +118,25 @@ namespace Shelfinator
 			{ 7, 8, 23, 24, 39, 40, 55, 56, 71, 72, 87, 88, 103, 104, 119, 120, 135, 136, 151, 152, 167, 168, 183, 184, 199, 200, 215, 216, 231, 232, 247, 248 },
 		};
 
-		Banner::ptr Banner::Create(std::string text, int time, int spacing)
+		Banner::ptr Banner::Create(std::wstring text, int scrollTime, int fadeTime, int spacing)
 		{
-			return ptr(new Banner(text, time, spacing));
+			return ptr(new Banner(text, scrollTime, fadeTime, spacing));
 		}
 
-		Banner::Banner(std::string text, int time, int spacing)
+		Banner::Banner(std::wstring text, int scrollTime, int fadeTime, int spacing)
 		{
-			this->time = time;
+			this->scrollTime = scrollTime;
+			this->fadeTime = fadeTime;
 			width = 0;
 			for (auto ctr = 0; ctr < text.length(); ++ctr)
 				width += GetChar(text[ctr]).width;
 
-			if (spacing == -1)
+			if (spacing < 0)
+			{
 				spacing = (32 - width) / ((int)text.length() + 1);
+				if (spacing < 0)
+					spacing = 0;
+			}
 			width += spacing * ((int)text.length() - 1);
 
 			grid = new bool*[8];
@@ -90,7 +151,7 @@ namespace Shelfinator
 			{
 				auto charData = GetChar(text[ctr]);
 				for (auto y = 0; y < 8; ++y)
-					for (auto x = 0; x < 8; ++x)
+					for (auto x = 0; x < charData.width; ++x)
 						grid[y][xOfs + x] = (charData.data[y] & (1 << (7 - x))) != 0;
 				xOfs += charData.width + spacing;
 			}
@@ -98,16 +159,35 @@ namespace Shelfinator
 
 		Banner::~Banner()
 		{
+			for (auto ctr = 0; ctr < 8; ++ctr)
+				delete[] grid[ctr];
 			delete[] grid;
 		}
 
 		void Banner::SetLights(Lights::ptr lights)
 		{
-			auto xOfs = (32 - width) / 2;
+			auto x1 = scrollTime <= 0 ? 0 : elapsed * (width - 31) / scrollTime;
+			if (x1 > width - 31)
+				x1 = width - 31;
+			if (x1 < 0)
+				x1 = 0;
+
+			auto x2 = x1 + 32;
+			if (x2 > width)
+				x2 = width;
+
+			auto xOfs = (32 - x2 + x1) / 2 - x1;
+
+			auto fade = fadeTime <= 0 ? 1 : 1 - ((double)elapsed - scrollTime) / fadeTime;
+			if (fade < 0)
+				fade = 0;
+			if (fade > 1)
+				fade = 1;
+
 			for (auto y = 0; y < 8; ++y)
-				for (auto x = 0; x < width; ++x)
+				for (auto x = x1; x < x2; ++x)
 					if (grid[y][x])
-						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(0x101010, 1 - (double)elapsed / time));
+						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(0x101010, fade));
 		}
 
 		void Banner::AddElapsed(int delta)
@@ -117,7 +197,7 @@ namespace Shelfinator
 
 		bool Banner::Expired()
 		{
-			return elapsed >= time;
+			return elapsed >= scrollTime + fadeTime;
 		}
 	}
 }
