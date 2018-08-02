@@ -14,6 +14,7 @@ namespace Shelfinator
 			Driver(IDotStar ^dotStar, IRemote ^remote);
 			~Driver();
 			void Run(System::Collections::Generic::List<int> ^patternNumbers);
+			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
 		private:
 			Runner::Driver::ptr *driver;

@@ -26,6 +26,11 @@ namespace Shelfinator
 			delete[] nativePatternNumbers;
 		}
 
+		void Driver::Test(int lightCount, int concurrency, int delay)
+		{
+			(*driver)->Test(lightCount, concurrency, delay);
+		}
+
 		void Driver::Stop()
 		{
 			(*driver)->Stop();

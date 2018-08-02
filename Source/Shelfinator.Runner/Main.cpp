@@ -27,20 +27,25 @@ int main(int argc, char **argv)
 
 	driver = Shelfinator::Driver::Create(Shelfinator::DotStar::Create(), Shelfinator::Remote::Create());
 
-	auto patternNumbers = new int[argc];
-	int patternNumberCount = 0;
-	for (auto ctr = 1; ctr < argc; ++ctr)
+	if (argc == 5) && (strcmp(argv[1], "test") == 0)
+		driver->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
+	else
 	{
-		auto value = atoi(argv[ctr]);
-		if (value == 0)
-			fprintf(stderr, "Invalid pattern: %s\n", argv[ctr]);
-		else
-			patternNumbers[patternNumberCount++] = value;
+		auto patternNumbers = new int[argc];
+		int patternNumberCount = 0;
+		for (auto ctr = 1; ctr < argc; ++ctr)
+		{
+			auto value = atoi(argv[ctr]);
+			if (value == 0)
+				fprintf(stderr, "Invalid pattern: %s\n", argv[ctr]);
+			else
+				patternNumbers[patternNumberCount++] = value;
+		}
+
+		driver->Run(patternNumbers, patternNumberCount);
+
+		delete[] patternNumbers;
 	}
-
-	driver->Run(patternNumbers, patternNumberCount);
-
-	delete[] patternNumbers;
 
 	return 0;
 }

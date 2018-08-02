@@ -36,10 +36,14 @@ namespace Shelfinator.Creator
 			var args = e.Args.ToList();
 			var build = args.Contains("build", StringComparer.OrdinalIgnoreCase);
 			var all = args.Contains("all", StringComparer.OrdinalIgnoreCase);
-			if ((build) || (all))
-				args.RemoveAll(arg => (string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "all", StringComparison.OrdinalIgnoreCase)));
+			var test = args.Contains("test", StringComparer.OrdinalIgnoreCase);
+			if ((build) || (all) || (test))
+				args.RemoveAll(arg => (string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "all", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "test", StringComparison.OrdinalIgnoreCase)));
 
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
+			if ((test) && (patternNumbers.Count != 3))
+				throw new Exception("Test must provide lightCount, concurrency, and delay");
+
 			if (build)
 			{
 				var match = patterns.Where(p => (all) || (patternNumbers.Contains(p.PatternNumber)));
@@ -57,7 +61,14 @@ namespace Shelfinator.Creator
 			var remote = new RemoteEmulator();
 			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
 			window.Show();
-			new Thread(() => { using (var driver = new Driver(dotStar, remote)) driver.Run(patternNumbers); }).Start();
+			new Thread(() =>
+			{
+				using (var driver = new Driver(dotStar, remote))
+					if (test)
+						driver.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2]);
+					else
+						driver.Run(patternNumbers);
+			}).Start();
 		}
 
 		protected override void OnExit(ExitEventArgs e)

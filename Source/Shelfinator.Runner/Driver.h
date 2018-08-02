@@ -18,6 +18,7 @@ namespace Shelfinator
 			static ptr Create(IDotStar::ptr dotStar, IRemote::ptr remote);
 			~Driver();
 			void Run(int *patternNumbers, int patternNumberCount);
+			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
 		private:
 			static const double multipliers[];

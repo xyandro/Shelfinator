@@ -195,6 +195,7 @@ namespace Shelfinator
 					stopCondVar.notify_all();
 					break;
 				}
+				lights->CheckOverage();
 				dotStar->Show(lights->lights, lights->count);
 			}
 		}
@@ -232,7 +233,6 @@ namespace Shelfinator
 				pattern->SetLights(time, lights);
 				if (banner)
 					banner->SetLights(lights);
-				lights->CheckOverage();
 				lightsQueue->Add(lights);
 
 				nextTime = Millis();
@@ -255,6 +255,48 @@ namespace Shelfinator
 					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 				}
 			}
+
+			lightsQueue->Add(Lights::Create(2440));
+			lightsQueue->Add(nullptr);
+
+			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
+			while (!finished)
+				stopCondVar.wait(lock);
+		}
+
+		void Driver::Test(int lightCount, int concurrency, int delay)
+		{
+			auto current = new int[lightCount];
+			memset(current, 0, sizeof(*current) * lightCount);
+
+			auto color = 0x0000ff;
+			auto set = 0, clear = -concurrency;
+			while (running)
+			{
+				current[set] = color;
+				if (clear >= 0)
+					current[clear] = 0;
+				++set;
+				if (set >= lightCount)
+				{
+					set = 0;
+					if (color == 0xff0000)
+						color = 0x0000ff;
+					else
+						color <<= 8;
+				}
+				++clear;
+				if (clear >= lightCount)
+					clear = 0;
+
+				auto lights = Lights::Create(2440);
+				for (auto ctr = 0; ctr < lightCount; ++ctr)
+					lights->SetLight(ctr, current[ctr]);
+				lightsQueue->Add(lights);
+				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+			}
+
+			delete current;
 
 			lightsQueue->Add(Lights::Create(2440));
 			lightsQueue->Add(nullptr);
