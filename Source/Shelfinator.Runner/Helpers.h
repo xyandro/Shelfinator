@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <string>
+
 namespace Shelfinator
 {
 	namespace Runner
@@ -17,6 +19,8 @@ namespace Shelfinator
 			static int MultiplyColor(int color, double multiplier);
 
 			static double FPart(double value);
+
+			static std::string GetRunPath();
 		private:
 			static int ToByte(double value);
 		};

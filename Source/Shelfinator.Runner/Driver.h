@@ -15,8 +15,9 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Driver> ptr;
-			static ptr Create(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);
-			void Run();
+			static ptr Create(IDotStar::ptr dotStar, IRemote::ptr remote);
+			~Driver();
+			void Run(int *patternNumbers, int patternNumberCount);
 			void Stop();
 		private:
 			static const double multipliers[];
@@ -38,11 +39,10 @@ namespace Shelfinator
 			std::condition_variable stopCondVar;
 #endif
 
-			void RunUIThread();
+			void RunLights();
 
-			Driver(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote);
+			Driver(IDotStar::ptr dotStar, IRemote::ptr remote);
 			void AddIfPatternFile(std::string fileName);
-			void SetupPatternsPath();
 			void MakeFirst(int patternNumber);
 			void SetupPatternNumbers();
 

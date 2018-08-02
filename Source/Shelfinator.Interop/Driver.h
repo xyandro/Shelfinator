@@ -11,9 +11,9 @@ namespace Shelfinator
 		public ref class Driver
 		{
 		public:
-			Driver(System::Collections::Generic::List<int> ^patternNumbers, IDotStar ^dotStar, IRemote ^remote);
+			Driver(IDotStar ^dotStar, IRemote ^remote);
 			~Driver();
-			void Run();
+			void Run(System::Collections::Generic::List<int> ^patternNumbers);
 			void Stop();
 		private:
 			Runner::Driver::ptr *driver;

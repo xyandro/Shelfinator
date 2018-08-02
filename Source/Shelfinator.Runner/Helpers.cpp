@@ -1,5 +1,7 @@
 ﻿#include "Helpers.h"
 
+#include <Windows.h>
+
 namespace Shelfinator
 {
 	namespace Runner
@@ -69,6 +71,21 @@ namespace Shelfinator
 		double Helpers::FPart(double value)
 		{
 			return value - (int)value;
+		}
+
+		std::string Helpers::GetRunPath()
+		{
+			char buf[1024];
+#ifdef _WIN32
+			GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
+			*strrchr(buf, '\\') = 0;
+			strcat(buf, "\\");
+#else
+			readlink("/proc/self/exe", buf, sizeof(buf) / sizeof(*buf));
+			*strrchr(buf, '/') = 0;
+			strcat(buf, "/");
+#endif
+			return buf;
 		}
 
 		int Helpers::ToByte(double value)

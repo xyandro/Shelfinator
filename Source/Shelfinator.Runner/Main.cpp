@@ -25,6 +25,8 @@ int main(int argc, char **argv)
 
 	SetupBreakhandler();
 
+	driver = Shelfinator::Driver::Create(Shelfinator::DotStar::Create(), Shelfinator::Remote::Create());
+
 	auto patternNumbers = new int[argc];
 	int patternNumberCount = 0;
 	for (auto ctr = 1; ctr < argc; ++ctr)
@@ -36,8 +38,7 @@ int main(int argc, char **argv)
 			patternNumbers[patternNumberCount++] = value;
 	}
 
-	driver = Shelfinator::Driver::Create(patternNumbers, patternNumberCount, Shelfinator::DotStar::Create(), Shelfinator::Remote::Create());
-	driver->Run();
+	driver->Run(patternNumbers, patternNumberCount);
 
 	delete[] patternNumbers;
 

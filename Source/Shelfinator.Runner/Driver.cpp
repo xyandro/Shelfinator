@@ -1,6 +1,7 @@
 ﻿#include "Driver.h"
 
 #include <Windows.h>
+#include "Helpers.h"
 
 namespace Shelfinator
 {
@@ -9,12 +10,12 @@ namespace Shelfinator
 		const double Driver::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
 		const char *Driver::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
 
-		Driver::ptr Driver::Create(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote)
+		Driver::ptr Driver::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
-			return ptr(new Driver(patternNumbers, patternNumberCount, dotStar, remote));
+			return ptr(new Driver(dotStar, remote));
 		}
 
-		Driver::Driver(int *patternNumbers, int patternNumberCount, IDotStar::ptr dotStar, IRemote::ptr remote)
+		Driver::Driver(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
 			lightsQueue = LightsQueue::Create(2);
 
@@ -22,29 +23,15 @@ namespace Shelfinator
 			this->remote = remote;
 			start = GetTime();
 
-			SetupPatternsPath();
+			patternsPath = Helpers::GetRunPath();
 			SetupPatternNumbers();
 
-			if (patternNumberCount == 0)
-				MakeFirst(1); // Hello
-			else
-				for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
-					MakeFirst(patternNumbers[ctr]);
+			std::thread(&Driver::RunLights, this).detach();
 		}
 
-		void Driver::SetupPatternsPath()
+		Driver::~Driver()
 		{
-			char buf[1024];
-#ifdef _WIN32
-			GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
-			*strrchr(buf, '\\') = 0;
-			strcat(buf, "\\");
-#else
-			readlink("/proc/self/exe", buf, sizeof(buf) / sizeof(*buf));
-			*strrchr(buf, '/') = 0;
-			strcat(buf, "/");
-#endif
-			patternsPath = buf;
+			Stop();
 		}
 
 		void Driver::AddIfPatternFile(std::string fileName)
@@ -196,7 +183,7 @@ namespace Shelfinator
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 
-		void Driver::RunUIThread()
+		void Driver::RunLights()
 		{
 			while (true)
 			{
@@ -213,9 +200,13 @@ namespace Shelfinator
 		}
 
 		int frameCount = 0;
-		void Driver::Run()
+		void Driver::Run(int *patternNumbers, int patternNumberCount)
 		{
-			std::thread(&Driver::RunUIThread, this).detach();
+			if (patternNumberCount == 0)
+				MakeFirst(1); // Hello
+			else
+				for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
+					MakeFirst(patternNumbers[ctr]);
 
 			auto startLoad = Millis();
 			LoadPattern();
@@ -275,8 +266,11 @@ namespace Shelfinator
 
 		void Driver::Stop()
 		{
-			running = false;
 			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
+			if (!running)
+				return;
+
+			running = false;
 			while (!finished)
 				stopCondVar.wait(lock);
 		}

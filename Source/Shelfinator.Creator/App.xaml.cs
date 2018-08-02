@@ -57,7 +57,7 @@ namespace Shelfinator.Creator
 			var remote = new RemoteEmulator();
 			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
 			window.Show();
-			new Thread(() => { using (var driver = new Driver(patternNumbers, dotStar, remote)) driver.Run(); }).Start();
+			new Thread(() => { using (var driver = new Driver(dotStar, remote)) driver.Run(patternNumbers); }).Start();
 		}
 
 		protected override void OnExit(ExitEventArgs e)
