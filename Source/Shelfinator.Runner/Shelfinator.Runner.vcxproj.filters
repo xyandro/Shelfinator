@@ -73,6 +73,15 @@
     <ClInclude Include="Pattern.h">
       <Filter>Pattern</Filter>
     </ClInclude>
+    <Filter Include="Patterns">
+      <UniqueIdentifier>{8ac8a69f-48f9-4b22-8843-604cecaeb049}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Patterns.cpp">
+      <Filter>Patterns</Filter>
+    </ClCompile>
+    <ClInclude Include="Patterns.h">
+      <Filter>Patterns</Filter>
+    </ClInclude>
     <Filter Include="Remote">
       <UniqueIdentifier>{8e3b4709-aba4-48ea-a62c-36f12aa78766}</UniqueIdentifier>
     </Filter>

@@ -24,7 +24,7 @@ namespace Shelfinator
 			start = GetTime();
 
 			patternsPath = Helpers::GetRunPath();
-			SetupPatternNumbers();
+			patterns = Patterns::Create(patternsPath);
 
 			std::thread(&Driver::RunLights, this).detach();
 		}
@@ -32,64 +32,6 @@ namespace Shelfinator
 		Driver::~Driver()
 		{
 			Stop();
-		}
-
-		void Driver::AddIfPatternFile(std::string fileName)
-		{
-			std::transform(fileName.begin(), fileName.end(), fileName.begin(), tolower);
-			if ((fileName.length() >= 4) && (fileName.substr(fileName.length() - 4, 4) == ".pat"))
-			{
-				fileName = fileName.substr(0, fileName.length() - 4);
-				auto patternNumber = atoi(fileName.c_str());
-				if (patternNumber != 0)
-					patternNumbers.push_back(patternNumber);
-			}
-		}
-
-		void Driver::SetupPatternNumbers()
-		{
-#ifdef _WIN32
-			WIN32_FIND_DATAA findData;
-			auto find = patternsPath + "*.*";
-			auto hFind = FindFirstFileA(find.c_str(), &findData);
-			if (hFind == INVALID_HANDLE_VALUE)
-				return;
-
-			do
-			{
-				if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-					continue;
-
-				AddIfPatternFile(findData.cFileName);
-			} while (FindNextFileA(hFind, &findData) != 0);
-
-			FindClose(hFind);
-#else
-			DIR *dir;
-			struct dirent *ent;
-			if ((dir = opendir(patternsPath.c_str())) == nullptr)
-				return;
-
-			while ((ent = readdir(dir)) != nullptr)
-			{
-				AddIfPatternFile(ent->d_name);
-			}
-
-			closedir(dir);
-#endif
-
-			std::random_shuffle(patternNumbers.begin(), patternNumbers.end());
-		}
-
-		void Driver::MakeFirst(int patternNumber)
-		{
-			auto found = std::find(patternNumbers.begin(), patternNumbers.end(), patternNumber);
-			if (found == patternNumbers.end())
-				return;
-
-			auto result = *found;
-			patternNumbers.erase(found);
-			patternNumbers.insert(patternNumbers.begin(), result);
 		}
 
 		bool Driver::HandleRemote()
@@ -148,7 +90,7 @@ namespace Shelfinator
 				else
 					banner = Banner::Create(std::to_string(selectedNumber), 1000, 1);
 				break;
-			case Info: banner = Banner::Create(std::to_string(patternNumbers[patternIndex]), 1000, 1); break;
+			case Info: banner = Banner::Create(std::to_string(patterns->GetValue(patternIndex)), 1000, 1); break;
 			default: result = false; break;
 			}
 
@@ -157,10 +99,10 @@ namespace Shelfinator
 
 			if (useSelectedNumber)
 			{
-				auto found = std::find(patternNumbers.begin(), patternNumbers.end(), selectedNumber);
-				if (found != patternNumbers.end())
+				auto found = patterns->GetIndex(selectedNumber);
+				if (found != -1)
 				{
-					patternIndex = (int)std::distance(patternNumbers.begin(), found);
+					patternIndex = found;
 					LoadPattern();
 				}
 
@@ -174,12 +116,11 @@ namespace Shelfinator
 		void Driver::LoadPattern(bool startAtEnd)
 		{
 			while (patternIndex < 0)
-				patternIndex += (int)patternNumbers.size();
-			while (patternIndex >= patternNumbers.size())
-				patternIndex -= (int)patternNumbers.size();
+				patternIndex += patterns->Count();
+			while (patternIndex >= patterns->Count())
+				patternIndex -= patterns->Count();
 
-			auto fileName = patternsPath + std::to_string(patternNumbers[patternIndex]) + ".pat";
-			pattern = Pattern::Read(fileName.c_str());
+			pattern = patterns->LoadPattern(patternIndex);
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 
@@ -204,10 +145,10 @@ namespace Shelfinator
 		void Driver::Run(int *patternNumbers, int patternNumberCount)
 		{
 			if (patternNumberCount == 0)
-				MakeFirst(1); // Hello
+				patterns->MakeFirst(1); // Hello
 			else
 				for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
-					MakeFirst(patternNumbers[ctr]);
+					patterns->MakeFirst(patternNumbers[ctr]);
 
 			auto startLoad = Millis();
 			LoadPattern();

@@ -65,6 +65,8 @@
     <ClInclude Include="LightsQueue.h" />
     <ClCompile Include="Pattern.cpp" />
     <ClInclude Include="Pattern.h" />
+    <ClCompile Include="Patterns.cpp" />
+    <ClInclude Include="Patterns.h" />
     <ClInclude Include="RemoteCode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

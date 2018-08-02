@@ -5,7 +5,7 @@
 #include "IDotStar.h"
 #include "IRemote.h"
 #include "LightsQueue.h"
-#include "Pattern.h"
+#include "Patterns.h"
 
 namespace Shelfinator
 {
@@ -26,7 +26,7 @@ namespace Shelfinator
 
 			bool running = true, finished = false;
 			std::shared_ptr<std::chrono::steady_clock::time_point> start;
-			std::vector<int> patternNumbers;
+			Patterns::ptr patterns;
 			IDotStar::ptr dotStar;
 			IRemote::ptr remote;
 			Banner::ptr banner;
@@ -43,9 +43,6 @@ namespace Shelfinator
 			void RunLights();
 
 			Driver(IDotStar::ptr dotStar, IRemote::ptr remote);
-			void AddIfPatternFile(std::string fileName);
-			void MakeFirst(int patternNumber);
-			void SetupPatternNumbers();
 
 			bool HandleRemote();
 			void LoadPattern(bool startAtEnd = false);
