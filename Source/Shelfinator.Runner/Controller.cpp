@@ -147,8 +147,7 @@ namespace Shelfinator
 					continue;
 				}
 
-				auto lights = Lights::Create(2440);
-				pattern->SetLights(time, lights);
+				auto lights = pattern->GetLights(time);
 				if (banner)
 					banner->SetLights(lights);
 				driver->SetLights(lights);

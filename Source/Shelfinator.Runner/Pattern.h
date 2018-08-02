@@ -15,19 +15,20 @@ namespace Shelfinator
 
 			static ptr Read(std::string fileName);
 
-			void SetLights(int time, Lights::ptr lights);
+			Lights::ptr GetLights(int time);
 			int GetLength();
 		private:
-			class LightItem
-			{
-			public:
-				int startTime, endTime, origEndTime, startColorIndex, startColorValue, endColorIndex, endColorValue, intermediates;
-				void Read(BufferFile::ptr file);
-				double GetPercent(double time);
-				double GetSameIndexColorValue(double time);
-			};
 			class Light
 			{
+			private:
+				class LightItem
+				{
+				public:
+					int startTime, endTime, origEndTime, startColorIndex, startColorValue, endColorIndex, endColorValue, intermediates;
+					void Read(BufferFile::ptr file);
+					double GetPercent(double time);
+					double GetSameIndexColorValue(double time);
+				};
 			public:
 				void Read(BufferFile::ptr file);
 				LightItem &LightAtTime(double time);
@@ -38,15 +39,16 @@ namespace Shelfinator
 			std::vector<Light> lightData;
 			void ReadLights(BufferFile::ptr file);
 
-			class LightSequence
-			{
-			public:
-				int lightStartTime, lightEndTime, duration, startTime, endTime;
-				void Read(BufferFile::ptr file, int &length);
-				double GetLightTime(int time);
-			};
 			class LightSequences
 			{
+			private:
+				class LightSequence
+				{
+				public:
+					int lightStartTime, lightEndTime, duration, startTime, endTime;
+					void Read(BufferFile::ptr file, int &length);
+					double GetLightTime(int time);
+				};
 			public:
 				void Read(BufferFile::ptr file, int &length);
 				LightSequence & SequenceAtTime(int time);
@@ -68,15 +70,16 @@ namespace Shelfinator
 			std::vector<LightColor> lightColors;
 			void ReadColors(BufferFile::ptr file);
 
-			class PaletteSequence
-			{
-			public:
-				int startTime, endTime, startPaletteIndex, endPaletteIndex;
-				void Read(BufferFile::ptr file);
-				double GetPercent(int time);
-			};
 			class PaletteSequences
 			{
+			private:
+				class PaletteSequence
+				{
+				public:
+					int startTime, endTime, startPaletteIndex, endPaletteIndex;
+					void Read(BufferFile::ptr file);
+					double GetPercent(int time);
+				};
 			public:
 				void Read(BufferFile::ptr file);
 				PaletteSequence &SequenceAtTime(int time);

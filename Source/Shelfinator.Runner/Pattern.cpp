@@ -26,7 +26,7 @@ namespace Shelfinator
 				lightData[ctr].Read(file);
 		}
 
-		void Pattern::LightItem::Read(BufferFile::ptr file)
+		void Pattern::Light::LightItem::Read(BufferFile::ptr file)
 		{
 			startTime = file->GetInt();
 			endTime = file->GetInt();
@@ -38,12 +38,12 @@ namespace Shelfinator
 			intermediates = file->GetBool();
 		}
 
-		double Pattern::LightItem::GetPercent(double time)
+		double Pattern::Light::LightItem::GetPercent(double time)
 		{
 			return (time - startTime) / (origEndTime - startTime);
 		}
 
-		double Pattern::LightItem::GetSameIndexColorValue(double time)
+		double Pattern::Light::LightItem::GetSameIndexColorValue(double time)
 		{
 			return (time - startTime) * (endColorValue - startColorValue) / (origEndTime - startTime) + startColorValue;
 		}
@@ -55,7 +55,7 @@ namespace Shelfinator
 				lights[ctr].Read(file);
 		}
 
-		Pattern::LightItem &Pattern::Light::LightAtTime(double lightTime)
+		Pattern::Light::LightItem &Pattern::Light::LightAtTime(double lightTime)
 		{
 			while (lightTime < lights[current].startTime)
 				--current;
@@ -64,7 +64,7 @@ namespace Shelfinator
 			return lights[current];
 		}
 
-		void Pattern::LightSequence::Read(BufferFile::ptr file, int &length)
+		void Pattern::LightSequences::LightSequence::Read(BufferFile::ptr file, int &length)
 		{
 			lightStartTime = file->GetInt();
 			lightEndTime = file->GetInt();
@@ -74,7 +74,7 @@ namespace Shelfinator
 			endTime = length = length + duration * repeat;
 		}
 
-		double Pattern::LightSequence::GetLightTime(int time)
+		double Pattern::LightSequences::LightSequence::GetLightTime(int time)
 		{
 			return Helpers::FPart(((double)time - startTime) / duration) * (lightEndTime - lightStartTime) + lightStartTime;
 		}
@@ -87,7 +87,7 @@ namespace Shelfinator
 				lightSequences[ctr].Read(file, length);
 		}
 
-		Pattern::LightSequence & Pattern::LightSequences::SequenceAtTime(int time)
+		Pattern::LightSequences::LightSequence & Pattern::LightSequences::SequenceAtTime(int time)
 		{
 			while (time < lightSequences[current].startTime)
 				--current;
@@ -129,7 +129,7 @@ namespace Shelfinator
 				paletteSequences[ctr].Read(file);
 		}
 
-		void Pattern::PaletteSequence::Read(BufferFile::ptr file)
+		void Pattern::PaletteSequences::PaletteSequence::Read(BufferFile::ptr file)
 		{
 			startTime = file->GetInt();
 			endTime = file->GetInt();
@@ -137,12 +137,12 @@ namespace Shelfinator
 			endPaletteIndex = file->GetInt();
 		}
 
-		double Pattern::PaletteSequence::GetPercent(int time)
+		double Pattern::PaletteSequences::PaletteSequence::GetPercent(int time)
 		{
 			return startPaletteIndex == endPaletteIndex ? 0 : ((double)time - startTime) / (endTime - startTime);
 		}
 
-		Pattern::PaletteSequence &Pattern::PaletteSequences::SequenceAtTime(int time)
+		Pattern::PaletteSequences::PaletteSequence &Pattern::PaletteSequences::SequenceAtTime(int time)
 		{
 			while (time < paletteSequences[current].startTime)
 				--current;
@@ -151,10 +151,12 @@ namespace Shelfinator
 			return paletteSequences[current];
 		}
 
-		void Pattern::SetLights(int time, Lights::ptr lights)
+		Lights::ptr Pattern::GetLights(int time)
 		{
 			if (time < 0)
-				return;
+				return nullptr;
+
+			auto lights = Lights::Create(2440);
 
 			auto paletteSequence = paletteSequences.SequenceAtTime(time);
 			auto palettePercent = paletteSequence.GetPercent(time);
@@ -196,6 +198,8 @@ namespace Shelfinator
 
 				lights->SetLight(lightCtr, Helpers::CombineColor(r, g, b));
 			}
+
+			return lights;
 		}
 
 		int Pattern::GetLength()
