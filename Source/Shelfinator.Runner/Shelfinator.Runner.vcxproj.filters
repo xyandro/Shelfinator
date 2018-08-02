@@ -31,6 +31,15 @@
     <Filter Include="DotStar">
       <UniqueIdentifier>{309bbd91-293e-42ae-b572-4ed6ab83eaa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Driver">
+      <UniqueIdentifier>{cd26dc45-8ac2-41ac-a183-579b3fefa7f6}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Driver.cpp">
+      <Filter>Driver</Filter>
+    </ClCompile>
+    <ClInclude Include="Driver.h">
+      <Filter>Driver</Filter>
+    </ClInclude>
     <Filter Include="Helpers">
       <UniqueIdentifier>{a6809c57-e542-47cb-b7dc-3a824d84e18f}</UniqueIdentifier>
     </Filter>

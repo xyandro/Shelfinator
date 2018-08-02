@@ -4,7 +4,6 @@
 #include "Banner.h"
 #include "IDotStar.h"
 #include "IRemote.h"
-#include "LightsQueue.h"
 #include "Patterns.h"
 
 namespace Shelfinator
@@ -24,7 +23,7 @@ namespace Shelfinator
 			static const double multipliers[];
 			static std::string multiplierNames[];
 
-			bool running = true, finished = false;
+			bool running = true;
 			std::shared_ptr<std::chrono::steady_clock::time_point> start;
 			Patterns::ptr patterns;
 			IDotStar::ptr dotStar;
@@ -33,14 +32,6 @@ namespace Shelfinator
 			std::string patternsPath;
 			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = 0, selectedNumberTime = -1;
 			Pattern::ptr pattern;
-
-			LightsQueue::ptr lightsQueue;
-#ifndef INTEROP
-			std::mutex stopMutex;
-			std::condition_variable stopCondVar;
-#endif
-
-			void RunLights();
 
 			Controller(IDotStar::ptr dotStar, IRemote::ptr remote);
 

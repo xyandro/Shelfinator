@@ -1,6 +1,7 @@
 ﻿#include "Controller.h"
 
 #include <Windows.h>
+#include "Driver.h"
 #include "Helpers.h"
 
 namespace Shelfinator
@@ -17,16 +18,12 @@ namespace Shelfinator
 
 		Controller::Controller(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{
-			lightsQueue = LightsQueue::Create(2);
-
 			this->dotStar = dotStar;
 			this->remote = remote;
 			start = GetTime();
 
 			patternsPath = Helpers::GetRunPath();
 			patterns = Patterns::Create(patternsPath);
-
-			std::thread(&Controller::RunLights, this).detach();
 		}
 
 		Controller::~Controller()
@@ -124,23 +121,6 @@ namespace Shelfinator
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 
-		void Controller::RunLights()
-		{
-			while (true)
-			{
-				auto lights = lightsQueue->Get();
-				if (!lights)
-				{
-					std::unique_lock<decltype(stopMutex)> lock(stopMutex);
-					finished = true;
-					stopCondVar.notify_all();
-					break;
-				}
-				lights->CheckOverage();
-				dotStar->Show(lights->lights, lights->count);
-			}
-		}
-
 		int frameCount = 0;
 		void Controller::Run(int *patternNumbers, int patternNumberCount)
 		{
@@ -155,6 +135,7 @@ namespace Shelfinator
 			auto loadTime = Millis() - startLoad;
 			auto startDraw = Millis();
 			int startTime, nextTime = -1;
+			auto driver = Driver::Create(dotStar);
 			while (running)
 			{
 				startTime = nextTime;
@@ -174,7 +155,7 @@ namespace Shelfinator
 				pattern->SetLights(time, lights);
 				if (banner)
 					banner->SetLights(lights);
-				lightsQueue->Add(lights);
+				driver->Add(lights);
 
 				nextTime = Millis();
 				if (startTime != -1)
@@ -196,13 +177,6 @@ namespace Shelfinator
 					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 				}
 			}
-
-			lightsQueue->Add(Lights::Create(2440));
-			lightsQueue->Add(nullptr);
-
-			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
-			while (!finished)
-				stopCondVar.wait(lock);
 		}
 
 		void Controller::Test(int lightCount, int concurrency, int delay)
@@ -212,6 +186,7 @@ namespace Shelfinator
 
 			auto color = 0x0000ff;
 			auto set = 0, clear = -concurrency;
+			auto driver = Driver::Create(dotStar);
 			while (running)
 			{
 				current[set] = color;
@@ -233,29 +208,16 @@ namespace Shelfinator
 				auto lights = Lights::Create(2440);
 				for (auto ctr = 0; ctr < lightCount; ++ctr)
 					lights->SetLight(ctr, current[ctr]);
-				lightsQueue->Add(lights);
+				driver->Add(lights);
 				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 
 			delete current;
-
-			lightsQueue->Add(Lights::Create(2440));
-			lightsQueue->Add(nullptr);
-
-			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
-			while (!finished)
-				stopCondVar.wait(lock);
 		}
 
 		void Controller::Stop()
 		{
-			std::unique_lock<decltype(stopMutex)> lock(stopMutex);
-			if (!running)
-				return;
-
 			running = false;
-			while (!finished)
-				stopCondVar.wait(lock);
 		}
 
 		std::shared_ptr<std::chrono::steady_clock::time_point> Controller::GetTime()
