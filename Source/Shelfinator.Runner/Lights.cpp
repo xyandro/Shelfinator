@@ -34,6 +34,12 @@ namespace Shelfinator
 			lights[light] = value << 8 | 0xff;
 		}
 
+		void Lights::Show(IDotStar::ptr dotStar)
+		{
+			CheckOverage();
+			dotStar->Show(lights, count);
+		}
+
 		void Lights::CheckOverage()
 		{
 			const int OutputLimit = 15 * 12750; // 15 amps

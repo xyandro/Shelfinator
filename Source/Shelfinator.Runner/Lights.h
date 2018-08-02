@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <memory>
+#include "IDotStar.h"
 
 namespace Shelfinator
 {
@@ -10,16 +10,15 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Lights> ptr;
-
-			int count, *lights;
-
 			static ptr Create(int count);
 			~Lights();
 			void Clear();
 			void SetLight(int light, int value);
-			void CheckOverage();
+			void Show(IDotStar::ptr dotStar);
 		private:
+			int *lights, count;
 			Lights(int count);
+			void CheckOverage();
 		};
 	}
 }

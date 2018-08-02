@@ -59,8 +59,7 @@ namespace Shelfinator
 					condVar.notify_all();
 				}
 
-				lights->CheckOverage();
-				dotStar->Show(lights->lights, lights->count);
+				lights->Show(dotStar);
 			}
 		}
 	}
