@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <memory>
+#include <string>
 
 namespace Shelfinator
 {
@@ -10,7 +10,7 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<BufferFile> ptr;
-			static ptr Open(const char *fileName);
+			static ptr Open(std::string fileName);
 			~BufferFile();
 			bool GetBool();
 			int GetInt();
@@ -18,7 +18,7 @@ namespace Shelfinator
 			char buffer[65536];
 			int bufPos = 0, bufUsed = 0;
 			FILE *file;
-			BufferFile(const char *fileName);
+			BufferFile(std::string fileName);
 			void Copy(void *ptr, int size);
 		};
 	}

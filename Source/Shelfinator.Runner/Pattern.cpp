@@ -6,7 +6,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		Pattern::ptr Pattern::Read(const char *fileName)
+		Pattern::ptr Pattern::Read(std::string fileName)
 		{
 			return ptr(new Pattern(BufferFile::Open(fileName)));
 		}

@@ -8,7 +8,7 @@ namespace Shelfinator
 	namespace Runner
 	{
 		const double Driver::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
-		const char *Driver::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
+		std::string Driver::multiplierNames[] = { "RRRR", "RRR", "RR", "R", "R3/4", "R1/2", "R1/4", "R1/8", "P", "1/8F", "1/4F", "1/2F", "3/4F", "F", "FF", "FFF", "FFFF" };
 
 		Driver::ptr Driver::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
 		{

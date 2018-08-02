@@ -22,7 +22,7 @@ namespace Shelfinator
 			void Stop();
 		private:
 			static const double multipliers[];
-			static const char *multiplierNames[];
+			static std::string multiplierNames[];
 
 			bool running = true, finished = false;
 			std::shared_ptr<std::chrono::steady_clock::time_point> start;

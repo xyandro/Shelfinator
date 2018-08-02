@@ -4,14 +4,14 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		BufferFile::ptr BufferFile::Open(const char *fileName)
+		BufferFile::ptr BufferFile::Open(std::string fileName)
 		{
 			return ptr(new BufferFile(fileName));
 		}
 
-		BufferFile::BufferFile(const char *fileName)
+		BufferFile::BufferFile(std::string fileName)
 		{
-			file = fopen(fileName, "rb");
+			file = fopen(fileName.c_str(), "rb");
 		}
 
 		BufferFile::~BufferFile()
