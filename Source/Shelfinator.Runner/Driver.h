@@ -1,7 +1,8 @@
 ﻿#pragma once
 
+#include <mutex>
 #include "IDotStar.h"
-#include "LightsQueue.h"
+#include "Lights.h"
 
 namespace Shelfinator
 {
@@ -13,15 +14,13 @@ namespace Shelfinator
 			typedef std::shared_ptr<Driver> ptr;
 			static ptr Create(IDotStar::ptr dotStar);
 			~Driver();
-			void Add(Lights::ptr lights);
+			void SetLights(Lights::ptr lights);
 		private:
 			IDotStar::ptr dotStar;
-			LightsQueue::ptr lightsQueue;
-			bool finished = false;
-#ifndef INTEROP
+			Lights::ptr showLights;
+			int level = 0;
 			std::mutex mutex;
 			std::condition_variable condVar;
-#endif
 			Driver(IDotStar::ptr dotStar);
 			void RunLights();
 		};

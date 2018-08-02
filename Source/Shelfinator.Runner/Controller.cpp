@@ -155,7 +155,7 @@ namespace Shelfinator
 				pattern->SetLights(time, lights);
 				if (banner)
 					banner->SetLights(lights);
-				driver->Add(lights);
+				driver->SetLights(lights);
 
 				nextTime = Millis();
 				if (startTime != -1)
@@ -208,7 +208,7 @@ namespace Shelfinator
 				auto lights = Lights::Create(2440);
 				for (auto ctr = 0; ctr < lightCount; ++ctr)
 					lights->SetLight(ctr, current[ctr]);
-				driver->Add(lights);
+				driver->SetLights(lights);
 				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 

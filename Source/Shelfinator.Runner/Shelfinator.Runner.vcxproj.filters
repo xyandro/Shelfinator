@@ -64,15 +64,6 @@
     <ClInclude Include="Lights.h">
       <Filter>Lights</Filter>
     </ClInclude>
-    <Filter Include="LightsQueue">
-      <UniqueIdentifier>{72cef26f-b740-4dc0-a325-a95148f4d72c}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="LightsQueue.cpp">
-      <Filter>LightsQueue</Filter>
-    </ClCompile>
-    <ClInclude Include="LightsQueue.h">
-      <Filter>LightsQueue</Filter>
-    </ClInclude>
     <Filter Include="Pattern">
       <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
     </Filter>

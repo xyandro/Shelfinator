@@ -12,37 +12,53 @@ namespace Shelfinator
 		Driver::Driver(IDotStar::ptr dotStar)
 		{
 			this->dotStar = dotStar;
-			lightsQueue = LightsQueue::Create(2);
 			std::thread(&Driver::RunLights, this).detach();
 		}
 
 		Driver::~Driver()
 		{
-			std::unique_lock<decltype(mutex)> lock(mutex);
-			lightsQueue->Add(Lights::Create(2440));
-			lightsQueue->Add(nullptr);
+			SetLights(Lights::Create(2440));
 
-			while (!finished)
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			level = 1;
+			condVar.notify_all();
+
+			while (level != 2)
 				condVar.wait(lock);
 		}
 
-		void Driver::Add(Lights::ptr lights)
+		void Driver::SetLights(Lights::ptr lights)
 		{
-			lightsQueue->Add(lights);
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			while (showLights)
+				condVar.wait(lock);
+
+			showLights = lights;
+			condVar.notify_all();
 		}
 
 		void Driver::RunLights()
 		{
 			while (true)
 			{
-				auto lights = lightsQueue->Get();
-				if (!lights)
+				Lights::ptr lights;
 				{
 					std::unique_lock<decltype(mutex)> lock(mutex);
-					finished = true;
+					while ((level == 0) && (!showLights))
+						condVar.wait(lock);
+
+					if ((level == 1) && (!showLights))
+					{
+						level = 2;
+						condVar.notify_all();
+						break;
+					}
+
+					lights = showLights;
+					showLights.reset();
 					condVar.notify_all();
-					break;
 				}
+
 				lights->CheckOverage();
 				dotStar->Show(lights->lights, lights->count);
 			}

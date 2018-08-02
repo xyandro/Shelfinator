@@ -63,8 +63,6 @@
     <ClInclude Include="IRemote.h" />
     <ClCompile Include="Lights.cpp" />
     <ClInclude Include="Lights.h" />
-    <ClCompile Include="LightsQueue.cpp" />
-    <ClInclude Include="LightsQueue.h" />
     <ClCompile Include="Pattern.cpp" />
     <ClInclude Include="Pattern.h" />
     <ClCompile Include="Patterns.cpp" />
