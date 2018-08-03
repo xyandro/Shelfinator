@@ -6,7 +6,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		class Lights
+		class Lights : public std::enable_shared_from_this<Lights>
 		{
 		public:
 			typedef std::shared_ptr<Lights> ptr;
@@ -18,7 +18,7 @@ namespace Shelfinator
 		private:
 			int *lights, count;
 			Lights(int count);
-			void CheckOverage();
+			void PreventOverage();
 		};
 	}
 }
