@@ -189,6 +189,7 @@ namespace Shelfinator
 					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 				}
 			}
+			driver->SetLights(Lights::Create(2440));
 		}
 
 		void Controller::Test(int lightCount, int concurrency, int delay)
@@ -225,6 +226,7 @@ namespace Shelfinator
 			}
 
 			delete[] current;
+			driver->SetLights(Lights::Create(2440));
 		}
 
 		void Controller::Stop()

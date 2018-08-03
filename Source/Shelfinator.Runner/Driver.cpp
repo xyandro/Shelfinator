@@ -17,8 +17,6 @@ namespace Shelfinator
 
 		Driver::~Driver()
 		{
-			SetLights(Lights::Create(2440));
-
 			std::unique_lock<decltype(mutex)> lock(mutex);
 			level = 1;
 			condVar.notify_all();
