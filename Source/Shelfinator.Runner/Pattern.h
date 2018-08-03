@@ -15,7 +15,7 @@ namespace Shelfinator
 
 			static ptr Read(std::string fileName);
 
-			Lights::ptr GetLights(int time);
+			void SetLights(int time, Lights::ptr lights);
 			int GetLength();
 		private:
 			class Light

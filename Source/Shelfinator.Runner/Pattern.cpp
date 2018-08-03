@@ -151,12 +151,10 @@ namespace Shelfinator
 			return paletteSequences[current];
 		}
 
-		Lights::ptr Pattern::GetLights(int time)
+		void Pattern::SetLights(int time, Lights::ptr lights)
 		{
 			if (time < 0)
-				return nullptr;
-
-			auto lights = Lights::Create(2440);
+				return;
 
 			auto paletteSequence = paletteSequences.SequenceAtTime(time);
 			auto palettePercent = paletteSequence.GetPercent(time);
@@ -198,8 +196,6 @@ namespace Shelfinator
 
 				lights->SetLight(lightCtr, Helpers::CombineColor(r, g, b));
 			}
-
-			return lights;
 		}
 
 		int Pattern::GetLength()
