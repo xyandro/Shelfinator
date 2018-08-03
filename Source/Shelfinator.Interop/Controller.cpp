@@ -1,20 +1,19 @@
 ﻿#include "Controller.h"
 
 #include "DotStar.h"
-#include "Remote.h"
 
 namespace Shelfinator
 {
 	namespace Interop
 	{
-		Controller::Controller(IDotStar ^dotStar, IRemote ^remote)
+		Controller::Controller(IDotStar ^dotStar)
 		{
-			driver = new Runner::Controller::ptr(Runner::Controller::Create(DotStar::Create(dotStar), Remote::Create(remote)));
+			controller = new Runner::Controller::ptr(Runner::Controller::Create(DotStar::Create(dotStar)));
 		}
 
 		Controller::~Controller()
 		{
-			delete driver;
+			delete controller;
 		}
 
 		void Controller::Run(System::Collections::Generic::List<int> ^patternNumbers)
@@ -22,18 +21,23 @@ namespace Shelfinator
 			auto nativePatternNumbers = new int[patternNumbers->Count];
 			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
 				nativePatternNumbers[ctr] = patternNumbers[ctr];
-			(*driver)->Run(nativePatternNumbers, patternNumbers->Count);
+			(*controller)->Run(nativePatternNumbers, patternNumbers->Count);
 			delete[] nativePatternNumbers;
 		}
 
 		void Controller::Test(int lightCount, int concurrency, int delay)
 		{
-			(*driver)->Test(lightCount, concurrency, delay);
+			(*controller)->Test(lightCount, concurrency, delay);
 		}
 
 		void Controller::Stop()
 		{
-			(*driver)->Stop();
+			(*controller)->Stop();
+		}
+
+		void Controller::AddRemoteCode(RemoteCode remoteCode)
+		{
+			(*controller)->AddRemoteCode((Runner::RemoteCode)remoteCode);
 		}
 	}
 }

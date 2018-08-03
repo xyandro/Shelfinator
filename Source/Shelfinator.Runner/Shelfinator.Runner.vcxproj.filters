@@ -52,9 +52,6 @@
     <ClInclude Include="IDotStar.h">
       <Filter>DotStar</Filter>
     </ClInclude>
-    <ClInclude Include="IRemote.h">
-      <Filter>Remote</Filter>
-    </ClInclude>
     <Filter Include="Lights">
       <UniqueIdentifier>{fe9abc41-3bc8-4233-8573-1b4a7b4b35e1}</UniqueIdentifier>
     </Filter>

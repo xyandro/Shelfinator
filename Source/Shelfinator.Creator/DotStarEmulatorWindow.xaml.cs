@@ -14,12 +14,10 @@ namespace Shelfinator.Creator
 		public ImageSource DotStarBitmap { get => (ImageSource)GetValue(DotStarBitmapProperty); set => SetValue(DotStarBitmapProperty, value); }
 
 		readonly Controller controller;
-		readonly RemoteEmulator remote;
 		public DotStarEmulatorWindow()
 		{
 			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Creator.Patterns.Layout.DotStar.png"));
-			remote = new RemoteEmulator();
-			controller = new Controller(dotStar, remote);
+			controller = new Controller(dotStar);
 
 			InitializeComponent();
 			DotStarBitmap = dotStar.Bitmap;
@@ -35,22 +33,23 @@ namespace Shelfinator.Creator
 			e.Handled = true;
 			switch (e.Key)
 			{
-				case Key.Escape: remote.Add(RemoteCode.Play); break;
-				case Key.Space: remote.Add(RemoteCode.Pause); break;
-				case Key.Left: remote.Add(ControlDown ? RemoteCode.Previous : RemoteCode.Rewind); break;
-				case Key.Right: remote.Add(ControlDown ? RemoteCode.Next : RemoteCode.FastForward); break;
-				case Key.Enter: remote.Add(RemoteCode.Enter); break;
-				case Key.D0: remote.Add(RemoteCode.D0); break;
-				case Key.D1: remote.Add(RemoteCode.D1); break;
-				case Key.D2: remote.Add(RemoteCode.D2); break;
-				case Key.D3: remote.Add(RemoteCode.D3); break;
-				case Key.D4: remote.Add(RemoteCode.D4); break;
-				case Key.D5: remote.Add(RemoteCode.D5); break;
-				case Key.D6: remote.Add(RemoteCode.D6); break;
-				case Key.D7: remote.Add(RemoteCode.D7); break;
-				case Key.D8: remote.Add(RemoteCode.D8); break;
-				case Key.D9: remote.Add(RemoteCode.D9); break;
-				case Key.I: remote.Add(RemoteCode.Info); break;
+				case Key.Escape: controller.AddRemoteCode(RemoteCode.Play); break;
+				case Key.Space: controller.AddRemoteCode(RemoteCode.Pause); break;
+				case Key.Left: controller.AddRemoteCode(ControlDown ? RemoteCode.Previous : RemoteCode.Rewind); break;
+				case Key.Right: controller.AddRemoteCode(ControlDown ? RemoteCode.Next : RemoteCode.FastForward); break;
+				case Key.Enter: controller.AddRemoteCode(RemoteCode.Enter); break;
+				case Key.D0: controller.AddRemoteCode(RemoteCode.D0); break;
+				case Key.D1: controller.AddRemoteCode(RemoteCode.D1); break;
+				case Key.D2: controller.AddRemoteCode(RemoteCode.D2); break;
+				case Key.D3: controller.AddRemoteCode(RemoteCode.D3); break;
+				case Key.D4: controller.AddRemoteCode(RemoteCode.D4); break;
+				case Key.D5: controller.AddRemoteCode(RemoteCode.D5); break;
+				case Key.D6: controller.AddRemoteCode(RemoteCode.D6); break;
+				case Key.D7: controller.AddRemoteCode(RemoteCode.D7); break;
+				case Key.D8: controller.AddRemoteCode(RemoteCode.D8); break;
+				case Key.D9: controller.AddRemoteCode(RemoteCode.D9); break;
+				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
+				case Key.S: controller.Stop(); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);

@@ -2,7 +2,7 @@
 
 #include "../Shelfinator.Runner/Controller.h"
 #include "IDotStar.h"
-#include "IRemote.h"
+#include "RemoteCode.h"
 
 namespace Shelfinator
 {
@@ -11,13 +11,14 @@ namespace Shelfinator
 		public ref class Controller
 		{
 		public:
-			Controller(IDotStar ^dotStar, IRemote ^remote);
+			Controller(IDotStar ^dotStar);
 			~Controller();
 			void Run(System::Collections::Generic::List<int> ^patternNumbers);
 			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
+			void AddRemoteCode(RemoteCode remoteCode);
 		private:
-			Runner::Controller::ptr *driver;
+			Runner::Controller::ptr *controller;
 		};
 	}
 }

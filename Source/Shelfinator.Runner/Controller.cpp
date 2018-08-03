@@ -11,15 +11,14 @@ namespace Shelfinator
 		const double Controller::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
 		std::wstring Controller::multiplierNames[] = { L"◀◀◀◀", L"◀◀◀", L"◀◀", L"◀", L"◀3/4", L"◀1/2", L"◀1/4", L"◀1/8", L"‖", L"1/8▶", L"1/4▶", L"1/2▶", L"3/4▶", L"▶", L"▶▶", L"▶▶▶", L"▶▶▶▶" };
 
-		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IRemote::ptr remote)
+		Controller::ptr Controller::Create(IDotStar::ptr dotStar)
 		{
-			return ptr(new Controller(dotStar, remote));
+			return ptr(new Controller(dotStar));
 		}
 
-		Controller::Controller(IDotStar::ptr dotStar, IRemote::ptr remote)
+		Controller::Controller(IDotStar::ptr dotStar)
 		{
 			this->dotStar = dotStar;
-			this->remote = remote;
 			timer = Timer::Create();
 			patterns = Patterns::Create();
 		}
@@ -27,23 +26,6 @@ namespace Shelfinator
 		Controller::~Controller()
 		{
 			Stop();
-		}
-
-		RemoteCode Controller::GetRemoteCode()
-		{
-			auto now = timer->Millis();
-			while (true)
-			{
-				auto code = remote->GetCode();
-				if (code == None)
-					return None;
-				if ((code == lastRemoteCode) && (now - lastRemoteTime < REMOTEDELAYMS))
-					continue;
-
-				lastRemoteTime = now;
-				lastRemoteCode = code;
-				return code;
-			}
 		}
 
 		bool Controller::HandleRemote()
@@ -55,7 +37,17 @@ namespace Shelfinator
 				useSelectedNumber = true;
 
 			auto lastMultiplierIndex = multiplierIndex;
-			auto code = GetRemoteCode();
+
+			auto code = None;
+			{
+				std::unique_lock<std::mutex> lock(remoteMutex);
+				if (!remoteCodes.empty())
+				{
+					code = remoteCodes.front();
+					remoteCodes.pop();
+				}
+			}
+
 			switch (code)
 			{
 			case Play: multiplierIndex = 13; break;
@@ -232,6 +224,21 @@ namespace Shelfinator
 		void Controller::Stop()
 		{
 			running = false;
+		}
+
+		void Controller::AddRemoteCode(RemoteCode remoteCode)
+		{
+			if (remoteCode == None)
+				return;
+
+			auto now = timer->Millis();
+			std::unique_lock<std::mutex> lock(remoteMutex);
+			if ((remoteCode != lastRemoteCode) || (now - lastRemoteTime >= REMOTEDELAYMS))
+			{
+				remoteCodes.push(remoteCode);
+				lastRemoteTime = now;
+				lastRemoteCode = remoteCode;
+			}
 		}
 	}
 }

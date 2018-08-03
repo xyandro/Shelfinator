@@ -1,9 +1,13 @@
 ﻿#pragma once
 
+#ifndef __CLR_VER
+#include <mutex>
+#endif
+#include <queue>
 #include "Banner.h"
 #include "IDotStar.h"
-#include "IRemote.h"
 #include "Patterns.h"
+#include "RemoteCode.h"
 #include "Timer.h"
 
 namespace Shelfinator
@@ -14,11 +18,12 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Controller> ptr;
-			static ptr Create(IDotStar::ptr dotStar, IRemote::ptr remote);
+			static ptr Create(IDotStar::ptr dotStar);
 			~Controller();
 			void Run(int *patternNumbers, int patternNumberCount);
 			void Test(int lightCount, int concurrency, int delay);
 			void Stop();
+			void AddRemoteCode(RemoteCode remoteCode);
 		private:
 			static const double multipliers[];
 			static std::wstring multiplierNames[];
@@ -30,11 +35,14 @@ namespace Shelfinator
 			IDotStar::ptr dotStar;
 			Pattern::ptr pattern;
 			Patterns::ptr patterns;
-			IRemote::ptr remote;
 			Timer::ptr timer;
 
-			Controller(IDotStar::ptr dotStar, IRemote::ptr remote);
-			RemoteCode GetRemoteCode();
+#ifndef __CLR_VER
+			std::mutex remoteMutex;
+#endif
+			std::queue<RemoteCode> remoteCodes;
+
+			Controller(IDotStar::ptr dotStar);
 			bool HandleRemote();
 			void LoadPattern(bool startAtEnd = false);
 		};
