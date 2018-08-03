@@ -118,15 +118,17 @@ namespace Shelfinator
 			{ 7, 8, 23, 24, 39, 40, 55, 56, 71, 72, 87, 88, 103, 104, 119, 120, 135, 136, 151, 152, 167, 168, 183, 184, 199, 200, 215, 216, 231, 232, 247, 248 },
 		};
 
-		Banner::ptr Banner::Create(std::wstring text, int scrollTime, int fadeTime, int spacing)
+		Banner::ptr Banner::Create(std::wstring text, int scrollTime, int fadeTime, int spacing, int color)
 		{
-			return ptr(new Banner(text, scrollTime, fadeTime, spacing));
+			return ptr(new Banner(text, scrollTime, fadeTime, spacing, color));
 		}
 
-		Banner::Banner(std::wstring text, int scrollTime, int fadeTime, int spacing)
+		Banner::Banner(std::wstring text, int scrollTime, int fadeTime, int spacing, int color)
 		{
 			this->scrollTime = scrollTime;
 			this->fadeTime = fadeTime;
+			this->color = color;
+
 			width = 0;
 			for (auto ctr = 0; ctr < text.length(); ++ctr)
 				width += GetChar(text[ctr]).width;
@@ -187,7 +189,7 @@ namespace Shelfinator
 			for (auto y = 0; y < 8; ++y)
 				for (auto x = x1; x < x2; ++x)
 					if (grid[y][x])
-						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(0x101010, fade));
+						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(color, fade));
 		}
 
 		void Banner::AddElapsed(int delta)

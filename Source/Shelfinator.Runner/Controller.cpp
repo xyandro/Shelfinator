@@ -90,9 +90,9 @@ namespace Shelfinator
 				if (selectedNumber >= 10000)
 					selectedNumber = -1;
 				else
-					banner = Banner::Create(std::to_wstring(selectedNumber), 1000, 1);
+					banner = Banner::Create(std::to_wstring(selectedNumber), 0, 1000, 1);
 				break;
-			case Info: banner = Banner::Create(std::to_wstring(patterns->GetValue(patternIndex)), 1000, 1); break;
+			case Info: banner = Banner::Create(std::to_wstring(patterns->GetValue(patternIndex)), 0, 1000, 1); break;
 			default: result = false; break;
 			}
 
