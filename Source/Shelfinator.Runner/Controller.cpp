@@ -2,6 +2,8 @@
 
 #include "Driver.h"
 
+#define REMOTEDELAYMS 100
+
 namespace Shelfinator
 {
 	namespace Runner
@@ -27,16 +29,33 @@ namespace Shelfinator
 			Stop();
 		}
 
+		RemoteCode Controller::GetRemoteCode()
+		{
+			auto now = timer->Millis();
+			while (true)
+			{
+				auto code = remote->GetCode();
+				if (code == None)
+					return None;
+				if ((code == lastRemoteCode) && (now - lastRemoteTime < REMOTEDELAYMS))
+					continue;
+
+				lastRemoteTime = now;
+				lastRemoteCode = code;
+				return code;
+			}
+		}
+
 		bool Controller::HandleRemote()
 		{
 			auto result = true;
 			auto useSelectedNumber = false;
 			auto now = timer->Millis();
-			if ((selectedNumberTime != -1) && (now - selectedNumberTime >= 1000))
+			if ((selectedNumber != -1) && (now - lastRemoteTime >= 1000))
 				useSelectedNumber = true;
 
 			auto lastMultiplierIndex = multiplierIndex;
-			auto code = remote->GetCode();
+			auto code = GetRemoteCode();
 			switch (code)
 			{
 			case Play: multiplierIndex = 13; break;
@@ -73,13 +92,11 @@ namespace Shelfinator
 			case D7:
 			case D8:
 			case D9:
-				selectedNumberTime = now;
+				if (selectedNumber == -1)
+					selectedNumber = 0;
 				selectedNumber = selectedNumber * 10 + code - D0;
 				if (selectedNumber >= 10000)
-				{
-					selectedNumber = 0;
-					selectedNumberTime = -1;
-				}
+					selectedNumber = -1;
 				else
 					banner = Banner::Create(std::to_wstring(selectedNumber), 1000, 1);
 				break;
@@ -90,7 +107,7 @@ namespace Shelfinator
 			if (lastMultiplierIndex != multiplierIndex)
 				banner = Banner::Create(multiplierNames[multiplierIndex], 0, 1000);
 
-			if (useSelectedNumber)
+			if ((useSelectedNumber) && (selectedNumber != -1))
 			{
 				auto found = patterns->GetIndex(selectedNumber);
 				if (found != -1)
@@ -99,8 +116,7 @@ namespace Shelfinator
 					LoadPattern();
 				}
 
-				selectedNumber = 0;
-				selectedNumberTime = -1;
+				selectedNumber = -1;
 			}
 
 			return result;
