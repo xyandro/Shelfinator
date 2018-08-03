@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Shelfinator.Interop;
@@ -7,17 +9,24 @@ namespace Shelfinator.Creator
 {
 	partial class DotStarEmulatorWindow
 	{
-		public static DependencyProperty DotStarProperty = DependencyProperty.Register(nameof(DotStar), typeof(ImageSource), typeof(DotStarEmulatorWindow));
+		public static DependencyProperty DotStarBitmapProperty = DependencyProperty.Register(nameof(DotStarBitmap), typeof(ImageSource), typeof(DotStarEmulatorWindow));
 
-		public ImageSource DotStar { get => (ImageSource)GetValue(DotStarProperty); set => SetValue(DotStarProperty, value); }
+		public ImageSource DotStarBitmap { get => (ImageSource)GetValue(DotStarBitmapProperty); set => SetValue(DotStarBitmapProperty, value); }
 
+		readonly Controller controller;
 		readonly RemoteEmulator remote;
-		public DotStarEmulatorWindow(ImageSource bitmap, RemoteEmulator remote)
+		public DotStarEmulatorWindow()
 		{
-			this.remote = remote;
+			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Creator.Patterns.Layout.DotStar.png"));
+			remote = new RemoteEmulator();
+			controller = new Controller(dotStar, remote);
+
 			InitializeComponent();
-			DotStar = bitmap;
+			DotStarBitmap = dotStar.Bitmap;
 		}
+
+		public void Run(List<int> patternNumbers) => new Thread(() => controller.Run(patternNumbers)).Start();
+		public void Test(int lightCount, int concurrency, int delay) => new Thread(() => controller.Test(lightCount, concurrency, delay)).Start();
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
 

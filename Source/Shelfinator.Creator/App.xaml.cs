@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using Shelfinator.Creator.Patterns;
-using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
@@ -57,18 +55,11 @@ namespace Shelfinator.Creator
 				}
 			}
 
-			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Creator.Patterns.Layout.DotStar.png"));
-			var remote = new RemoteEmulator();
-			var window = new DotStarEmulatorWindow(dotStar.Bitmap, remote);
-			window.Show();
-			new Thread(() =>
-			{
-				using (var controller = new Controller(dotStar, remote))
-					if (test)
-						controller.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2]);
-					else
-						controller.Run(patternNumbers);
-			}).Start();
+			var window = new DotStarEmulatorWindow();
+			if (test)
+				window.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2]);
+			else
+				window.Run(patternNumbers);
 		}
 
 		protected override void OnExit(ExitEventArgs e)
