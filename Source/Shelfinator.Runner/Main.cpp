@@ -32,8 +32,13 @@ int main(int argc, char **argv)
 	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create());
 	Shelfinator::Runner::Remote::Run(controller);
 
-	if ((argc == 5) && (strcmp(argv[1], "test") == 0))
-		controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
+	if ((argc > 1) && (strcmp(argv[1], "test") == 0))
+	{
+		if (argc == 6)
+			controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+		else
+			fprintf(stderr, "Usage: %s test lightCount concurrency delay brightness\n", argv[0]);
+	}
 	else
 	{
 		auto patternNumbers = new int[argc];

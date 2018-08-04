@@ -3,6 +3,7 @@
 #include <string.h>
 #include <thread>
 #include "Driver.h"
+#include "Helpers.h"
 
 #define REMOTEDELAYMS 250
 
@@ -191,12 +192,13 @@ namespace Shelfinator
 			driver->SetLights(Lights::Create(2440));
 		}
 
-		void Controller::Test(int lightCount, int concurrency, int delay)
+		void Controller::Test(int lightCount, int concurrency, int delay, int brightness)
 		{
 			auto current = new int[lightCount];
 			memset(current, 0, sizeof(*current) * lightCount);
 
-			auto color = 0x0000ff;
+			unsigned int useColor = Helpers::MultiplyColor(0x0000ff, brightness / 100.0);
+			auto color = useColor;
 			auto set = 0, clear = -concurrency;
 			auto driver = Driver::Create(dotStar);
 			while (running)
@@ -208,10 +210,9 @@ namespace Shelfinator
 				if (set >= lightCount)
 				{
 					set = 0;
-					if (color == 0xff0000)
-						color = 0x0000ff;
-					else
-						color <<= 8;
+					color <<= 8;
+					if (color >= 0x1000000)
+						color = useColor;
 				}
 				++clear;
 				if (clear >= lightCount)
