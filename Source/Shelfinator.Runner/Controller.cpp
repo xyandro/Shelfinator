@@ -118,12 +118,17 @@ namespace Shelfinator
 
 		void Controller::LoadPattern(bool startAtEnd)
 		{
-			while (patternIndex < 0)
-				patternIndex += patterns->Count();
-			while (patternIndex >= patterns->Count())
-				patternIndex -= patterns->Count();
+			if (patterns->Count() == 0)
+				pattern = Pattern::CreateTest();
+			else
+			{
+				while (patternIndex < 0)
+					patternIndex += patterns->Count();
+				while (patternIndex >= patterns->Count())
+					patternIndex -= patterns->Count();
 
-			pattern = patterns->LoadPattern(patternIndex);
+				pattern = patterns->LoadPattern(patternIndex);
+			}
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}
 

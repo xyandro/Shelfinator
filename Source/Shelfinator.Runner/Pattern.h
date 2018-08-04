@@ -13,11 +13,14 @@ namespace Shelfinator
 		public:
 			typedef std::shared_ptr<Pattern> ptr;
 
+			static ptr CreateTest();
 			static ptr Read(std::string fileName);
 
 			void SetLights(int time, Lights::ptr lights);
 			int GetLength();
 		private:
+			bool test = false;
+
 			class Light
 			{
 			private:
@@ -89,6 +92,7 @@ namespace Shelfinator
 			};
 			PaletteSequences paletteSequences;
 
+			Pattern();
 			Pattern(BufferFile::ptr file);
 		};
 	}

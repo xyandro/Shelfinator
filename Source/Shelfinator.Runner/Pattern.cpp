@@ -6,9 +6,20 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
+		Pattern::ptr Pattern::CreateTest()
+		{
+			return ptr(new Pattern());
+		}
+
 		Pattern::ptr Pattern::Read(std::string fileName)
 		{
 			return ptr(new Pattern(BufferFile::Open(fileName)));
+		}
+
+		Pattern::Pattern()
+		{
+			test = true;
+			length = 1 << 30;
 		}
 
 		Pattern::Pattern(BufferFile::ptr file)
@@ -153,7 +164,7 @@ namespace Shelfinator
 
 		void Pattern::SetLights(int time, Lights::ptr lights)
 		{
-			if (time < 0)
+			if ((time < 0) || (test))
 				return;
 
 			auto paletteSequence = paletteSequences.SequenceAtTime(time);

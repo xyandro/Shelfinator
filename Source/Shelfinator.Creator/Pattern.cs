@@ -246,7 +246,7 @@ namespace Shelfinator.Creator
 
 		public void Save(BinaryWriter output)
 		{
-			var numLights = lights.Keys.Max() + 1;
+			var numLights = lights.Keys.DefaultIfEmpty(0).Max() + 1;
 			output.Write(numLights);
 			for (var light = 0; light < numLights; ++light)
 			{
