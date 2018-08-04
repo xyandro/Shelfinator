@@ -16,7 +16,7 @@ namespace Shelfinator
 				unsigned char count;
 				struct fontchardata
 				{
-					wchar_t ch;
+					short ch;
 					char width;
 					char data[8];
 				} chars[1];

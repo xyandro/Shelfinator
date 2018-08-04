@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	SetupBreakhandler();
 
 	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create());
-	auto remote = Shelfinator::Runner::Remote::Create();
+	Shelfinator::Runner::Remote::Run(controller);
 
 	if ((argc == 5) && (strcmp(argv[1], "test") == 0))
 		controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));

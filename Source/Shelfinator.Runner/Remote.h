@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include <memory>
-#include <mutex>
-#include <queue>
-#include "RemoteCode.h"
+#include "Controller.h"
 
 namespace Shelfinator
 {
@@ -12,16 +9,9 @@ namespace Shelfinator
 		class Remote
 		{
 		public:
-			typedef std::shared_ptr<Remote> ptr;
-			static ptr Create();
-			~Remote();
-			RemoteCode GetCode();
+			static void Run(Controller::ptr controller);
 		private:
-			std::deque<RemoteCode> queue;
-			std::mutex mutex;
-			Remote();
-			void RunThread();
-			void AddCode(RemoteCode code);
+			static void RunThread(Controller::ptr controller);
 		};
 	}
 }

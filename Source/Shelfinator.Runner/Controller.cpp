@@ -4,7 +4,7 @@
 #include <thread>
 #include "Driver.h"
 
-#define REMOTEDELAYMS 100
+#define REMOTEDELAYMS 250
 
 namespace Shelfinator
 {
