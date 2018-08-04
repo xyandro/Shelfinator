@@ -1,5 +1,7 @@
 ﻿#include "Banner.h"
 
+#include <string.h>
+#include <wctype.h>
 #include "Helpers.h"
 
 namespace Shelfinator

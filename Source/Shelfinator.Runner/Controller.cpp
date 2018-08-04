@@ -1,5 +1,7 @@
 ﻿#include "Controller.h"
 
+#include <string.h>
+#include <thread>
 #include "Driver.h"
 
 #define REMOTEDELAYMS 100

@@ -1,12 +1,15 @@
 ﻿#pragma once
 
-#include "IRemote.h"
+#include <memory>
+#include <mutex>
+#include <queue>
+#include "RemoteCode.h"
 
 namespace Shelfinator
 {
 	namespace Runner
 	{
-		class Remote : public IRemote
+		class Remote
 		{
 		public:
 			typedef std::shared_ptr<Remote> ptr;

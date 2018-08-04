@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <condition_variable>
 #include <mutex>
 #include "IDotStar.h"
 #include "Lights.h"

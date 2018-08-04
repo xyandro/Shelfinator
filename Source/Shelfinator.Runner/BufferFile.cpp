@@ -1,5 +1,7 @@
 ﻿#include "BufferFile.h"
 
+#include <string.h>
+
 namespace Shelfinator
 {
 	namespace Runner

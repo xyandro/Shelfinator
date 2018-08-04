@@ -1,13 +1,17 @@
-﻿#include "Driver.h"
+﻿#include <signal.h>
+#include <string.h>
+#include "Controller.h"
+#include "DotStar.h"
+#include "Remote.h"
 
 namespace
 {
-	Shelfinator::Runner::Driver::ptr driver;
+	Shelfinator::Runner::Controller::ptr controller;
 }
 
 void BreakHandler(int s)
 {
-	driver->Stop();
+	controller->Stop();
 }
 
 void SetupBreakhandler()
@@ -25,10 +29,11 @@ int main(int argc, char **argv)
 
 	SetupBreakhandler();
 
-	driver = Shelfinator::Driver::Create(Shelfinator::DotStar::Create(), Shelfinator::Remote::Create());
+	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create());
+	auto remote = Shelfinator::Runner::Remote::Create();
 
-	if (argc == 5) && (strcmp(argv[1], "test") == 0)
-		driver->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
+	if ((argc == 5) && (strcmp(argv[1], "test") == 0))
+		controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
 	else
 	{
 		auto patternNumbers = new int[argc];
@@ -42,7 +47,7 @@ int main(int argc, char **argv)
 				patternNumbers[patternNumberCount++] = value;
 		}
 
-		driver->Run(patternNumbers, patternNumberCount);
+		controller->Run(patternNumbers, patternNumberCount);
 
 		delete[] patternNumbers;
 	}

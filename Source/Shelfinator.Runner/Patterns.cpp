@@ -1,7 +1,11 @@
 ﻿#include "Patterns.h"
 
 #include <algorithm>
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <dirent.h>
+#endif
 #include "Helpers.h"
 
 namespace Shelfinator

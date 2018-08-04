@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <linux/spi/spidev.h>
 #include "IDotStar.h"
 
 namespace Shelfinator

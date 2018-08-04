@@ -1,5 +1,8 @@
 ﻿#include "Remote.h"
 
+#include <lirc/lirc_client.h>
+#include <thread>
+
 namespace Shelfinator
 {
 	namespace Runner

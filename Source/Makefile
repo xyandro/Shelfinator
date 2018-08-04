@@ -1,12 +1,13 @@
-﻿OBJS = Banner.o DotStar.o Driver.o DriverRunner.o Helpers.o Lights.o Pattern.o Remote.o Semaphore.o
+﻿OBJS = Banner.o BufferFile.o Controller.o DotStar.o Driver.o Helpers.o Lights.o Main.o Pattern.o Patterns.o Remote.o Timer.o
 
-all: shelfinator
+all: ../Build/shelfinator
 
-shelfinator: $(OBJS)
+../Build/shelfinator: $(OBJS)
+	mkdir -p ../Build
 	g++ -o $@ $^ -llirc_client -pthread
 
-%.o: %.cpp %.h
+%.o: Shelfinator.Runner/%.cpp Shelfinator.Runner/%.h
 	g++ -c -o $@ $<
 
 clean:
-	rm -f shelfinator $(OBJS)
+	rm -f ../Build/shelfinator $(OBJS)

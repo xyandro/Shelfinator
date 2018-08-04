@@ -1,5 +1,8 @@
 ﻿#include "DotStar.h"
 
+#include <fcntl.h>
+#include <sys/ioctl.h>
+
 namespace Shelfinator
 {
 	namespace Runner
