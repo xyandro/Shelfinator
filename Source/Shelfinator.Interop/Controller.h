@@ -14,7 +14,7 @@ namespace Shelfinator
 			Controller(IDotStar ^dotStar);
 			~Controller();
 			void Run(System::Collections::Generic::List<int> ^patternNumbers);
-			void Test(int lightCount, int concurrency, int delay, int brightness);
+			void Test(int firstLight, int lightCount, int concurrency, int delay, int brightness);
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:

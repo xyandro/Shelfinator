@@ -192,12 +192,12 @@ namespace Shelfinator
 			driver->SetLights(Lights::Create(2440));
 		}
 
-		void Controller::Test(int lightCount, int concurrency, int delay, int brightness)
+		void Controller::Test(int firstLight, int lightCount, int concurrency, int delay, int brightness)
 		{
 			auto current = new int[lightCount];
 			memset(current, 0, sizeof(*current) * lightCount);
 
-			unsigned int useColor = Helpers::MultiplyColor(0x0000ff, brightness / 100.0);
+			auto useColor = (unsigned)brightness;
 			auto color = useColor;
 			auto set = 0, clear = -concurrency;
 			auto driver = Driver::Create(dotStar);
@@ -220,7 +220,7 @@ namespace Shelfinator
 
 				auto lights = Lights::Create(2440);
 				for (auto ctr = 0; ctr < lightCount; ++ctr)
-					lights->SetLight(ctr, current[ctr]);
+					lights->SetLight(firstLight + ctr, current[ctr]);
 				driver->SetLights(lights);
 				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}

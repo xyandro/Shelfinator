@@ -39,8 +39,8 @@ namespace Shelfinator.Creator
 				args.RemoveAll(arg => (string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "all", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "test", StringComparison.OrdinalIgnoreCase)));
 
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
-			if ((test) && (patternNumbers.Count != 4))
-				throw new Exception("Test must provide lightCount, concurrency, delay, and brightness");
+			if ((test) && (patternNumbers.Count != 5))
+				throw new Exception("Test must provide firstLight, lightCount, concurrency, delay, and brightness");
 
 			if (build)
 			{
@@ -57,7 +57,7 @@ namespace Shelfinator.Creator
 
 			var window = new DotStarEmulatorWindow();
 			if (test)
-				window.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2], patternNumbers[3]);
+				window.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2], patternNumbers[3], patternNumbers[4]);
 			else
 				window.Run(patternNumbers);
 		}

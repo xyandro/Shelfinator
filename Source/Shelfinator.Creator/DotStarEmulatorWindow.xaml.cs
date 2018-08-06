@@ -24,7 +24,7 @@ namespace Shelfinator.Creator
 		}
 
 		public void Run(List<int> patternNumbers) => new Thread(() => controller.Run(patternNumbers)).Start();
-		public void Test(int lightCount, int concurrency, int delay, int brightness) => new Thread(() => controller.Test(lightCount, concurrency, delay, brightness)).Start();
+		public void Test(int firstLight, int lightCount, int concurrency, int delay, int brightness) => new Thread(() => controller.Test(firstLight, lightCount, concurrency, delay, brightness)).Start();
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
 

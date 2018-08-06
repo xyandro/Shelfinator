@@ -25,9 +25,9 @@ namespace Shelfinator
 			delete[] nativePatternNumbers;
 		}
 
-		void Controller::Test(int lightCount, int concurrency, int delay, int brightness)
+		void Controller::Test(int firstLight, int lightCount, int concurrency, int delay, int brightness)
 		{
-			(*controller)->Test(lightCount, concurrency, delay, brightness);
+			(*controller)->Test(firstLight, lightCount, concurrency, delay, brightness);
 		}
 
 		void Controller::Stop()
