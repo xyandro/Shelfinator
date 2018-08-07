@@ -16,7 +16,7 @@ namespace Shelfinator
 			static ptr CreateTest();
 			static ptr Read(std::string fileName);
 
-			void SetLights(int time, Lights::ptr lights);
+			void SetLights(int time, double brightness, Lights::ptr lights);
 			int GetLength();
 		private:
 			bool test = false;

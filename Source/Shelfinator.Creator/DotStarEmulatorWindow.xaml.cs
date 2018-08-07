@@ -37,6 +37,8 @@ namespace Shelfinator.Creator
 				case Key.Space: controller.AddRemoteCode(RemoteCode.Pause); break;
 				case Key.Left: controller.AddRemoteCode(ControlDown ? RemoteCode.Previous : RemoteCode.Rewind); break;
 				case Key.Right: controller.AddRemoteCode(ControlDown ? RemoteCode.Next : RemoteCode.FastForward); break;
+				case Key.Up: controller.AddRemoteCode(RemoteCode.VolumeUp); break;
+				case Key.Down: controller.AddRemoteCode(RemoteCode.VolumeDown); break;
 				case Key.Enter: controller.AddRemoteCode(RemoteCode.Enter); break;
 				case Key.D0: controller.AddRemoteCode(RemoteCode.D0); break;
 				case Key.D1: controller.AddRemoteCode(RemoteCode.D1); break;

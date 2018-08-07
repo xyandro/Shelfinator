@@ -40,6 +40,7 @@ namespace Shelfinator
 				useSelectedNumber = true;
 
 			auto lastMultiplierIndex = multiplierIndex;
+			auto lastBrightness = brightness;
 
 			auto code = None;
 			{
@@ -77,6 +78,8 @@ namespace Shelfinator
 				LoadPattern();
 				break;
 			case Enter: useSelectedNumber = true; break;
+			case VolumeUp: brightness += 10; break;
+			case VolumeDown: brightness -= 10; break;
 			case D0:
 			case D1:
 			case D2:
@@ -101,6 +104,11 @@ namespace Shelfinator
 
 			if (lastMultiplierIndex != multiplierIndex)
 				banner = Banner::Create(multiplierNames[multiplierIndex], 0, 1000);
+
+			if (brightness < 0)
+				brightness = 0;
+			if (lastBrightness != brightness)
+				banner = Banner::Create(std::to_wstring(brightness) + L'%', 0, 1000, 1);
 
 			if ((useSelectedNumber) && (selectedNumber != -1))
 			{
@@ -164,7 +172,7 @@ namespace Shelfinator
 				}
 
 				auto lights = Lights::Create(2440);
-				pattern->SetLights(time, lights);
+				pattern->SetLights(time, brightness / 100.0, lights);
 				if (banner)
 					banner->SetLights(lights);
 				driver->SetLights(lights);

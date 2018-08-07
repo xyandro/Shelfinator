@@ -162,7 +162,7 @@ namespace Shelfinator
 			return paletteSequences[current];
 		}
 
-		void Pattern::SetLights(int time, Lights::ptr lights)
+		void Pattern::SetLights(int time, double brightness, Lights::ptr lights)
 		{
 			if ((time < 0) || (test))
 				return;
@@ -204,6 +204,8 @@ namespace Shelfinator
 
 				double r, g, b;
 				Helpers::GradientColor(scr, scg, scb, ecr, ecg, ecb, light.GetPercent(lightTime), r, g, b);
+
+				Helpers::MultiplyColor(r, g, b, brightness, r, g, b);
 
 				lights->SetLight(lightCtr, Helpers::CombineColor(r, g, b));
 			}

@@ -13,6 +13,8 @@ namespace Shelfinator
 		Enter,\
 		Previous,\
 		Next,\
+		VolumeUp,\
+		VolumeDown,\
 		D0,\
 		D1,\
 		D2,\
