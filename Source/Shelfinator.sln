@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shelfinator.Creator", "Shelfinator.Creator\Shelfinator.Creator.csproj", "{A3CB008F-518D-4BD3-8045-E1B1F5629B0A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shelfinator.Interop", "Shelfinator.Interop\Shelfinator.Interop.vcxproj", "{9131E615-8B9B-43ED-B3C2-2B3FC31A1BA5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shelfinator.Runner", "Shelfinator.Runner\Shelfinator.Runner.vcxproj", "{95A660DC-FBFE-4560-A433-0B024494B213}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -12,6 +16,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A3CB008F-518D-4BD3-8045-E1B1F5629B0A}.Debug|x64.ActiveCfg = Debug|x64
 		{A3CB008F-518D-4BD3-8045-E1B1F5629B0A}.Debug|x64.Build.0 = Debug|x64
+		{9131E615-8B9B-43ED-B3C2-2B3FC31A1BA5}.Debug|x64.ActiveCfg = Debug|x64
+		{9131E615-8B9B-43ED-B3C2-2B3FC31A1BA5}.Debug|x64.Build.0 = Debug|x64
+		{95A660DC-FBFE-4560-A433-0B024494B213}.Debug|x64.ActiveCfg = Debug|x64
+		{95A660DC-FBFE-4560-A433-0B024494B213}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

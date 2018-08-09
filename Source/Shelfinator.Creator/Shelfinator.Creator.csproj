@@ -41,6 +41,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -49,16 +50,59 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ModelWindow.xaml">
+    <Compile Include="DotStarEmulator.cs" />
+    <Page Include="DotStarEmulatorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ModelWindow.xaml.cs">
-      <DependentUpon>ModelWindow.xaml</DependentUpon>
+    <Compile Include="DotStarEmulatorWindow.xaml.cs">
+      <DependentUpon>DotStarEmulatorWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Layout.cs" />
+    <Compile Include="LightColor.cs" />
+    <Compile Include="MoreLinq.cs" />
+    <Compile Include="Pattern.cs" />
+    <Compile Include="Patterns\Bounce.cs" />
+    <Compile Include="Patterns\Clock.cs" />
+    <Compile Include="Patterns\Face.cs" />
+    <Compile Include="Patterns\Flash.cs" />
+    <Compile Include="Patterns\Flood.cs" />
+    <Compile Include="Patterns\Hello.cs" />
+    <Compile Include="Patterns\IPattern.cs" />
+    <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
+    <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
+    <EmbeddedResource Include="Patterns\Layout\Layout-Header.png" />
+    <EmbeddedResource Include="Patterns\Layout\Squares.png" />
+    <EmbeddedResource Include="Patterns\Love\Benji.png" />
+    <EmbeddedResource Include="Patterns\Love\I.png" />
+    <EmbeddedResource Include="Patterns\Love\Kate.png" />
+    <Compile Include="Patterns\Love\Love.cs" />
+    <EmbeddedResource Include="Patterns\Love\Love.png" />
+    <EmbeddedResource Include="Patterns\Love\Megan.png" />
+    <EmbeddedResource Include="Patterns\Love\Phoebe.png" />
+    <EmbeddedResource Include="Patterns\Love\Sophie.png" />
+    <EmbeddedResource Include="Patterns\Love\Timo.png" />
+    <Compile Include="Patterns\RainbowRotate.cs" />
+    <Compile Include="Patterns\Rotate.cs" />
+    <Compile Include="Patterns\Sine.cs" />
+    <Compile Include="Patterns\Snake.cs" />
+    <Compile Include="Patterns\Spin.cs" />
+    <Compile Include="Patterns\Spiral.cs" />
+    <Compile Include="Patterns\SquareFlash.cs" />
+    <Compile Include="Patterns\SquarePattern.cs" />
+    <Compile Include="Patterns\Squares.cs" />
+    <Compile Include="Patterns\Watching.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">
+      <Project>{9131e615-8b9b-43ed-b3c2-2b3fc31a1ba5}</Project>
+      <Name>Shelfinator.Interop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
