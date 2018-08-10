@@ -6,6 +6,7 @@
 #else
 #include <dirent.h>
 #endif
+#include <thread>
 #include "Helpers.h"
 
 namespace Shelfinator
@@ -21,12 +22,73 @@ namespace Shelfinator
 		{
 			path = Helpers::GetRunPath();
 			SetupPatterns();
+			std::thread(&Patterns::LoadPatternsThread, this).detach();
+		}
+
+		void Patterns::LoadPatternsThread()
+		{
+			while (true)
+			{
+				int loadPattern = -1;
+				{
+					std::unique_lock<decltype(mutex)> lock(mutex);
+
+					for (auto itr = patternCache.begin(); itr != patternCache.end();)
+					{
+						if (std::find(patternQueue.begin(), patternQueue.end(), itr->first) == patternQueue.end())
+							patternCache.erase(itr++);
+						else
+							itr++;
+					}
+
+					for (auto itr = patternQueue.begin(); itr != patternQueue.end(); ++itr)
+						if (patternCache.find(*itr) == patternCache.end())
+						{
+							loadPattern = *itr;
+							break;
+						}
+
+					if (loadPattern == -1)
+					{
+						auto oldQueueValue = queueValue;
+						while (oldQueueValue == queueValue)
+							condVar.wait(lock);
+						continue;
+					}
+				}
+
+				auto fileName = path + std::to_string(loadPattern) + ".pat";
+				auto result = Pattern::Read(fileName.c_str());
+
+				std::unique_lock<decltype(mutex)> lock(mutex);
+				patternCache[loadPattern] = result;
+				condVar.notify_all();
+			}
 		}
 
 		Pattern::ptr Patterns::LoadPattern(int index)
 		{
-			auto fileName = path + std::to_string(patternNumbers[index]) + ".pat";
-			return Pattern::Read(fileName.c_str());
+			static const int fetchPositions[] = { 0,1,-1 };
+
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			patternQueue.clear();
+			for (auto ctr = 0; ctr < sizeof(fetchPositions) / sizeof(*fetchPositions); ++ctr)
+			{
+				auto useIndex = index + fetchPositions[ctr];
+				while (useIndex < 0)
+					useIndex += (int)patternNumbers.size();
+				while (useIndex >= patternNumbers.size())
+					useIndex -= (int)patternNumbers.size();
+				patternQueue.push_back(patternNumbers[useIndex]);
+			}
+			++queueValue;
+			condVar.notify_all();
+
+			auto patternNumber = patternNumbers[index];
+			while (patternCache.find(patternNumber) == patternCache.end())
+				condVar.wait(lock);
+
+			return patternCache[patternNumber];
 		}
 
 		void Patterns::AddIfPatternFile(std::string fileName)

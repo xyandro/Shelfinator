@@ -1,5 +1,9 @@
 ﻿#pragma once
 
+#include <map>
+#ifndef __CLR_VER
+#include <mutex>
+#endif
 #include <string>
 #include <vector>
 #include "Pattern.h"
@@ -21,9 +25,17 @@ namespace Shelfinator
 		private:
 			std::string path;
 			std::vector<int> patternNumbers;
+			std::vector<int> patternQueue;
+			std::map<int, Pattern::ptr> patternCache;
+#ifndef __CLR_VER
+			std::mutex mutex;
+			std::condition_variable condVar;
+#endif
+			int queueValue = 0;
 			Patterns();
 			void AddIfPatternFile(std::string fileName);
 			void SetupPatterns();
+			void LoadPatternsThread();
 		};
 	}
 }
