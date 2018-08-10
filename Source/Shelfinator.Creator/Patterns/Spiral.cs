@@ -65,7 +65,7 @@ namespace Shelfinator.Creator.Patterns
 					}
 				}
 			}
-			pattern.AddLightSequence(0, 6900);
+			pattern.AddLightSequence(0, 6900, 20000);
 
 			return pattern;
 		}

@@ -18,7 +18,7 @@ namespace Shelfinator.Creator.Patterns
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
-			const int Count = 500;
+			const int Count = 100;
 
 			var pattern = new Pattern();
 			var lights = GetLights();
@@ -35,7 +35,7 @@ namespace Shelfinator.Creator.Patterns
 				foreach (var light in lights[order[ctr % 25]])
 					pattern.AddLight(light, time, color, order[ctr % 25]);
 				time += timeOffset;
-				timeOffset = Math.Max(5, timeOffset * 19 / 20);
+				timeOffset = Math.Max(100, timeOffset - Math.Min(25, timeOffset * 19 / 20));
 			}
 			pattern.Clear(time);
 
