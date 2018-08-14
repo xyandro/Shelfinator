@@ -1,6 +1,7 @@
 ﻿#include "Patterns.h"
 
 #include <algorithm>
+#include <ctime>
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -135,6 +136,7 @@ namespace Shelfinator
 			closedir(dir);
 #endif
 
+			std::srand((unsigned)std::time(0));
 			std::random_shuffle(patternNumbers.begin(), patternNumbers.end());
 		}
 
