@@ -72,6 +72,7 @@
     <Compile Include="Patterns\Flood.cs" />
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
+    <EmbeddedResource Include="Patterns\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Header.png" />

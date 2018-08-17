@@ -9,18 +9,36 @@ namespace Shelfinator.Creator
 {
 	partial class DotStarEmulatorWindow
 	{
-		public static DependencyProperty DotStarBitmapProperty = DependencyProperty.Register(nameof(DotStarBitmap), typeof(ImageSource), typeof(DotStarEmulatorWindow));
-
-		public ImageSource DotStarBitmap { get => (ImageSource)GetValue(DotStarBitmapProperty); set => SetValue(DotStarBitmapProperty, value); }
+		bool LARGE = true;
 
 		readonly Controller controller;
 		public DotStarEmulatorWindow()
 		{
-			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap("Shelfinator.Creator.Patterns.Layout.DotStar.png"));
+			var image = LARGE ? "Shelfinator.Creator.Patterns.Layout.DotStar.png" : "Shelfinator.Creator.Patterns.Layout.DotStar-Small.png";
+			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap(image));
 			controller = new Controller(dotStar);
 
 			InitializeComponent();
-			DotStarBitmap = dotStar.Bitmap;
+			if (LARGE)
+			{
+				WindowStyle = WindowStyle.None;
+				WindowState = WindowState.Maximized;
+			}
+			else
+			{
+				SizeToContent = SizeToContent.WidthAndHeight;
+				dotStarBitmap.Width = dotStar.Bitmap.PixelWidth;
+				dotStarBitmap.Height = dotStar.Bitmap.PixelHeight;
+				RenderOptions.SetBitmapScalingMode(dotStarBitmap, BitmapScalingMode.NearestNeighbor);
+
+				Loaded += (s, e) =>
+				{
+					var workArea = SystemParameters.WorkArea;
+					Left = (workArea.Width - Width) / 2 + workArea.Left;
+					Top = workArea.Height - Height + workArea.Top;
+				};
+			}
+			dotStarBitmap.Source = dotStar.Bitmap;
 		}
 
 		public void Run(List<int> patternNumbers) => new Thread(() => controller.Run(patternNumbers)).Start();
