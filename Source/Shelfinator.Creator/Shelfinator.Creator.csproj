@@ -27,6 +27,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,6 +77,7 @@
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Header.png" />
+    <EmbeddedResource Include="Patterns\Layout\Plasma.gif" />
     <EmbeddedResource Include="Patterns\Layout\Squares.png" />
     <EmbeddedResource Include="Patterns\Love\Benji.png" />
     <EmbeddedResource Include="Patterns\Love\I.png" />
@@ -86,6 +88,7 @@
     <EmbeddedResource Include="Patterns\Love\Phoebe.png" />
     <EmbeddedResource Include="Patterns\Love\Sophie.png" />
     <EmbeddedResource Include="Patterns\Love\Timo.png" />
+    <Compile Include="Patterns\Plasma.cs" />
     <Compile Include="Patterns\RainbowRotate.cs" />
     <Compile Include="Patterns\Rotate.cs" />
     <Compile Include="Patterns\Sine.cs" />
