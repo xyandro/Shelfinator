@@ -93,6 +93,7 @@
     <Compile Include="Patterns\Plasma.cs" />
     <Compile Include="Patterns\RainbowRotate.cs" />
     <Compile Include="Patterns\Rotate.cs" />
+    <Compile Include="Patterns\Runner.cs" />
     <Compile Include="Patterns\Sine.cs" />
     <Compile Include="Patterns\Snake.cs" />
     <Compile Include="Patterns\Spin.cs" />
