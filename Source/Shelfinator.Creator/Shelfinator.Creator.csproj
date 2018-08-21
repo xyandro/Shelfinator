@@ -67,12 +67,14 @@
     <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Bounce.cs" />
     <Compile Include="Patterns\Clock.cs" />
+    <Compile Include="Patterns\Clouds.cs" />
     <Compile Include="Patterns\Corners.cs" />
     <Compile Include="Patterns\Face.cs" />
     <Compile Include="Patterns\Flash.cs" />
     <Compile Include="Patterns\Flood.cs" />
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
+    <EmbeddedResource Include="Patterns\Layout\Clouds.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
