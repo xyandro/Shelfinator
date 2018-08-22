@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -21,6 +22,8 @@ namespace Shelfinator.Creator
 			};
 		}
 
+		bool CheckExistsAndRemove(List<string> args, string value) => args.RemoveAll(x => x.Equals(value, StringComparison.OrdinalIgnoreCase)) != 0;
+
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
@@ -32,11 +35,10 @@ namespace Shelfinator.Creator
 				throw new Exception($"Found duplicate pattern numbers:\n\n{dups}\n\nNext available is {patterns.Select(p => p.PatternNumber).DefaultIfEmpty(0).Max() + 1}.");
 
 			var args = e.Args.ToList();
-			var build = args.Contains("build", StringComparer.OrdinalIgnoreCase);
-			var all = args.Contains("all", StringComparer.OrdinalIgnoreCase);
-			var test = args.Contains("test", StringComparer.OrdinalIgnoreCase);
-			if ((build) || (all) || (test))
-				args.RemoveAll(arg => (string.Equals(arg, "build", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "all", StringComparison.OrdinalIgnoreCase)) || (string.Equals(arg, "test", StringComparison.OrdinalIgnoreCase)));
+			var build = CheckExistsAndRemove(args, "build");
+			var all = CheckExistsAndRemove(args, "all");
+			var test = CheckExistsAndRemove(args, "test");
+			var small = CheckExistsAndRemove(args, "small");
 
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 			if ((test) && (patternNumbers.Count != 5))
@@ -55,7 +57,7 @@ namespace Shelfinator.Creator
 				}
 			}
 
-			var window = new DotStarEmulatorWindow();
+			var window = new DotStarEmulatorWindow(small);
 			if (test)
 				window.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2], patternNumbers[3], patternNumbers[4]);
 			else
