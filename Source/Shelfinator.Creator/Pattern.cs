@@ -117,8 +117,8 @@ namespace Shelfinator.Creator
 			return lights[light];
 		}
 
-		public void AddLight(int light, int time, LightColor color, bool intermediates = false) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), 0, GetColorIndex(color).Value, 0, intermediates);
-		public void AddLight(int light, int time, LightColor color, int colorValue, bool intermediates = false) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), colorValue, GetColorIndex(color).Value, colorValue, intermediates);
+		public void AddLight(int light, int time, LightColor color) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), 0, GetColorIndex(color).Value, 0, false);
+		public void AddLight(int light, int time, LightColor color, int colorValue) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), colorValue, GetColorIndex(color).Value, colorValue, false);
 		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, 0, intermediates);
 		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, int endColorValue, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, endColorValue, intermediates);
 		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, 0, intermediates);
