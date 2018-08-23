@@ -2,6 +2,7 @@
 
 #include <map>
 #ifndef __CLR_VER
+#include <condition_variable>
 #include <mutex>
 #endif
 #include <string>

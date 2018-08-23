@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #ifndef __CLR_VER
+#include <condition_variable>
 #include <mutex>
 #endif
 #include <queue>
