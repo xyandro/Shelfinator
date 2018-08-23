@@ -28,6 +28,13 @@ namespace Shelfinator
 			return value;
 		}
 
+		unsigned char BufferFile::GetByte()
+		{
+			unsigned char value;
+			Copy(&value, sizeof(value));
+			return value;
+		}
+
 		int BufferFile::GetInt()
 		{
 			int value;

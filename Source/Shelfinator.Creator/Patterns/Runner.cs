@@ -43,14 +43,46 @@ namespace Shelfinator.Creator.Patterns
 							pattern.AddLight(light, time, color, (ctr / Concurrency) % 4);
 				}
 
-			pattern.AddLightSequence(0, 0, 1000);
-			pattern.AddLightSequence(0, Concurrency * 4, 4000, 8);
+			const int Speed = 1500;
+			const int Repeat = 2;
 
-			pattern.AddPaletteSequence(0, 1000, null, 1);
-			pattern.AddPaletteSequence(8000, 9000, null, 2);
-			pattern.AddPaletteSequence(16000, 17000, null, 3);
-			pattern.AddPaletteSequence(24000, 25000, null, 4);
-			pattern.AddPaletteSequence(32000, 33000, null, 0);
+			// Fade in to 1
+			pattern.AddLightSequence(Concurrency * 3, Concurrency * 3, Speed);
+			pattern.AddPaletteSequence(0, Speed, null, 1);
+
+			// Palette 1
+			pattern.AddLightSequence(Concurrency * 3, Concurrency * 4, 0, Concurrency, Speed);
+			pattern.AddLightSequence(0, Concurrency * 4, Speed * 4, Repeat);
+
+			// Fade to 2
+			var stopTime = pattern.MaxLightSequenceTime();
+			pattern.AddPaletteSequence(stopTime - Speed / 2, stopTime + Speed / 2, null, 2);
+
+			// Palette 2
+			pattern.AddLightSequence(0, Concurrency * 4, Speed * 4, Repeat);
+			pattern.AddLightSequence(0, Concurrency, Concurrency, 0, Speed);
+
+			// Fade to 3
+			stopTime = pattern.MaxLightSequenceTime();
+			pattern.AddLightSequence(Concurrency, Concurrency, Speed);
+			pattern.AddPaletteSequence(stopTime, stopTime + Speed, null, 3);
+
+			// Palette 3
+			pattern.AddLightSequence(Concurrency, 0, 0, -Concurrency, Speed);
+			pattern.AddLightSequence(Concurrency * 4, 0, Speed * 4, Repeat);
+
+			// Fade to 4
+			stopTime = pattern.MaxLightSequenceTime();
+			pattern.AddPaletteSequence(stopTime - Speed / 2, stopTime + Speed / 2, null, 4);
+
+			// Palette 4
+			pattern.AddLightSequence(Concurrency * 4, 0, Speed * 4, Repeat);
+			pattern.AddLightSequence(Concurrency * 4, Concurrency * 3, -Concurrency, 0, Speed);
+
+			// Fade out to 0
+			stopTime = pattern.MaxLightSequenceTime();
+			pattern.AddLightSequence(Concurrency * 3, Concurrency * 3, Speed);
+			pattern.AddPaletteSequence(stopTime, stopTime + Speed, null, 0);
 
 			return pattern;
 		}

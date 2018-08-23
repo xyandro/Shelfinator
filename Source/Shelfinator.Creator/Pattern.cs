@@ -46,28 +46,67 @@ namespace Shelfinator.Creator
 
 		class LightSequence
 		{
+			public enum LightSequenceType
+			{
+				Linear,
+				VelocityBased,
+			}
+			public LightSequenceType Type { get; set; }
+			public int StartTime { get; set; }
+			public int EndTime { get; set; }
 			public int LightStartTime { get; set; }
 			public int LightEndTime { get; set; }
+			public int StartVelocity { get; set; }
+			public int EndVelocity { get; set; }
+			public int BaseVelocity { get; set; }
 			public int Duration { get; set; }
 			public int Repeat { get; set; }
 
-			public LightSequence(int startTime, int endTime, int duration, int repeat)
+			public LightSequence(int lightStartTime, int lightEndTime, int duration, int repeat)
 			{
-				LightStartTime = startTime;
-				LightEndTime = endTime;
+				Type = LightSequenceType.Linear;
+				LightStartTime = lightStartTime;
+				LightEndTime = lightEndTime;
 				Duration = duration;
+				Repeat = repeat;
+			}
+
+			public LightSequence(int lightStartTime, int lightEndTime, int startVelocity, int endVelocity, int baseVelocity, int repeat)
+			{
+				if (startVelocity + endVelocity == 0)
+					throw new ArgumentException($"{nameof(startVelocity)} + {nameof(endVelocity)} cannot be zero");
+
+				Type = LightSequenceType.VelocityBased;
+				LightStartTime = lightStartTime;
+				LightEndTime = lightEndTime;
+				StartVelocity = startVelocity;
+				EndVelocity = endVelocity;
+				BaseVelocity = baseVelocity;
+				Duration = 2 * (lightEndTime - lightStartTime) / (endVelocity + startVelocity) * baseVelocity;
 				Repeat = repeat;
 			}
 
 			public void Save(BinaryWriter output)
 			{
+				output.Write((byte)Type);
 				output.Write(LightStartTime);
 				output.Write(LightEndTime);
+				output.Write(StartVelocity);
+				output.Write(EndVelocity);
+				output.Write(BaseVelocity);
 				output.Write(Duration);
 				output.Write(Repeat);
 			}
 
-			public override string ToString() => $"Time: {LightStartTime}-{LightEndTime}, Duration: {Duration}, Repeat: {Repeat}";
+			public override string ToString()
+			{
+				switch (Type)
+				{
+					case LightSequenceType.Linear: return $"{Type}: Time: {LightStartTime}-{LightEndTime}, Duration: {Duration}, Repeat: {Repeat}";
+					case LightSequenceType.VelocityBased: return $"{Type}: Time: {LightStartTime}-{LightEndTime}, Velocity: {StartVelocity}-{EndVelocity} ({BaseVelocity}), Repeat: {Repeat}";
+				}
+				throw new InvalidDataException();
+			}
 		}
 
 		class PaletteSequence
@@ -186,7 +225,21 @@ namespace Shelfinator.Creator
 
 		public int MaxLightTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.EndTime == int.MaxValue ? lightData.StartTime : lightData.EndTime));
 
-		public void AddLightSequence(int startTime, int endTime, int? duration = null, int repeat = 1) => lightSequences.Add(new LightSequence(startTime, endTime, duration ?? endTime - startTime, repeat));
+		public int AddLightSequence(int lightStartTime, int lightEndTime, int? duration = null, int repeat = 1)
+		{
+			var sequence = new LightSequence(lightStartTime, lightEndTime, duration ?? lightEndTime - lightStartTime, repeat);
+			lightSequences.Add(sequence);
+			return sequence.Duration * sequence.Repeat;
+		}
+
+		public int AddLightSequence(int lightStartTime, int lightEndTime, int startVelocity, int endVelocity, int baseVelocity, int repeat = 1)
+		{
+			var sequence = new LightSequence(lightStartTime, lightEndTime, startVelocity, endVelocity, baseVelocity, repeat);
+			lightSequences.Add(sequence);
+			return sequence.Duration * sequence.Repeat;
+		}
+
+		public int MaxLightSequenceTime() => lightSequences.Sum(s => s.Duration * s.Repeat);
 
 		public int? GetColorIndex(LightColor color)
 		{

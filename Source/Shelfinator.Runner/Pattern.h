@@ -48,7 +48,10 @@ namespace Shelfinator
 				class LightSequence
 				{
 				public:
-					int lightStartTime, lightEndTime, duration, startTime, endTime;
+					enum LightSequenceType { LINEAR, VELOCITYBASED };
+
+					LightSequenceType type;
+					int lightStartTime, lightEndTime, startVelocity, endVelocity, baseVelocity, duration, startTime, endTime, repeat;
 					void Read(BufferFile::ptr file, int &length);
 					double GetLightTime(int time);
 				};

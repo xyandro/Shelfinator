@@ -14,6 +14,7 @@ namespace Shelfinator
 			static ptr Open(std::string fileName);
 			~BufferFile();
 			bool GetBool();
+			unsigned char GetByte();
 			int GetInt();
 		private:
 			char buffer[65536];
