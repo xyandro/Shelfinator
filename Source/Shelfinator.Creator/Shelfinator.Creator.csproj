@@ -98,6 +98,7 @@
     <Compile Include="Patterns\Snake.cs" />
     <Compile Include="Patterns\Spin.cs" />
     <Compile Include="Patterns\Spiral.cs" />
+    <Compile Include="Patterns\Spiral2.cs" />
     <Compile Include="Patterns\SquareFlash.cs" />
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />

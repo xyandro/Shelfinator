@@ -82,7 +82,7 @@ namespace Shelfinator.Creator
 				StartVelocity = startVelocity;
 				EndVelocity = endVelocity;
 				BaseVelocity = baseVelocity;
-				Duration = 2 * (lightEndTime - lightStartTime) / (endVelocity + startVelocity) * baseVelocity;
+				Duration = 2 * (lightEndTime - lightStartTime) * baseVelocity / (endVelocity + startVelocity);
 				Repeat = repeat;
 			}
 
