@@ -97,7 +97,7 @@ namespace Shelfinator
 			case LINEAR:
 				return Helpers::FPart(useTime / duration) * (lightEndTime - lightStartTime) + lightStartTime;
 			case VELOCITYBASED:
-				return useTime * useTime * (endVelocity - startVelocity) * (endVelocity + startVelocity) / baseVelocity / baseVelocity / (lightEndTime - lightStartTime) / repeat / 4 + useTime * startVelocity / baseVelocity + lightStartTime;
+				return std::fmod(useTime * useTime * (endVelocity - startVelocity) * (endVelocity + startVelocity) / baseVelocity / baseVelocity / (lightEndTime - lightStartTime) / repeat / 4 + useTime * startVelocity / baseVelocity, lightEndTime - lightStartTime) + lightStartTime;
 			}
 			throw type;
 		}
