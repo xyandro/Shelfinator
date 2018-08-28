@@ -73,6 +73,7 @@
     <Compile Include="Patterns\Face.cs" />
     <Compile Include="Patterns\Flash.cs" />
     <Compile Include="Patterns\Flood.cs" />
+    <Compile Include="Patterns\Halves.cs" />
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
     <EmbeddedResource Include="Patterns\Layout\Clouds.png" />
