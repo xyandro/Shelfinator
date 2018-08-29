@@ -22,7 +22,8 @@ namespace Shelfinator
 			static ptr Create(IDotStar::ptr dotStar);
 			~Controller();
 			void Run(int *patternNumbers, int patternNumberCount);
-			void Test(int firstLight, int lightCount, int concurrency, int delay, int brightness);
+			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
+			void TestAll(int lightCount, int delay, unsigned char brightness);
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:

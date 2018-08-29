@@ -35,9 +35,16 @@ int main(int argc, char **argv)
 	if ((argc > 1) && (strcmp(argv[1], "test") == 0))
 	{
 		if (argc == 7)
-			controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), atoi(argv[6]));
+			controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), (unsigned char)atoi(argv[6]));
 		else
 			fprintf(stderr, "Usage: %s test firstLight lightCount concurrency delay brightness\n", argv[0]);
+	}
+	else if ((argc > 1) && (strcmp(argv[1], "testall") == 0))
+	{
+		if (argc == 5)
+			controller->TestAll(atoi(argv[2]), atoi(argv[3]), (unsigned char)atoi(argv[4]));
+		else
+			fprintf(stderr, "Usage: %s testall lightCount delay brightness\n", argv[0]);
 	}
 	else
 	{
