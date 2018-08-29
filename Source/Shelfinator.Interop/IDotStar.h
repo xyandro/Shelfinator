@@ -6,7 +6,7 @@ namespace Shelfinator
 	{
 		public interface class IDotStar
 		{
-			void Show(int *lights, int count);
+			void Show(array<int>^ lights);
 		};
 	}
 }

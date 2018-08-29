@@ -37,9 +37,9 @@ namespace Shelfinator.Creator
 				}
 		}
 
-		public unsafe void Show(int* lights, int count)
+		public void Show(int[] lights)
 		{
-			for (var light = 0; light < count; ++light)
+			for (var light = 0; light < lights.Length; ++light)
 				if (bufferPosition.ContainsKey(light))
 				{
 					var color = (uint)(0xff000000 | Helpers.MultiplyColor(lights[light] >> 8, 16));
