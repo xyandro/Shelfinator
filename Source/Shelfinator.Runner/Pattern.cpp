@@ -1,5 +1,6 @@
 ﻿#include "Pattern.h"
 
+#include <math.h>
 #include "Helpers.h"
 
 namespace Shelfinator
