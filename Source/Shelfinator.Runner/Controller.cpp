@@ -137,6 +137,7 @@ namespace Shelfinator
 					patternIndex -= patterns->Count();
 
 				pattern = patterns->LoadPattern(patternIndex);
+				fprintf(stderr, "Displaying pattern %s\n", pattern->FileName.c_str());
 			}
 			time = startAtEnd ? pattern->GetLength() - 1 : 0;
 		}

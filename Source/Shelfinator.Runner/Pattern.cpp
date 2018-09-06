@@ -14,7 +14,7 @@ namespace Shelfinator
 
 		Pattern::ptr Pattern::Read(std::string fileName)
 		{
-			return ptr(new Pattern(BufferFile::Open(fileName)));
+			return ptr(new Pattern(fileName));
 		}
 
 		Pattern::Pattern()
@@ -23,8 +23,10 @@ namespace Shelfinator
 			length = 1 << 30;
 		}
 
-		Pattern::Pattern(BufferFile::ptr file)
+		Pattern::Pattern(std::string fileName)
 		{
+			FileName = fileName;
+			auto file = BufferFile::Open(fileName);
 			ReadLights(file);
 			lightSequences.Read(file, length);
 			ReadColors(file);

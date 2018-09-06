@@ -26,7 +26,7 @@ namespace Shelfinator
 			ioctl(fd, SPI_IOC_WR_MODE, &mode);
 
 			// Get actual bitrate
-			int bitrate = 8000000;
+			int bitrate = 2000000;
 			ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &bitrate);
 
 			bufsiz = GetBufSiz();

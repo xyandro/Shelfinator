@@ -16,6 +16,7 @@ namespace Shelfinator
 			static ptr CreateTest();
 			static ptr Read(std::string fileName);
 
+			std::string FileName = "";
 			void SetLights(int time, double brightness, Lights::ptr lights);
 			int GetLength();
 		private:
@@ -96,7 +97,7 @@ namespace Shelfinator
 			PaletteSequences paletteSequences;
 
 			Pattern();
-			Pattern(BufferFile::ptr file);
+			Pattern(std::string fileName);
 		};
 	}
 }

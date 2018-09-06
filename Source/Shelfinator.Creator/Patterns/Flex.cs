@@ -19,7 +19,7 @@ namespace Shelfinator.Creator.Patterns
 			{
 				for (var time = 0; time < 96; ++time)
 				{
-					layout.GetAllLights().ForEach(light => pattern.AddLight(light, time + pass * 96, pattern.Absolute, 0x000000));
+					layout.GetAllLights().ForEach(light => pattern.AddLight(light, time + pass * 142, pattern.Absolute, 0x000000));
 					for (var xPosition = 0; xPosition < 6; ++xPosition)
 						for (var yPosition = 0; yPosition < 6; ++yPosition)
 						{
@@ -37,13 +37,12 @@ namespace Shelfinator.Creator.Patterns
 								default: throw new Exception("Invalid");
 							}
 							foreach (var light in layout.GetPositionLights(x, y, 2, 2))
-								pattern.AddLight(light, time + pass * 96, color, (xPosition + yPosition) % 6);
+								pattern.AddLight(light, time + pass * 142, color, (xPosition + yPosition) % 6);
 						}
 				}
 			}
 
-			pattern.AddLightSequence(0, 768, 16000);
-			pattern.AddLightSequence(768, 768, 2000);
+			pattern.AddLightSequence(0, 1136, 16000);
 
 			return pattern;
 		}

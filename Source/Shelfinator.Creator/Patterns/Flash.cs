@@ -27,7 +27,7 @@ namespace Shelfinator.Creator.Patterns
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
-			const int Concurrency = 50;
+			const int Concurrency = 25;
 
 			var color = new LightColor(0, 6, new List<List<int>> { new List<int> { Helpers.MultiplyColor(0xffffff, 1f / 8) }, Helpers.Rainbow6.Multiply(Brightness).ToList() });
 
@@ -39,7 +39,7 @@ namespace Shelfinator.Creator.Patterns
 				pattern.AddLight(lights[time], time + Concurrency, pattern.Absolute, 0x000000);
 			}
 
-			pattern.AddLightSequence(0, lights.Count + Concurrency, 2000, 5);
+			pattern.AddLightSequence(0, lights.Count + Concurrency, 2000, 8);
 
 			pattern.AddPaletteSequence(7000, 8000, null, 1);
 

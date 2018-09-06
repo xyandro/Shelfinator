@@ -46,7 +46,7 @@ namespace Shelfinator.Creator.Patterns
 			{
 				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
 				new List<int> { 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x2498cb, 0xfc4790, 0xf9ec5a, 0x399a07 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x0000ff, 0x00ff00, 0xff0000, 0x800080 }.Multiply(Brightness).ToList(),
 			});
 			for (var squareCtr = 0; squareCtr < squareLights.Count; squareCtr++)
 			{
