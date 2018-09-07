@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include <linux/spi/spidev.h>
 #include "IDotStar.h"
+#include <condition_variable>
+#include <mutex>
 
 namespace Shelfinator
 {
@@ -12,12 +13,15 @@ namespace Shelfinator
 		public:
 			typedef std::shared_ptr<DotStar> ptr;
 			static ptr Create();
-			void Show(int *lights, int count);
+			void Show(int *lights);
 		private:
-			spi_ioc_transfer xfer[3];
-			int fd, bufsiz;
+			int *lights, threadCount = 0, threadsWorking = 0, iteration = 0;
+			std::condition_variable condVar;
+			std::mutex mutex;
+
 			DotStar();
-			int GetBufSiz();
+			void RunThread(const char *device, int firstLight, int lightCount);
+			static int GetBufSiz();
 		};
 	}
 }

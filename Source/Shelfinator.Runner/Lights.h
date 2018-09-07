@@ -10,14 +10,13 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Lights> ptr;
-			static ptr Create(int count);
-			~Lights();
+			static ptr Create();
 			void Clear();
 			void SetLight(int light, int value);
 			void Show(IDotStar::ptr dotStar);
 		private:
-			int *lights, count;
-			Lights(int count);
+			int lights[2440];
+			Lights();
 			void PreventOverage();
 		};
 	}

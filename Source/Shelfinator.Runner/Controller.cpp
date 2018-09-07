@@ -172,7 +172,7 @@ namespace Shelfinator
 					continue;
 				}
 
-				auto lights = Lights::Create(2440);
+				auto lights = Lights::Create();
 				pattern->SetLights(time, brightness / 100.0, lights);
 				if (banner)
 					banner->SetLights(lights);
@@ -191,14 +191,14 @@ namespace Shelfinator
 					}
 				}
 
-				if (++frameCount == 300)
+				if (++frameCount == 100)
 				{
 					auto drawTime = timer->Millis() - startDraw;
 					auto fps = (double)frameCount / drawTime * 1000;
 					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
 				}
 			}
-			driver->SetLights(Lights::Create(2440));
+			driver->SetLights(Lights::Create());
 		}
 
 		void Controller::Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness)
@@ -226,7 +226,7 @@ namespace Shelfinator
 				if (clear >= lightCount)
 					clear = 0;
 
-				auto lights = Lights::Create(2440);
+				auto lights = Lights::Create();
 				for (auto ctr = 0; ctr < lightCount; ++ctr)
 					lights->SetLight(firstLight + ctr, current[ctr]);
 				driver->SetLights(lights);
@@ -234,7 +234,7 @@ namespace Shelfinator
 			}
 
 			delete[] current;
-			driver->SetLights(Lights::Create(2440));
+			driver->SetLights(Lights::Create());
 		}
 
 		void Controller::TestAll(int lightCount, int delay, unsigned char brightness)
@@ -247,7 +247,7 @@ namespace Shelfinator
 				if (color == 0)
 					color = (unsigned)brightness << 16;
 
-				auto lights = Lights::Create(2440);
+				auto lights = Lights::Create();
 				for (auto ctr = 0; ctr < lightCount; ++ctr)
 					lights->SetLight(ctr, color);
 				driver->SetLights(lights);
@@ -255,7 +255,7 @@ namespace Shelfinator
 				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 
-			driver->SetLights(Lights::Create(2440));
+			driver->SetLights(Lights::Create());
 		}
 
 		void Controller::Stop()

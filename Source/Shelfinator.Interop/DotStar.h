@@ -13,7 +13,7 @@ namespace Shelfinator
 		public:
 			typedef std::shared_ptr<DotStar> ptr;
 			static ptr Create(Interop::IDotStar ^dotStar);
-			void Show(int *lights, int count);
+			void Show(int *lights);
 		private:
 			gcroot<Interop::IDotStar^> dotStar;
 			DotStar(Interop::IDotStar ^dotStar);
