@@ -16,12 +16,12 @@ namespace Shelfinator
 			delete controller;
 		}
 
-		void Controller::Run(System::Collections::Generic::List<int> ^patternNumbers)
+		void Controller::Run(System::Collections::Generic::List<int> ^patternNumbers, bool startPaused)
 		{
 			auto nativePatternNumbers = new int[patternNumbers->Count];
 			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
 				nativePatternNumbers[ctr] = patternNumbers[ctr];
-			(*controller)->Run(nativePatternNumbers, patternNumbers->Count);
+			(*controller)->Run(nativePatternNumbers, patternNumbers->Count, startPaused);
 			delete[] nativePatternNumbers;
 		}
 

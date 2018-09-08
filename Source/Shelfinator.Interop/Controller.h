@@ -13,7 +13,7 @@ namespace Shelfinator
 		public:
 			Controller(IDotStar ^dotStar);
 			~Controller();
-			void Run(System::Collections::Generic::List<int> ^patternNumbers);
+			void Run(System::Collections::Generic::List<int> ^patternNumbers, bool startPaused);
 			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
 			void TestAll(int lightCount, int delay, unsigned char brightness);
 			void Stop();

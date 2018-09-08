@@ -48,10 +48,17 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+		auto startPaused = false;
 		auto patternNumbers = new int[argc];
 		int patternNumberCount = 0;
 		for (auto ctr = 1; ctr < argc; ++ctr)
 		{
+			if (strcmp(argv[ctr], "pause") == 0)
+			{
+				startPaused = true;
+				continue;
+			}
+
 			auto value = atoi(argv[ctr]);
 			if (value == 0)
 				fprintf(stderr, "Invalid pattern: %s\n", argv[ctr]);
@@ -59,7 +66,7 @@ int main(int argc, char **argv)
 				patternNumbers[patternNumberCount++] = value;
 		}
 
-		controller->Run(patternNumbers, patternNumberCount);
+		controller->Run(patternNumbers, patternNumberCount, startPaused);
 
 		delete[] patternNumbers;
 	}

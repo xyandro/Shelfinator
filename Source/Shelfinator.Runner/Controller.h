@@ -21,7 +21,7 @@ namespace Shelfinator
 			typedef std::shared_ptr<Controller> ptr;
 			static ptr Create(IDotStar::ptr dotStar);
 			~Controller();
-			void Run(int *patternNumbers, int patternNumberCount);
+			void Run(int *patternNumbers, int patternNumberCount, bool startPaused);
 			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
 			void TestAll(int lightCount, int delay, unsigned char brightness);
 			void Stop();

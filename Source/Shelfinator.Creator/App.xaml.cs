@@ -40,6 +40,7 @@ namespace Shelfinator.Creator
 			var test = CheckExistsAndRemove(args, "test");
 			var testAll = CheckExistsAndRemove(args, "testall");
 			var small = CheckExistsAndRemove(args, "small");
+			var startPaused = CheckExistsAndRemove(args, "pause");
 
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 			if ((test) && (patternNumbers.Count != 5))
@@ -66,7 +67,7 @@ namespace Shelfinator.Creator
 			else if (testAll)
 				window.TestAll(patternNumbers[0], patternNumbers[1], (byte)patternNumbers[2]);
 			else
-				window.Run(patternNumbers);
+				window.Run(patternNumbers, startPaused);
 		}
 
 		protected override void OnExit(ExitEventArgs e)

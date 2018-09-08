@@ -39,7 +39,7 @@ namespace Shelfinator.Creator
 			dotStarBitmap.Source = dotStar.Bitmap;
 		}
 
-		public void Run(List<int> patternNumbers) => new Thread(() => controller.Run(patternNumbers)).Start();
+		public void Run(List<int> patternNumbers, bool startPaused) => new Thread(() => controller.Run(patternNumbers, startPaused)).Start();
 		public void Test(int firstLight, int lightCount, int concurrency, int delay, byte brightness) => new Thread(() => controller.Test(firstLight, lightCount, concurrency, delay, brightness)).Start();
 		public void TestAll(int lightCount, int delay, byte brightness) => new Thread(() => controller.TestAll(lightCount, delay, brightness)).Start();
 
