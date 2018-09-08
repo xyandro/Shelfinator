@@ -68,6 +68,7 @@ namespace Shelfinator.Creator.Patterns
 					pattern.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, pattern.Absolute, 0x000000);
 			}
 
+			pattern.AddLightSequence(0, 0, 1500);
 			pattern.AddLightSequence(0, 8000);
 
 			pattern.AddPaletteSequence(0, 0);
