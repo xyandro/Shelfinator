@@ -14,7 +14,7 @@ namespace Shelfinator.Creator.Patterns
 			const int StartTime = 500;
 			const int RotateTime = 2000;
 			const int RotateIncrement = 10;
-			const int RotateCount = 3;
+			const int RotateCount = 10;
 
 			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
