@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace Shelfinator.Creator.Patterns
 {
@@ -109,7 +108,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 			const int Length = 60;
-			const int PassiveColor = 0x040404;
+			const int PassiveColor = 0x010101;
 
 			var pattern = new Pattern();
 
