@@ -145,7 +145,11 @@ namespace Shelfinator
 		int frameCount = 0;
 		void Controller::Run(int *patternNumbers, int patternNumberCount, bool startPaused)
 		{
-			multiplierIndex = startPaused ? 8 : 13;
+			if (startPaused)
+			{
+				multiplierIndex = 8;
+				banner = Banner::Create(L"•   ", 0, 5000);
+			}
 
 			if (patternNumberCount == 0)
 				patterns->MakeFirst(1); // Hello
