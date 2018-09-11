@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Media.Imaging;
 
 namespace Shelfinator.Creator.Patterns
 {
@@ -14,6 +12,7 @@ namespace Shelfinator.Creator.Patterns
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
+			const int Radius = 10;
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			int[,] pixels;
@@ -42,45 +41,25 @@ namespace Shelfinator.Creator.Patterns
 			}
 
 			var pattern = new Pattern();
-			var time = 0;
 
-			for (var ctr = pixels.GetLength(0); ctr > 0; --ctr)
+			for (var angle = 0; angle < 360; angle += 3)
 			{
-				DrawPixels(pattern, layout, pixels, ctr, 0, time);
-				time += 100;
+				var xOfs = Radius + Math.Sin(angle * Math.PI / 180) * Radius;
+				var yOfs = Radius + Math.Cos(angle * Math.PI / 180) * Radius;
+				DrawPixels(pattern, layout, pixels, xOfs.Round(), yOfs.Round(), angle);
 			}
 
-			for (var ctr = pixels.GetLength(1); ctr > 0; --ctr)
-			{
-				DrawPixels(pattern, layout, pixels, 0, ctr, time);
-				time += 100;
-			}
-
-			for (var ctr = 0; ctr < pixels.GetLength(0); ++ctr)
-			{
-				DrawPixels(pattern, layout, pixels, ctr, 0, time);
-				time += 100;
-			}
-
-			for (var ctr = 0; ctr < pixels.GetLength(1); ++ctr)
-			{
-				DrawPixels(pattern, layout, pixels, 0, ctr, time);
-				time += 100;
-			}
-
-			pattern.AddLightSequence(0, time, 5000, 5);
+			pattern.AddLightSequence(0, 360, 5000, 5);
 
 			return pattern;
 		}
 
-		List<Tuple<int, int, int>> steps = new List<Tuple<int, int, int>>();
 		void DrawPixels(Pattern pattern, Layout layout, int[,] pixels, int xOfs, int yOfs, int time)
 		{
-			steps.Add(Tuple.Create(xOfs, yOfs, time));
 			for (var y = 0; y < pixels.GetLength(1); ++y)
 				for (var x = 0; x < pixels.GetLength(0); ++x)
-					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						pattern.AddLight(light, time, pattern.Absolute, pixels[(x + xOfs) % pixels.GetLength(0), (y + yOfs) % pixels.GetLength(1)]);
+					foreach (var light in layout.GetPositionLights(x - xOfs, y - yOfs, 1, 1))
+						pattern.AddLight(light, time, pattern.Absolute, pixels[x, y]);
 		}
 	}
 }
