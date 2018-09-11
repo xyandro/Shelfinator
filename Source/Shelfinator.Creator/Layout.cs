@@ -47,6 +47,12 @@ namespace Shelfinator.Creator
 
 		public List<int> GetPositionLights(Rect rect) => GetPositionLights(rect.X.Round(), rect.Y.Round(), rect.Width.Round(), rect.Height.Round());
 
+		public List<int> GetPositionLights(Point p, Size size) => GetPositionLights(p.X.Round(), p.Y.Round(), size.Width.Round(), size.Height.Round());
+
+		public List<int> GetPositionLights(Point p, double width, double height) => GetPositionLights(p.X.Round(), p.Y.Round(), width.Round(), height.Round());
+
+		public List<int> GetPositionLights(double x, double y, double width, double height) => GetPositionLights(x.Round(), y.Round(), width.Round(), height.Round());
+
 		public List<int> GetPositionLights(int x, int y, int width, int height)
 		{
 			var result = new List<int>();
