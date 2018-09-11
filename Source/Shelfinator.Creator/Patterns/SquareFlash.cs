@@ -31,11 +31,12 @@ namespace Shelfinator.Creator.Patterns
 			var timeOffset = 1000;
 			for (var ctr = 0; ctr < Count; ++ctr)
 			{
-				pattern.Clear(time);
 				foreach (var light in lights[order[ctr % 25]])
 					pattern.AddLight(light, time, color, order[ctr % 25]);
 				time += timeOffset;
-				timeOffset = Math.Max(100, timeOffset - Math.Min(25, timeOffset * 19 / 20));
+				foreach (var light in lights[order[ctr % 25]])
+					pattern.AddLight(light, time, time + 300, null, pattern.Absolute, 0x000000);
+				timeOffset = Math.Max(50, timeOffset - Math.Min(25, timeOffset * 19 / 20));
 			}
 			pattern.Clear(time);
 
