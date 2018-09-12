@@ -15,6 +15,7 @@ namespace Shelfinator
 
 			static ptr CreateTest();
 			static ptr Read(std::string fileName);
+			static ptr Read(BufferFile::ptr file);
 
 			std::string FileName = "";
 			void SetLights(int time, double brightness, Lights::ptr lights);
@@ -98,6 +99,8 @@ namespace Shelfinator
 
 			Pattern();
 			Pattern(std::string fileName);
+			Pattern(BufferFile::ptr file);
+			void ReadFile(BufferFile::ptr file);
 		};
 	}
 }

@@ -17,6 +17,11 @@ namespace Shelfinator
 			return ptr(new Pattern(fileName));
 		}
 
+		Pattern::ptr Pattern::Read(BufferFile::ptr file)
+		{
+			return ptr(new Pattern(file));
+		}
+
 		Pattern::Pattern()
 		{
 			test = true;
@@ -26,7 +31,17 @@ namespace Shelfinator
 		Pattern::Pattern(std::string fileName)
 		{
 			FileName = fileName;
-			auto file = BufferFile::Open(fileName);
+			ReadFile(BufferFile::Open(fileName));
+		}
+
+		Pattern::Pattern(BufferFile::ptr file)
+		{
+			FileName = "Network transfer";
+			ReadFile(file);
+		}
+
+		void Pattern::ReadFile(BufferFile::ptr file)
+		{
 			ReadLights(file);
 			lightSequences.Read(file, length);
 			ReadColors(file);

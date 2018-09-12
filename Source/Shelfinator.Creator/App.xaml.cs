@@ -42,6 +42,13 @@ namespace Shelfinator.Creator
 			var small = CheckExistsAndRemove(args, "small");
 			var startPaused = CheckExistsAndRemove(args, "pause");
 
+			var host = args.SingleOrDefault(arg => arg.StartsWith("host="));
+			if (host != null)
+			{
+				args.Remove(host);
+				host = host.Substring("host=".Length);
+			}
+
 			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 			if ((test) && (patternNumbers.Count != 5))
 				throw new Exception("Test must provide firstLight, lightCount, concurrency, delay, and brightness");
@@ -57,8 +64,18 @@ namespace Shelfinator.Creator
 				foreach (var pattern in match)
 				{
 					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{pattern.PatternNumber}.pat");
-					pattern.Render().Save(fileName);
+					var rendered = pattern.Render();
+					if (host == null)
+						rendered.Save(fileName);
+					else
+						rendered.Transmit(host);
 				}
+			}
+
+			if (host != null)
+			{
+				Shutdown();
+				return;
 			}
 
 			var window = new DotStarEmulatorWindow(small);

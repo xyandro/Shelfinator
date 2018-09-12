@@ -125,6 +125,19 @@ namespace Shelfinator
 			return result;
 		}
 
+		bool Controller::HandleSockets(Sockets::ptr sockets)
+		{
+			auto request = sockets->GetRequest();
+			if (!request)
+				return false;
+
+			pattern = request->pattern;
+			time = 0;
+			multiplierIndex = 13;
+
+			return true;
+		}
+
 		void Controller::LoadPattern(bool startAtEnd)
 		{
 			if (patterns->Count() == 0)
@@ -157,6 +170,7 @@ namespace Shelfinator
 				for (auto ctr = patternNumberCount - 1; ctr >= 0; --ctr)
 					patterns->MakeFirst(patternNumbers[ctr]);
 
+			auto sockets = Sockets::Create();
 			auto startLoad = timer->Millis();
 			LoadPattern();
 			auto loadTime = timer->Millis() - startLoad;
@@ -169,6 +183,9 @@ namespace Shelfinator
 				nextTime = -1;
 
 				if (HandleRemote())
+					continue;
+
+				if (HandleSockets(sockets))
 					continue;
 
 				if ((time < 0) || (time >= pattern->GetLength()))

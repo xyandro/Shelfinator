@@ -9,6 +9,7 @@
 #include "IDotStar.h"
 #include "Patterns.h"
 #include "RemoteCode.h"
+#include "Sockets.h"
 #include "Timer.h"
 
 namespace Shelfinator
@@ -47,6 +48,7 @@ namespace Shelfinator
 
 			Controller(IDotStar::ptr dotStar);
 			bool HandleRemote();
+			bool HandleSockets(Sockets::ptr sockets);
 			void LoadPattern(bool startAtEnd = false);
 		};
 	}

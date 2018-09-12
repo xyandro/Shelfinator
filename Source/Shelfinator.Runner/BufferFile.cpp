@@ -11,14 +11,31 @@ namespace Shelfinator
 			return ptr(new BufferFile(fileName));
 		}
 
+		BufferFile::ptr BufferFile::Create(char *buffer, int size)
+		{
+			return ptr(new BufferFile(buffer, size));
+		}
+
 		BufferFile::BufferFile(std::string fileName)
 		{
+			bufSize = 65536;
+			buffer = (char*)malloc(bufSize);
 			file = fopen(fileName.c_str(), "rb");
+		}
+
+		BufferFile::BufferFile(char *buffer, int size)
+		{
+			this->buffer = buffer;
+			bufSize = bufUsed = size;
 		}
 
 		BufferFile::~BufferFile()
 		{
-			fclose(file);
+			if (file != nullptr)
+			{
+				free(buffer);
+				fclose(file);
+			}
 		}
 
 		bool BufferFile::GetBool()
@@ -53,7 +70,7 @@ namespace Shelfinator
 					bufPos = 0;
 				}
 
-				auto block = fread(buffer + bufUsed, 1, sizeof(buffer) / sizeof(*buffer) - bufUsed, file);
+				auto block = fread(buffer + bufUsed, 1, bufSize - bufUsed, file);
 				if (block == 0)
 					throw "Failed to read";
 				bufUsed += (int)block;

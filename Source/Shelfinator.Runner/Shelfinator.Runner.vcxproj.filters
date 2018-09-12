@@ -85,6 +85,15 @@
     <ClInclude Include="RemoteCode.h">
       <Filter>Remote</Filter>
     </ClInclude>
+    <Filter Include="Sockets">
+      <UniqueIdentifier>{94aab895-6438-45fd-a4e5-72baa916779b}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Sockets.cpp">
+      <Filter>Sockets</Filter>
+    </ClCompile>
+    <ClInclude Include="Sockets.h">
+      <Filter>Sockets</Filter>
+    </ClInclude>
     <Filter Include="Timer">
       <UniqueIdentifier>{b4f5f752-a17d-48b1-be1b-4b1ec4a34087}</UniqueIdentifier>
     </Filter>

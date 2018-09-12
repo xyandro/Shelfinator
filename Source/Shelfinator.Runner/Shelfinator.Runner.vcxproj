@@ -66,6 +66,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Ws2_32.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -84,6 +87,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>Ws2_32.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Banner.cpp" />
@@ -104,6 +110,8 @@
     <ClCompile Include="Patterns.cpp" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="RemoteCode.h" />
+    <ClCompile Include="Sockets.cpp" />
+    <ClInclude Include="Sockets.h" />
     <ClCompile Include="Timer.cpp" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
