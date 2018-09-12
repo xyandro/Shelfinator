@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Shelfinator.Creator.Patterns
 {
-	class Clouds : IPattern
+	class Hallows : IPattern
 	{
 		public int PatternNumber => 28;
 
@@ -12,11 +12,11 @@ namespace Shelfinator.Creator.Patterns
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
-			const int Radius = 10;
+			const int Radius = 15;
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			int[,] pixels;
-			using (var stream = typeof(Plasma).Assembly.GetManifestResourceStream("Shelfinator.Creator.Patterns.Layout.Clouds.png"))
+			using (var stream = typeof(Plasma).Assembly.GetManifestResourceStream("Shelfinator.Creator.Patterns.Layout.Hallows.png"))
 			using (var image = System.Drawing.Image.FromStream(stream))
 			using (var bmp = new System.Drawing.Bitmap(image))
 			{
