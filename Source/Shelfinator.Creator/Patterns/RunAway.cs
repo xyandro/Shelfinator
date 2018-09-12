@@ -11,8 +11,7 @@ namespace Shelfinator.Creator.Patterns
 
 		public Pattern Render()
 		{
-			const double CloseBrightness = 1f / 8;
-			const double FarBrightness = 1f / 64;
+			const double Brightness = 1f / 16;
 			const string PathPoints =
 "0,0/1,0/2,0/3,0/4,0/5,0/6,0/7,0/8,0/9,0/10,0/11,0/12,0/13,0/14,0/15,0/16,0/17,0/18,0/19,0/20,0/21,0/22,0/23,0/24,0/25,0/26,0/27,0/28,0/29,0/30,0/31,0/32,0/33,0/34,0/35,0/36,0/37,0/38,0/39,0/40,0/41,0/42,0/43,0/44,0/45,0/46,0/47,0/48,0/49,0/50,0/51,0/52,0/53,0/54,0/55,0/56,0/57,0/58,0/59,0/60,0/61,0/62,0/63,0/64,0/65,0/66,0/67,0/68,0/69,0/70,0/71,0/72,0/73,0/74,0/75,0/76,0/77,0/78,0/79,0/80,0/81,0/82,0/83,0/84,0/85,0/86,0/87,0/88,0/89,0/90,0/91,0/92,0/93,0/94,0/95,0/95,1/95,2/95,3/95,4/95,5/95,6/" +
 "95,7/95,8/95,9/95,10/95,11/95,12/95,13/95,14/95,15/95,16/95,17/95,18/95,19/94,19/93,19/92,19/91,19/90,19/89,19/88,19/87,19/86,19/85,19/84,19/83,19/82,19/81,19/80,19/79,19/78,19/77,19/76,19/75,19/74,19/73,19/72,19/71,19/70,19/69,19/68,19/67,19/66,19/65,19/64,19/63,19/62,19/61,19/60,19/59,19/58,19/57,19/56,19/55,19/54,19/53,19/52,19/51,19/50,19/49,19/48,19/47,19/46,19/45,19/44,19/43,19/42,19/41,19/40,19/39,19/38,19/37,19/36,19/35,19/34,19/33,19/32,19/31,19/30,19/29,19/28,19/27,19/26,19/25,19/24,19" +
@@ -49,14 +48,13 @@ namespace Shelfinator.Creator.Patterns
 				squareCenter[square] = squareLocations.First() + (squareLocations.Last() - squareLocations.First()) / 2;
 			}
 
-			var colors = new List<int> { 0x000080, 0x0000ff, 0x008000, 0x008080, 0x0080ff, 0x00ff00, 0x00ff80, 0x00ffff, 0x800000, 0x800080, 0x8000ff, 0x808000, 0x808080, 0x8080ff, 0x80ff00, 0x80ff80, 0x80ffff, 0xff0000, 0xff0080, 0xff00ff, 0xff8000, 0xff8080, 0xff80ff, 0xffff00, 0xffff80 };
-			var useColors = colors.Select(color => new LightColor(0, 97, new List<int> { Helpers.MultiplyColor(color, CloseBrightness), Helpers.MultiplyColor(color, FarBrightness) })).ToList();
+			var colors = new List<int> { 0x000080, 0x0000ff, 0x008000, 0x008080, 0x0080ff, 0x00ff00, 0x00ff80, 0x00ffff, 0x800000, 0x800080, 0x8000ff, 0x808000, 0x808080, 0x8080ff, 0x80ff00, 0x80ff80, 0x80ffff, 0xff0000, 0xff0080, 0xff00ff, 0xff8000, 0xff8080, 0xff80ff, 0xffff00, 0xffff80 }.Multiply(Brightness).ToList();
 			var time = 0;
 			foreach (var pathPoint in pathPoints)
 			{
 				foreach (var light in layout.GetPositionLights(pathPoint, 2, 2))
 				{
-					pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, CloseBrightness));
+					pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
 					pattern.AddLight(light, time + 1, pattern.Absolute, 0x000000);
 				}
 
@@ -64,10 +62,8 @@ namespace Shelfinator.Creator.Patterns
 				{
 					var focusAngle = Helpers.GetAngle(squareCenter[square], pathPoint);
 					var useLight = squareLights[square].OrderBy(light => Math.Abs(focusAngle - Helpers.GetAngle(layout.GetLightPosition(light), squareCenter[square]))).First();
-					var lightPosition = layout.GetLightPosition(useLight);
-					var dist = (pathPoint - lightPosition).Length.Round();
 
-					pattern.AddLight(useLight, time, useColors[square - 1], dist);
+					pattern.AddLight(useLight, time, pattern.Absolute, colors[square - 1]);
 					pattern.AddLight(useLight, time + 1, pattern.Absolute, 0x000000);
 				}
 
