@@ -159,10 +159,7 @@ namespace Shelfinator
 		void Controller::Run(int *patternNumbers, int patternNumberCount, bool startPaused)
 		{
 			if (startPaused)
-			{
 				multiplierIndex = 8;
-				banner = Banner::Create(L"•   ", 0, 5000);
-			}
 
 			if (patternNumberCount == 0)
 				patterns->MakeFirst(1); // Hello
@@ -187,6 +184,9 @@ namespace Shelfinator
 
 				if (HandleSockets(sockets))
 					continue;
+
+				if ((multiplierIndex == 8) && (!banner))
+					banner = Banner::Create(L"•   ", 0, 5000);
 
 				if ((time < 0) || (time >= pattern->GetLength()))
 				{
