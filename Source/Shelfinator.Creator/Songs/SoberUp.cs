@@ -869,6 +869,148 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		class Drop
+		{
+			public Point Center { get; set; }
+			public int Time { get; set; }
+
+			public Drop(Point center, int time)
+			{
+				Center = center;
+				Time = time;
+			}
+		}
+
+		class ChangeLight
+		{
+			public int StartTime { get; set; }
+			public int EndTime { get; set; }
+			public int StartColor { get; set; }
+			public int EndColor { get; set; }
+
+			public ChangeLight(int startTime, int endTime, int startColor, int endColor)
+			{
+				StartTime = startTime;
+				EndTime = endTime;
+				StartColor = startColor;
+				EndColor = endColor;
+			}
+		}
+
+		Segment Finale(out int time)
+		{
+			const double NumRipples = 5;
+			const double RippleSize = 30;
+			const double RippleTime = 20;
+			const double AdjustTime = 250;
+			const int MinSparkleTime = 100;
+			const int MaxSparkleTime = 300;
+			const int Background = 0x000808;
+
+			var segment = new Segment();
+			var drops = new List<Drop>
+			{
+				new Drop(new Point(86, 67), 0),
+				new Drop(new Point(29, 86), 400),
+				new Drop(new Point(29, 10), 800),
+				new Drop(new Point(29, 67), 1200),
+				new Drop(new Point(67, 86), 1600),
+				new Drop(new Point(48, 67), 2000),
+				new Drop(new Point(48, 48), 2400),
+				new Drop(new Point(10, 86), 2800),
+				new Drop(new Point(29, 29), 3200),
+				new Drop(new Point(86, 10), 3600),
+				new Drop(new Point(48, 10), 4000),
+				new Drop(new Point(86, 48), 4400),
+				new Drop(new Point(86, 29), 4800),
+				new Drop(new Point(10, 29), 5200),
+				new Drop(new Point(67, 10), 5600),
+				new Drop(new Point(67, 48), 6000),
+				new Drop(new Point(48, 86), 6400),
+				new Drop(new Point(67, 67), 6800),
+				new Drop(new Point(29, 48), 7200),
+				new Drop(new Point(67, 29), 7600),
+				new Drop(new Point(48, 29), 8000),
+				new Drop(new Point(86, 86), 8400),
+				new Drop(new Point(10, 10), 8800),
+				new Drop(new Point(10, 48), 9200),
+			};
+
+			var changeLights = new Dictionary<int, List<ChangeLight>>();
+			void AddChangeLights(IEnumerable<int> lights, ChangeLight changeLight)
+			{
+				foreach (var light in lights)
+				{
+					if (!changeLights.ContainsKey(light))
+						changeLights[light] = new List<ChangeLight>();
+					changeLights[light].Add(changeLight);
+				}
+			}
+
+			var favoriteColorTimes = new List<int> { 2400, 5600, 7200 };
+			foreach (var favoriteColorTime in favoriteColorTimes)
+			{
+				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTime, favoriteColorTime + 800, 0x000008, 0x000008));
+				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTime + 200, favoriteColorTime + 800, 0x080808, 0x080808));
+				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTime + 400, favoriteColorTime + 800, 0x000008, 0x000008));
+				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTime + 600, favoriteColorTime + 800, 0x080808, 0x080808));
+				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x000011, Background));
+				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x101010, Background));
+				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x000011, Background));
+				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x101010, Background));
+			}
+
+			var rand = new Random(0xf0dface);
+			var feelTimes = new List<int> { 1800, 5000, 6600, 8200 };
+			foreach (var feelTime in feelTimes)
+				foreach (var light in bodyLayout.GetAllLights())
+					AddChangeLights(new List<int> { light }, new ChangeLight(feelTime, feelTime + rand.Next(MinSparkleTime, MaxSparkleTime), 0x101000, 0x101000));
+
+			var beatTimes = new List<int> { 8800, 8900, 9000, 9100 };
+			foreach (var beatTime in beatTimes)
+				AddChangeLights(bodyLayout.GetAllLights(), new ChangeLight(beatTime, beatTime + 100, 0x101010, 0x000000));
+
+			for (time = 0; time < 9600; time += 10)
+			{
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var point = bodyLayout.GetLightPosition(light);
+					var multiplier = 0d;
+					foreach (var drop in drops)
+					{
+						var dist = (drop.Center - point).Length;
+						var timeDist = (time - drop.Time + AdjustTime) / RippleTime - dist;
+						if ((timeDist < 0) || (timeDist > RippleSize))
+							continue;
+						var size = (RippleSize - timeDist) / RippleSize;
+						multiplier += Math.Sin(2 * Math.PI * timeDist / NumRipples) * size;
+					}
+					multiplier = 8d / Math.Max(1, Math.Min(multiplier * 8 + 8, 16));
+
+					var useColor = Background;
+					foreach (var changeLight in changeLights[light])
+						if ((time >= changeLight.StartTime) && (time < changeLight.EndTime))
+						{
+							var colorPercent = ((double)time - changeLight.StartTime) / (changeLight.EndTime - changeLight.StartTime);
+							useColor = Helpers.GradientColor(changeLight.StartColor, changeLight.EndColor, colorPercent);
+						}
+
+					segment.AddLight(light, time, Helpers.MultiplyColor(useColor, multiplier));
+				}
+			}
+
+			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
+				segment.AddLight(light, 9200, 9400, 0x101010, 0x000000);
+
+			foreach (var point in QMPoints)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				segment.AddLight(light, 9200, 0x101010);
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -907,7 +1049,9 @@ namespace Shelfinator.Creator.Songs
 			var saws = Saws();
 			song.AddSegment(saws, 0, 19200, 155800, 30960);
 
-			// Next (186760)
+			// Finale (186760)
+			var finale = Finale(out var finaleTime);
+			song.AddSegment(finale, 0, 9600, 186760, 30960);
 
 			// End (217720)
 
