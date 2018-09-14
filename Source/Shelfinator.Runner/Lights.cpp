@@ -18,20 +18,20 @@ namespace Shelfinator
 
 		void Lights::Clear()
 		{
-			for (int i = 0; i < 2440; ++i)
+			for (int i = 0; i < 9665; ++i)
 				lights[i] = 0xff;
 		}
 
 		void Lights::SetLight(int light, int value)
 		{
-			if ((light < 0) || (light >= 2440))
+			if ((light < 0) || (light >= 9665))
 				return;
 			lights[light] = value << 8 | 0xff;
 		}
 
 		void Lights::Show(IDotStar::ptr dotStar)
 		{
-			PreventOverage();
+			//PreventOverage();
 			dotStar->Show(lights);
 		}
 
@@ -40,7 +40,7 @@ namespace Shelfinator
 			const int OutputLimit = 15 * 12750; // 15 amps
 
 			auto total = 0;
-			for (auto light = 0; light < 2440; ++light)
+			for (auto light = 0; light < 9665; ++light)
 				total += (lights[light] >> 24 & 0xff) + (lights[light] >> 16 & 0xff) + (lights[light] >> 8 & 0xff);
 			if (total < OutputLimit)
 				return;

@@ -16,8 +16,8 @@ namespace Shelfinator
 
 		void DotStar::Show(int *lights)
 		{
-			auto arr = gcnew array<int>(2440);
-			System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)lights, arr, 0, 2440);
+			auto arr = gcnew array<int>(9665);
+			System::Runtime::InteropServices::Marshal::Copy((System::IntPtr)lights, arr, 0, 9665);
 			return dotStar->Show(arr);
 		}
 	}
