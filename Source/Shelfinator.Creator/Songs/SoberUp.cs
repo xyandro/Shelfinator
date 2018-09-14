@@ -204,8 +204,6 @@ namespace Shelfinator.Creator.Songs
 					}
 				}
 
-				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
-
 				if (flashTimes.Contains(time))
 					flashTime = FlashTime;
 				if (flashTime > 0)
@@ -218,6 +216,8 @@ namespace Shelfinator.Creator.Songs
 					}
 					--flashTime;
 				}
+
+				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
 			}
 
 			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
@@ -244,8 +244,11 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		void ShapeChangeRender(Canvas canvas, Segment segment, Layout layout, int time)
+		void ShapeChangeRender(Canvas canvas, Segment segment, Layout layout, int time, Func<int, int, int> substituteColor = null)
 		{
+			if (substituteColor == null)
+				substituteColor = (light, color) => color;
+
 			canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
 			canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
 
@@ -260,7 +263,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					var value = (int)(buffer[bufferPos++] & 0xffffff);
 					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						segment.AddLight(light, time, value);
+						segment.AddLight(light, time, substituteColor(light, value));
 				}
 		}
 
@@ -410,6 +413,133 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Ocean()
+		{
+			const double Height = 20;
+			const double WaveThickness = 5;
+			const double WaveLocation = 48;
+			const double WaveTime = 800;
+			const double Rotate = 20;
+			const double Translate = -48;
+			const double Spacing = 0.8;
+			const int MinSparkleTime = 15;
+			const int MaxSparkleTime = 45;
+			const int FlashTime = 5;
+
+			var backgroundBrush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+			var waveFill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+			var waveStroke = new SolidColorBrush(Color.FromRgb(0, 0, 255));
+
+			backgroundBrush.Freeze();
+			waveFill.Freeze();
+			waveStroke.Freeze();
+
+			var rand = new Random(0xfeed);
+
+			var sparkleTimes = new HashSet<int> { 3600, 10000, 13200 };
+
+			var flashTimes = new List<int> { 14400, 14600, 14800, 15000 };
+			var flashColor = new LightColor(900, 6788, new List<int> { 0x101010, 0x101000 });
+
+			var segment = new Segment();
+
+			var canvas = new Canvas { Width = 97, Height = 97 };
+
+			var background = new Rectangle { Width = 289, Height = 289, Fill = backgroundBrush };
+			Canvas.SetLeft(background, -96);
+			Canvas.SetTop(background, -96);
+			canvas.Children.Add(background);
+
+			var points = new List<Point>();
+			for (var x = -96; x <= 193; ++x)
+			{
+				var angle = x / 97d * 360d * Spacing / 180d * Math.PI;
+				var height = WaveLocation - Math.Cos(angle) * Height / 2;
+				points.Add(new Point(x, 97 - height));
+			}
+			points.Add(new Point(193, 193));
+			points.Add(new Point(0, 193));
+			points.Add(points[0]);
+			var wave = new Polygon { Points = new PointCollection(points), Fill = waveFill, Stroke = waveStroke, StrokeThickness = WaveThickness };
+			canvas.Children.Add(wave);
+
+			var rotateTransform = new RotateTransform { CenterX = 97d / 2, CenterY = 97d / 2 };
+			var translateTransform = new TranslateTransform();
+
+			var transformGroup = new TransformGroup();
+			transformGroup.Children.Add(translateTransform);
+			transformGroup.Children.Add(rotateTransform);
+
+			canvas.RenderTransform = transformGroup;
+
+			var sparkleLights = new Dictionary<int, int>();
+
+			int SubstituteColor(int light, int color)
+			{
+				var r = (color >> 16) & 255;
+				var g = (color >> 8) & 255;
+				var b = (color >> 0) & 255;
+
+				var sparkling = sparkleLights.ContainsKey(light);
+
+				if ((r > g) && (r > b))
+					return sparkling ? 0x101000 : 0x00000c;
+				if (g > b)
+					return sparkling ? 0x0f0a00 : 0x030f0f;
+				return sparkling ? 0x100f09 : 0x100f0d;
+			}
+
+			int flashTime = 0;
+			for (var time = 0; time < 16000; time += 20)
+			{
+				if (sparkleTimes.Contains(time))
+					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
+
+				var dist = Math.Cos(time % WaveTime / WaveTime * 360d / 180d * Math.PI);
+				rotateTransform.Angle = dist * Rotate;
+				translateTransform.X = dist * Translate;
+				ShapeChangeRender(canvas, segment, bodyLayout, time, SubstituteColor);
+
+				if (flashTimes.Contains(time))
+					flashTime = FlashTime;
+				if (flashTime > 0)
+				{
+					var center = new Point(48, 48);
+					foreach (var light in bodyLayout.GetAllLights())
+					{
+						var pos = bodyLayout.GetLightPosition(light);
+						segment.AddLight(light, time, flashColor, ((pos - center).Length * 100).Round());
+					}
+					--flashTime;
+				}
+
+				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
+			}
+
+			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
+				segment.AddLight(light, 15200, 15400, 0x101010, 0x000000);
+
+			var qmPoints = new List<Point>
+			{
+				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
+				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
+				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
+				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
+				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
+				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
+				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
+				new Point(24, 7),
+			};
+
+			foreach (var point in qmPoints)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				segment.AddLight(light, 15200, 0x101010);
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -431,9 +561,12 @@ namespace Shelfinator.Creator.Songs
 			// Goodbye (52600)
 			var goodbye = Goodbye();
 			song.AddSegment(goodbye, 0, 16000, 52600, 25800);
-			Emulator.TestPosition = 52600;
 
-			// Next (78400)
+			// Ocean (78400)
+			var ocean = Ocean();
+			song.AddSegment(ocean, 0, 16000, 78400, 25800);
+
+			// Next (182600)
 
 			// End (217720)
 
