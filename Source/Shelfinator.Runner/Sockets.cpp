@@ -1,6 +1,17 @@
 ﻿#include "Sockets.h"
 
+#include <sys/types.h>
+#include <string.h>
 #include <thread>
+
+#ifdef _WIN32
+#define socklen_t int
+#else
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#define INVALID_SOCKET -1
+#define SOCKET_ERROR -1
+#endif
 
 namespace Shelfinator
 {
@@ -23,8 +34,10 @@ namespace Shelfinator
 
 		Sockets::Sockets()
 		{
+#ifdef _WIN32
 			WSADATA wsaData = { 0 };
 			WSAStartup(MAKEWORD(2, 2), &wsaData);
+#endif
 
 			std::thread(&Sockets::ServerThread, this).detach();
 		}
@@ -57,7 +70,7 @@ namespace Shelfinator
 
 			while (true)
 			{
-				int addrSize = sizeof(addr);
+				socklen_t addrSize = sizeof(addr);
 				auto client = accept(sockfd, (sockaddr*)&addr, &addrSize);
 				if (client == INVALID_SOCKET)
 					throw "Failed to accept socket";

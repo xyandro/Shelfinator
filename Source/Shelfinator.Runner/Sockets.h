@@ -4,7 +4,11 @@
 #include <mutex>
 #endif
 #include <queue>
+#ifdef _WIN32
 #include <Winsock2.h>
+#else
+typedef int SOCKET;
+#endif
 #include "Pattern.h"
 
 namespace Shelfinator
