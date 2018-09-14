@@ -200,6 +200,49 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Gravity(out int time)
+		{
+			const double Accel = 0.003;
+
+			var colors = Helpers.Rainbow6;
+			var points = new List<Tuple<Point, int>>();
+			for (var col = 0; col < 7; ++col)
+				for (var row = 0; row < 7; ++row)
+					for (var x = 0; x < 19; ++x)
+						for (var y = 0; y < 19; ++y)
+						{
+							var x1 = col * 19 + x - 18;
+							var y1 = row * 19 + y - 18;
+							if ((x1 >= 0) && (x1 < 97) && (y1 >= 0) && (y1 < 97))
+								points.Add(Tuple.Create(new Point(x1, y1), colors[(col + row) % colors.Count]));
+						}
+
+			var center = new Point(48, 48);
+			var segment = new Segment();
+			for (time = 0; ; ++time)
+			{
+				var done = true;
+				segment.Clear(time);
+				foreach (var point in points)
+				{
+					var vector = center - point.Item1;
+					var dist = vector.Length;
+					vector /= dist;
+					var newDist = 0.5 * Accel * time * time;
+					if (newDist > dist)
+						continue;
+
+					done = false;
+					var newPoint = point.Item1 + vector * newDist;
+					foreach (var light in bodyLayout.GetPositionLights(newPoint, 1, 1))
+						segment.AddLight(light, time, point.Item2);
+				}
+				if (done)
+					break;
+			}
+			return segment;
+		}
+
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
 		{
 			foreach (var measure in measures)
@@ -215,51 +258,56 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("tinylove.ogg");
 
-			// Shift (1670)
-			var shift = Shift();
-			song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
-			song.AddPaletteChange(0, 0);
-			song.AddPaletteChange(1170, 2170, 1);
-			song.AddPaletteChange(5702, 6702, 2);
-			song.AddPaletteChange(10234, 11234, 3);
-			song.AddPaletteChange(14766, 15766, 4);
-			song.AddPaletteChange(19798, 0);
+			//// Shift (1670)
+			//var shift = Shift();
+			//song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
+			//song.AddPaletteChange(0, 0);
+			//song.AddPaletteChange(1170, 2170, 1);
+			//song.AddPaletteChange(5702, 6702, 2);
+			//song.AddPaletteChange(10234, 11234, 3);
+			//song.AddPaletteChange(14766, 15766, 4);
+			//song.AddPaletteChange(19798, 0);
 
-			// Runners (19798)
-			var runners = Runners();
-			song.AddSegment(runners, 0, 2800, 19798, 15862);
-			song.AddPaletteChange(19798, 0);
-			song.AddPaletteChange(23830, 24830, 1);
-			song.AddPaletteChange(30628, 31628, 2);
+			//// Runners (19798)
+			//var runners = Runners();
+			//song.AddSegment(runners, 0, 2800, 19798, 15862);
+			//song.AddPaletteChange(19798, 0);
+			//song.AddPaletteChange(23830, 24830, 1);
+			//song.AddPaletteChange(30628, 31628, 2);
 
-			song.AddSegment(runners, 2800, 4400, 35660, 6712);
-			song.AddPaletteChange(35160, 36160, 3);
-			song.AddPaletteChange(42372, 0);
+			//song.AddSegment(runners, 2800, 4400, 35660, 6712);
+			//song.AddPaletteChange(35160, 36160, 3);
+			//song.AddPaletteChange(42372, 0);
 
-			// LineStop (42372)
-			var lineStop = LineStop();
-			song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
+			//// LineStop (42372)
+			//var lineStop = LineStop();
+			//song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
 
-			// Heart (65864)
-			var heart = Heart();
-			song.AddSegment(heart, 0, 78, 65864, 3356);
-			song.AddSegment(heart, 78, 0, 69220, 3356);
-			song.AddSegment(heart, 0, 78, 72576, 3356);
-			song.AddSegment(heart, 78, 0, 75932, 3356);
-			song.AddSegment(heart, 0, 78, 79288, 3356);
+			//// Heart (65864)
+			//var heart = Heart();
+			//song.AddSegment(heart, 0, 78, 65864, 3356);
+			//song.AddSegment(heart, 78, 0, 69220, 3356);
+			//song.AddSegment(heart, 0, 78, 72576, 3356);
+			//song.AddSegment(heart, 78, 0, 75932, 3356);
+			//song.AddSegment(heart, 0, 78, 79288, 3356);
 
-			// LinesSparkle (82644)
-			var linesSparkle = LinesSparkle(out int linesSparkleLength);
-			song.AddSegment(linesSparkle, 0, linesSparkleLength, 82644, 1678 * 2, 8 / 2);
+			//// LinesSparkle (82644)
+			//var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			//song.AddSegment(linesSparkle, 0, linesSparkleLength, 82644, 1678 * 2, 8 / 2);
 
-			// Misc (82644)
-			var segment = new Segment();
-			for (var time = 0; time < 20000; time += 1000)
-				for (var light = 0; light < 2440; ++light)
-					segment.AddLight(light, time, time + 1000, 0x101010, 0x000000);
-			song.AddSegment(segment, 0, 1000, 82644, 1678, 7);
+			// Gravity (96068)
+			var gravity = Gravity(out var gravityLength);
+			song.AddSegment(gravity, 0, gravityLength, 96068, 1678 * 2);
+			Emulator.TestPosition = 96068;
 
-			AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
+			//// Misc (82644)
+			//var segment = new Segment();
+			//for (var time = 0; time < 20000; time += 1000)
+			//	for (var light = 0; light < 2440; ++light)
+			//		segment.AddLight(light, time, time + 1000, 0x101010, 0x000000);
+			//song.AddSegment(segment, 0, 1000, 82644, 1678, 7);
+
+			//AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
 
 			return song;
 		}
