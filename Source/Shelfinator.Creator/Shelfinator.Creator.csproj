@@ -108,6 +108,7 @@
     <Compile Include="Patterns\Rotate.cs" />
     <Compile Include="Patterns\RunAway.cs" />
     <Compile Include="Patterns\Runner.cs" />
+    <Compile Include="Patterns\ShapeChange.cs" />
     <Compile Include="Patterns\Sine.cs" />
     <Compile Include="Patterns\Snake.cs" />
     <Compile Include="Patterns\Spin.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="Patterns\SquareFlash.cs" />
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />
-    <Compile Include="Patterns\Star.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

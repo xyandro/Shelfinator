@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace Shelfinator.Creator.Patterns
 {
-	class Star : IPattern
+	class ShapeChange : IPattern
 	{
 		public int PatternNumber => 34;
 
