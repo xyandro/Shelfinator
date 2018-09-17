@@ -103,6 +103,7 @@
     <EmbeddedResource Include="Patterns\Love\Phoebe.png" />
     <EmbeddedResource Include="Patterns\Love\Sophie.png" />
     <EmbeddedResource Include="Patterns\Love\Timo.png" />
+    <Compile Include="Patterns\Paths.cs" />
     <Compile Include="Patterns\Plasma.cs" />
     <Compile Include="Patterns\RainbowRotate.cs" />
     <Compile Include="Patterns\Rotate.cs" />
