@@ -13,7 +13,6 @@ namespace Shelfinator.Creator.Patterns
 	{
 		public int PatternNumber => 34;
 
-		readonly Random rand = new Random();
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;

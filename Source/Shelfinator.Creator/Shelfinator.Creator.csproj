@@ -76,6 +76,7 @@
     <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Bounce.cs" />
     <Compile Include="Patterns\Clock.cs" />
+    <Compile Include="Patterns\CornerRotate.cs" />
     <Compile Include="Patterns\Corners.cs" />
     <Compile Include="Patterns\Corners2.cs" />
     <Compile Include="Patterns\Face.cs" />
