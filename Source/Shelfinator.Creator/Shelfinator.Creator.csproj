@@ -118,6 +118,7 @@
     <Compile Include="Patterns\SquareFlash.cs" />
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />
+    <Compile Include="Patterns\SquareWarp.cs" />
     <Compile Include="Patterns\Stars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
