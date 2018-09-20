@@ -20,7 +20,7 @@ namespace Shelfinator.Creator.Patterns
 			{
 				for (var x = 0; x <= 48; ++x)
 				{
-					var time = square * 19 + x;
+					var time = square * 15 + x;
 					var lights = layout.GetPositionLights(48 - x, 48 - x, x * 2 + 1, x * 2 + 1).Except(layout.GetPositionLights(48 - x + 1, 48 - x + 1, x * 2 - 1, x * 2 - 1));
 					foreach (var light in lights)
 						pattern.AddLight(light, time, color, square % 6);
