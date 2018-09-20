@@ -120,6 +120,7 @@
     <Compile Include="Patterns\Squares.cs" />
     <Compile Include="Patterns\SquareWarp.cs" />
     <Compile Include="Patterns\Stars.cs" />
+    <Compile Include="Patterns\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
