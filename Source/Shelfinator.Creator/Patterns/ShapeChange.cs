@@ -36,13 +36,16 @@ namespace Shelfinator.Creator.Patterns
 				if (value == 4)
 					break;
 
-				startTime = time;
-				for (var angle = 0; angle < 360; angle += 5)
+				if (value != 3)
 				{
-					Render(pattern, layout, value, angle, 1, time, Brightness, useColor[value + 1]);
-					time += 5;
+					startTime = time;
+					for (var angle = 0; angle < 360; angle += 5)
+					{
+						Render(pattern, layout, value, angle, 1, time, Brightness, useColor[value + 1]);
+						time += 5;
+					}
+					pattern.AddLightSequence(startTime, time, 2500, 2);
 				}
-				pattern.AddLightSequence(startTime, time, 2500, 2);
 			}
 
 			return pattern;
