@@ -53,7 +53,7 @@ namespace Shelfinator.Creator.Patterns
 				UpdateStars(stars);
 			}
 
-			pattern.AddLightSequence(0, Duration, 20000, 5);
+			pattern.AddLightSequence(0, Duration, 20000);
 
 			return pattern;
 		}
