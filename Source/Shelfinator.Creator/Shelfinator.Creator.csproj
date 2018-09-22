@@ -83,16 +83,15 @@
     <Compile Include="Patterns\Flash.cs" />
     <Compile Include="Patterns\Flex.cs" />
     <Compile Include="Patterns\Flood.cs" />
-    <Compile Include="Patterns\Hallows.cs" />
     <Compile Include="Patterns\Halves.cs" />
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
     <EmbeddedResource Include="Patterns\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
-    <EmbeddedResource Include="Patterns\Layout\Hallows.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Header.png" />
     <EmbeddedResource Include="Patterns\Layout\Plasma.gif" />
+    <EmbeddedResource Include="Patterns\Layout\Smiley.png" />
     <EmbeddedResource Include="Patterns\Layout\Squares.png" />
     <EmbeddedResource Include="Patterns\Love\Benji.png" />
     <EmbeddedResource Include="Patterns\Love\I.png" />
@@ -111,6 +110,7 @@
     <Compile Include="Patterns\Runner.cs" />
     <Compile Include="Patterns\ShapeChange.cs" />
     <Compile Include="Patterns\Sine.cs" />
+    <Compile Include="Patterns\Smiley.cs" />
     <Compile Include="Patterns\Snake.cs" />
     <Compile Include="Patterns\Spin.cs" />
     <Compile Include="Patterns\Spiral.cs" />
