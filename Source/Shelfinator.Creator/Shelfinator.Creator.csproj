@@ -75,6 +75,7 @@
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="Patterns\Bounce.cs" />
+    <Compile Include="Patterns\CircleWarp.cs" />
     <Compile Include="Patterns\Clock.cs" />
     <Compile Include="Patterns\CornerRotate.cs" />
     <Compile Include="Patterns\Corners.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="Patterns\SquareFlash.cs" />
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />
-    <Compile Include="Patterns\SquareWarp.cs" />
     <Compile Include="Patterns\Stars.cs" />
     <Compile Include="Patterns\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
