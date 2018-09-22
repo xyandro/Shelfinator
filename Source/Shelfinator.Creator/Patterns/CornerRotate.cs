@@ -16,12 +16,12 @@ namespace Shelfinator.Creator.Patterns
 
 			var pattern = new Pattern();
 
-			var pink = new List<int> { 0xff33ff, 0xff66ff, 0xff99ff, 0xffccff, 0xff33ff, 0xff66ff, 0xff99ff, 0xffccff, 0xff33ff, 0xff66ff, 0xff99ff }.Multiply(Brightness).ToList();
-			var purple = new List<int> { 0xac68cc, 0xc18eda, 0xd6b4e7, 0x793698, 0x9744be, 0xac68cc, 0xc18eda, 0xd6b4e7, 0x793698, 0x9744be, 0xac68cc }.Multiply(Brightness).ToList();
+			var white = new List<int> { 0xffffff, 0xffffff, 0xff0000, 0xff0000, 0xffffff, 0xffffff, 0xff0000, 0xff0000, 0xffffff, 0xffffff, 0xff0000 }.Multiply(Brightness).ToList();
+			var pastel = new List<int> { 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880 }.Multiply(Brightness).ToList();
 			var rainbow = Helpers.Rainbow6.Multiply(Brightness).ToList();
 			rainbow.InsertRange(0, rainbow.Skip(1).Reverse().ToList());
 
-			var color = new LightColor(-96, 96, pink, purple, rainbow);
+			var color = new LightColor(-96, 96, white, pastel, rainbow);
 
 			var center = new Point(0, 0);
 			for (var angle = 0; angle < 90; angle += 5)
