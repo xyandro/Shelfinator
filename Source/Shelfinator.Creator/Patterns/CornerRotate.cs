@@ -24,7 +24,7 @@ namespace Shelfinator.Creator.Patterns
 			var color = new LightColor(-96, 96, white, pastel, rainbow);
 
 			var center = new Point(0, 0);
-			for (var angle = 0; angle < 90; angle += 5)
+			for (var angle = 0; angle < 90; ++angle)
 				foreach (var light in layout.GetAllLights())
 				{
 					var position = layout.GetLightPosition(light);
@@ -35,7 +35,7 @@ namespace Shelfinator.Creator.Patterns
 				}
 
 			center = new Point(96, 0);
-			for (var angle = 90; angle < 180; angle += 5)
+			for (var angle = 90; angle < 180; ++angle)
 				foreach (var light in layout.GetAllLights())
 				{
 					var position = layout.GetLightPosition(light);
@@ -46,7 +46,7 @@ namespace Shelfinator.Creator.Patterns
 				}
 
 			center = new Point(96, 96);
-			for (var angle = 180; angle < 270; angle += 5)
+			for (var angle = 180; angle < 270; ++angle)
 				foreach (var light in layout.GetAllLights())
 				{
 					var position = layout.GetLightPosition(light);
@@ -57,7 +57,7 @@ namespace Shelfinator.Creator.Patterns
 				}
 
 			center = new Point(0, 96);
-			for (var angle = 270; angle < 360; angle += 5)
+			for (var angle = 270; angle < 360; ++angle)
 				foreach (var light in layout.GetAllLights())
 				{
 					var position = layout.GetLightPosition(light);
@@ -67,11 +67,11 @@ namespace Shelfinator.Creator.Patterns
 					pattern.AddLight(light, angle, color, (int)newPosition.X);
 				}
 
-			pattern.AddLightSequence(0, 360, 4000, 5);
+			pattern.AddLightSequence(0, 360, 5000, 5);
 
 			pattern.AddPaletteSequence(0, 0);
-			pattern.AddPaletteSequence(4000, 8000, null, 1);
-			pattern.AddPaletteSequence(12000, 16000, null, 2);
+			pattern.AddPaletteSequence(5000, 10000, null, 1);
+			pattern.AddPaletteSequence(15000, 20000, null, 2);
 
 			return pattern;
 		}
