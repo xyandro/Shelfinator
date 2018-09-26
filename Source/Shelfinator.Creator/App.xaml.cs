@@ -65,9 +65,8 @@ namespace Shelfinator.Creator
 				{
 					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{pattern.PatternNumber}.pat");
 					var rendered = pattern.Render();
-					if (host == null)
-						rendered.Save(fileName);
-					else
+					rendered.Save(fileName);
+					if (host != null)
 						rendered.Transmit(host);
 				}
 			}
