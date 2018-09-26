@@ -73,21 +73,25 @@ namespace Shelfinator.Creator
 			return mult * (int)(mult * value + .5);
 		}
 
-		public static int ToByte(double value)
+		public static byte ToByte(double value)
 		{
 			var intValue = value.Round();
 			if (intValue < 0)
 				return 0;
 			if (intValue > 255)
 				return 255;
-			return intValue;
+			return (byte)intValue;
 		}
 
-		public static int MultiplyColor(int color, double multiplier) => ToByte((color >> 16 & 0xff) * multiplier) << 16 | ToByte((color >> 8 & 0xff) * multiplier) << 8 | ToByte((color & 0xff) * multiplier);
+		public static int MultiplyColor(int color, double multiplier) => MakeColor((color >> 16 & 0xff) * multiplier, (color >> 8 & 0xff) * multiplier, (color & 0xff) * multiplier);
 
-		public static int GradientColor(int color1, int color2, double percent) => ToByte((color1 >> 16 & 0xff) * (1 - percent) + (color2 >> 16 & 0xff) * percent) << 16 | ToByte((color1 >> 8 & 0xff) * (1 - percent) + (color2 >> 8 & 0xff) * percent) << 8 | ToByte((color1 & 0xff) * (1 - percent) + (color2 & 0xff) * percent);
+		public static int GradientColor(int color1, int color2, double percent) => MakeColor((color1 >> 16 & 0xff) * (1 - percent) + (color2 >> 16 & 0xff) * percent, (color1 >> 8 & 0xff) * (1 - percent) + (color2 >> 8 & 0xff) * percent, (color1 & 0xff) * (1 - percent) + (color2 & 0xff) * percent);
 
-		public static int AddColor(int color1, int color2) => ToByte((color1 >> 16 & 0xff) + (color2 >> 16 & 0xff)) << 16 | ToByte((color1 >> 8 & 0xff) + (color2 >> 8 & 0xff)) << 8 | ToByte((color1 & 0xff) + (color2 & 0xff));
+		public static int AddColor(int color1, int color2) => MakeColor((color1 >> 16 & 0xff) + (color2 >> 16 & 0xff), (color1 >> 8 & 0xff) + (color2 >> 8 & 0xff), (color1 & 0xff) + (color2 & 0xff));
+
+		public static int MakeColor(double red, double green, double blue) => MakeColor(ToByte(red), ToByte(green), ToByte(blue));
+
+		public static int MakeColor(byte red, byte green, byte blue) => red << 16 | green << 8 | blue;
 
 		public static Point GetCenter(IEnumerable<Point> points)
 		{
