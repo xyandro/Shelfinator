@@ -108,6 +108,7 @@
     <Compile Include="Patterns\Plasma.cs" />
     <Compile Include="Patterns\RainbowRotate.cs" />
     <Compile Include="Patterns\Randomized.cs" />
+    <Compile Include="Patterns\Randomized2.cs" />
     <Compile Include="Patterns\Rotate.cs" />
     <Compile Include="Patterns\RunAway.cs" />
     <Compile Include="Patterns\Runner.cs" />
