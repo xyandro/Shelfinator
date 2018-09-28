@@ -124,6 +124,7 @@
     <Compile Include="Patterns\SquarePattern.cs" />
     <Compile Include="Patterns\Squares.cs" />
     <Compile Include="Patterns\Stars.cs" />
+    <Compile Include="Patterns\Sweep.cs" />
     <Compile Include="Patterns\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
