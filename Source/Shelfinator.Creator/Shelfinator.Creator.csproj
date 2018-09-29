@@ -96,6 +96,7 @@
     <EmbeddedResource Include="Patterns\Layout\Plasma.gif" />
     <EmbeddedResource Include="Patterns\Layout\Smiley.png" />
     <EmbeddedResource Include="Patterns\Layout\Squares.png" />
+    <Compile Include="Patterns\Lines.cs" />
     <EmbeddedResource Include="Patterns\Love\Benji.png" />
     <EmbeddedResource Include="Patterns\Love\I.png" />
     <EmbeddedResource Include="Patterns\Love\Kate.png" />
