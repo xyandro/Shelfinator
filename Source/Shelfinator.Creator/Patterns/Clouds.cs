@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Shelfinator.Creator.Patterns
 {
-	class Running : IPattern
+	class Clouds : IPattern
 	{
 		public int PatternNumber => 40;
 
@@ -16,7 +16,7 @@ namespace Shelfinator.Creator.Patterns
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			var empty = new int[97, 97];
-			var pixels = GetPixels("Shelfinator.Creator.Patterns.Layout.Running.png", Brightness);
+			var pixels = GetPixels("Shelfinator.Creator.Patterns.Layout.Clouds.png", Brightness);
 
 			var pattern = new Pattern();
 
@@ -34,7 +34,7 @@ namespace Shelfinator.Creator.Patterns
 		int[,] GetPixels(string fileName, double Brightness)
 		{
 			int[,] pixels;
-			using (var stream = typeof(Running).Assembly.GetManifestResourceStream(fileName))
+			using (var stream = typeof(Clouds).Assembly.GetManifestResourceStream(fileName))
 			using (var image = System.Drawing.Image.FromStream(stream))
 			using (var bmp = new System.Drawing.Bitmap(image))
 			{

@@ -77,6 +77,7 @@
     <Compile Include="Patterns\Bounce.cs" />
     <Compile Include="Patterns\CircleWarp.cs" />
     <Compile Include="Patterns\Clock.cs" />
+    <Compile Include="Patterns\Clouds.cs" />
     <Compile Include="Patterns\CornerRotate.cs" />
     <Compile Include="Patterns\Corners.cs" />
     <Compile Include="Patterns\Corners2.cs" />
@@ -87,12 +88,12 @@
     <Compile Include="Patterns\Halves.cs" />
     <Compile Include="Patterns\Hello.cs" />
     <Compile Include="Patterns\IPattern.cs" />
+    <EmbeddedResource Include="Patterns\Layout\Clouds.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Patterns\Layout\DotStar.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Patterns\Layout\Layout-Header.png" />
     <EmbeddedResource Include="Patterns\Layout\Plasma.gif" />
-    <EmbeddedResource Include="Patterns\Layout\Running.png" />
     <EmbeddedResource Include="Patterns\Layout\Smiley.png" />
     <EmbeddedResource Include="Patterns\Layout\Squares.png" />
     <EmbeddedResource Include="Patterns\Love\Benji.png" />
@@ -112,7 +113,6 @@
     <Compile Include="Patterns\Rotate.cs" />
     <Compile Include="Patterns\RunAway.cs" />
     <Compile Include="Patterns\Runner.cs" />
-    <Compile Include="Patterns\Running.cs" />
     <Compile Include="Patterns\ShapeChange.cs" />
     <Compile Include="Patterns\Sine.cs" />
     <Compile Include="Patterns\Smiley.cs" />
