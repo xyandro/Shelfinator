@@ -12,7 +12,6 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 			const int BaseIncrement = 3500;
-			const int FadeTime = 1000;
 
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
@@ -23,7 +22,7 @@ namespace Shelfinator.Creator.Patterns
 				var baseTime = BaseIncrement * colorCtr;
 				var lights = layout.GetAllLights().OrderBy(x => rand.Next()).ToList();
 				for (var lightCtr = 0; lightCtr < lights.Count; lightCtr++)
-					pattern.AddLight(lights[lightCtr], baseTime + lightCtr, baseTime + lightCtr + FadeTime, null, pattern.Absolute, colors[colorCtr]);
+					pattern.AddLight(lights[lightCtr], baseTime + lightCtr, pattern.Absolute, colors[colorCtr]);
 			}
 
 			pattern.AddLightSequence(0, pattern.MaxLightTime(), 20000);
