@@ -19,7 +19,7 @@ namespace Shelfinator.Creator.Patterns
 			{
 				if (rainbowCtr != 0)
 					for (var ctr = 0; ctr < RandomCount; ++ctr)
-						result.Add(Helpers.MakeColor((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256)));
+						result.Add(Helpers.Rainbow6[rand.Next(Helpers.Rainbow6.Count)]);
 				result.Add(Helpers.Rainbow6[rainbowCtr]);
 			}
 			result.Add(0x000000);
