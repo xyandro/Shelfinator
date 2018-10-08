@@ -15,8 +15,6 @@ namespace Shelfinator.Creator.Patterns
 
 		public Pattern Render()
 		{
-			const int RepeatCount = 3;
-
 			var pattern = new Pattern();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
