@@ -6,12 +6,9 @@ namespace Shelfinator.Creator
 {
 	static class MoreLinq
 	{
-		static public IEnumerable<T> NonNull<T>(this IEnumerable<T?> items) where T : struct
-		{
-			foreach (var item in items)
-				if (item.HasValue)
-					yield return item.Value;
-		}
+		static public IEnumerable<T> NonNull<T>(this IEnumerable<T?> items) where T : struct => items.Where(item => item.HasValue).Select(item => item.Value);
+
+		static public IEnumerable<T> NonNull<T>(this IEnumerable<T> items) where T : class => items.Where(item => item != null);
 
 		static public IEnumerable<T> Concat<T>(this IEnumerable<T> items, params T[] addItems)
 		{
@@ -24,9 +21,7 @@ namespace Shelfinator.Creator
 		static public IEnumerable<T> Except<T>(this IEnumerable<T> items, params T[] removeItems)
 		{
 			var toRemove = new HashSet<T>(removeItems);
-			foreach (var item in items)
-				if (!toRemove.Contains(item))
-					yield return item;
+			return items.Where(item => !toRemove.Contains(item));
 		}
 
 		static public Dictionary<T1, T2> ToDictionary<T1, T2>(this IEnumerable<T1> items1, IEnumerable<T2> items2)
@@ -63,15 +58,6 @@ namespace Shelfinator.Creator
 		{
 			foreach (var item in source)
 				action(item);
-		}
-
-		static public IEnumerable<double> Range(double start, double increment, int count)
-		{
-			for (var ctr = 0; ctr < count; ++ctr)
-			{
-				yield return start;
-				start += increment;
-			}
 		}
 	}
 }

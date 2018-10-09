@@ -127,6 +127,7 @@
     <Compile Include="Patterns\Stars.cs" />
     <Compile Include="Patterns\Sweep.cs" />
     <Compile Include="Patterns\Tag.cs" />
+    <Compile Include="Patterns\Traffic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
