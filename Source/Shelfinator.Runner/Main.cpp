@@ -21,6 +21,7 @@ void SetupBreakhandler()
 	sigemptyset(&breakHandler.sa_mask);
 	breakHandler.sa_flags = 0;
 	sigaction(SIGINT, &breakHandler, NULL);
+	sigaction(SIGTERM, &breakHandler, NULL);
 }
 
 int main(int argc, char **argv)
