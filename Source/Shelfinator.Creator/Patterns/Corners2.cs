@@ -75,10 +75,10 @@ namespace Shelfinator.Creator.Patterns
 					}
 			}
 
-			pattern.AddLightSequence(200, 400, 4000, 7);
+			pattern.AddLightSequence(200, 400, 4000, 5);
 			pattern.AddPaletteSequence(0, 1000, null, 1);
-			pattern.AddPaletteSequence(9500, 10500, null, 2);
-			pattern.AddPaletteSequence(27000, 28000, null, 0);
+			pattern.AddPaletteSequence(6500, 7500, null, 2);
+			pattern.AddPaletteSequence(19000, 20000, null, 0);
 
 			return pattern;
 		}
