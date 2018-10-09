@@ -23,11 +23,8 @@ namespace Shelfinator.Creator.Patterns
 			{
 				pattern.Clear(time);
 
-				for (var x = 0; x <= 96; ++x)
+				for (var x = 0; x <= 96; x += 19)
 				{
-					if ((x % 19) != 0)
-						continue;
-
 					var y = ((Math.Sin(2 * Math.PI * (time / 1000D + x / 96D)) + 1) * (97 - Size) / 2).Round();
 					var lights = layout.GetPositionLights(x, y, 2, 2);
 					foreach (var light in lights)
