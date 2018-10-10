@@ -196,7 +196,7 @@ namespace Shelfinator
 				}
 
 				auto lights = Lights::Create();
-				pattern->SetLights(time, brightness / 100.0, lights);
+				pattern->SetLights((int)(time + 0.5), brightness / 100.0, lights);
 				if (banner)
 					banner->SetLights(lights);
 				driver->SetLights(lights);
@@ -205,7 +205,7 @@ namespace Shelfinator
 				if (startTime != -1)
 				{
 					auto elapsed = nextTime - startTime;
-					time += (int)(elapsed * multipliers[multiplierIndex]);
+					time += elapsed * multipliers[multiplierIndex];
 					if (banner)
 					{
 						banner->AddElapsed(elapsed);

@@ -32,7 +32,8 @@ namespace Shelfinator
 			static std::wstring multiplierNames[];
 
 			bool running = true;
-			int time = 0, multiplierIndex = 13, patternIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
+			double time = 0;
+			int multiplierIndex = 13, patternIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
 			int brightness = 100;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
