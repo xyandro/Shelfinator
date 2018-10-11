@@ -8,7 +8,6 @@ namespace Shelfinator.Creator.Patterns
 	{
 		public int PatternNumber => 28;
 
-		readonly Random rand = new Random();
 		public Pattern Render()
 		{
 			const double Brightness = 1f / 16;
@@ -49,7 +48,7 @@ namespace Shelfinator.Creator.Patterns
 				DrawPixels(pattern, layout, pixels, xOfs.Round(), yOfs.Round(), angle);
 			}
 
-			pattern.AddLightSequence(0, 360, 5000, 5);
+			pattern.AddLightSequence(0, 360, 5000, 3);
 
 			return pattern;
 		}
