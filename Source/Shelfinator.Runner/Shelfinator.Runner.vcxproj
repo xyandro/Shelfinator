@@ -112,10 +112,6 @@
     <ClInclude Include="LightItem.h" />
     <ClCompile Include="Lights.cpp" />
     <ClInclude Include="Lights.h" />
-    <ClCompile Include="LightSequence.cpp" />
-    <ClInclude Include="LightSequence.h" />
-    <ClCompile Include="LightSequences.cpp" />
-    <ClInclude Include="LightSequences.h" />
     <ClCompile Include="PaletteSequence.cpp" />
     <ClInclude Include="PaletteSequence.h" />
     <ClCompile Include="PaletteSequences.cpp" />
@@ -125,6 +121,12 @@
     <ClCompile Include="Patterns.cpp" />
     <ClInclude Include="Patterns.h" />
     <ClInclude Include="RemoteCode.h" />
+    <ClCompile Include="Segment.cpp" />
+    <ClInclude Include="Segment.h" />
+    <ClCompile Include="SegmentItem.cpp" />
+    <ClInclude Include="SegmentItem.h" />
+    <ClCompile Include="SegmentItems.cpp" />
+    <ClInclude Include="SegmentItems.h" />
     <ClCompile Include="Sockets.cpp" />
     <ClInclude Include="Sockets.h" />
     <ClCompile Include="Timer.cpp" />

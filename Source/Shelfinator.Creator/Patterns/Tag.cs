@@ -180,7 +180,7 @@ namespace Shelfinator.Creator.Patterns
 			return true;
 		}
 
-		public int RenderGame(Pattern pattern, int numHunters, int numPlayers, int startTime)
+		public int RenderGame(Pattern pattern, Segment segment, int numHunters, int numPlayers, int startTime)
 		{
 			const double Brightness = 1f / 16;
 			var colors = new List<int> { 0xff0000, 0x00ff00, 0xffff00, 0xff00ff, 0xff8000 };
@@ -221,9 +221,9 @@ namespace Shelfinator.Creator.Patterns
 					if (GameIsOver(hunters, players))
 						stopTime = stopTime ?? time + EndingDelay;
 
-					pattern.Clear(startTime + time);
-					players.ForEach(player => pattern.AddLight(GetLight(player.Position).Value, startTime + time, pattern.Absolute, Helpers.MultiplyColor(player.Tagged ? 0x0000ff : player.Color, Brightness)));
-					hunters.ForEach(hunter => pattern.AddLight(GetLight(hunter.Position).Value, startTime + time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness / (hunter.Tagged ? 3 : 1))));
+					segment.Clear(startTime + time);
+					players.ForEach(player => segment.AddLight(GetLight(player.Position).Value, startTime + time, Segment.Absolute, Helpers.MultiplyColor(player.Tagged ? 0x0000ff : player.Color, Brightness)));
+					hunters.ForEach(hunter => segment.AddLight(GetLight(hunter.Position).Value, startTime + time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness / (hunter.Tagged ? 3 : 1))));
 				}
 
 				++time;
@@ -231,18 +231,19 @@ namespace Shelfinator.Creator.Patterns
 					break;
 			}
 
-			pattern.AddLightSequence(startTime, startTime + time, time * TimeMultiplier);
+			pattern.AddSegment(segment, startTime, startTime + time, time * TimeMultiplier);
 			return startTime + time;
 		}
 
 		public Pattern Render()
 		{
 			var pattern = new Pattern();
+			var segment = new Segment();
 			var startTime = 0;
-			startTime = RenderGame(pattern, 1, 1, startTime);
-			startTime = RenderGame(pattern, 1, 5, startTime);
-			startTime = RenderGame(pattern, 2, 32, startTime);
-			startTime = RenderGame(pattern, 8, 256, startTime);
+			startTime = RenderGame(pattern, segment, 1, 1, startTime);
+			startTime = RenderGame(pattern, segment, 1, 5, startTime);
+			startTime = RenderGame(pattern, segment, 2, 32, startTime);
+			startTime = RenderGame(pattern, segment, 8, 256, startTime);
 			return pattern;
 		}
 	}

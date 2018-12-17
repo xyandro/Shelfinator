@@ -111,14 +111,14 @@ namespace Shelfinator.Creator.Patterns
 			const int Length = 60;
 			const int PassiveColor = 0x010101;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var patternLights = GetPatternLights();
 			var color = GetColor(Brightness);
 
 			foreach (var lights in patternLights)
 				foreach (var light in lights)
-					pattern.AddLight(light, 0, pattern.Absolute, PassiveColor);
+					segment.AddLight(light, 0, Segment.Absolute, PassiveColor);
 
 			var time = 0;
 			while (true)
@@ -128,14 +128,14 @@ namespace Shelfinator.Creator.Patterns
 				if ((onOffset >= 0) && (onOffset < patternLights.Count))
 				{
 					foreach (var light in patternLights[onOffset])
-						pattern.AddLight(light, time, time + Length, color, 0, color, 100, true);
+						segment.AddLight(light, time, time + Length, color, 0, color, 100, true);
 					drawn = true;
 				}
 				var offOffset = time - Length;
 				if ((offOffset >= 0) && (offOffset < patternLights.Count))
 				{
 					foreach (var light in patternLights[offOffset])
-						pattern.AddLight(light, time, pattern.Absolute, PassiveColor);
+						segment.AddLight(light, time, Segment.Absolute, PassiveColor);
 					drawn = true;
 				}
 				if (!drawn)
@@ -143,7 +143,8 @@ namespace Shelfinator.Creator.Patterns
 				++time;
 			}
 
-			pattern.AddLightSequence(0, time, 30000);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 30000);
 
 			pattern.AddPaletteSequence(3261, 3770, null, 1);
 			pattern.AddPaletteSequence(11752, 12262, null, 2);

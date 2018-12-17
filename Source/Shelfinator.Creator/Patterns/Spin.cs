@@ -16,7 +16,7 @@ namespace Shelfinator.Creator.Patterns
 			const int Fade = 200;
 			const int Delay = 300;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var allLights = layout.GetAllLights();
 			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
@@ -34,13 +34,14 @@ namespace Shelfinator.Creator.Patterns
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 				for (var repeat = 0; repeat < 2000; repeat += 1000)
 				{
-					pattern.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, distances[ctr].Round());
-					pattern.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, pattern.Absolute, 0x000000);
+					segment.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, distances[ctr].Round());
+					segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, Segment.Absolute, 0x000000);
 				}
 
-			pattern.AddLightSequence(0, 1000);
-			pattern.AddLightSequence(1000, 2000, repeat: 14);
-			pattern.AddLightSequence(2000, 2000 + Fade + Delay);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 1000);
+			pattern.AddSegment(segment, 1000, 2000, repeat: 14);
+			pattern.AddSegment(segment, 2000, 2000 + Fade + Delay);
 
 			pattern.AddPaletteSequence(5000, 6000, null, 1);
 			pattern.AddPaletteSequence(10000, 11000, null, 2);

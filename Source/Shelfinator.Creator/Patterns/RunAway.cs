@@ -31,7 +31,7 @@ namespace Shelfinator.Creator.Patterns
 "/95,0/95,1/95,2/95,3/95,4/95,5/95,6/95,7/95,8/95,9/95,10/95,11/95,12/95,13/95,14/95,15/95,16/95,17/95,18/95,19/95,20/95,21/95,22/95,23/95,24/95,25/95,26/95,27/95,28/95,29/95,30/95,31/95,32/95,33/95,34/95,35/95,36/95,37/95,38/95,39/95,40/95,41/95,42/95,43/95,44/95,45/95,46/95,47/95,48/95,49/95,50/95,51/95,52/95,53/95,54/95,55/95,56/95,57/95,58/95,59/95,60/95,61/95,62/95,63/95,64/95,65/95,66/95,67/95,68/95,69/95,70/95,71/95,72/95,73/95,74/95,75/95,76/95,77/95,78/95,79/95,80/95,81/95,82/95,83/95,84" +
 "/95,85/95,86/95,87/95,88/95,89/95,90/95,91/95,92/95,93/95,94/95,95";
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var pathPoints = PathPoints.Split('/').Select(p => Point.Parse(p)).ToList();
 
@@ -55,8 +55,8 @@ namespace Shelfinator.Creator.Patterns
 			{
 				foreach (var light in layout.GetPositionLights(pathPoint, 2, 2))
 				{
-					pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
-					pattern.AddLight(light, time + 1, pattern.Absolute, 0x000000);
+					segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+					segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
 				}
 
 				foreach (var square in squareLights.Keys)
@@ -64,17 +64,17 @@ namespace Shelfinator.Creator.Patterns
 					var focusAngle = Helpers.GetAngle(squareCenter[square], pathPoint);
 					var useLight = squareLights[square].OrderBy(light => Math.Abs(focusAngle - Helpers.GetAngle(layout.GetLightPosition(light), squareCenter[square]))).First();
 
-					pattern.AddLight(useLight, time, pattern.Absolute, colors[square - 1]);
-					pattern.AddLight(useLight, time + 1, pattern.Absolute, 0x000000);
+					segment.AddLight(useLight, time, Segment.Absolute, colors[square - 1]);
+					segment.AddLight(useLight, time + 1, Segment.Absolute, 0x000000);
 				}
 
 				++time;
 			}
-			pattern.Clear(time);
+			segment.Clear(time);
 
-			pattern.AddLightSequence(0, time, 15000);
-			pattern.AddLightSequence(time, time, 2000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 15000);
+			pattern.AddSegment(segment, time, time, 2000);
 			return pattern;
 		}
 	}

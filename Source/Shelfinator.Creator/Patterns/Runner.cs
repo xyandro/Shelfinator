@@ -33,56 +33,58 @@ namespace Shelfinator.Creator.Patterns
 				new List<int> { 0x0080ff, 0x01ffff, 0x3f00ff, 0x89d0f0 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x17b7ab, 0xe71880, 0xbcd63d, 0xf15a25 }.Multiply(Brightness).ToList(),
 			});
-			var pattern = new Pattern();
+			var segment = new Segment();
 			foreach (var result in results)
 				for (var time = 0; time < Concurrency * 4; ++time)
 				{
 					foreach (var light in result.SelectMany(x => x))
-						pattern.AddLight(light, time, pattern.Absolute, 0x000000);
+						segment.AddLight(light, time, Segment.Absolute, 0x000000);
 					for (var ctr = 0; ctr < result.Count; ctr += Concurrency)
 						foreach (var light in result[(time + ctr) % result.Count])
-							pattern.AddLight(light, time, color, (ctr / Concurrency) % 4);
+							segment.AddLight(light, time, color, (ctr / Concurrency) % 4);
 				}
 
 			const int Speed = 1500;
 			const int Repeat = 2;
 
+			var pattern = new Pattern();
+
 			// Fade in to 1
-			pattern.AddLightSequence(Concurrency * 3, Concurrency * 3, Speed);
+			pattern.AddSegment(segment, Concurrency * 3, Concurrency * 3, Speed);
 			pattern.AddPaletteSequence(0, Speed, null, 1);
 
 			// Palette 1
-			pattern.AddLightSequence(Concurrency * 3, Concurrency * 4, 0, Concurrency, Speed);
-			pattern.AddLightSequence(0, Concurrency * 4, Speed * 4, Repeat);
+			pattern.AddSegment(segment, Concurrency * 3, Concurrency * 4, 0, Concurrency, Speed);
+			pattern.AddSegment(segment, 0, Concurrency * 4, Speed * 4, Repeat);
 
 			// Fade to 2
-			var stopTime = pattern.MaxLightSequenceTime();
+			var stopTime = pattern.MaxSegmentTime();
 			pattern.AddPaletteSequence(stopTime - Speed / 2, stopTime + Speed / 2, null, 2);
 
 			// Palette 2
-			pattern.AddLightSequence(0, Concurrency * 4, Speed * 4, Repeat);
-			pattern.AddLightSequence(0, Concurrency, Concurrency, 0, Speed);
+			pattern.AddSegment(segment, 0, Concurrency * 4, Speed * 4, Repeat);
+			pattern.AddSegment(segment, 0, Concurrency, Concurrency, 0, Speed);
 
 			// Fade to 3
-			stopTime = pattern.MaxLightSequenceTime();
-			pattern.AddLightSequence(Concurrency, Concurrency, Speed);
+			stopTime = pattern.MaxSegmentTime();
+			pattern.AddSegment(segment, Concurrency, Concurrency, Speed);
 			pattern.AddPaletteSequence(stopTime, stopTime + Speed, null, 3);
 
 			// Palette 3
-			pattern.AddLightSequence(Concurrency, 0, 0, -Concurrency, Speed);
-			pattern.AddLightSequence(Concurrency * 4, 0, Speed * 4, Repeat);
+			pattern.AddSegment(segment, Concurrency, 0, 0, -Concurrency, Speed);
+			pattern.AddSegment(segment, Concurrency * 4, 0, Speed * 4, Repeat);
 
 			// Fade to 4
-			stopTime = pattern.MaxLightSequenceTime();
+			stopTime = pattern.MaxSegmentTime();
 			pattern.AddPaletteSequence(stopTime - Speed / 2, stopTime + Speed / 2, null, 4);
 
 			// Palette 4
-			pattern.AddLightSequence(Concurrency * 4, 0, Speed * 4, Repeat);
-			pattern.AddLightSequence(Concurrency * 4, Concurrency * 3, -Concurrency, 0, Speed);
+			pattern.AddSegment(segment, Concurrency * 4, 0, Speed * 4, Repeat);
+			pattern.AddSegment(segment, Concurrency * 4, Concurrency * 3, -Concurrency, 0, Speed);
 
 			// Fade out to 0
-			stopTime = pattern.MaxLightSequenceTime();
-			pattern.AddLightSequence(Concurrency * 3, Concurrency * 3, Speed);
+			stopTime = pattern.MaxSegmentTime();
+			pattern.AddSegment(segment, Concurrency * 3, Concurrency * 3, Speed);
 			pattern.AddPaletteSequence(stopTime, stopTime + Speed, null, 0);
 
 			return pattern;

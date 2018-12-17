@@ -43,7 +43,7 @@ namespace Shelfinator.Creator.Patterns
 			var startTime = Enumerable.Range(0, squareLights.Count).Select(index => total * index / squareLights.Count).ToList();
 			startTime = startOrder.Split('/').Select(index => startTime[int.Parse(index)]).ToList();
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var color = new LightColor(0, 72, new List<int> { 0xff0000, 0xffff00, 0x0000ff, 0x00ff00, 0xff0000 }.Multiply(Brightness).ToList());
 			for (var squareCtr = 0; squareCtr < squareLights.Count; squareCtr++)
 			{
@@ -60,8 +60,8 @@ namespace Shelfinator.Creator.Patterns
 				for (var ctr = 0; ctr <= delays.Count; ++ctr)
 				{
 					if (last != -1)
-						pattern.AddLight(last, time, pattern.Absolute, 0x000000);
-					pattern.AddLight(squareLights[squareCtr][position], time, color, position);
+						segment.AddLight(last, time, Segment.Absolute, 0x000000);
+					segment.AddLight(squareLights[squareCtr][position], time, color, position);
 					last = squareLights[squareCtr][position];
 
 					time += useTime;
@@ -72,7 +72,8 @@ namespace Shelfinator.Creator.Patterns
 				}
 			}
 
-			pattern.AddLightSequence(0, total, repeat: 10);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, total, repeat: 10);
 
 			return pattern;
 		}

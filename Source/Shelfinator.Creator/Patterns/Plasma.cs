@@ -14,7 +14,7 @@ namespace Shelfinator.Creator.Patterns
 			const double Brightness = 1f / 16;
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var time = 0;
 
 			using (var stream = typeof(Plasma).Assembly.GetManifestResourceStream("Shelfinator.Creator.Patterns.Layout.Plasma.gif"))
@@ -40,7 +40,7 @@ namespace Shelfinator.Creator.Patterns
 							{
 								var color = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), Brightness);
 								foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-									pattern.AddLight(light, time, pattern.Absolute, color);
+									segment.AddLight(light, time, Segment.Absolute, color);
 
 								ofs += sizeof(int);
 							}
@@ -52,8 +52,8 @@ namespace Shelfinator.Creator.Patterns
 				}
 			}
 
-			pattern.AddLightSequence(0, time, 5000, 5);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 5000, 5);
 			return pattern;
 		}
 	}

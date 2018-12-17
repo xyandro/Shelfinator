@@ -37,7 +37,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			var points = GetLights();
@@ -61,13 +61,14 @@ namespace Shelfinator.Creator.Patterns
 					foreach (var point in points[ctr])
 					{
 						var light = GetLight(point);
-						pattern.AddLight(light, startTime, startTime + 300, pattern.Absolute, 0x000000, pattern.Absolute, colors[pass]);
-						pattern.AddLight(light, startTime + 1200, startTime + 1200 + 300, null, pattern.Absolute, 0x000000);
+						segment.AddLight(light, startTime, startTime + 300, Segment.Absolute, 0x000000, Segment.Absolute, colors[pass]);
+						segment.AddLight(light, startTime + 1200, startTime + 1200 + 300, null, Segment.Absolute, 0x000000);
 					}
 				}
 			}
-			pattern.AddLightSequence(0, 6900, 20000);
 
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 6900, 20000);
 			return pattern;
 		}
 	}

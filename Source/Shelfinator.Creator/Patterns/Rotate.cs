@@ -15,7 +15,7 @@ namespace Shelfinator.Creator.Patterns
 			const int Fade = 100;
 			const int Delay = 150;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 
@@ -34,11 +34,12 @@ namespace Shelfinator.Creator.Patterns
 				for (var ctr = 0; ctr < allLights.Count; ++ctr)
 					for (var repeat = 0; repeat < 9000; repeat += 500)
 					{
-						pattern.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, angles[ctr]);
-						pattern.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, pattern.Absolute, 0x000000);
+						segment.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, angles[ctr]);
+						segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, Segment.Absolute, 0x000000);
 					}
 			}
-			pattern.AddLightSequence(0, 10000);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 10000);
 			return pattern;
 		}
 	}

@@ -21,7 +21,7 @@ namespace Shelfinator.Creator.Patterns
 			const double Brightness = 1f / 16;
 			const int Count = 250;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var lights = GetLights();
 
 			var color = new LightColor(0, 24, Helpers.Rainbow7.Multiply(Brightness).ToList());
@@ -33,17 +33,17 @@ namespace Shelfinator.Creator.Patterns
 			for (var ctr = 0; ctr < Count; ++ctr)
 			{
 				foreach (var light in lights[order[ctr % 25]])
-					pattern.AddLight(light, time, color, order[ctr % 25]);
+					segment.AddLight(light, time, color, order[ctr % 25]);
 				time += timeOffset;
 				foreach (var light in lights[order[ctr % 25]])
-					pattern.AddLight(light, time, time + 300, null, pattern.Absolute, 0x000000);
+					segment.AddLight(light, time, time + 300, null, Segment.Absolute, 0x000000);
 				timeOffset = Math.Max(25, timeOffset - Math.Min(25, timeOffset * 29 / 30));
 			}
-			pattern.Clear(time);
+			segment.Clear(time);
 
-			pattern.AddLightSequence(0, time);
-			pattern.AddLightSequence(time, time, 1000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time);
+			pattern.AddSegment(segment, time, time, 1000);
 			return pattern;
 		}
 	}

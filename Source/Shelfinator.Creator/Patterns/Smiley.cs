@@ -40,26 +40,26 @@ namespace Shelfinator.Creator.Patterns
 				var hexChars = Enumerable.Range(0, 16).Select(num => $"{num:x}"[0]).ToArray();
 			}
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			for (var angle = 0; angle < 360; angle += 3)
 			{
 				var xOfs = Radius + Math.Sin(angle * Math.PI / 180) * Radius;
 				var yOfs = Radius + Math.Cos(angle * Math.PI / 180) * Radius;
-				DrawPixels(pattern, layout, pixels, xOfs.Round(), yOfs.Round(), angle);
+				DrawPixels(segment, layout, pixels, xOfs.Round(), yOfs.Round(), angle);
 			}
 
-			pattern.AddLightSequence(0, 360, 5000, 3);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 360, 5000, 3);
 			return pattern;
 		}
 
-		void DrawPixels(Pattern pattern, Layout layout, int[,] pixels, int xOfs, int yOfs, int time)
+		void DrawPixels(Segment segment, Layout layout, int[,] pixels, int xOfs, int yOfs, int time)
 		{
 			for (var y = 0; y < pixels.GetLength(1); ++y)
 				for (var x = 0; x < pixels.GetLength(0); ++x)
 					foreach (var light in layout.GetPositionLights(x - xOfs, y - yOfs, 1, 1))
-						pattern.AddLight(light, time, pattern.Absolute, pixels[x, y]);
+						segment.AddLight(light, time, Segment.Absolute, pixels[x, y]);
 		}
 	}
 }

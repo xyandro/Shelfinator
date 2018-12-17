@@ -68,7 +68,7 @@ namespace Shelfinator.Creator.Patterns
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var lights = layout.GetAllLights();
 			var next = lights.Select(l => new { light = l, point = layout.GetLightPosition(l) }).Select(o => new { o.light, points = new List<Point> { new Point(o.point.X - 1, o.point.Y), new Point(o.point.X + 1, o.point.Y), new Point(o.point.X, o.point.Y - 1), new Point(o.point.X, o.point.Y + 1) } }).ToDictionary(o => o.light, o => layout.TryGetPositionLights(o.points));
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var points = new List<FloodPoint>();
 			var time = 0;
@@ -124,12 +124,13 @@ namespace Shelfinator.Creator.Patterns
 					point.AddColor(colors);
 
 				foreach (var pair in colors)
-					pattern.AddLight(pair.Key, time, pattern.Absolute, pair.Value);
+					segment.AddLight(pair.Key, time, Segment.Absolute, pair.Value);
 
 				++time;
 			}
 
-			pattern.AddLightSequence(0, time, 30000);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 30000);
 
 			return pattern;
 		}

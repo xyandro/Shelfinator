@@ -12,7 +12,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var columns = new List<int> { 0, 19, 38, 57, 76, 95 };
@@ -26,7 +26,7 @@ namespace Shelfinator.Creator.Patterns
 			int paddleIndex = 0, paddleSteps = 0;
 			for (var time = 0; time <= 437; ++time)
 			{
-				pattern.Clear(time);
+				segment.Clear(time);
 				for (var columnCtr = 0; columnCtr < columns.Count; columnCtr++)
 				{
 					int y;
@@ -35,7 +35,7 @@ namespace Shelfinator.Creator.Patterns
 					{
 						y = 95 - time;
 						foreach (var light in layout.GetPositionLights(columns[columnCtr], y + 2, 2, 1))
-							pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+							segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
 					}
 					else if (useTime < 116)
 						y = 0;
@@ -44,8 +44,8 @@ namespace Shelfinator.Creator.Patterns
 						y = 0;
 						foreach (var light in layout.GetPositionLights(columns[columnCtr], 2, 2, 1))
 						{
-							pattern.AddLight(light, 96, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
-							pattern.AddLight(light, time - 20, time, null, pattern.Absolute, 0x000000);
+							segment.AddLight(light, 96, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+							segment.AddLight(light, time - 20, time, null, Segment.Absolute, 0x000000);
 						}
 					}
 					else if (useTime <= 356)
@@ -57,7 +57,7 @@ namespace Shelfinator.Creator.Patterns
 						continue;
 
 					foreach (var light in layout.GetPositionLights(columns[columnCtr], y, 2, 2))
-						pattern.AddLight(light, time, color, columns[columnCtr]);
+						segment.AddLight(light, time, color, columns[columnCtr]);
 				}
 
 				if (time < 148)
@@ -68,9 +68,9 @@ namespace Shelfinator.Creator.Patterns
 					foreach (var light in layout.GetPositionLights(0, 95, 97, 2))
 					{
 						var x = layout.GetLightPosition(light).X.Round();
-						pattern.AddLight(light, 5, 48, null, color, x);
+						segment.AddLight(light, 5, 48, null, color, x);
 						if ((x <= 43) || (x > 53))
-							pattern.AddLight(light, 48, 96, null, pattern.Absolute, 0x000000);
+							segment.AddLight(light, 48, 96, null, Segment.Absolute, 0x000000);
 					}
 					paddlePos = 48;
 					paddleSteps = 164 - time;
@@ -95,16 +95,17 @@ namespace Shelfinator.Creator.Patterns
 							var pos = paddlePos.Round();
 							var light = layout.TryGetPositionLight(x + pos - 4, y + 95);
 							if (light.HasValue)
-								pattern.AddLight(light.Value, time, color, x + pos);
+								segment.AddLight(light.Value, time, color, x + pos);
 						}
 				}
 			}
 
-			pattern.AddLightSequence(0, 96, 4000);
-			pattern.AddLightSequence(96, 196, 2083);
-			pattern.AddLightSequence(196, 292, 2000, 9);
-			pattern.AddLightSequence(292, 437, 3021);
-			pattern.AddLightSequence(437, 437, 1000);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 96, 4000);
+			pattern.AddSegment(segment, 96, 196, 2083);
+			pattern.AddSegment(segment, 196, 292, 2000, 9);
+			pattern.AddSegment(segment, 292, 437, 3021);
+			pattern.AddSegment(segment, 437, 437, 1000);
 
 			return pattern;
 		}

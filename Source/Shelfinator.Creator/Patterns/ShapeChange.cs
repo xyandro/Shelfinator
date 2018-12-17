@@ -20,6 +20,7 @@ namespace Shelfinator.Creator.Patterns
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var useColor = new List<int> { 0xff0000, 0xff0000, 0xff0000, 0x00ff00, 0x0000ff, 0xff00ff };
 			var time = 0;
@@ -30,10 +31,10 @@ namespace Shelfinator.Creator.Patterns
 				var startTime = time;
 				for (var angle = 0; angle < 360; angle += 5)
 				{
-					Render(pattern, layout, value, angle, angle / 360D, time, Brightness, Helpers.GradientColor(useColor[value], useColor[value + 1], angle / 360D));
+					Render(segment, layout, value, angle, angle / 360D, time, Brightness, Helpers.GradientColor(useColor[value], useColor[value + 1], angle / 360D));
 					time += 5;
 				}
-				pattern.AddLightSequence(startTime, time, 2500, 1);
+				pattern.AddSegment(segment, startTime, time, 2500, 1);
 				if (value == 4)
 					break;
 
@@ -42,17 +43,17 @@ namespace Shelfinator.Creator.Patterns
 					startTime = time;
 					for (var angle = 0; angle < 360; angle += 5)
 					{
-						Render(pattern, layout, value, angle, 1, time, Brightness, useColor[value + 1]);
+						Render(segment, layout, value, angle, 1, time, Brightness, useColor[value + 1]);
 						time += 5;
 					}
-					pattern.AddLightSequence(startTime, time, 2500, 2);
+					pattern.AddSegment(segment, startTime, time, 2500, 2);
 				}
 			}
 
 			return pattern;
 		}
 
-		void Render(Pattern pattern, Layout layout, int currentValue, double addAngle, double firstPercent, int time, double brightness, int color)
+		void Render(Segment segment, Layout layout, int currentValue, double addAngle, double firstPercent, int time, double brightness, int color)
 		{
 			var canvas = GetCanvas(currentValue, addAngle, firstPercent, color);
 			canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
@@ -69,7 +70,7 @@ namespace Shelfinator.Creator.Patterns
 				{
 					var value = (int)(buffer[bufferPos++] & 0xffffff);
 					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(value, brightness));
+						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(value, brightness));
 				}
 		}
 

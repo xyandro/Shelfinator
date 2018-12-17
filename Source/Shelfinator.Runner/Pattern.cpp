@@ -43,24 +43,16 @@ namespace Shelfinator
 
 			void Pattern::ReadFile(BufferFile::ptr file)
 			{
-				ReadLights(file);
-				lightSequences.Read(file, length);
-				ReadColors(file);
+				ReadSegments(file);
+				segmentItems.Read(file, length);
 				paletteSequences.Read(file);
 			}
 
-			void Pattern::ReadLights(BufferFile::ptr file)
+			void Pattern::ReadSegments(BufferFile::ptr file)
 			{
-				lightData.resize(file->GetInt());
-				for (auto ctr = 0; ctr < lightData.size(); ++ctr)
-					lightData[ctr].Read(file);
-			}
-
-			void Pattern::ReadColors(BufferFile::ptr file)
-			{
-				lightColors.resize(file->GetInt());
-				for (auto ctr = 0; ctr < lightColors.size(); ++ctr)
-					lightColors[ctr].Read(file);
+				segments.resize(file->GetInt());
+				for (auto ctr = 0; ctr < segments.size(); ++ctr)
+					segments[ctr].Read(file);
 			}
 
 			void Pattern::SetLights(int time, double brightness, Lights::ptr lights)
@@ -70,46 +62,9 @@ namespace Shelfinator
 
 				auto paletteSequence = paletteSequences.SequenceAtTime(time);
 				auto palettePercent = paletteSequence.GetPercent(time);
-
-				auto lightTime = lightSequences.SequenceAtTime(time).GetLightTime(time);
-
-				for (auto lightCtr = 0; lightCtr < lightData.size(); ++lightCtr)
-				{
-					auto light = lightData[lightCtr].LightAtTime(lightTime);
-
-					auto sameIndexColorValue = light.GetSameIndexColorValue(lightTime);
-
-					double scr, scg, scb;
-					if (light.startColorIndex == -1)
-						Helpers::SplitColor(light.startColorValue, scr, scg, scb);
-					else
-					{
-						double spscr, spscg, spscb, epscr, epscg, epscb;
-						auto value = light.intermediates ? sameIndexColorValue : light.startColorValue;
-						lightColors[light.startColorIndex].GradientColor(value, paletteSequence.startPaletteIndex, spscr, spscg, spscb);
-						lightColors[light.startColorIndex].GradientColor(value, paletteSequence.endPaletteIndex, epscr, epscg, epscb);
-						Helpers::GradientColor(spscr, spscg, spscb, epscr, epscg, epscb, palettePercent, scr, scg, scb);
-					}
-
-					double ecr, ecg, ecb;
-					if (light.endColorIndex == -1)
-						Helpers::SplitColor(light.endColorValue, ecr, ecg, ecb);
-					else
-					{
-						double specr, specg, specb, epecr, epecg, epecb;
-						auto value = light.intermediates ? sameIndexColorValue : light.endColorValue;
-						lightColors[light.endColorIndex].GradientColor(value, paletteSequence.startPaletteIndex, specr, specg, specb);
-						lightColors[light.endColorIndex].GradientColor(value, paletteSequence.endPaletteIndex, epecr, epecg, epecb);
-						Helpers::GradientColor(specr, specg, specb, epecr, epecg, epecb, palettePercent, ecr, ecg, ecb);
-					}
-
-					double r, g, b;
-					Helpers::GradientColor(scr, scg, scb, ecr, ecg, ecb, light.GetPercent(lightTime), r, g, b);
-
-					Helpers::MultiplyColor(r, g, b, brightness, r, g, b);
-
-					lights->SetLight(lightCtr, Helpers::CombineColor(r, g, b));
-				}
+				auto segmentItem = segmentItems.SegmentAtTime(time);
+				auto segmentTime = segmentItem.GetSegmentTime(time);
+				segments[segmentItem.segmentIndex].SetLights(segmentTime, brightness, lights, paletteSequence, palettePercent);
 			}
 
 			int Pattern::GetLength()

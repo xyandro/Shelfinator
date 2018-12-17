@@ -17,6 +17,7 @@ namespace Shelfinator.Creator.Patterns
 		public Pattern Render()
 		{
 			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var squares = new Layout("Shelfinator.Creator.Patterns.Layout.Squares.png");
 
@@ -29,37 +30,36 @@ namespace Shelfinator.Creator.Patterns
 				new List<int> { 0x000000, 0x00ff00 }.Multiply(Brightness).ToList()
 			);
 
-			AddPointData(13, 0, 180, ref time, pattern, squares, layout, color, 3);
-			AddPointData(8, 0, 45, ref time, pattern, squares, layout, color);
+			AddPointData(13, 0, 180, ref time, pattern, segment, squares, layout, color, 3);
+			AddPointData(8, 0, 45, ref time, pattern, segment, squares, layout, color);
 			for (var ctr = 0; ctr < 3; ++ctr)
 			{
-				AddPointData(8, 45, 135, ref time, pattern, squares, layout, color);
-				AddPointData(14, 135, 225, ref time, pattern, squares, layout, color);
-				AddPointData(18, 45, 135, ref time, pattern, squares, layout, color);
-				AddPointData(12, 135, 225, ref time, pattern, squares, layout, color);
+				AddPointData(8, 45, 135, ref time, pattern, segment, squares, layout, color);
+				AddPointData(14, 135, 225, ref time, pattern, segment, squares, layout, color);
+				AddPointData(18, 45, 135, ref time, pattern, segment, squares, layout, color);
+				AddPointData(12, 135, 225, ref time, pattern, segment, squares, layout, color);
 			}
-			AddPointData(8, 45, 90, ref time, pattern, squares, layout, color);
+			AddPointData(8, 45, 90, ref time, pattern, segment, squares, layout, color);
 			for (var ctr = 0; ctr < 3; ++ctr)
 			{
-				AddPointData(9, 90, 180, ref time, pattern, squares, layout, color);
-				AddPointData(19, 0, 90, ref time, pattern, squares, layout, color);
-				AddPointData(17, 90, 180, ref time, pattern, squares, layout, color);
-				AddPointData(7, 0, 90, ref time, pattern, squares, layout, color);
+				AddPointData(9, 90, 180, ref time, pattern, segment, squares, layout, color);
+				AddPointData(19, 0, 90, ref time, pattern, segment, squares, layout, color);
+				AddPointData(17, 90, 180, ref time, pattern, segment, squares, layout, color);
+				AddPointData(7, 0, 90, ref time, pattern, segment, squares, layout, color);
 			}
-			AddPointData(8, 90, 180, ref time, pattern, squares, layout, color);
-			AddPointData(13, 0, 180, ref time, pattern, squares, layout, color, 3);
+			AddPointData(8, 90, 180, ref time, pattern, segment, squares, layout, color);
+			AddPointData(13, 0, 180, ref time, pattern, segment, squares, layout, color, 3);
 
-			time = pattern.MaxLightSequenceTime();
+			time = pattern.MaxSegmentTime();
 			pattern.AddPaletteSequence(0, 1000, 0, 1);
 			pattern.AddPaletteSequence(time * 1 / 4 - 500, time * 1 / 4 + 500, null, 2);
 			pattern.AddPaletteSequence(time * 2 / 4 - 500, time * 2 / 4 + 500, null, 3);
 			pattern.AddPaletteSequence(time * 3 / 4 - 500, time * 3 / 4 + 500, null, 4);
 			pattern.AddPaletteSequence(time - 1000, time, null, 0);
-
 			return pattern;
 		}
 
-		void AddPointData(int square, double startAngle, double endAngle, ref int time, Pattern pattern, Layout squares, Layout layout, LightColor color, int repeat = 1)
+		void AddPointData(int square, double startAngle, double endAngle, ref int time, Pattern pattern, Segment segment, Layout squares, Layout layout, LightColor color, int repeat = 1)
 		{
 			var positions = squares.GetLightPositions(square);
 			var center = new Point((positions.Min(p => p.X) + positions.Max(p => p.X)) / 2, (positions.Min(p => p.Y) + positions.Max(p => p.Y)) / 2);
@@ -80,11 +80,11 @@ namespace Shelfinator.Creator.Patterns
 					if (dist < MaxWidth)
 						percent += Math.Min(1 - (dist - MinWidth) / (MaxWidth - MinWidth), 1);
 
-					pattern.AddLight(light, time, color, (percent * 1000).Round());
+					segment.AddLight(light, time, color, (percent * 1000).Round());
 				}
 				++time;
 			}
-			pattern.AddLightSequence(startTime, time, (time - startTime) * TimeMultiplier, repeat);
+			pattern.AddSegment(segment, startTime, time, (time - startTime) * TimeMultiplier, repeat);
 		}
 	}
 }

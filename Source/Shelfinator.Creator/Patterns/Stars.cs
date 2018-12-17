@@ -45,28 +45,28 @@ namespace Shelfinator.Creator.Patterns
 			const int Duration = 500;
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var stars = Enumerable.Range(0, NumStars).Select(x => new StarData(true)).ToList();
 			for (var time = 0; time < Duration; ++time)
 			{
-				RenderStars(layout, pattern, stars, time, Brightness);
+				RenderStars(layout, segment, stars, time, Brightness);
 				UpdateStars(stars);
 			}
 
-			pattern.AddLightSequence(0, Duration, 20000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, Duration, 20000);
 			return pattern;
 		}
 
-		void RenderStars(Layout layout, Pattern pattern, List<StarData> stars, int time, double Brightness)
+		void RenderStars(Layout layout, Segment segment, List<StarData> stars, int time, double Brightness)
 		{
 			var board = new double[97, 97];
 			stars.ForEach(star => RenderStar(board, star));
 			for (var y = 0; y < 96; ++y)
 				for (var x = 0; x < 96; ++x)
 					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Math.Min(1, board[x, y]) * Brightness));
+						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Math.Min(1, board[x, y]) * Brightness));
 		}
 
 		void RenderStar(double[,] board, StarData star)

@@ -15,7 +15,7 @@ namespace Shelfinator.Creator.Patterns
 			const double Brightness = 1f / 16;
 			const double FlashBrightness = .5;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var header = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Header.png");
 			var allLights = header.GetAllLights();
 			var allLocations = allLights.Select(light => header.GetLightPosition(light)).ToList();
@@ -38,9 +38,9 @@ namespace Shelfinator.Creator.Patterns
 			var iLights = new HashSet<int>(header.GetMappedLights(textI, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.AddLight(allLights[ctr], xPosInts[ctr], xPosInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
+				segment.AddLight(allLights[ctr], xPosInts[ctr], xPosInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
 				if (!iLights.Contains(allLights[ctr]))
-					pattern.AddLight(allLights[ctr], xPosInts[ctr] + 150, xPosInts[ctr] + 250, null, pattern.Absolute, 0x000000);
+					segment.AddLight(allLights[ctr], xPosInts[ctr] + 150, xPosInts[ctr] + 250, null, Segment.Absolute, 0x000000);
 			}
 
 			var angles = allLocations.Select(p => new Point(Helpers.Scale(p.X, topLeft.X, bottomRight.X, -center.X, center.X), Helpers.Scale(p.Y, topLeft.Y, bottomRight.Y, -center.X, center.X))).Select(p => Helpers.Cycle(Math.Atan2(p.Y, p.X), 0, Math.PI / 2)).ToList();
@@ -50,9 +50,9 @@ namespace Shelfinator.Creator.Patterns
 			var loveLights = new HashSet<int>(header.GetMappedLights(textLove, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.AddLight(allLights[ctr], anglesInts[ctr], anglesInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
+				segment.AddLight(allLights[ctr], anglesInts[ctr], anglesInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
 				if (!loveLights.Contains(allLights[ctr]))
-					pattern.AddLight(allLights[ctr], anglesInts[ctr] + 150, anglesInts[ctr] + 250, null, pattern.Absolute, 0x000000);
+					segment.AddLight(allLights[ctr], anglesInts[ctr] + 150, anglesInts[ctr] + 250, null, Segment.Absolute, 0x000000);
 			}
 
 			var origin = new Point(0, 0);
@@ -62,15 +62,15 @@ namespace Shelfinator.Creator.Patterns
 			var personLights = new HashSet<int>(header.GetMappedLights(textPerson, 0));
 			for (var ctr = 0; ctr < allLights.Count; ++ctr)
 			{
-				pattern.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
+				segment.AddLight(allLights[ctr], distanceInts[ctr], distanceInts[ctr] + 100, null, 0, useColor, allLocations[ctr].X.Round());
 				if (!personLights.Contains(allLights[ctr]))
-					pattern.AddLight(allLights[ctr], distanceInts[ctr] + 150, distanceInts[ctr] + 250, null, pattern.Absolute, 0x000000);
+					segment.AddLight(allLights[ctr], distanceInts[ctr] + 150, distanceInts[ctr] + 250, null, Segment.Absolute, 0x000000);
 			}
 
 			foreach (var light in personLights)
 			{
-				pattern.AddLight(light, 4500, 4750, null, pattern.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
-				pattern.AddLight(light, 4750, 5000, null, pattern.Absolute, 0x000000);
+				segment.AddLight(light, 4500, 4750, null, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+				segment.AddLight(light, 4750, 5000, null, Segment.Absolute, 0x000000);
 			}
 
 			var rand = new Random();
@@ -82,10 +82,11 @@ namespace Shelfinator.Creator.Patterns
 			var flashWhite = new LightColor(0, flash.Count, new List<int> { flashWhiteColor, flashWhiteColor, flashWhiteColor, flashWhiteColor, flashWhiteColor, 0x000000 });
 			for (var ctr = 0; ctr < flash.Count; ++ctr)
 			{
-				pattern.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay), flashWhite, ctr);
-				pattern.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), pattern.Absolute, 0x000000);
+				segment.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay), flashWhite, ctr);
+				segment.AddLight(flash[ctr], (int)(3000 + ctr * flashDelay + flashShow), Segment.Absolute, 0x000000);
 			}
-			pattern.AddLightSequence(0, 5600);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 5600);
 			return pattern;
 		}
 	}

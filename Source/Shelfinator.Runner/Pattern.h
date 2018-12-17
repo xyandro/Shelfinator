@@ -3,8 +3,9 @@
 #include "Light.h"
 #include "LightColor.h"
 #include "Lights.h"
-#include "LightSequences.h"
 #include "PaletteSequences.h"
+#include "Segment.h"
+#include "SegmentItems.h"
 
 namespace Shelfinator
 {
@@ -27,14 +28,11 @@ namespace Shelfinator
 			private:
 				bool test = false;
 
-				std::vector<Light> lightData;
-				void ReadLights(BufferFile::ptr file);
+				std::vector<Segment> segments;
+				void ReadSegments(BufferFile::ptr file);
 
 				int length = 0;
-				LightSequences lightSequences;
-
-				std::vector<LightColor> lightColors;
-				void ReadColors(BufferFile::ptr file);
+				SegmentItems segmentItems;
 
 				PaletteSequences paletteSequences;
 

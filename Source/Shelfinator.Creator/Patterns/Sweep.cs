@@ -14,7 +14,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			var colors = new List<List<int>>
@@ -40,11 +40,12 @@ namespace Shelfinator.Creator.Patterns
 						color[colorPercent1] = new Dictionary<double, LightColor>();
 					if (!color[colorPercent1].ContainsKey(colorPercent2))
 						color[colorPercent1][colorPercent2] = new LightColor(0, 0, colors.Select(item => new List<int> { Helpers.MultiplyColor(Helpers.AddColor(Helpers.MultiplyColor(item[0], colorPercent1), Helpers.MultiplyColor(item[1], colorPercent2)), Brightness) }).ToList());
-					pattern.AddLight(light, time, time + 1, null, color[colorPercent1][colorPercent2]);
+					segment.AddLight(light, time, time + 1, null, color[colorPercent1][colorPercent2]);
 				}
 			}
 
-			pattern.AddLightSequence(0, 4320, 10000, 3);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 4320, 10000, 3);
 
 			pattern.AddPaletteSequence(0, 0);
 			pattern.AddPaletteSequence(9500, 10500, null, 1);

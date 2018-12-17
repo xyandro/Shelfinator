@@ -53,24 +53,25 @@ namespace Shelfinator.Creator.Patterns
 			var bodyDistances = bodyLocations.Select(p => (p - bodyCenter).Length).ToList();
 			var bodyDistanceInts = bodyDistances.Select(l => Helpers.Scale(l, bodyDistances.Min(), bodyDistances.Max(), 0, 2000).Round()).ToList();
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var color = new LightColor(0, 1000, Helpers.Rainbow7.Multiply(Brightness).ToList(), new List<int> { 0xffffff }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
 			for (var ctr = 0; ctr < headerLights.Count; ++ctr)
 			{
-				pattern.AddLight(headerLights[ctr], headerDistanceInts[ctr], headerDistanceInts[ctr] + 400, null, color, headerLocations[ctr].X.Round() * 1000 / headerBottomRight.X.Round());
+				segment.AddLight(headerLights[ctr], headerDistanceInts[ctr], headerDistanceInts[ctr] + 400, null, color, headerLocations[ctr].X.Round() * 1000 / headerBottomRight.X.Round());
 				if (!headerHelloLights.Contains(headerLights[ctr]))
-					pattern.AddLight(headerLights[ctr], headerDistanceInts[ctr] + 1000, headerDistanceInts[ctr] + 1400, null, pattern.Absolute, 0x000000);
+					segment.AddLight(headerLights[ctr], headerDistanceInts[ctr] + 1000, headerDistanceInts[ctr] + 1400, null, Segment.Absolute, 0x000000);
 			}
 
 			for (var ctr = 0; ctr < bodyLights.Count; ++ctr)
 			{
-				pattern.AddLight(bodyLights[ctr], bodyDistanceInts[ctr], bodyDistanceInts[ctr] + 400, null, color, bodyLocations[ctr].X.Round() * 1000 / bodyBottomRight.X.Round());
+				segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr], bodyDistanceInts[ctr] + 400, null, color, bodyLocations[ctr].X.Round() * 1000 / bodyBottomRight.X.Round());
 				if (!bodyHelloLights.Contains(bodyLights[ctr]))
-					pattern.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, pattern.Absolute, 0x000000);
+					segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, Segment.Absolute, 0x000000);
 			}
 
-			pattern.AddLightSequence(0, 0, 1500);
-			pattern.AddLightSequence(0, 8000);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 0, 1500);
+			pattern.AddSegment(segment, 0, 8000);
 
 			pattern.AddPaletteSequence(0, 0);
 			pattern.AddPaletteSequence(5000, 6000, null, 1);

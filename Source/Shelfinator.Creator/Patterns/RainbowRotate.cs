@@ -17,7 +17,7 @@ namespace Shelfinator.Creator.Patterns
 			const int RotateIncrement = 10;
 			const int RotateCount = 10;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var lights = layout.GetAllLights();
 
@@ -28,7 +28,7 @@ namespace Shelfinator.Creator.Patterns
 			var times = lights.Select(light => layout.GetLightPosition(light)).GetDistance(center).Scale(0, null, 0, StartTime).Round().ToList();
 			var lightTimes = lights.ToDictionary(times);
 			foreach (var pair in lightTimes)
-				pattern.AddLight(pair.Key, pair.Value, useColors, layout.GetLightPosition(pair.Key).X.Round());
+				segment.AddLight(pair.Key, pair.Value, useColors, layout.GetLightPosition(pair.Key).X.Round());
 
 			for (var angle = 0; angle <= 360; angle += RotateIncrement)
 			{
@@ -40,16 +40,17 @@ namespace Shelfinator.Creator.Patterns
 				{
 					var location = layout.GetLightPosition(light);
 					var newX = (location.X - 48) * cos - (location.Y - 48) * sin + 48;
-					pattern.AddLight(light, time, nextTime, null, 0, useColors, newX.Round());
+					segment.AddLight(light, time, nextTime, null, 0, useColors, newX.Round());
 				}
 			}
 
 			foreach (var pair in lightTimes)
-				pattern.AddLight(pair.Key, StartTime + RotateTime + StartTime - pair.Value, pattern.Absolute, 0x000000);
+				segment.AddLight(pair.Key, StartTime + RotateTime + StartTime - pair.Value, Segment.Absolute, 0x000000);
 
-			pattern.AddLightSequence(0, StartTime);
-			pattern.AddLightSequence(StartTime, StartTime + RotateTime, repeat: RotateCount);
-			pattern.AddLightSequence(StartTime + RotateTime, StartTime + RotateTime + StartTime);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, StartTime);
+			pattern.AddSegment(segment, StartTime, StartTime + RotateTime, repeat: RotateCount);
+			pattern.AddSegment(segment, StartTime + RotateTime, StartTime + RotateTime + StartTime);
 			return pattern;
 		}
 	}

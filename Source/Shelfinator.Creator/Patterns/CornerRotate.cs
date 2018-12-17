@@ -15,7 +15,7 @@ namespace Shelfinator.Creator.Patterns
 			const double Brightness = 1f / 16;
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var white = new List<int> { 0xffffff, 0xffffff, 0xff0000, 0xff0000, 0xffffff, 0xffffff, 0xff0000, 0xff0000, 0xffffff, 0xffffff, 0xff0000 }.Multiply(Brightness).ToList();
 			var pastel = new List<int> { 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880 }.Multiply(Brightness).ToList();
@@ -32,7 +32,7 @@ namespace Shelfinator.Creator.Patterns
 					var vector = position - center;
 					var curAngle = Math.Atan2(vector.Y, vector.X) + angle * Math.PI / 180;
 					var newPosition = new Point(vector.Length * Math.Cos(curAngle), vector.Length * Math.Sin(curAngle));
-					pattern.AddLight(light, angle, color, (int)newPosition.X);
+					segment.AddLight(light, angle, color, (int)newPosition.X);
 				}
 
 			center = new Point(96, 0);
@@ -43,7 +43,7 @@ namespace Shelfinator.Creator.Patterns
 					var vector = position - center;
 					var curAngle = Math.Atan2(vector.Y, vector.X) + angle * Math.PI / 180;
 					var newPosition = new Point(vector.Length * Math.Cos(curAngle), vector.Length * Math.Sin(curAngle));
-					pattern.AddLight(light, angle, color, (int)newPosition.X);
+					segment.AddLight(light, angle, color, (int)newPosition.X);
 				}
 
 			center = new Point(96, 96);
@@ -54,7 +54,7 @@ namespace Shelfinator.Creator.Patterns
 					var vector = position - center;
 					var curAngle = Math.Atan2(vector.Y, vector.X) + angle * Math.PI / 180;
 					var newPosition = new Point(vector.Length * Math.Cos(curAngle), vector.Length * Math.Sin(curAngle));
-					pattern.AddLight(light, angle, color, (int)newPosition.X);
+					segment.AddLight(light, angle, color, (int)newPosition.X);
 				}
 
 			center = new Point(0, 96);
@@ -65,10 +65,12 @@ namespace Shelfinator.Creator.Patterns
 					var vector = position - center;
 					var curAngle = Math.Atan2(vector.Y, vector.X) + angle * Math.PI / 180;
 					var newPosition = new Point(vector.Length * Math.Cos(curAngle), vector.Length * Math.Sin(curAngle));
-					pattern.AddLight(light, angle, color, (int)newPosition.X);
+					segment.AddLight(light, angle, color, (int)newPosition.X);
 				}
 
-			pattern.AddLightSequence(0, 360, 5000, 5);
+			var pattern = new Pattern();
+
+			pattern.AddSegment(segment, 0, 360, 5000, 5);
 
 			pattern.AddPaletteSequence(0, 0);
 			pattern.AddPaletteSequence(5000, 10000, null, 1);

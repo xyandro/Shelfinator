@@ -48,7 +48,7 @@ namespace Shelfinator.Creator.Patterns
 			var brightColor = new LightColor(1, 6, new List<int> { 0x000000 }, pastels.Multiply(BrightBrightness).ToList(), Helpers.Rainbow6.Multiply(BrightBrightness).ToList());
 			var darkColor = new LightColor(1, 6, new List<int> { 0x000000 }, pastels.Multiply(DarkBrightness).ToList(), Helpers.Rainbow6.Multiply(DarkBrightness).ToList());
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			for (var time = 0; time < 72; ++time)
 				for (var pathCtr = 0; pathCtr < paths.Count; pathCtr++)
@@ -56,10 +56,12 @@ namespace Shelfinator.Creator.Patterns
 					var path = paths[pathCtr];
 					var pos = time % path.Count;
 					for (var ctr = 0; ctr < path.Count; ++ctr)
-						pattern.AddLight(path[ctr], time, ctr == pos ? brightColor : darkColor, pathColor[pathCtr]);
+						segment.AddLight(path[ctr], time, ctr == pos ? brightColor : darkColor, pathColor[pathCtr]);
 				}
 
-			pattern.AddLightSequence(0, 72, 5000, 4);
+			var pattern = new Pattern();
+
+			pattern.AddSegment(segment, 0, 72, 5000, 4);
 
 			pattern.AddPaletteSequence(0, 1000, 0, 1);
 			pattern.AddPaletteSequence(10000, 11000, null, 2);

@@ -74,9 +74,10 @@
     <Compile Include="MoreLinq.cs" />
     <Compile Include="PatternData\Light.cs" />
     <Compile Include="PatternData\LightColor.cs" />
-    <Compile Include="PatternData\LightSequence.cs" />
     <Compile Include="PatternData\PaletteSequence.cs" />
     <Compile Include="PatternData\Pattern.cs" />
+    <Compile Include="PatternData\Segment.cs" />
+    <Compile Include="PatternData\SegmentItem.cs" />
     <Compile Include="Patterns\Bounce.cs" />
     <Compile Include="Patterns\CircleWarp.cs" />
     <Compile Include="Patterns\Clock.cs" />

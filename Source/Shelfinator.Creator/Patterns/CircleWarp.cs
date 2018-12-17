@@ -13,7 +13,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
@@ -29,16 +29,16 @@ namespace Shelfinator.Creator.Patterns
 					var time = square * 17 + x;
 					var lights = distances.Where(tuple => (tuple.Item2 >= x) && (tuple.Item2 < x + 2)).Select(tuple => tuple.Item1).ToList();
 					foreach (var light in lights)
-						pattern.AddLight(light, time, color, square % 6);
+						segment.AddLight(light, time, color, square % 6);
 					foreach (var light in lights)
-						pattern.AddLight(light, time + 1, pattern.Absolute, 0x000000);
+						segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
 				}
 			}
 
-			pattern.AddLightSequence(0, 102, 5000);
-			pattern.AddLightSequence(102, 204, 5000, 2);
-			pattern.AddLightSequence(204, 356, 7655);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 102, 5000);
+			pattern.AddSegment(segment, 102, 204, 5000, 2);
+			pattern.AddSegment(segment, 204, 356, 7655);
 			return pattern;
 		}
 	}

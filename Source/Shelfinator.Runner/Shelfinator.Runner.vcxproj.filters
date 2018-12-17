@@ -79,18 +79,6 @@
     <ClInclude Include="Lights.h">
       <Filter>Lights</Filter>
     </ClInclude>
-    <ClCompile Include="LightSequence.cpp">
-      <Filter>PatternData\LightSequence</Filter>
-    </ClCompile>
-    <ClInclude Include="LightSequence.h">
-      <Filter>PatternData\LightSequence</Filter>
-    </ClInclude>
-    <ClCompile Include="LightSequences.cpp">
-      <Filter>PatternData\LightSequences</Filter>
-    </ClCompile>
-    <ClInclude Include="LightSequences.h">
-      <Filter>PatternData\LightSequences</Filter>
-    </ClInclude>
     <ClCompile Include="PaletteSequence.cpp">
       <Filter>PatternData\PaletteSequence</Filter>
     </ClCompile>
@@ -121,12 +109,6 @@
     <Filter Include="PatternData\LightItem">
       <UniqueIdentifier>{2f40033e-627b-4969-aecd-a40a0f36eac5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PatternData\LightSequence">
-      <UniqueIdentifier>{38dfb7e3-68cb-4bef-b159-5701527307dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PatternData\LightSequences">
-      <UniqueIdentifier>{41365429-2a79-4bf4-b2cd-d85eb0b8a01c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PatternData\PaletteSequence">
       <UniqueIdentifier>{a857b17b-034f-4b1a-985b-27556bf09e52}</UniqueIdentifier>
     </Filter>
@@ -135,6 +117,15 @@
     </Filter>
     <Filter Include="PatternData\Pattern">
       <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\Segment">
+      <UniqueIdentifier>{279533bf-b317-4fb4-be18-023b22594420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\SegmentItem">
+      <UniqueIdentifier>{38dfb7e3-68cb-4bef-b159-5701527307dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\SegmentItems">
+      <UniqueIdentifier>{41365429-2a79-4bf4-b2cd-d85eb0b8a01c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Patterns">
       <UniqueIdentifier>{8ac8a69f-48f9-4b22-8843-604cecaeb049}</UniqueIdentifier>
@@ -150,6 +141,24 @@
     </Filter>
     <ClInclude Include="RemoteCode.h">
       <Filter>Remote</Filter>
+    </ClInclude>
+    <ClCompile Include="Segment.cpp">
+      <Filter>PatternData\Segment</Filter>
+    </ClCompile>
+    <ClInclude Include="Segment.h">
+      <Filter>PatternData\Segment</Filter>
+    </ClInclude>
+    <ClCompile Include="SegmentItem.cpp">
+      <Filter>PatternData\SegmentItem</Filter>
+    </ClCompile>
+    <ClInclude Include="SegmentItem.h">
+      <Filter>PatternData\SegmentItem</Filter>
+    </ClInclude>
+    <ClCompile Include="SegmentItems.cpp">
+      <Filter>PatternData\SegmentItems</Filter>
+    </ClCompile>
+    <ClInclude Include="SegmentItems.h">
+      <Filter>PatternData\SegmentItems</Filter>
     </ClInclude>
     <Filter Include="Sockets">
       <UniqueIdentifier>{94aab895-6438-45fd-a4e5-72baa916779b}</UniqueIdentifier>

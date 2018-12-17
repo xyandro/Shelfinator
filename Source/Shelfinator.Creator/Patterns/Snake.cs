@@ -32,7 +32,7 @@ namespace Shelfinator.Creator.Patterns
 			const int LengthIncrease = 32;
 			const int ColorVariation = 1000;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 
 			var colors = Helpers.Rainbow7.Multiply(SnakeBrightness).ToList();
 			colors.AddRange(colors.AsEnumerable().Reverse().Skip(1));
@@ -54,7 +54,7 @@ namespace Shelfinator.Creator.Patterns
 				if (snakeStart >= snakeLights.Count)
 					snakeStart -= snakeLights.Count;
 				foreach (var light in snakeLights[snakeStart])
-					pattern.AddLight(light, time, color, time % ColorVariation);
+					segment.AddLight(light, time, color, time % ColorVariation);
 
 				busy[snakeStart] = true;
 				if (snakeStart == pellet)
@@ -71,7 +71,7 @@ namespace Shelfinator.Creator.Patterns
 					if (snakeEnd >= snakeLights.Count)
 						snakeEnd -= snakeLights.Count;
 					foreach (var light in snakeLights[snakeEnd])
-						pattern.AddLight(light, time, pattern.Absolute, 0x000000);
+						segment.AddLight(light, time, Segment.Absolute, 0x000000);
 					busy[snakeEnd] = false;
 				}
 
@@ -82,16 +82,16 @@ namespace Shelfinator.Creator.Patterns
 						break;
 					foreach (var light in snakeLights[pellet.Value])
 					{
-						pattern.AddLight(light, time, pattern.Absolute, Helpers.MultiplyColor(0xffffff, PelletBrightness));
+						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, PelletBrightness));
 					}
 				}
 
 				++time;
 			}
 
-			pattern.AddLightSequence(0, time, 30000);
-			pattern.AddLightSequence(time, time, 2000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 30000);
+			pattern.AddSegment(segment, time, time, 2000);
 			return pattern;
 		}
 	}

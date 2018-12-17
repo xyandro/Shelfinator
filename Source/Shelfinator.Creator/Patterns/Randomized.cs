@@ -16,18 +16,18 @@ namespace Shelfinator.Creator.Patterns
 
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var colors = Helpers.Rainbow6.Concat(0x000000).Multiply(Brightness).ToList();
 			for (var colorCtr = 0; colorCtr < colors.Count; colorCtr++)
 			{
 				var baseTime = BaseIncrement * colorCtr;
 				var lights = layout.GetAllLights().OrderBy(x => rand.Next()).ToList();
 				for (var lightCtr = 0; lightCtr < lights.Count; lightCtr++)
-					pattern.AddLight(lights[lightCtr], baseTime + lightCtr, pattern.Absolute, colors[colorCtr]);
+					segment.AddLight(lights[lightCtr], baseTime + lightCtr, Segment.Absolute, colors[colorCtr]);
 			}
 
-			pattern.AddLightSequence(0, pattern.MaxLightTime(), 20000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, segment.MaxLightTime(), 20000);
 			return pattern;
 		}
 	}

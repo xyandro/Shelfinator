@@ -14,7 +14,7 @@ namespace Shelfinator.Creator.Patterns
 			const int RandomCount = 5;
 			const int EndDelay = 10;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var color = new LightColor(0, 5, Helpers.Rainbow6.Multiply(Brightness).ToList());
 			var rand = new Random(0xfacade);
@@ -27,16 +27,16 @@ namespace Shelfinator.Creator.Patterns
 					while (true)
 					{
 						var colorIndex = rand.Next(Helpers.Rainbow6.Count);
-						pattern.AddLight(light, time + count, time + count + 1, null, color, colorIndex);
+						segment.AddLight(light, time + count, time + count + 1, null, color, colorIndex);
 						if ((++count >= RandomCount) && (colorIndex == ctr))
 							break;
 					}
 				}
-				time = pattern.MaxLightTime() + EndDelay;
+				time = segment.MaxLightTime() + EndDelay;
 			}
 
-			pattern.AddLightSequence(0, time, 20000);
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, time, 20000);
 			return pattern;
 		}
 	}

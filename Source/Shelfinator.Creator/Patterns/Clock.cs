@@ -25,7 +25,7 @@ namespace Shelfinator.Creator.Patterns
 		{
 			const double Brightness = 1f / 16;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			GetSquareLights(out var lights, out var angles);
 
 			var color = new LightColor(0, 20, Helpers.Rainbow6.Select(value => new List<int> { value, 0x000000 }.Multiply(Brightness).ToList()).ToList());
@@ -38,11 +38,12 @@ namespace Shelfinator.Creator.Patterns
 					for (var lightCtr = 0; lightCtr < lights[listCtr].Count; lightCtr++)
 					{
 						var lightAngle = (int)Math.Abs(Helpers.Cycle((reverse ? -1 : 1) * angle - angles[listCtr][lightCtr], -180, 180));
-						pattern.AddLight(lights[listCtr][lightCtr], angle, color, lightAngle);
+						segment.AddLight(lights[listCtr][lightCtr], angle, color, lightAngle);
 					}
 				}
 
-			pattern.AddLightSequence(0, 360, 1000, 17);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, 360, 1000, 17);
 
 			pattern.AddPaletteSequence(2000, 3000, null, 1);
 			pattern.AddPaletteSequence(5000, 6000, null, 2);

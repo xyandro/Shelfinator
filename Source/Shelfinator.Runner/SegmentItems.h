@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "BufferFile.h"
-#include "LightSequence.h"
+#include "SegmentItem.h"
 
 namespace Shelfinator
 {
@@ -10,13 +10,13 @@ namespace Shelfinator
 	{
 		namespace PatternData
 		{
-			class LightSequences
+			class SegmentItems
 			{
 			public:
 				void Read(BufferFile::ptr file, int &length);
-				LightSequence &SequenceAtTime(int time);
+				SegmentItem &SegmentAtTime(int time);
 			private:
-				std::vector<LightSequence> lightSequences;
+				std::vector<SegmentItem> segmentItems;
 				int current = 0;
 			};
 		}

@@ -60,7 +60,7 @@ namespace Shelfinator.Creator.Patterns
 			if (Math.Abs(diff2) < diff)
 				diff = diff2;
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 
 			var color = new LightColor(0, 5,
@@ -81,7 +81,7 @@ namespace Shelfinator.Creator.Patterns
 			var time = 0;
 			while ((creators.Any()) || (cars.Any()))
 			{
-				pattern.Clear(time);
+				segment.Clear(time);
 
 				creators = creators.Where(creator => !creator.Done).ToList();
 				cars.AddRange(creators.Select(creator => creator.CreateCar()).NonNull());
@@ -95,7 +95,7 @@ namespace Shelfinator.Creator.Patterns
 					else
 					{
 						foreach (var light in lights)
-							pattern.AddLight(light, time, color, car.Color);
+							segment.AddLight(light, time, color, car.Color);
 						car.Move();
 						++ctr;
 					}
@@ -104,11 +104,12 @@ namespace Shelfinator.Creator.Patterns
 				++time;
 			}
 
-			pattern.AddLightSequence(0, CycleLength * 2, DisplayTime * 2);
-			pattern.AddLightSequence(CycleLength * 2, CycleLength * 3, DisplayTime, 2);
-			pattern.AddLightSequence(CycleLength * 3, time, DisplayTime * (time - CycleLength * 3) / CycleLength);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, CycleLength * 2, DisplayTime * 2);
+			pattern.AddSegment(segment, CycleLength * 2, CycleLength * 3, DisplayTime, 2);
+			pattern.AddSegment(segment, CycleLength * 3, time, DisplayTime * (time - CycleLength * 3) / CycleLength);
 
-			var sequenceTime = pattern.MaxLightSequenceTime();
+			var sequenceTime = pattern.MaxSegmentTime();
 			pattern.AddPaletteSequence(0, 0);
 			pattern.AddPaletteSequence(sequenceTime * 1 / 3 - 500, sequenceTime * 1 / 3 + 500, null, 1);
 			pattern.AddPaletteSequence(sequenceTime * 2 / 3 - 500, sequenceTime * 2 / 3 + 500, null, 2);

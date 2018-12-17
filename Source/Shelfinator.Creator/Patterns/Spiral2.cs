@@ -32,18 +32,18 @@ namespace Shelfinator.Creator.Patterns
 			const int Length = 5000;
 			const int Delay = 2000;
 			const int ColorDuration = 4000;
-			var pattern = new Pattern();
+			var segment = new Segment();
 			for (var ctr = 0; ctr < points.Count; ctr++)
 			{
 				var light = layout.GetPositionLight(points[ctr]);
 				var time = (int)((values[ctr] - minVal) / (maxVal - minVal) * Length);
 
 				for (var pass = 0; pass < color.Count; ++pass)
-					pattern.AddLight(light, time + pass * (Length + Delay), time + pass * (Length + Delay) + ColorDuration, color[pass], 0, color[pass], 8, true);
+					segment.AddLight(light, time + pass * (Length + Delay), time + pass * (Length + Delay) + ColorDuration, color[pass], 0, color[pass], 8, true);
 			}
 
-			pattern.AddLightSequence(0, pattern.MaxLightTime());
-
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, segment.MaxLightTime());
 			return pattern;
 		}
 	}

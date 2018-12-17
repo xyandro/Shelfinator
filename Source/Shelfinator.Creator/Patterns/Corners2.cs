@@ -42,7 +42,7 @@ namespace Shelfinator.Creator.Patterns
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var squareLights = lightLocations.Split('|').Select(l => l.Split('/').Select(p => layout.GetPositionLight(Point.Parse(p))).ToList()).ToList();
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var color = new LightColor(0, 3, new List<List<int>>
 			{
 				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
@@ -59,28 +59,28 @@ namespace Shelfinator.Creator.Patterns
 					for (var ctr = 0; ctr < 72; ++ctr)
 					{
 						if (light.HasValue)
-							pattern.AddLight(light.Value, time, pattern.Absolute, 0x000000);
+							segment.AddLight(light.Value, time, Segment.Absolute, 0x000000);
 						light = squareLights[squareCtr][ctr];
 						if (ctr % 18 == 0)
 						{
 							var newColorIndex = (colorIndex + 1) % 4;
-							pattern.AddLight(light.Value, time, time + 33, color, colorIndex, color, newColorIndex);
+							segment.AddLight(light.Value, time, time + 33, color, colorIndex, color, newColorIndex);
 							colorIndex = newColorIndex;
 							time += 33;
 						}
 						else
 						{
-							pattern.AddLight(light.Value, time, color, colorIndex);
+							segment.AddLight(light.Value, time, color, colorIndex);
 							++time;
 						}
 					}
 			}
 
-			pattern.AddLightSequence(200, 400, 4000, 5);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 200, 400, 4000, 5);
 			pattern.AddPaletteSequence(0, 1000, null, 1);
 			pattern.AddPaletteSequence(6500, 7500, null, 2);
 			pattern.AddPaletteSequence(19000, 20000, null, 0);
-
 			return pattern;
 		}
 	}

@@ -25,6 +25,7 @@ namespace Shelfinator.Creator.Patterns
 			const int FadeTime = 1000;
 
 			var pattern = new Pattern();
+			var segment = new Segment();
 			GetSquareLights(out var lights, out var centers);
 			var center = Helpers.GetCenter(centers);
 
@@ -45,15 +46,15 @@ namespace Shelfinator.Creator.Patterns
 			{
 				for (var listCtr = 0; listCtr < lights.Count; listCtr++)
 					foreach (var light in lights[listCtr])
-						pattern.AddLight(light, time, time + FadeTime, null, color, values[paletteCtr][listCtr]);
-				pattern.AddLightSequence(time, time + DisplayTime);
+						segment.AddLight(light, time, time + FadeTime, null, color, values[paletteCtr][listCtr]);
+				pattern.AddSegment(segment, time, time + DisplayTime);
 				time += DisplayTime;
 			}
 
 			for (var listCtr = 0; listCtr < lights.Count; listCtr++)
 				foreach (var light in lights[listCtr])
-					pattern.AddLight(light, time, time + FadeTime, null, pattern.Absolute, 0);
-			pattern.AddLightSequence(time, time + DisplayTime);
+					segment.AddLight(light, time, time + FadeTime, null, Segment.Absolute, 0);
+			pattern.AddSegment(segment, time, time + DisplayTime);
 
 			return pattern;
 		}

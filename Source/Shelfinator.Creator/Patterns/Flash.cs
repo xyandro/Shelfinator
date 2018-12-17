@@ -32,15 +32,16 @@ namespace Shelfinator.Creator.Patterns
 
 			var color = new LightColor(0, 6, new List<List<int>> { new List<int> { Helpers.MultiplyColor(0xffffff, 1f / 8) }, Helpers.Rainbow6.Multiply(Brightness).ToList() });
 
-			var pattern = new Pattern();
+			var segment = new Segment();
 			var lights = GetLights();
 			for (var time = 0; time < lights.Count; ++time)
 			{
-				pattern.AddLight(lights[time], time, color, time % 7);
-				pattern.AddLight(lights[time], time + Concurrency, pattern.Absolute, 0x000000);
+				segment.AddLight(lights[time], time, color, time % 7);
+				segment.AddLight(lights[time], time + Concurrency, Segment.Absolute, 0x000000);
 			}
 
-			pattern.AddLightSequence(0, lights.Count + Concurrency, 2000, 8);
+			var pattern = new Pattern();
+			pattern.AddSegment(segment, 0, lights.Count + Concurrency, 2000, 8);
 
 			pattern.AddPaletteSequence(7000, 8000, null, 1);
 
