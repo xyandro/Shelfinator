@@ -22,12 +22,12 @@ namespace Shelfinator
 			int GetValue(int index);
 			int GetIndex(int value);
 			int Count();
-			Pattern::ptr LoadPattern(int index);
+			PatternData::Pattern::ptr LoadPattern(int index);
 		private:
 			std::string path;
 			std::vector<int> patternNumbers;
 			std::vector<int> patternQueue;
-			std::map<int, Pattern::ptr> patternCache;
+			std::map<int, PatternData::Pattern::ptr> patternCache;
 #ifndef __CLR_VER
 			std::mutex mutex;
 			std::condition_variable condVar;

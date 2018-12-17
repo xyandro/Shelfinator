@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shelfinator.Creator.PatternData;
 
 namespace Shelfinator.Creator.Patterns
 {

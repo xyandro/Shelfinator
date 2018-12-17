@@ -22,10 +22,10 @@ namespace Shelfinator
 			{
 			public:
 				typedef std::shared_ptr<Request> ptr;
-				Pattern::ptr pattern;
-				static ptr Create(Pattern::ptr pattern);
+				PatternData::Pattern::ptr pattern;
+				static ptr Create(PatternData::Pattern::ptr pattern);
 			private:
-				Request(Pattern::ptr pattern);
+				Request(PatternData::Pattern::ptr pattern);
 			};
 			typedef std::shared_ptr<Sockets> ptr;
 			static Sockets::ptr Create();

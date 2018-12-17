@@ -38,7 +38,7 @@ namespace Shelfinator
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;
-			Pattern::ptr pattern;
+			PatternData::Pattern::ptr pattern;
 			Patterns::ptr patterns;
 			Timer::ptr timer;
 

@@ -1,106 +1,48 @@
 ﻿#pragma once
 
-#include <vector>
-#include "BufferFile.h"
+#include "Light.h"
+#include "LightColor.h"
 #include "Lights.h"
+#include "LightSequences.h"
+#include "PaletteSequences.h"
 
 namespace Shelfinator
 {
 	namespace Runner
 	{
-		class Pattern
+		namespace PatternData
 		{
-		public:
-			typedef std::shared_ptr<Pattern> ptr;
-
-			static ptr CreateTest();
-			static ptr Read(std::string fileName);
-			static ptr Read(BufferFile::ptr file);
-
-			std::string FileName = "";
-			void SetLights(int time, double brightness, Lights::ptr lights);
-			int GetLength();
-		private:
-			bool test = false;
-
-			class Light
-			{
-			private:
-				class LightItem
-				{
-				public:
-					int startTime, endTime, origEndTime, startColorIndex, startColorValue, endColorIndex, endColorValue, intermediates;
-					void Read(BufferFile::ptr file);
-					double GetPercent(double time);
-					double GetSameIndexColorValue(double time);
-				};
-			public:
-				void Read(BufferFile::ptr file);
-				LightItem &LightAtTime(double time);
-			private:
-				std::vector<LightItem> lights;
-				int current = 0;
-			};
-			std::vector<Light> lightData;
-			void ReadLights(BufferFile::ptr file);
-
-			class LightSequences
-			{
-			private:
-				class LightSequence
-				{
-				public:
-					enum LightSequenceType { LINEAR, VELOCITYBASED };
-
-					LightSequenceType type;
-					int lightStartTime, lightEndTime, startVelocity, endVelocity, baseVelocity, duration, startTime, endTime, repeat;
-					void Read(BufferFile::ptr file, int &length);
-					double GetLightTime(int time);
-				};
-			public:
-				void Read(BufferFile::ptr file, int &length);
-				LightSequence & SequenceAtTime(int time);
-			private:
-				std::vector<LightSequence> lightSequences;
-				int current = 0;
-			};
-			int length = 0;
-			LightSequences lightSequences;
-
-			class LightColor
+			class Pattern
 			{
 			public:
-				int minValue, maxValue;
-				std::vector<std::vector<int>> colors;
-				void Read(BufferFile::ptr file);
-				void GradientColor(double value, int index, double &red, double &green, double &blue);
-			};
-			std::vector<LightColor> lightColors;
-			void ReadColors(BufferFile::ptr file);
+				typedef std::shared_ptr<Pattern> ptr;
 
-			class PaletteSequences
-			{
-			private:
-				class PaletteSequence
-				{
-				public:
-					int startTime, endTime, startPaletteIndex, endPaletteIndex;
-					void Read(BufferFile::ptr file);
-					double GetPercent(int time);
-				};
-			public:
-				void Read(BufferFile::ptr file);
-				PaletteSequence &SequenceAtTime(int time);
-			private:
-				std::vector<PaletteSequence> paletteSequences;
-				int current = 0;
-			};
-			PaletteSequences paletteSequences;
+				static ptr CreateTest();
+				static ptr Read(std::string fileName);
+				static ptr Read(BufferFile::ptr file);
 
-			Pattern();
-			Pattern(std::string fileName);
-			Pattern(BufferFile::ptr file);
-			void ReadFile(BufferFile::ptr file);
-		};
+				std::string FileName = "";
+				void SetLights(int time, double brightness, Lights::ptr lights);
+				int GetLength();
+			private:
+				bool test = false;
+
+				std::vector<Light> lightData;
+				void ReadLights(BufferFile::ptr file);
+
+				int length = 0;
+				LightSequences lightSequences;
+
+				std::vector<LightColor> lightColors;
+				void ReadColors(BufferFile::ptr file);
+
+				PaletteSequences paletteSequences;
+
+				Pattern();
+				Pattern(std::string fileName);
+				Pattern(BufferFile::ptr file);
+				void ReadFile(BufferFile::ptr file);
+			};
+		}
 	}
 }

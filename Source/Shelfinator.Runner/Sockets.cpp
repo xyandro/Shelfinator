@@ -17,12 +17,12 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		Sockets::Request::ptr Sockets::Request::Create(Pattern::ptr pattern)
+		Sockets::Request::ptr Sockets::Request::Create(PatternData::Pattern::ptr pattern)
 		{
 			return ptr(new Request(pattern));
 		}
 
-		Sockets::Request::Request(Pattern::ptr pattern)
+		Sockets::Request::Request(PatternData::Pattern::ptr pattern)
 		{
 			this->pattern = pattern;
 		}
@@ -107,7 +107,7 @@ namespace Shelfinator
 						else
 						{
 							// Got message
-							auto pattern = Pattern::Read(BufferFile::Create(buffer + sizeof(int), size - sizeof(int)));
+							auto pattern = PatternData::Pattern::Read(BufferFile::Create(buffer + sizeof(int), size - sizeof(int)));
 							auto request = Request::Create(pattern);
 
 							{

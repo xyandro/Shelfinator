@@ -59,7 +59,7 @@ namespace Shelfinator
 				}
 
 				auto fileName = path + std::to_string(loadPattern) + ".pat";
-				auto result = Pattern::Read(fileName.c_str());
+				auto result = PatternData::Pattern::Read(fileName.c_str());
 
 				std::unique_lock<decltype(mutex)> lock(mutex);
 				patternCache[loadPattern] = result;
@@ -67,7 +67,7 @@ namespace Shelfinator
 			}
 		}
 
-		Pattern::ptr Patterns::LoadPattern(int index)
+		PatternData::Pattern::ptr Patterns::LoadPattern(int index)
 		{
 			static const int fetchPositions[] = { 0,1,-1 };
 

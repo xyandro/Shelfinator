@@ -141,7 +141,7 @@ namespace Shelfinator
 		void Controller::LoadPattern(bool startAtEnd)
 		{
 			if (patterns->Count() == 0)
-				pattern = Pattern::CreateTest();
+				pattern = PatternData::Pattern::CreateTest();
 			else
 			{
 				while (patternIndex < 0)

@@ -52,6 +52,24 @@
     <ClInclude Include="IDotStar.h">
       <Filter>DotStar</Filter>
     </ClInclude>
+    <ClCompile Include="Light.cpp">
+      <Filter>PatternData\Light</Filter>
+    </ClCompile>
+    <ClInclude Include="Light.h">
+      <Filter>PatternData\Light</Filter>
+    </ClInclude>
+    <ClCompile Include="LightColor.cpp">
+      <Filter>PatternData\LightColor</Filter>
+    </ClCompile>
+    <ClInclude Include="LightColor.h">
+      <Filter>PatternData\LightColor</Filter>
+    </ClInclude>
+    <ClCompile Include="LightItem.cpp">
+      <Filter>PatternData\LightItem</Filter>
+    </ClCompile>
+    <ClInclude Include="LightItem.h">
+      <Filter>PatternData\LightItem</Filter>
+    </ClInclude>
     <Filter Include="Lights">
       <UniqueIdentifier>{fe9abc41-3bc8-4233-8573-1b4a7b4b35e1}</UniqueIdentifier>
     </Filter>
@@ -61,15 +79,63 @@
     <ClInclude Include="Lights.h">
       <Filter>Lights</Filter>
     </ClInclude>
-    <Filter Include="Pattern">
-      <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="LightSequence.cpp">
+      <Filter>PatternData\LightSequence</Filter>
+    </ClCompile>
+    <ClInclude Include="LightSequence.h">
+      <Filter>PatternData\LightSequence</Filter>
+    </ClInclude>
+    <ClCompile Include="LightSequences.cpp">
+      <Filter>PatternData\LightSequences</Filter>
+    </ClCompile>
+    <ClInclude Include="LightSequences.h">
+      <Filter>PatternData\LightSequences</Filter>
+    </ClInclude>
+    <ClCompile Include="PaletteSequence.cpp">
+      <Filter>PatternData\PaletteSequence</Filter>
+    </ClCompile>
+    <ClInclude Include="PaletteSequence.h">
+      <Filter>PatternData\PaletteSequence</Filter>
+    </ClInclude>
+    <ClCompile Include="PaletteSequences.cpp">
+      <Filter>PatternData\PaletteSequences</Filter>
+    </ClCompile>
+    <ClInclude Include="PaletteSequences.h">
+      <Filter>PatternData\PaletteSequences</Filter>
+    </ClInclude>
     <ClCompile Include="Pattern.cpp">
-      <Filter>Pattern</Filter>
+      <Filter>PatternData\Pattern</Filter>
     </ClCompile>
     <ClInclude Include="Pattern.h">
-      <Filter>Pattern</Filter>
+      <Filter>PatternData\Pattern</Filter>
     </ClInclude>
+    <Filter Include="PatternData">
+      <UniqueIdentifier>{258019c5-2635-4fde-b0fe-336ce7354197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\Light">
+      <UniqueIdentifier>{51fd2a9e-4884-4775-bc60-42347ee26a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\LightColor">
+      <UniqueIdentifier>{ae0cc9ad-e2a4-459c-8d13-46976bd249c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\LightItem">
+      <UniqueIdentifier>{2f40033e-627b-4969-aecd-a40a0f36eac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\LightSequence">
+      <UniqueIdentifier>{38dfb7e3-68cb-4bef-b159-5701527307dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\LightSequences">
+      <UniqueIdentifier>{41365429-2a79-4bf4-b2cd-d85eb0b8a01c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\PaletteSequence">
+      <UniqueIdentifier>{a857b17b-034f-4b1a-985b-27556bf09e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\PaletteSequences">
+      <UniqueIdentifier>{53444368-815e-40b2-89cf-805047be066f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PatternData\Pattern">
+      <UniqueIdentifier>{83c625c4-f8aa-4a52-9e16-71b66dd3cad2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Patterns">
       <UniqueIdentifier>{8ac8a69f-48f9-4b22-8843-604cecaeb049}</UniqueIdentifier>
     </Filter>

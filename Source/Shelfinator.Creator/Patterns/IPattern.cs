@@ -1,4 +1,6 @@
-﻿namespace Shelfinator.Creator.Patterns
+﻿using Shelfinator.Creator.PatternData;
+
+namespace Shelfinator.Creator.Patterns
 {
 	interface IPattern
 	{
