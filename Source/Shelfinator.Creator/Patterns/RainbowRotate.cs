@@ -20,11 +20,8 @@ namespace Shelfinator.Creator.Patterns
 			var layout = new Layout("Shelfinator.Creator.Patterns.Layout.Layout-Body.png");
 			var lights = layout.GetAllLights();
 
-			var colors = Helpers.Rainbow7.ToList();
-			colors.AddRange(Helpers.Rainbow7.AsEnumerable().Reverse().Skip(1));
-			colors.InsertRange(0, Helpers.Rainbow7.Skip(1).Reverse());
-			colors = colors.Multiply(Brightness).ToList();
-			var useColors = new LightColor(-96, 192, colors);
+			var colors = Helpers.Rainbow7.Multiply(Brightness).ToList();
+			var useColors = new LightColor(0, 96, colors);
 
 			var center = new Point(48, 48);
 			var times = lights.Select(light => layout.GetLightPosition(light)).GetDistance(center).Scale(0, null, 0, StartTime).Round().ToList();
