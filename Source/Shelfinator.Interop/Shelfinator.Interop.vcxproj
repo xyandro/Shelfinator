@@ -84,10 +84,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Audio.cpp" />
+    <ClInclude Include="Audio.h" />
     <ClCompile Include="Controller.cpp" />
     <ClInclude Include="Controller.h" />
     <ClCompile Include="DotStar.cpp" />
     <ClInclude Include="DotStar.h" />
+    <ClInclude Include="IAudio.h" />
     <ClInclude Include="IDotStar.h" />
     <ClInclude Include="RemoteCode.h" />
   </ItemGroup>

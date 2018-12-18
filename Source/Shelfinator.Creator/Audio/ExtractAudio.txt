@@ -1,0 +1,1 @@
+C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"

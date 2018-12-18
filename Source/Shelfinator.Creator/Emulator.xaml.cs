@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -8,12 +9,13 @@ using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
-	partial class DotStarEmulatorWindow : IDotStar
+	partial class DotStarEmulatorWindow : IDotStar, IAudio
 	{
 		readonly Controller controller;
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
 		readonly WriteableBitmap bitmap;
 		readonly uint[] buffer;
+		bool playing = false;
 
 		public DotStarEmulatorWindow(bool small)
 		{
@@ -106,6 +108,32 @@ namespace Shelfinator.Creator
 						buffer[position] = color;
 				}
 			Dispatcher.Invoke(() => bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), buffer, bitmap.BackBufferStride, 0));
+		}
+
+		public void Play(string fileName)
+		{
+			Stop();
+
+			mediaPlayer.Source = new Uri(fileName);
+			mediaPlayer.Play();
+			playing = true;
+		}
+
+		public void Stop()
+		{
+			if (!playing)
+				return;
+			mediaPlayer.Stop();
+			playing = false;
+		}
+
+		public int GetTime() => playing ? mediaPlayer.Position.TotalMilliseconds.Round() : -1;
+
+		public void SetTime(int time)
+		{
+			if (!playing)
+				return;
+			mediaPlayer.Position = TimeSpan.FromMilliseconds(time);
 		}
 	}
 }

@@ -103,6 +103,7 @@
     <ClInclude Include="Driver.h" />
     <ClCompile Include="Helpers.cpp" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="IAudio.h" />
     <ClInclude Include="IDotStar.h" />
     <ClCompile Include="Light.cpp" />
     <ClInclude Include="Light.h" />

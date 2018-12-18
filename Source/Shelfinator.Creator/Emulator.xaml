@@ -3,5 +3,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	Title="Shelfinator" Background="Black" Visibility="Visible">
 
-	<Image Name="dotStarBitmap"/>
+	<Grid>
+		<Image Name="dotStarBitmap"/>
+		<MediaElement Name="mediaPlayer" LoadedBehavior="Manual" Visibility="Collapsed"/>
+	</Grid>
 </Window>

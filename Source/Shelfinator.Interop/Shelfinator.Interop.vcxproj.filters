@@ -2,6 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <Filter Include="Audio">
+      <UniqueIdentifier>{a3e1a9fd-a3cf-42e1-bd84-c58131e740d8}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClInclude Include="Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
     <Filter Include="Controller">
       <UniqueIdentifier>{15e7034d-f468-41ad-95e5-963e6fa92fb9}</UniqueIdentifier>
     </Filter>
@@ -19,6 +28,9 @@
     </ClCompile>
     <ClInclude Include="DotStar.h">
       <Filter>DotStar</Filter>
+    </ClInclude>
+    <ClInclude Include="IAudio.h">
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="IDotStar.h">
       <Filter>DotStar</Filter>
