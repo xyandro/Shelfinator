@@ -50,8 +50,8 @@ int main(int argc, char **argv)
 	else
 	{
 		auto startPaused = false;
-		auto patternNumbers = new int[argc];
-		int patternNumberCount = 0;
+		auto songNumbers = new int[argc];
+		int songNumberCount = 0;
 		for (auto ctr = 1; ctr < argc; ++ctr)
 		{
 			if (strcmp(argv[ctr], "pause") == 0)
@@ -62,14 +62,14 @@ int main(int argc, char **argv)
 
 			auto value = atoi(argv[ctr]);
 			if (value == 0)
-				fprintf(stderr, "Invalid pattern: %s\n", argv[ctr]);
+				fprintf(stderr, "Invalid song: %s\n", argv[ctr]);
 			else
-				patternNumbers[patternNumberCount++] = value;
+				songNumbers[songNumberCount++] = value;
 		}
 
-		controller->Run(patternNumbers, patternNumberCount, startPaused);
+		controller->Run(songNumbers, songNumberCount, startPaused);
 
-		delete[] patternNumbers;
+		delete[] songNumbers;
 	}
 
 	return 0;

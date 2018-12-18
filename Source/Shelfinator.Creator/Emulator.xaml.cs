@@ -9,7 +9,7 @@ using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
-	partial class DotStarEmulatorWindow : IDotStar, IAudio
+	partial class Emulator : IDotStar, IAudio
 	{
 		readonly Controller controller;
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
@@ -17,11 +17,11 @@ namespace Shelfinator.Creator
 		readonly uint[] buffer;
 		bool playing = false;
 
-		public DotStarEmulatorWindow(bool small)
+		public Emulator(bool small)
 		{
 			InitializeComponent();
 
-			var image = small ? "Shelfinator.Creator.Patterns.Layout.DotStar-Small.png" : "Shelfinator.Creator.Patterns.Layout.DotStar.png";
+			var image = small ? "Shelfinator.Creator.Songs.Layout.DotStar-Small.png" : "Shelfinator.Creator.Songs.Layout.DotStar.png";
 			bitmap = new WriteableBitmap(Helpers.GetEmbeddedBitmap(image));
 			buffer = new uint[bitmap.PixelWidth * bitmap.PixelHeight];
 			bitmap.CopyPixels(buffer, bitmap.BackBufferStride, 0);
@@ -63,7 +63,7 @@ namespace Shelfinator.Creator
 			controller = new Controller(this);
 		}
 
-		public void Run(List<int> patternNumbers, bool startPaused) => new Thread(() => controller.Run(patternNumbers, startPaused)).Start();
+		public void Run(List<int> songNumbers, bool startPaused) => new Thread(() => controller.Run(songNumbers, startPaused)).Start();
 		public void Test(int firstLight, int lightCount, int concurrency, int delay, byte brightness) => new Thread(() => controller.Test(firstLight, lightCount, concurrency, delay, brightness)).Start();
 		public void TestAll(int lightCount, int delay, byte brightness) => new Thread(() => controller.TestAll(lightCount, delay, brightness)).Start();
 

@@ -1,4 +1,4 @@
-﻿<Window Name="self" x:Class="Shelfinator.Creator.DotStarEmulatorWindow"
+﻿<Window Name="self" x:Class="Shelfinator.Creator.Emulator"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	Title="Shelfinator" Background="Black" Visibility="Visible">

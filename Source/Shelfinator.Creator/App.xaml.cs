@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Shelfinator.Creator.Patterns;
+using System;
+using Shelfinator.Creator.Songs;
 
 namespace Shelfinator.Creator
 {
@@ -28,11 +28,11 @@ namespace Shelfinator.Creator
 		{
 			base.OnStartup(e);
 
-			var patterns = typeof(IPattern).Assembly.DefinedTypes.Where(t => (!t.IsInterface) && (typeof(IPattern).IsAssignableFrom(t))).Select(t => Activator.CreateInstance(t)).Cast<IPattern>().ToList();
+			var songs = typeof(ISong).Assembly.DefinedTypes.Where(t => (!t.IsInterface) && (typeof(ISong).IsAssignableFrom(t))).Select(t => Activator.CreateInstance(t)).Cast<ISong>().ToList();
 
-			var dups = string.Join("\n", patterns.GroupBy(p => p.PatternNumber).Where(group => group.Skip(1).Any()).Select(group => $"{group.Key}: {string.Join(", ", group.Select(p => p.GetType().Name))}"));
+			var dups = string.Join("\n", songs.GroupBy(p => p.SongNumber).Where(group => group.Skip(1).Any()).Select(group => $"{group.Key}: {string.Join(", ", group.Select(p => p.GetType().Name))}"));
 			if (dups != "")
-				throw new Exception($"Found duplicate pattern numbers:\n\n{dups}\n\nNext available is {patterns.Select(p => p.PatternNumber).DefaultIfEmpty(0).Max() + 1}.");
+				throw new Exception($"Found duplicate song numbers:\n\n{dups}\n\nNext available is {songs.Select(p => p.SongNumber).DefaultIfEmpty(0).Max() + 1}.");
 
 			var args = e.Args.ToList();
 			var build = CheckExistsAndRemove(args, "build");
@@ -49,22 +49,22 @@ namespace Shelfinator.Creator
 				host = host.Substring("host=".Length);
 			}
 
-			var patternNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
-			if ((test) && (patternNumbers.Count != 5))
+			var songNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
+			if ((test) && (songNumbers.Count != 5))
 				throw new Exception("Test must provide firstLight, lightCount, concurrency, delay, and brightness");
-			if ((testAll) && (patternNumbers.Count != 3))
+			if ((testAll) && (songNumbers.Count != 3))
 				throw new Exception("TestAll must provide lightCount, delay, and brightness");
 
 			if (build)
 			{
-				var match = patterns.Where(p => (all) || (patternNumbers.Contains(p.PatternNumber)));
+				var match = songs.Where(p => (all) || (songNumbers.Contains(p.SongNumber)));
 				if (!match.Any())
-					throw new Exception($"Pattern(s) not found");
+					throw new Exception($"Song(s) not found");
 
-				foreach (var pattern in match)
+				foreach (var song in match)
 				{
-					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{pattern.PatternNumber}.pat");
-					var rendered = pattern.Render();
+					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{song.SongNumber}.pat");
+					var rendered = song.Render();
 					rendered.Save(fileName);
 					if (host != null)
 						rendered.Transmit(host);
@@ -77,13 +77,13 @@ namespace Shelfinator.Creator
 				return;
 			}
 
-			var window = new DotStarEmulatorWindow(small);
+			var window = new Emulator(small);
 			if (test)
-				window.Test(patternNumbers[0], patternNumbers[1], patternNumbers[2], patternNumbers[3], (byte)patternNumbers[4]);
+				window.Test(songNumbers[0], songNumbers[1], songNumbers[2], songNumbers[3], (byte)songNumbers[4]);
 			else if (testAll)
-				window.TestAll(patternNumbers[0], patternNumbers[1], (byte)patternNumbers[2]);
+				window.TestAll(songNumbers[0], songNumbers[1], (byte)songNumbers[2]);
 			else
-				window.Run(patternNumbers, startPaused);
+				window.Run(songNumbers, startPaused);
 		}
 
 		protected override void OnExit(ExitEventArgs e)

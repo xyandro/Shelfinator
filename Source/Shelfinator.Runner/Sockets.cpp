@@ -17,14 +17,14 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		Sockets::Request::ptr Sockets::Request::Create(PatternData::Pattern::ptr pattern)
+		Sockets::Request::ptr Sockets::Request::Create(SongData::Song::ptr song)
 		{
-			return ptr(new Request(pattern));
+			return ptr(new Request(song));
 		}
 
-		Sockets::Request::Request(PatternData::Pattern::ptr pattern)
+		Sockets::Request::Request(SongData::Song::ptr song)
 		{
-			this->pattern = pattern;
+			this->song = song;
 		}
 
 		Sockets::ptr Sockets::Create()
@@ -107,8 +107,8 @@ namespace Shelfinator
 						else
 						{
 							// Got message
-							auto pattern = PatternData::Pattern::Read(BufferFile::Create(buffer + sizeof(int), size - sizeof(int)));
-							auto request = Request::Create(pattern);
+							auto song = SongData::Song::Read(BufferFile::Create(buffer + sizeof(int), size - sizeof(int)));
+							auto request = Request::Create(song);
 
 							{
 								std::unique_lock<std::mutex> lock(mutex);

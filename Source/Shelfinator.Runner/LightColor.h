@@ -7,7 +7,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		namespace PatternData
+		namespace SongData
 		{
 			class LightColor
 			{

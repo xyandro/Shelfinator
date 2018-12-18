@@ -1,4 +1,4 @@
-﻿OBJS = Banner.o BufferFile.o Controller.o DotStar.o Driver.o Helpers.o Lights.o Main.o Pattern.o Patterns.o Remote.o Sockets.o Timer.o
+﻿OBJS = Banner.o BufferFile.o Controller.o DotStar.o Driver.o Helpers.o Lights.o Main.o Song.o Songs.o Remote.o Sockets.o Timer.o
 
 all: ../Build/shelfinator
 

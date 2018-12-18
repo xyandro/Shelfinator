@@ -9,7 +9,7 @@
 #else
 typedef int SOCKET;
 #endif
-#include "Pattern.h"
+#include "Song.h"
 
 namespace Shelfinator
 {
@@ -22,10 +22,10 @@ namespace Shelfinator
 			{
 			public:
 				typedef std::shared_ptr<Request> ptr;
-				PatternData::Pattern::ptr pattern;
-				static ptr Create(PatternData::Pattern::ptr pattern);
+				SongData::Song::ptr song;
+				static ptr Create(SongData::Song::ptr song);
 			private:
-				Request(PatternData::Pattern::ptr pattern);
+				Request(SongData::Song::ptr song);
 			};
 			typedef std::shared_ptr<Sockets> ptr;
 			static Sockets::ptr Create();

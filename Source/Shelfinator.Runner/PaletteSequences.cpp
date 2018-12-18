@@ -4,7 +4,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		namespace PatternData
+		namespace SongData
 		{
 			void PaletteSequences::Read(BufferFile::ptr file)
 			{

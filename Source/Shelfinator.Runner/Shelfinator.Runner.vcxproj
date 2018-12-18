@@ -117,10 +117,6 @@
     <ClInclude Include="PaletteSequence.h" />
     <ClCompile Include="PaletteSequences.cpp" />
     <ClInclude Include="PaletteSequences.h" />
-    <ClCompile Include="Pattern.cpp" />
-    <ClInclude Include="Pattern.h" />
-    <ClCompile Include="Patterns.cpp" />
-    <ClInclude Include="Patterns.h" />
     <ClInclude Include="RemoteCode.h" />
     <ClCompile Include="Segment.cpp" />
     <ClInclude Include="Segment.h" />
@@ -130,6 +126,10 @@
     <ClInclude Include="SegmentItems.h" />
     <ClCompile Include="Sockets.cpp" />
     <ClInclude Include="Sockets.h" />
+    <ClCompile Include="Song.cpp" />
+    <ClInclude Include="Song.h" />
+    <ClCompile Include="Songs.cpp" />
+    <ClInclude Include="Songs.h" />
     <ClCompile Include="Timer.cpp" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

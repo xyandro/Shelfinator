@@ -4,7 +4,7 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		namespace PatternData
+		namespace SongData
 		{
 			void LightItem::Read(BufferFile::ptr file)
 			{

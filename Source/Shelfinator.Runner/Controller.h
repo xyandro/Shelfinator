@@ -7,9 +7,9 @@
 #include <queue>
 #include "Banner.h"
 #include "IDotStar.h"
-#include "Patterns.h"
 #include "RemoteCode.h"
 #include "Sockets.h"
+#include "Songs.h"
 #include "Timer.h"
 
 namespace Shelfinator
@@ -22,7 +22,7 @@ namespace Shelfinator
 			typedef std::shared_ptr<Controller> ptr;
 			static ptr Create(IDotStar::ptr dotStar);
 			~Controller();
-			void Run(int *patternNumbers, int patternNumberCount, bool startPaused);
+			void Run(int *songNumbers, int songNumberCount, bool startPaused);
 			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
 			void TestAll(int lightCount, int delay, unsigned char brightness);
 			void Stop();
@@ -33,13 +33,13 @@ namespace Shelfinator
 
 			bool running = true;
 			double time = 0;
-			int multiplierIndex = 13, patternIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
+			int multiplierIndex = 13, songIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
 			int brightness = 100;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;
-			PatternData::Pattern::ptr pattern;
-			Patterns::ptr patterns;
+			SongData::Song::ptr song;
+			Songs::ptr songs;
 			Timer::ptr timer;
 
 #ifndef __CLR_VER
@@ -50,7 +50,7 @@ namespace Shelfinator
 			Controller(IDotStar::ptr dotStar);
 			bool HandleRemote();
 			bool HandleSockets(Sockets::ptr sockets);
-			void LoadPattern(bool startAtEnd = false);
+			void LoadSong(bool startAtEnd = false);
 		};
 	}
 }

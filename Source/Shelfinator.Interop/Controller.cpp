@@ -16,13 +16,13 @@ namespace Shelfinator
 			delete controller;
 		}
 
-		void Controller::Run(System::Collections::Generic::List<int> ^patternNumbers, bool startPaused)
+		void Controller::Run(System::Collections::Generic::List<int> ^songNumbers, bool startPaused)
 		{
-			auto nativePatternNumbers = new int[patternNumbers->Count];
-			for (auto ctr = 0; ctr < patternNumbers->Count; ++ctr)
-				nativePatternNumbers[ctr] = patternNumbers[ctr];
-			(*controller)->Run(nativePatternNumbers, patternNumbers->Count, startPaused);
-			delete[] nativePatternNumbers;
+			auto nativeSongNumbers = new int[songNumbers->Count];
+			for (auto ctr = 0; ctr < songNumbers->Count; ++ctr)
+				nativeSongNumbers[ctr] = songNumbers[ctr];
+			(*controller)->Run(nativeSongNumbers, songNumbers->Count, startPaused);
+			delete[] nativeSongNumbers;
 		}
 
 		void Controller::Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness)
