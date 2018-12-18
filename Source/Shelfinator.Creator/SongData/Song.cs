@@ -1,21 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System;
 
 namespace Shelfinator.Creator.SongData
 {
 	class Song
 	{
+		readonly string songFileName;
 		readonly List<Segment> segments = new List<Segment>();
 		readonly List<SegmentItem> segmentItems = new List<SegmentItem>();
 		readonly List<PaletteSequence> paletteSequences = new List<PaletteSequence>();
 		readonly Dictionary<int, int> currentIndex = new Dictionary<int, int>();
 
-		public Song()
+		public Song(string songFileName = null)
 		{
+			this.songFileName = songFileName;
 			paletteSequences.Add(new PaletteSequence(0, int.MaxValue, 0, 0));
 		}
 
@@ -106,6 +108,8 @@ namespace Shelfinator.Creator.SongData
 
 		public void Save(BinaryWriter output)
 		{
+			output.Write(songFileName ?? "");
+
 			output.Write(segments.Count);
 			foreach (var segment in segments)
 				segment.Save(output);

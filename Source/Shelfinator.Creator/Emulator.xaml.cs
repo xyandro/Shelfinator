@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -60,7 +61,7 @@ namespace Shelfinator.Creator
 				WindowState = WindowState.Maximized;
 			}
 			dotStarBitmap.Source = bitmap;
-			controller = new Controller(this);
+			controller = new Controller(this, this);
 		}
 
 		public void Run(List<int> songNumbers, bool startPaused) => new Thread(() => controller.Run(songNumbers, startPaused)).Start();
@@ -114,8 +115,11 @@ namespace Shelfinator.Creator
 		{
 			Stop();
 
-			mediaPlayer.Source = new Uri(fileName);
-			mediaPlayer.Play();
+			Dispatcher.Invoke(() =>
+			{
+				mediaPlayer.Source = new Uri(Path.Combine(Directory.GetCurrentDirectory(), fileName));
+				mediaPlayer.Play();
+			});
 			playing = true;
 		}
 
@@ -123,17 +127,22 @@ namespace Shelfinator.Creator
 		{
 			if (!playing)
 				return;
-			mediaPlayer.Stop();
+			Dispatcher.Invoke(() => mediaPlayer.Stop());
 			playing = false;
 		}
 
-		public int GetTime() => playing ? mediaPlayer.Position.TotalMilliseconds.Round() : -1;
+		public int GetTime()
+		{
+			if (!playing)
+				return -1;
+			return Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
+		}
 
 		public void SetTime(int time)
 		{
 			if (!playing)
 				return;
-			mediaPlayer.Position = TimeSpan.FromMilliseconds(time);
+			Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(time));
 		}
 	}
 }

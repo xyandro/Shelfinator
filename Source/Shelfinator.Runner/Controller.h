@@ -6,6 +6,7 @@
 #endif
 #include <queue>
 #include "Banner.h"
+#include "IAudio.h"
 #include "IDotStar.h"
 #include "RemoteCode.h"
 #include "Sockets.h"
@@ -20,7 +21,7 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Controller> ptr;
-			static ptr Create(IDotStar::ptr dotStar);
+			static ptr Create(IDotStar::ptr dotStar, IAudio::ptr audio);
 			~Controller();
 			void Run(int *songNumbers, int songNumberCount, bool startPaused);
 			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
@@ -32,12 +33,12 @@ namespace Shelfinator
 			static std::wstring multiplierNames[];
 
 			bool running = true;
-			double time = 0;
-			int multiplierIndex = 13, songIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
+			int songIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
 			int brightness = 100;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;
+			IAudio::ptr audio;
 			SongData::Song::ptr song;
 			Songs::ptr songs;
 			Timer::ptr timer;
@@ -47,7 +48,7 @@ namespace Shelfinator
 #endif
 			std::queue<RemoteCode> remoteCodes;
 
-			Controller(IDotStar::ptr dotStar);
+			Controller(IDotStar::ptr dotStar, IAudio::ptr audio);
 			bool HandleRemote();
 			bool HandleSockets(Sockets::ptr sockets);
 			void LoadSong(bool startAtEnd = false);

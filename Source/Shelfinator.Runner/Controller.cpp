@@ -14,14 +14,15 @@ namespace Shelfinator
 		const double Controller::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
 		std::wstring Controller::multiplierNames[] = { L"◀◀◀◀", L"◀◀◀", L"◀◀", L"◀", L"◀3/4", L"◀1/2", L"◀1/4", L"◀1/8", L"‖", L"1/8▶", L"1/4▶", L"1/2▶", L"3/4▶", L"▶", L"▶▶", L"▶▶▶", L"▶▶▶▶" };
 
-		Controller::ptr Controller::Create(IDotStar::ptr dotStar)
+		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IAudio::ptr audio)
 		{
-			return ptr(new Controller(dotStar));
+			return ptr(new Controller(dotStar, audio));
 		}
 
-		Controller::Controller(IDotStar::ptr dotStar)
+		Controller::Controller(IDotStar::ptr dotStar, IAudio::ptr audio)
 		{
 			this->dotStar = dotStar;
+			this->audio = audio;
 			timer = Timer::Create();
 			songs = Songs::Create();
 		}
@@ -39,7 +40,6 @@ namespace Shelfinator
 			if ((selectedNumber != -1) && (now - lastRemoteTime >= 1000))
 				useSelectedNumber = true;
 
-			auto lastMultiplierIndex = multiplierIndex;
 			auto lastBrightness = brightness;
 
 			auto code = None;
@@ -54,29 +54,6 @@ namespace Shelfinator
 
 			switch (code)
 			{
-			case Play: multiplierIndex = 13; break;
-			case Pause: multiplierIndex = 8; break;
-			case Rewind:
-				if (multiplierIndex > 0)
-					--multiplierIndex;
-				break;
-			case FastForward:
-				if (multiplierIndex < sizeof(multipliers) / sizeof(*multipliers) - 1)
-					++multiplierIndex;
-				break;
-			case Previous:
-				if ((multipliers[multiplierIndex] == 0) || (time / multipliers[multiplierIndex] < 2000))
-				{
-					--songIndex;
-					LoadSong();
-				}
-				else
-					time = 0;
-				break;
-			case Next:
-				++songIndex;
-				LoadSong();
-				break;
 			case Enter: useSelectedNumber = true; break;
 			case VolumeUp: brightness += 10; break;
 			case VolumeDown: brightness -= 10; break;
@@ -101,9 +78,6 @@ namespace Shelfinator
 			case Info: banner = Banner::Create(std::to_wstring(songs->GetValue(songIndex)), 0, 1000, 1); break;
 			default: result = false; break;
 			}
-
-			if (lastMultiplierIndex != multiplierIndex)
-				banner = Banner::Create(multiplierNames[multiplierIndex], 0, 1000);
 
 			if (brightness < 0)
 				brightness = 0;
@@ -132,8 +106,6 @@ namespace Shelfinator
 				return false;
 
 			song = request->song;
-			time = 0;
-			multiplierIndex = 13;
 
 			return true;
 		}
@@ -150,17 +122,15 @@ namespace Shelfinator
 					songIndex -= songs->Count();
 
 				song = songs->LoadSong(songIndex);
-				fprintf(stderr, "Displaying song %s\n", song->FileName.c_str());
+				audio->Play(song->SongFileName);
+				fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
+				
 			}
-			time = startAtEnd ? song->GetLength() - 1 : 0;
 		}
 
 		int frameCount = 0;
 		void Controller::Run(int *songNumbers, int songNumberCount, bool startPaused)
 		{
-			if (startPaused)
-				multiplierIndex = 8;
-
 			if (songNumberCount == 0)
 				songs->MakeFirst(1); // Hello
 			else
@@ -172,47 +142,27 @@ namespace Shelfinator
 			LoadSong();
 			auto loadTime = timer->Millis() - startLoad;
 			auto startDraw = timer->Millis();
-			int startTime, nextTime = -1;
 			auto driver = Driver::Create(dotStar);
 			while (running)
 			{
-				startTime = nextTime;
-				nextTime = -1;
-
 				if (HandleRemote())
 					continue;
 
 				if (HandleSockets(sockets))
 					continue;
 
-				if ((multiplierIndex == 8) && (!banner))
-					banner = Banner::Create(L"•   ", 0, 5000);
-
-				if ((time < 0) || (time >= song->GetLength()))
-				{
-					songIndex += time < 0 ? -1 : 1;
-					LoadSong(time < 0);
-					continue;
-				}
+				//if ((time < 0) || (time >= song->GetLength()))
+				//{
+				//	songIndex += time < 0 ? -1 : 1;
+				//	LoadSong(time < 0);
+				//	continue;
+				//}
 
 				auto lights = Lights::Create();
-				song->SetLights((int)(time + 0.5), brightness / 100.0, lights);
+				song->SetLights((int)(audio->GetTime()), brightness / 100.0, lights);
 				if (banner)
 					banner->SetLights(lights);
 				driver->SetLights(lights);
-
-				nextTime = timer->Millis();
-				if (startTime != -1)
-				{
-					auto elapsed = nextTime - startTime;
-					time += elapsed * multipliers[multiplierIndex];
-					if (banner)
-					{
-						banner->AddElapsed(elapsed);
-						if (banner->Expired())
-							banner.reset();
-					}
-				}
 
 				if (++frameCount == 100)
 				{

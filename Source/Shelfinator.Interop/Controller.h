@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "../Shelfinator.Runner/Controller.h"
+#include "IAudio.h"
 #include "IDotStar.h"
 #include "RemoteCode.h"
 
@@ -11,7 +12,7 @@ namespace Shelfinator
 		public ref class Controller
 		{
 		public:
-			Controller(IDotStar ^dotStar);
+			Controller(IDotStar ^dotStar, IAudio ^audio);
 			~Controller();
 			void Run(System::Collections::Generic::List<int> ^songNumbers, bool startPaused);
 			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);

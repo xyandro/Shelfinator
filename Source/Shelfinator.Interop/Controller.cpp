@@ -1,14 +1,15 @@
 ﻿#include "Controller.h"
 
+#include "Audio.h"
 #include "DotStar.h"
 
 namespace Shelfinator
 {
 	namespace Interop
 	{
-		Controller::Controller(IDotStar ^dotStar)
+		Controller::Controller(IDotStar ^dotStar, IAudio ^audio)
 		{
-			controller = new Runner::Controller::ptr(Runner::Controller::Create(DotStar::Create(dotStar)));
+			controller = new Runner::Controller::ptr(Runner::Controller::Create(DotStar::Create(dotStar), Audio::Create(audio)));
 		}
 
 		Controller::~Controller()

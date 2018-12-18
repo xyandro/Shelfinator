@@ -43,6 +43,7 @@ namespace Shelfinator
 
 			void Song::ReadFile(BufferFile::ptr file)
 			{
+				SongFileName = file->GetString();
 				ReadSegments(file);
 				segmentItems.Read(file, length);
 				paletteSequences.Read(file);

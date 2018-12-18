@@ -23,6 +23,7 @@ namespace Shelfinator
 				static ptr Read(BufferFile::ptr file);
 
 				std::string FileName = "";
+				std::string SongFileName = "";
 				void SetLights(int time, double brightness, Lights::ptr lights);
 				int GetLength();
 			private:

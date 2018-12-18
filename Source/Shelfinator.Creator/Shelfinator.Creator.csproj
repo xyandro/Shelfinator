@@ -114,6 +114,7 @@
     <EmbeddedResource Include="Songs\Love\Timo.png" />
     <Compile Include="Songs\Paths.cs" />
     <Compile Include="Songs\Plasma.cs" />
+    <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\RainbowRotate.cs" />
     <Compile Include="Songs\Randomized.cs" />
     <Compile Include="Songs\Randomized2.cs" />

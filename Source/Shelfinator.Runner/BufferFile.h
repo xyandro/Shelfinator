@@ -17,6 +17,7 @@ namespace Shelfinator
 			bool GetBool();
 			unsigned char GetByte();
 			int GetInt();
+			std::string GetString();
 		private:
 			char *buffer;
 			int bufPos = 0, bufUsed = 0, bufSize = 0;

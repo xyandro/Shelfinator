@@ -59,6 +59,17 @@ namespace Shelfinator
 			return value;
 		}
 
+		std::string BufferFile::GetString()
+		{
+			auto length = GetByte();
+			auto buffer = new char[length + 1];
+			memset(buffer, 0, length + 1);
+			Copy(buffer, length);
+			auto result = std::string(buffer);
+			free(buffer);
+			return result;
+		}
+
 		void BufferFile::Copy(void *ptr, int size)
 		{
 			while (bufPos + size > bufUsed)
