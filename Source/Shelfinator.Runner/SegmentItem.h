@@ -11,12 +11,8 @@ namespace Shelfinator
 			class SegmentItem
 			{
 			public:
-				enum SegmentItemType { LINEAR, VELOCITYBASED };
-
-				int segmentIndex;
-				SegmentItemType type;
-				int segmentStartTime, segmentEndTime, startVelocity, endVelocity, baseVelocity, duration, startTime, endTime, repeat;
-				void Read(BufferFile::ptr file, int &length);
+				int segmentIndex, segmentStartTime, segmentEndTime, startTime, endTime, startVelocity, endVelocity, baseVelocity;
+				void Read(BufferFile::ptr file);
 				double GetSegmentTime(int time);
 			};
 		}

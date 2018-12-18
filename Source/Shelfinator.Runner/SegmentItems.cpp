@@ -6,21 +6,23 @@ namespace Shelfinator
 	{
 		namespace SongData
 		{
-			void SegmentItems::Read(BufferFile::ptr file, int &length)
+			void SegmentItems::Read(BufferFile::ptr file)
 			{
 				segmentItems.resize(file->GetInt());
-				length = 0;
 				for (auto ctr = 0; ctr < segmentItems.size(); ++ctr)
-					segmentItems[ctr].Read(file, length);
+					segmentItems[ctr].Read(file);
+				current = 0;
 			}
 
-			SegmentItem &SegmentItems::SegmentAtTime(int time)
+			SegmentItem *SegmentItems::SegmentAtTime(int time)
 			{
-				while (time < segmentItems[current].startTime)
+				while ((current > 0) && (time < segmentItems[current].startTime))
 					--current;
-				while (time >= segmentItems[current].endTime)
+				while ((current < segmentItems.size() - 1) && (time >= segmentItems[current].endTime))
 					++current;
-				return segmentItems[current];
+				if ((time < segmentItems[current].startTime) || ((time >= segmentItems[current].endTime)))
+					return nullptr;
+				return &segmentItems[current];
 			}
 		}
 	}

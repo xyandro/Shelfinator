@@ -13,8 +13,8 @@ namespace Shelfinator
 			class SegmentItems
 			{
 			public:
-				void Read(BufferFile::ptr file, int &length);
-				SegmentItem &SegmentAtTime(int time);
+				void Read(BufferFile::ptr file);
+				SegmentItem *SegmentAtTime(int time);
 			private:
 				std::vector<SegmentItem> segmentItems;
 				int current = 0;

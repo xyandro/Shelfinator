@@ -54,6 +54,8 @@ namespace Shelfinator
 
 			switch (code)
 			{
+			case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
+			case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
 			case Enter: useSelectedNumber = true; break;
 			case VolumeUp: brightness += 10; break;
 			case VolumeDown: brightness -= 10; break;
@@ -101,20 +103,14 @@ namespace Shelfinator
 
 		void Controller::LoadSong(bool startAtEnd)
 		{
-			if (songs->Count() == 0)
-				song = SongData::Song::CreateTest();
-			else
-			{
-				while (songIndex < 0)
-					songIndex += songs->Count();
-				while (songIndex >= songs->Count())
-					songIndex -= songs->Count();
+			while (songIndex < 0)
+				songIndex += songs->Count();
+			while (songIndex >= songs->Count())
+				songIndex -= songs->Count();
 
-				song = songs->LoadSong(songIndex);
-				audio->Play(song->SongFileName);
-				fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
-				
-			}
+			song = songs->LoadSong(songIndex);
+			audio->Play(song->SongFileName);
+			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 		}
 
 		int frameCount = 0;

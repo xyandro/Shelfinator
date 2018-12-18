@@ -26,21 +26,40 @@ namespace Shelfinator.Creator.SongData
 			return segments.IndexOf(segment);
 		}
 
-		public int AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int? duration = null, int repeat = 1)
+		public SegmentItem AddSegmentWithRepeat(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
 		{
-			var sequence = new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, duration ?? segmentEndTime - segmentStartTime, repeat);
-			segmentItems.Add(sequence);
-			return sequence.Duration * sequence.Repeat;
+			var segmentDuration = segmentEndTime - segmentStartTime;
+			duration = duration ?? segmentDuration;
+			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration.Value * repeat, segmentDuration, segmentDuration, duration.Value));
 		}
 
-		public int AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startVelocity, int endVelocity, int baseVelocity, int repeat = 1)
+		public SegmentItem RepeatSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
 		{
-			var sequence = new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startVelocity, endVelocity, baseVelocity, repeat);
-			segmentItems.Add(sequence);
-			return sequence.Duration * sequence.Repeat;
+			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration, startVelocity, endVelocity, baseVelocity));
 		}
 
-		public int MaxSegmentTime() => segmentItems.Sum(s => s.Duration * s.Repeat);
+		public int GetDurationForRepeat(int segmentDuration, int startVelocity, int endVelocity, int baseVelocity, int repeat = 1)
+		{
+			return Math.Abs(segmentDuration * repeat * baseVelocity * 2 / (startVelocity + endVelocity));
+		}
+
+		SegmentItem InsertSegment(SegmentItem segmentItem)
+		{
+			if (segmentItem.StartTime < 0)
+				throw new Exception("StartTime must be >= 0");
+
+			var index = 0;
+			while ((index < segmentItems.Count) && (segmentItem.StartTime >= segmentItems[index].StartTime))
+				++index;
+
+			if ((index != 0) && (segmentItems[index - 1].EndTime > segmentItem.StartTime))
+				throw new Exception("Segments cannot overlap.");
+
+			segmentItems.Add(segmentItem);
+			return segmentItem;
+		}
+
+		public int MaxTime() => segmentItems.Select(s => s.EndTime).DefaultIfEmpty(0).Max();
 
 		public void AddPaletteSequence(int time, int paletteIndex) => AddPaletteSequence(time, time, paletteIndex, paletteIndex);
 

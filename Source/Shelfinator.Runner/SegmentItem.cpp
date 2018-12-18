@@ -9,34 +9,27 @@ namespace Shelfinator
 	{
 		namespace SongData
 		{
-			void SegmentItem::Read(BufferFile::ptr file, int &length)
+			void SegmentItem::Read(BufferFile::ptr file)
 			{
 				segmentIndex = file->GetInt();
-				type = (SegmentItemType)file->GetByte();
 				segmentStartTime = file->GetInt();
 				segmentEndTime = file->GetInt();
+				startTime = file->GetInt();
+				endTime = file->GetInt();
 				startVelocity = file->GetInt();
 				endVelocity = file->GetInt();
 				baseVelocity = file->GetInt();
-				duration = file->GetInt();
-				repeat = file->GetInt();
-				startTime = length;
-				endTime = length = length + duration * repeat;
 			}
 
 			double SegmentItem::GetSegmentTime(int time)
 			{
-				auto useTime = (double)time - startTime;
-				switch (type)
-				{
-				case LINEAR:
-					return Helpers::FPart(useTime / duration) * (segmentEndTime - segmentStartTime) + segmentStartTime;
-				case VELOCITYBASED:
-					return std::fmod(useTime * useTime * (endVelocity - startVelocity) * (endVelocity + startVelocity) / baseVelocity / baseVelocity / (segmentEndTime - segmentStartTime) / repeat / 4 + useTime * startVelocity / baseVelocity, segmentEndTime - segmentStartTime) + segmentStartTime;
-				}
-				throw "Invalid type";
-			}
+				if (segmentEndTime == segmentStartTime)
+					return segmentEndTime;
 
+				auto useTime = (double)time - startTime;
+				auto value = std::fmod(useTime * useTime * (endVelocity - startVelocity) / baseVelocity / (endTime - startTime) / 2 + useTime * startVelocity / baseVelocity, segmentEndTime - segmentStartTime) + segmentStartTime;
+				return value;
+			}
 		}
 	}
 }

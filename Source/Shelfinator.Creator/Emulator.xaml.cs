@@ -95,11 +95,20 @@ namespace Shelfinator.Creator
 				case Key.D9: controller.AddRemoteCode(RemoteCode.D9); break;
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
 				case Key.S: controller.Stop(); break;
-				case Key.P: Clipboard.SetText(mediaPlayer.Position.TotalMilliseconds.Round().ToString()); break;
+				case Key.P: CopyPosition(); break;
 				case Key.T: SetTime(TestPosition); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
+		}
+
+		void CopyPosition()
+		{
+			var str = "";
+			if (ControlDown)
+				str = Clipboard.GetText() + ",";
+			str += mediaPlayer.Position.TotalMilliseconds.Round().ToString();
+			Clipboard.SetText(str);
 		}
 
 		public void Show(int[] lights)
