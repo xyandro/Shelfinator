@@ -12,6 +12,7 @@ namespace Shelfinator.Creator
 {
 	partial class Emulator : IDotStar, IAudio
 	{
+		public static int TestPosition { get; set; }
 		readonly Controller controller;
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
 		readonly WriteableBitmap bitmap;
@@ -94,6 +95,8 @@ namespace Shelfinator.Creator
 				case Key.D9: controller.AddRemoteCode(RemoteCode.D9); break;
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
 				case Key.S: controller.Stop(); break;
+				case Key.P: Clipboard.SetText(mediaPlayer.Position.TotalMilliseconds.Round().ToString()); break;
+				case Key.T: SetTime(TestPosition); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
