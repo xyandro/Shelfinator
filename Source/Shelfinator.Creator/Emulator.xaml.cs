@@ -3,25 +3,46 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
 {
-	partial class DotStarEmulatorWindow
+	partial class DotStarEmulatorWindow : IDotStar
 	{
 		readonly Controller controller;
+		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
+		readonly WriteableBitmap bitmap;
+		readonly uint[] buffer;
+
 		public DotStarEmulatorWindow(bool small)
 		{
-			var image = small ? "Shelfinator.Creator.Patterns.Layout.DotStar-Small.png" : "Shelfinator.Creator.Patterns.Layout.DotStar.png";
-			var dotStar = new DotStarEmulator(Dispatcher, Helpers.GetEmbeddedBitmap(image));
-			controller = new Controller(dotStar);
-
 			InitializeComponent();
+
+			var image = small ? "Shelfinator.Creator.Patterns.Layout.DotStar-Small.png" : "Shelfinator.Creator.Patterns.Layout.DotStar.png";
+			bitmap = new WriteableBitmap(Helpers.GetEmbeddedBitmap(image));
+			buffer = new uint[bitmap.PixelWidth * bitmap.PixelHeight];
+			bitmap.CopyPixels(buffer, bitmap.BackBufferStride, 0);
+
+			bufferPosition = new Dictionary<int, List<int>>();
+			var index = -1;
+			for (var y = 0; y < bitmap.PixelHeight; ++y)
+				for (var x = 0; x < bitmap.PixelWidth; ++x)
+				{
+					++index;
+					if ((buffer[index] & 0xff000000) != 0x01000000)
+						continue;
+					var light = (int)(buffer[index] & 0xffffff);
+					if (!bufferPosition.ContainsKey(light))
+						bufferPosition[light] = new List<int>();
+					bufferPosition[light].Add(index);
+				}
+
 			if (small)
 			{
 				SizeToContent = SizeToContent.WidthAndHeight;
-				dotStarBitmap.Width = dotStar.Bitmap.PixelWidth;
-				dotStarBitmap.Height = dotStar.Bitmap.PixelHeight;
+				dotStarBitmap.Width = bitmap.PixelWidth;
+				dotStarBitmap.Height = bitmap.PixelHeight;
 				RenderOptions.SetBitmapScalingMode(dotStarBitmap, BitmapScalingMode.NearestNeighbor);
 
 				Loaded += (s, e) =>
@@ -36,7 +57,8 @@ namespace Shelfinator.Creator
 				WindowStyle = WindowStyle.None;
 				WindowState = WindowState.Maximized;
 			}
-			dotStarBitmap.Source = dotStar.Bitmap;
+			dotStarBitmap.Source = bitmap;
+			controller = new Controller(this);
 		}
 
 		public void Run(List<int> patternNumbers, bool startPaused) => new Thread(() => controller.Run(patternNumbers, startPaused)).Start();
@@ -72,6 +94,18 @@ namespace Shelfinator.Creator
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
+		}
+
+		public void Show(int[] lights)
+		{
+			for (var light = 0; light < lights.Length; ++light)
+				if (bufferPosition.ContainsKey(light))
+				{
+					var color = (uint)(0xff000000 | Helpers.MultiplyColor(lights[light] >> 8, 16));
+					foreach (var position in bufferPosition[light])
+						buffer[position] = color;
+				}
+			Dispatcher.Invoke(() => bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), buffer, bitmap.BackBufferStride, 0));
 		}
 	}
 }
