@@ -1,5 +1,6 @@
 ﻿#include <signal.h>
 #include <string.h>
+#include "Audio.h"
 #include "Controller.h"
 #include "DotStar.h"
 #include "Remote.h"
@@ -30,7 +31,7 @@ int main(int argc, char **argv)
 
 	SetupBreakhandler();
 
-	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create());
+	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create(), Shelfinator::Runner::Audio::Create());
 	Shelfinator::Runner::Remote::Run(controller);
 
 	if ((argc > 1) && (strcmp(argv[1], "test") == 0))

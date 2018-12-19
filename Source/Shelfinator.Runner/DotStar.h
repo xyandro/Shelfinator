@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "IDotStar.h"
 #include <condition_variable>
 #include <mutex>
+#include "IDotStar.h"
 
 namespace Shelfinator
 {

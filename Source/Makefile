@@ -1,10 +1,10 @@
-﻿OBJS = Banner.o BufferFile.o Controller.o DotStar.o Driver.o Helpers.o Lights.o Main.o Song.o Songs.o Remote.o Sockets.o Timer.o
+﻿OBJS = Audio.o Banner.o BufferFile.o Controller.o DotStar.o Driver.o Helpers.o Light.o LightColor.o LightItem.o Lights.o Main.o PaletteSequence.o PaletteSequences.o Remote.o Segment.o SegmentItem.o SegmentItems.o Song.o Songs.o Timer.o
 
 all: ../Build/shelfinator
 
 ../Build/shelfinator: $(OBJS)
 	mkdir -p ../Build
-	g++ -o $@ $^ -llirc_client -pthread
+	g++ -o $@ $^ -lasound -llirc_client -lsndfile -pthread
 
 %.o: Shelfinator.Runner/%.cpp Shelfinator.Runner/%.h
 	g++ -c -o $@ $<

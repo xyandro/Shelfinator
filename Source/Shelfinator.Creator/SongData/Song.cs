@@ -82,6 +82,13 @@ namespace Shelfinator.Creator.SongData
 		{
 			using (var output = new BinaryWriter(File.Create(fileName)))
 				Save(output);
+
+			var outputFile = Path.Combine(Path.GetDirectoryName(fileName), songFileName);
+			if (!File.Exists(outputFile))
+			{
+				var inputFile = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Song).Assembly.Location)), "Source", "Audio", songFileName);
+				File.Copy(inputFile, outputFile, true);
+			}
 		}
 
 		public void Save(BinaryWriter output)
