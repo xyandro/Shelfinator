@@ -9,7 +9,6 @@
 #include "IAudio.h"
 #include "IDotStar.h"
 #include "RemoteCode.h"
-#include "Sockets.h"
 #include "Songs.h"
 #include "Timer.h"
 
@@ -50,7 +49,6 @@ namespace Shelfinator
 
 			Controller(IDotStar::ptr dotStar, IAudio::ptr audio);
 			bool HandleRemote();
-			bool HandleSockets(Sockets::ptr sockets);
 			void LoadSong(bool startAtEnd = false);
 		};
 	}

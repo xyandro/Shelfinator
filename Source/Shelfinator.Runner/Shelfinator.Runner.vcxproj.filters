@@ -121,15 +121,6 @@
     <ClInclude Include="SegmentItems.h">
       <Filter>SongData\SegmentItems</Filter>
     </ClInclude>
-    <Filter Include="Sockets">
-      <UniqueIdentifier>{94aab895-6438-45fd-a4e5-72baa916779b}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="Sockets.cpp">
-      <Filter>Sockets</Filter>
-    </ClCompile>
-    <ClInclude Include="Sockets.h">
-      <Filter>Sockets</Filter>
-    </ClInclude>
     <ClCompile Include="Song.cpp">
       <Filter>SongData\Song</Filter>
     </ClCompile>

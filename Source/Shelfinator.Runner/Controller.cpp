@@ -99,17 +99,6 @@ namespace Shelfinator
 			return result;
 		}
 
-		bool Controller::HandleSockets(Sockets::ptr sockets)
-		{
-			auto request = sockets->GetRequest();
-			if (!request)
-				return false;
-
-			song = request->song;
-
-			return true;
-		}
-
 		void Controller::LoadSong(bool startAtEnd)
 		{
 			if (songs->Count() == 0)
@@ -137,7 +126,6 @@ namespace Shelfinator
 				for (auto ctr = songNumberCount - 1; ctr >= 0; --ctr)
 					songs->MakeFirst(songNumbers[ctr]);
 
-			auto sockets = Sockets::Create();
 			auto startLoad = timer->Millis();
 			LoadSong();
 			auto loadTime = timer->Millis() - startLoad;
@@ -146,9 +134,6 @@ namespace Shelfinator
 			while (running)
 			{
 				if (HandleRemote())
-					continue;
-
-				if (HandleSockets(sockets))
 					continue;
 
 				//if ((time < 0) || (time >= song->GetLength()))

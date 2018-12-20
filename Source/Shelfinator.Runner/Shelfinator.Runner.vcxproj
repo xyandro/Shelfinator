@@ -124,8 +124,6 @@
     <ClInclude Include="SegmentItem.h" />
     <ClCompile Include="SegmentItems.cpp" />
     <ClInclude Include="SegmentItems.h" />
-    <ClCompile Include="Sockets.cpp" />
-    <ClInclude Include="Sockets.h" />
     <ClCompile Include="Song.cpp" />
     <ClInclude Include="Song.h" />
     <ClCompile Include="Songs.cpp" />

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System;
 using Shelfinator.Creator.Songs;
 
 namespace Shelfinator.Creator
@@ -42,13 +42,6 @@ namespace Shelfinator.Creator
 			var small = CheckExistsAndRemove(args, "small");
 			var startPaused = CheckExistsAndRemove(args, "pause");
 
-			var host = args.SingleOrDefault(arg => arg.StartsWith("host="));
-			if (host != null)
-			{
-				args.Remove(host);
-				host = host.Substring("host=".Length);
-			}
-
 			var songNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 			if ((test) && (songNumbers.Count != 5))
 				throw new Exception("Test must provide firstLight, lightCount, concurrency, delay, and brightness");
@@ -66,15 +59,7 @@ namespace Shelfinator.Creator
 					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{song.SongNumber}.pat");
 					var rendered = song.Render();
 					rendered.Save(fileName);
-					if (host != null)
-						rendered.Transmit(host);
 				}
-			}
-
-			if (host != null)
-			{
-				Shutdown();
-				return;
 			}
 
 			var window = new Emulator(small);
