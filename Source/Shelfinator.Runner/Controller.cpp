@@ -56,6 +56,7 @@ namespace Shelfinator
 			{
 			case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
 			case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
+			case Previous: audio->SetTime(0); break;
 			case Enter: useSelectedNumber = true; break;
 			case VolumeUp: brightness += 10; break;
 			case VolumeDown: brightness -= 10; break;

@@ -1,1 +1,2 @@
-C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"
+C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"
+C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe -y -ss 00:00:05.000 -t 00:05:55.000 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm "bohemian.wav"

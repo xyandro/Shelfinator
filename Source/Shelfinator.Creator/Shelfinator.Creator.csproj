@@ -80,16 +80,14 @@
     <Compile Include="SongData\Segment.cs" />
     <Compile Include="SongData\SegmentItem.cs" />
     <Compile Include="SongData\Song.cs" />
+    <Compile Include="Songs\Bohemian.cs" />
     <Compile Include="Songs\Bounce.cs" />
     <Compile Include="Songs\CircleWarp.cs" />
-    <Compile Include="Songs\Clock.cs" />
     <Compile Include="Songs\Clouds.cs" />
     <Compile Include="Songs\CornerRotate.cs" />
     <Compile Include="Songs\Corners.cs" />
     <Compile Include="Songs\Corners2.cs" />
-    <Compile Include="Songs\Face.cs" />
     <Compile Include="Songs\Flash.cs" />
-    <Compile Include="Songs\Flood.cs" />
     <Compile Include="Songs\Halves.cs" />
     <Compile Include="Songs\Hello.cs" />
     <Compile Include="Songs\ISong.cs" />
@@ -101,7 +99,6 @@
     <EmbeddedResource Include="Songs\Layout\Plasma.gif" />
     <EmbeddedResource Include="Songs\Layout\Smiley.png" />
     <EmbeddedResource Include="Songs\Layout\Squares.png" />
-    <Compile Include="Songs\Lines.cs" />
     <EmbeddedResource Include="Songs\Love\Benji.png" />
     <EmbeddedResource Include="Songs\Love\I.png" />
     <EmbeddedResource Include="Songs\Love\Kate.png" />
@@ -115,18 +112,9 @@
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\Randomized.cs" />
     <Compile Include="Songs\Randomized2.cs" />
-    <Compile Include="Songs\Rotate.cs" />
-    <Compile Include="Songs\RunAway.cs" />
-    <Compile Include="Songs\Runner.cs" />
     <Compile Include="Songs\ShapeChange.cs" />
-    <Compile Include="Songs\Sine.cs" />
     <Compile Include="Songs\Smiley.cs" />
-    <Compile Include="Songs\Snake.cs" />
-    <Compile Include="Songs\Spiral.cs" />
-    <Compile Include="Songs\SquareFlash.cs" />
-    <Compile Include="Songs\Squares.cs" />
     <Compile Include="Songs\Stars.cs" />
-    <Compile Include="Songs\Tag.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">
