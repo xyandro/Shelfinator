@@ -16,6 +16,8 @@ namespace Shelfinator
 
 			SegmentItem *SegmentItems::SegmentAtTime(int time)
 			{
+				if (segmentItems.size() == 0)
+					return nullptr;
 				while ((current > 0) && (time < segmentItems[current].startTime))
 					--current;
 				while ((current < segmentItems.size() - 1) && (time >= segmentItems[current].endTime))

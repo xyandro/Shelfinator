@@ -81,14 +81,7 @@
     <Compile Include="SongData\SegmentItem.cs" />
     <Compile Include="SongData\Song.cs" />
     <Compile Include="Songs\Bohemian.cs" />
-    <Compile Include="Songs\Bounce.cs" />
-    <Compile Include="Songs\CircleWarp.cs" />
     <Compile Include="Songs\Clouds.cs" />
-    <Compile Include="Songs\CornerRotate.cs" />
-    <Compile Include="Songs\Corners.cs" />
-    <Compile Include="Songs\Corners2.cs" />
-    <Compile Include="Songs\Flash.cs" />
-    <Compile Include="Songs\Halves.cs" />
     <Compile Include="Songs\Hello.cs" />
     <Compile Include="Songs\ISong.cs" />
     <EmbeddedResource Include="Songs\Layout\Clouds.png" />
@@ -108,13 +101,9 @@
     <EmbeddedResource Include="Songs\Love\Phoebe.png" />
     <EmbeddedResource Include="Songs\Love\Sophie.png" />
     <EmbeddedResource Include="Songs\Love\Timo.png" />
-    <Compile Include="Songs\Paths.cs" />
     <Compile Include="Songs\Rainbow.cs" />
-    <Compile Include="Songs\Randomized.cs" />
-    <Compile Include="Songs\Randomized2.cs" />
-    <Compile Include="Songs\ShapeChange.cs" />
+    <Compile Include="Songs\ShutUpAndDance.cs" />
     <Compile Include="Songs\Smiley.cs" />
-    <Compile Include="Songs\Stars.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">

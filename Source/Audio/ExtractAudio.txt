@@ -1,2 +1,55 @@
-C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"
-C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe -y -ss 00:00:05.000 -t 00:05:55.000 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm "bohemian.wav"
+ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"
+ffmpeg.exe -y -ss 00:00:05.000 -t 00:05:55.000 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm "bohemian.wav"
+
+ffmpeg.exe -y -t 00:02:56.877 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "1.mkv"
+ffmpeg.exe -y -ss 00:03:17.401 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "2.mkv"
+Write a.txt:
+file '1.mkv'
+file '2.mkv'
+ffmpeg.exe -y -f concat -i a.txt -c copy "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.mkv"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "silence.wav"
+ffmpeg.exe -y -ss 00:00:17.502 -t 00:03:16.875 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.mkv" -ar 44100 -filter:a loudnorm "song.wav"
+Write a.txt:
+file 'silence.wav'
+file 'song.wav'
+ffmpeg.exe -y -f concat -i a.txt -c copy "shutupanddance.wav"
+
+10: 5600  Love
+1:  9500  Hello
+28: 15000 Smiley
+40: 24000 Clouds
+
+11: 10000 *Rotate
+12: 10000 *Sine
+13: 15500 *Spin
+33: 16000 *Flex
+21: 17000 *Clock
+17: 17000 *RunAway
+14: 20000 *Spiral
+15: 21000 *RainbowRotate
+27: 25000 *Plasma
+24: 26750 *SquareFlash
+19: 27000 *Squares
+18: 30000 *Face
+25: 30000 *Flood
+30: 30000 *Spiral2
+22: 30000 *SquarePattern
+43: 30000 *Sweep
+45: 30677 *Traffic
+16: 32000 *Snake
+44: 34200 *Lines
+29: 64500 *Runner
+39: 84400 *Tag
+34: 27500 *ShapeChange
+41: 20000 *Randomized
+35: 25000 *CornerRotate
+31: 20000 *Corners2
+36: 20000 *Stars
+38: 22655 *CircleWarp
+23: 28104 *Bounce
+20: 16000 *Flash
+32: 48000 *Halves
+37: 20000 *Paths
+42: 20000 *Randomized2
+26: 33600 *Corners
