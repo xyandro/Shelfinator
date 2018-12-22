@@ -89,7 +89,6 @@
     <EmbeddedResource Include="Songs\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Songs\Layout\Layout-Header.png" />
     <EmbeddedResource Include="Songs\Layout\Plasma.gif" />
-    <EmbeddedResource Include="Songs\Layout\Smiley.png" />
     <EmbeddedResource Include="Songs\Layout\Squares.png" />
     <EmbeddedResource Include="Songs\Love\Benji.png" />
     <EmbeddedResource Include="Songs\Love\I.png" />
@@ -102,7 +101,6 @@
     <EmbeddedResource Include="Songs\Love\Timo.png" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
-    <Compile Include="Songs\Smiley.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">
