@@ -14,3 +14,5 @@ Write a.txt:
 file 'silence.wav'
 file 'song.wav'
 ffmpeg.exe -y -f concat -i a.txt -c copy "shutupanddance.wav"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:09.500 -ar 44100 "hello.wav"
