@@ -81,6 +81,7 @@ namespace Shelfinator
 			std::unique_lock<std::mutex> lock(mutex);
 			playing = Stopped;
 			condVar.notify_all();
+			time = -1;
 		}
 
 		void Audio::Stop()

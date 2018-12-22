@@ -136,8 +136,7 @@ namespace Shelfinator
 			closedir(dir);
 #endif
 
-			//std::srand((unsigned)std::time(0));
-			//std::random_shuffle(songNumbers.begin(), songNumbers.end());
+			std::sort(songNumbers.begin(), songNumbers.end());
 		}
 
 		void Songs::MakeFirst(int songNumber)
