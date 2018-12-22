@@ -18,7 +18,6 @@ ffmpeg.exe -y -f concat -i a.txt -c copy "shutupanddance.wav"
 10: 5600  Love
 1:  9500  Hello
 28: 15000 Smiley
-40: 24000 Clouds
 
 11: 10000 *Rotate
 12: 10000 *Sine
@@ -53,3 +52,4 @@ ffmpeg.exe -y -f concat -i a.txt -c copy "shutupanddance.wav"
 37: 20000 *Paths
 42: 20000 *Randomized2
 26: 33600 *Corners
+40: 24000 *Clouds

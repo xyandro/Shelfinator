@@ -81,7 +81,6 @@
     <Compile Include="SongData\SegmentItem.cs" />
     <Compile Include="SongData\Song.cs" />
     <Compile Include="Songs\Bohemian.cs" />
-    <Compile Include="Songs\Clouds.cs" />
     <Compile Include="Songs\Hello.cs" />
     <Compile Include="Songs\ISong.cs" />
     <EmbeddedResource Include="Songs\Layout\Clouds.png" />

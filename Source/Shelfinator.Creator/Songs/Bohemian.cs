@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using Shelfinator.Creator.SongData;
 
@@ -573,6 +574,56 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		int[,] CloudsGetPixels(string fileName, double Brightness)
+		{
+			int[,] pixels;
+			using (var stream = typeof(Bohemian).Assembly.GetManifestResourceStream(fileName))
+			using (var image = System.Drawing.Image.FromStream(stream))
+			using (var bmp = new System.Drawing.Bitmap(image))
+			{
+				if ((bmp.Width != 97) || (bmp.Height != 97))
+					throw new Exception("Invalid image");
+
+				pixels = new int[bmp.Width, bmp.Height];
+				var lockBits = bmp.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				var data = new byte[lockBits.Stride * bmp.Height];
+				Marshal.Copy(lockBits.Scan0, data, 0, data.Length);
+				bmp.UnlockBits(lockBits);
+
+				var lineSkip = lockBits.Stride - bmp.Width * sizeof(int);
+				var ofs = 0;
+				for (var y = 0; y < bmp.Height; ++y)
+				{
+					for (var x = 0; x < bmp.Width; ++x)
+					{
+						pixels[x, y] = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), Brightness);
+						ofs += sizeof(int);
+					}
+					ofs += lineSkip;
+				}
+				var hexChars = Enumerable.Range(0, 16).Select(num => $"{num:x}"[0]).ToArray();
+			}
+
+			return pixels;
+		}
+
+		Segment Clouds()
+		{
+			var empty = new int[97, 97];
+			var pixels = CloudsGetPixels("Shelfinator.Creator.Songs.Layout.Clouds.png", Brightness);
+
+			var segment = new Segment();
+
+			for (var offset = 0; offset < 97; ++offset)
+				for (var y = 0; y < 97; ++y)
+					for (var x = 0; x < 97; ++x)
+						foreach (var light in bodyLayout.GetPositionLights((x + offset) % 97, (y + offset) % 97, 1, 1))
+							segment.AddLight(light, offset, Segment.Absolute, pixels[x, y]);
+
+			return segment;
+		}
+
+
 		class FloodPoint
 		{
 			const int Length = 100;
@@ -911,11 +962,15 @@ namespace Shelfinator.Creator.Songs
 
 			// Face (182891)
 			var face = Face();
-			song.AddSegmentWithRepeat(face, 0, 3120, 182891, 20000);
+			song.AddSegmentWithRepeat(face, 0, 3120, 182891, 9920);
 			song.AddPaletteSequence(182891, 0);
-			song.AddPaletteSequence(188680, 189680, null, 1);
-			song.AddPaletteSequence(192221, 193321, null, 2);
-			song.AddPaletteSequence(202891, 0);
+			song.AddPaletteSequence(185698, 186698, null, 1);
+			song.AddPaletteSequence(189004, 190004, null, 2);
+			song.AddPaletteSequence(192811, 0);
+
+			// Clouds (192811)
+			var clouds = Clouds();
+			song.AddSegmentWithRepeat(clouds, 0, 97, 192811, 1680, 6);
 
 			// Flood (202891)
 			var flood = Flood();
@@ -954,7 +1009,6 @@ namespace Shelfinator.Creator.Songs
 			var squareFlash = SquareFlash();
 			song.AddSegmentWithRepeat(squareFlash, 311948, 355000, 311948);
 
-			Emulator.TestPosition = 310948;
 			return song;
 		}
 	}
