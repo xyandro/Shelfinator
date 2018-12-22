@@ -54,6 +54,7 @@ namespace Shelfinator
 
 			switch (code)
 			{
+			case Play: paused = !paused; break;
 			case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
 			case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
 			case Previous: audio->SetTime(0); break;
@@ -123,9 +124,8 @@ namespace Shelfinator
 				for (auto ctr = songNumberCount - 1; ctr >= 0; --ctr)
 					songs->MakeFirst(songNumbers[ctr]);
 
-			auto startLoad = timer->Millis();
-			LoadSong();
-			auto loadTime = timer->Millis() - startLoad;
+			paused = startPaused;
+
 			auto startDraw = timer->Millis();
 			auto driver = Driver::Create(dotStar);
 			while (running)
@@ -133,15 +133,21 @@ namespace Shelfinator
 				if (HandleRemote())
 					continue;
 
-				//if ((time < 0) || (time >= song->GetLength()))
-				//{
-				//	songIndex += time < 0 ? -1 : 1;
-				//	LoadSong(time < 0);
-				//	continue;
-				//}
+				auto time = audio->GetTime();
+				if (time == -1)
+				{
+					if (paused)
+						std::this_thread::sleep_for(std::chrono::milliseconds(100));
+					else
+					{
+						++songIndex;
+						LoadSong(false);
+					}
+					continue;
+				}
 
 				auto lights = Lights::Create();
-				song->SetLights((int)(audio->GetTime()), brightness / 100.0, lights);
+				song->SetLights(time, brightness / 100.0, lights);
 				if (banner)
 					banner->SetLights(lights);
 				driver->SetLights(lights);
@@ -150,7 +156,7 @@ namespace Shelfinator
 				{
 					auto drawTime = timer->Millis() - startDraw;
 					auto fps = (double)frameCount / drawTime * 1000;
-					fprintf(stderr, "Load time was %i. FPS is %f.\n", loadTime, fps);
+					fprintf(stderr, "FPS is %f.\n", fps);
 				}
 			}
 			driver->SetLights(Lights::Create());

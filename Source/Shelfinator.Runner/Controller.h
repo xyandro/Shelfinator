@@ -31,8 +31,8 @@ namespace Shelfinator
 			static const double multipliers[];
 			static std::wstring multiplierNames[];
 
-			bool running = true;
-			int songIndex = 0, selectedNumber = -1, lastRemoteTime = -1;
+			bool running = true, paused = false;
+			int songIndex = -1, selectedNumber = -1, lastRemoteTime = -1;
 			int brightness = 100;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;

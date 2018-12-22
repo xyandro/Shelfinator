@@ -63,6 +63,7 @@ namespace Shelfinator.Creator
 			}
 			dotStarBitmap.Source = bitmap;
 			controller = new Controller(this, this);
+			mediaPlayer.MediaEnded += (s, e) => Stop();
 		}
 
 		public void Run(List<int> songNumbers, bool startPaused) => new Thread(() => controller.Run(songNumbers, startPaused)).Start();
