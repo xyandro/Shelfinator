@@ -233,76 +233,6 @@ namespace Shelfinator.Creator.Songs
 			}
 		}
 
-		int? GetLight(Point p, bool allowHeader = true)
-		{
-			int? light = null;
-			if ((p.Y < 0) && (allowHeader))
-				light = light ?? headerLayout.TryGetPositionLight(new Point(p.X, p.Y + 10));
-			return light ?? bodyLayout.TryGetPositionLight(p);
-		}
-
-		Point NextLocation(Point location, Point dest, bool runAway = false)
-		{
-			if ((location.Y < 0) && (dest.Y >= 0))
-				dest = new Point(((dest.X - 39) / 18 * 31).Round(), dest.Y);
-			else if ((location.Y >= 0) && (dest.Y < 0))
-				dest = new Point((dest.X / 31 * 18 + 39).Round(), dest.Y);
-
-			if ((location.Y == 0) && (dest.Y < 0))
-			{
-				var p = new Point(((location.X - 39) / 18 * 31).Round(), -3);
-				if (GetLight(p, !runAway) != null)
-					return p;
-
-				return new Point(location.X + (dest.X < location.X ? -1 : 1), location.Y);
-			}
-			else if ((location.Y == -3) && (dest.Y >= 0))
-			{
-				var p = new Point(((location.X) / 31 * 18 + 39).Round(), 0);
-				if (GetLight(p, !runAway) != null)
-					return p;
-
-				return new Point(location.X + (dest.X < location.X ? -1 : 1), location.Y);
-			}
-			else if (Math.Abs(location.Y - dest.Y) >= Math.Abs(location.X - dest.X))
-			{
-				var next = new Point(location.X, location.Y + (location.Y <= dest.Y != runAway ? 1 : -1));
-				if (GetLight(next, !runAway) != null)
-					return next;
-				var x = location.X - location.X % 19 + 1;
-				var back = Math.Abs(x - dest.X) <= Math.Abs(x + 18 - dest.X);
-				next = new Point(location.X + (back != runAway ? -1 : 1), location.Y);
-				if (GetLight(next, !runAway) != null)
-					return next;
-				next = new Point(location.X + (back == runAway ? -1 : 1), location.Y);
-				if (GetLight(next, !runAway) != null)
-					return next;
-			}
-			else
-			{
-				var next = new Point(location.X + (location.X <= dest.X != runAway ? 1 : -1), location.Y);
-				if (GetLight(next, !runAway) != null)
-					return next;
-				bool back;
-				if (location.Y < 0)
-					back = dest.Y < location.Y;
-				else
-				{
-					var y = location.Y - location.Y % 19 + 1;
-					back = Math.Abs(y - dest.Y) <= Math.Abs(y + 18 - dest.Y);
-				}
-
-				next = new Point(location.X, location.Y + (back != runAway ? -1 : 1));
-				if (GetLight(next, !runAway) != null)
-					return next;
-				next = new Point(location.X, location.Y + (back == runAway ? -1 : 1));
-				if (GetLight(next, !runAway) != null)
-					return next;
-			}
-
-			throw new Exception("Cannot find next point");
-		}
-
 		void MoveHunters(List<Player> hunters, List<Player> players)
 		{
 			while (true)
@@ -324,7 +254,7 @@ namespace Shelfinator.Creator.Songs
 					var close = ideas.Where(idea => idea.Item1 == hunter).Select(idea => idea.Item2).ToList();
 					var closest = close.Where(player => !busy.Contains(player)).Concat(close).First();
 					busy.Add(closest);
-					hunter.Position = NextLocation(hunter.Position, closest.Position);
+					hunter.Position = SongHelper.NextLocation(hunter.Position, closest.Position);
 				}
 
 				break;
@@ -340,7 +270,7 @@ namespace Shelfinator.Creator.Songs
 					var closest = hunters.Where(hunter => (!hunter.Tagged)).OrderBy(hunter => (player.Position - hunter.Position).LengthSquared).FirstOrDefault();
 					if ((closest != null) && ((closest.Position - player.Position).Length < RunAwayDistance))
 					{
-						player.Position = NextLocation(player.Position, closest.Position, true);
+						player.Position = SongHelper.NextLocation(player.Position, closest.Position, true);
 						player.Destination = null;
 						continue;
 					}
@@ -350,11 +280,11 @@ namespace Shelfinator.Creator.Songs
 					while (true)
 					{
 						player.Destination = player.Tagged ? new Point(rand.Next(32), rand.Next(8) - 10) : new Point(rand.Next(97), rand.Next(97));
-						if ((player.Destination.Value != player.Position) && (GetLight(player.Destination.Value) != null))
+						if ((player.Destination.Value != player.Position) && (SongHelper.GetLight(player.Destination.Value) != null))
 							break;
 					}
 
-				player.Position = NextLocation(player.Position, player.Destination.Value);
+				player.Position = SongHelper.NextLocation(player.Position, player.Destination.Value);
 				if (player.Position == player.Destination.Value)
 					player.Destination = null;
 			}
@@ -408,8 +338,8 @@ namespace Shelfinator.Creator.Songs
 						stopTime = stopTime ?? time + EndingDelay;
 
 					segment.Clear(time);
-					players.ForEach(player => segment.AddLight(GetLight(player.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(player.Tagged ? 0x0000ff : player.Color, Brightness)));
-					hunters.ForEach(hunter => segment.AddLight(GetLight(hunter.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness / (hunter.Tagged ? 3 : 1))));
+					players.ForEach(player => segment.AddLight(SongHelper.GetLight(player.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(player.Tagged ? 0x0000ff : player.Color, Brightness)));
+					hunters.ForEach(hunter => segment.AddLight(SongHelper.GetLight(hunter.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness / (hunter.Tagged ? 3 : 1))));
 				}
 
 				++time;

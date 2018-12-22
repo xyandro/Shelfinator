@@ -99,8 +99,10 @@
     <EmbeddedResource Include="Songs\Love\Phoebe.png" />
     <EmbeddedResource Include="Songs\Love\Sophie.png" />
     <EmbeddedResource Include="Songs\Love\Timo.png" />
+    <Compile Include="Songs\Popular.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
+    <Compile Include="Songs\SongHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">

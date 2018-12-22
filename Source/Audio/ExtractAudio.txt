@@ -16,3 +16,12 @@ file 'song.wav'
 ffmpeg.exe -y -f concat -i a.txt -c copy "shutupanddance.wav"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:09.500 -ar 44100 "hello.wav"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "1.wav"
+ffmpeg.exe -y -ss 00:00:00.082 -i "MIKA feat Ariana Grande 'Popular Song' [audio]-4H6qwPJT9W0.mkv" -ar 44100 -filter:a loudnorm "2.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.408 -ar 44100 "3.wav"
+Write a.txt:
+file '1.wav'
+file '2.wav'
+file '3.wav'
+ffmpeg.exe -y -f concat -i a.txt -c copy "popular.wav"
