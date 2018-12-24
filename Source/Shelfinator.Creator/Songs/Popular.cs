@@ -24,17 +24,17 @@ namespace Shelfinator.Creator.Songs
 			{
 				new List<List<int>>
 				{
-					new List<int> { Helpers.MultiplyColor(0xff0000, Brightness), Helpers.MultiplyColor(0xff0000, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0x00ff00, Brightness), Helpers.MultiplyColor(0x00ff00, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 4) },
+					new List<int> { Helpers.MultiplyColor(0xff0000, Brightness), Helpers.MultiplyColor(0xff0000, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0x00ff00, Brightness), Helpers.MultiplyColor(0x00ff00, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 8) },
 				},
 				new List<List<int>>
 				{
-					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0xff0000, Brightness), Helpers.MultiplyColor(0xff0000, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 4) },
-					new List<int> { Helpers.MultiplyColor(0x00ff00, Brightness), Helpers.MultiplyColor(0x00ff00, Brightness / 4) }
+					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0xff0000, Brightness), Helpers.MultiplyColor(0xff0000, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0x0000ff, Brightness), Helpers.MultiplyColor(0x0000ff, Brightness / 8) },
+					new List<int> { Helpers.MultiplyColor(0x00ff00, Brightness), Helpers.MultiplyColor(0x00ff00, Brightness / 8) }
 				},
 			};
 
@@ -542,19 +542,15 @@ namespace Shelfinator.Creator.Songs
 
 			// Maze (78068)
 			var maze = Maze(0); // Solution length: 17
-			song.AddSegmentWithRepeat(maze, 0, 0, 78068, 7272);
+			song.AddSegmentWithRepeat(maze, 0, 0, 78068, 9696);
 			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 			maze = Maze(2003); // Solution length: 19
-			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 7272);
-			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			maze = Maze(32648); // Solution length: 23
-			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 7272);
+			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 12120);
 			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 			maze = Maze(3062193); // Solution length: 25
-			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 7272);
+			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 12120);
 			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
 
