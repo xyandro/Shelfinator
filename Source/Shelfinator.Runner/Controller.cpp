@@ -40,8 +40,6 @@ namespace Shelfinator
 			if ((selectedNumber != -1) && (now - lastRemoteTime >= 1000))
 				useSelectedNumber = true;
 
-			auto lastBrightness = brightness;
-
 			auto code = None;
 			{
 				std::unique_lock<std::mutex> lock(remoteMutex);
@@ -54,13 +52,23 @@ namespace Shelfinator
 
 			switch (code)
 			{
-			case Play: paused = !paused; break;
+			case Play:
+			case Pause:
+				banner = Banner::Create(L"▶", 0, 1000);
+				paused = !paused;
+				break;
 			case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
 			case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
-			case Previous: audio->SetTime(0); break;
+			case Previous:
+				if (audio->GetTime() < 2000)
+					--songIndex;
+				--songIndex;
+				audio->Stop();
+				break;
+			case Next:
+				audio->Stop();
+				break;
 			case Enter: useSelectedNumber = true; break;
-			case VolumeUp: brightness += 10; break;
-			case VolumeDown: brightness -= 10; break;
 			case D0:
 			case D1:
 			case D2:
@@ -82,11 +90,6 @@ namespace Shelfinator
 			case Info: banner = Banner::Create(std::to_wstring(songs->GetValue(songIndex)), 0, 1000, 1); break;
 			default: result = false; break;
 			}
-
-			if (brightness < 0)
-				brightness = 0;
-			if (lastBrightness != brightness)
-				banner = Banner::Create(std::to_wstring(brightness) + L'%', 0, 1000, 1);
 
 			if ((useSelectedNumber) && (selectedNumber != -1))
 			{
@@ -133,23 +136,33 @@ namespace Shelfinator
 				if (HandleRemote())
 					continue;
 
+				auto lights = Lights::Create();
+				if (banner)
+				{
+					if (banner->Expired())
+						banner.reset();
+					else
+						banner->SetLights(lights);
+				}
+
 				auto time = audio->GetTime();
 				if (time == -1)
 				{
 					if (paused)
+					{
 						std::this_thread::sleep_for(std::chrono::milliseconds(100));
+						if (!banner)
+							banner = Banner::Create(L"•   ", 0, 5000);
+					}
 					else
 					{
 						++songIndex;
 						LoadSong(false);
 					}
-					continue;
 				}
+				else
+					song->SetLights(time, 1, lights);
 
-				auto lights = Lights::Create();
-				song->SetLights(time, brightness / 100.0, lights);
-				if (banner)
-					banner->SetLights(lights);
 				driver->SetLights(lights);
 
 				if (++frameCount == 100)

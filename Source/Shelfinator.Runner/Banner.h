@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Lights.h"
+#include "Timer.h"
 
 namespace Shelfinator
 {
@@ -11,17 +12,17 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Banner> ptr;
-			static ptr Create(std::wstring text, int scrollTime, int fadeTime, int spacing = -1, int color = 0x101010);
+			static ptr Create(std::wstring text, int scrollDuration, int fadeDuration, int spacing = -1, int color = 0x101010);
 			~Banner();
 			void SetLights(Lights::ptr lights);
-			void AddElapsed(int delta);
 			bool Expired();
 		private:
 			static int lightPosition[8][32];
 			bool **grid;
-			int elapsed = 0, scrollTime, fadeTime, color, width;
+			int scrollDuration, fadeDuration, color, width;
+			Timer::ptr timer;
 
-			Banner(std::wstring text, int scrollTime, int fadeTime, int spacing = -1, int color = 0x101010);
+			Banner(std::wstring text, int scrollDuration, int fadeDuration, int spacing = -1, int color = 0x101010);
 		};
 	}
 }

@@ -122,15 +122,16 @@ namespace Shelfinator
 			{ 262, 263, 278, 279, 294, 295, 310, 311, 326, 327, 342, 343, 358, 359, 374, 375, 390, 391, 406, 407, 422, 423, 438, 439, 454, 455, 470, 471, 486, 487, 502, 503 },
 		};
 
-		Banner::ptr Banner::Create(std::wstring text, int scrollTime, int fadeTime, int spacing, int color)
+		Banner::ptr Banner::Create(std::wstring text, int scrollDuration, int fadeDuration, int spacing, int color)
 		{
-			return ptr(new Banner(text, scrollTime, fadeTime, spacing, color));
+			return ptr(new Banner(text, scrollDuration, fadeDuration, spacing, color));
 		}
 
-		Banner::Banner(std::wstring text, int scrollTime, int fadeTime, int spacing, int color)
+		Banner::Banner(std::wstring text, int scrollDuration, int fadeDuration, int spacing, int color)
 		{
-			this->scrollTime = scrollTime;
-			this->fadeTime = fadeTime;
+			timer = Timer::Create();
+			this->scrollDuration = scrollDuration;
+			this->fadeDuration = fadeDuration;
 			this->color = color;
 
 			width = 0;
@@ -172,7 +173,7 @@ namespace Shelfinator
 
 		void Banner::SetLights(Lights::ptr lights)
 		{
-			auto x1 = scrollTime <= 0 ? 0 : elapsed * (width - 31) / scrollTime;
+			auto x1 = scrollDuration <= 0 ? 0 : timer->Millis() * (width - 31) / scrollDuration;
 			if (x1 > width - 31)
 				x1 = width - 31;
 			if (x1 < 0)
@@ -184,7 +185,7 @@ namespace Shelfinator
 
 			auto xOfs = (32 - x2 + x1) / 2 - x1;
 
-			auto fade = fadeTime <= 0 ? 1 : 1 - ((double)elapsed - scrollTime) / fadeTime;
+			auto fade = fadeDuration <= 0 ? 1 : 1 - ((double)timer->Millis() - scrollDuration) / fadeDuration;
 			if (fade < 0)
 				fade = 0;
 			if (fade > 1)
@@ -196,14 +197,9 @@ namespace Shelfinator
 						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(color, fade));
 		}
 
-		void Banner::AddElapsed(int delta)
-		{
-			elapsed += delta;
-		}
-
 		bool Banner::Expired()
 		{
-			return elapsed >= scrollTime + fadeTime;
+			return timer->Millis() >= scrollDuration + fadeDuration;
 		}
 	}
 }
