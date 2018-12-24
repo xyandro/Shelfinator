@@ -161,12 +161,12 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var whiteRed = new List<int> { 0xffffff, 0xff0000, 0xffffff, 0xff0000, 0xffffff, 0xff0000 }.Multiply(Brightness).ToList();
-			var rgb = new List<int> { 0xff0000, 0x00ff00, 0x0000ff, 0xff0000, 0x00ff00, 0x0000ff }.Multiply(Brightness).ToList();
 			var pastel = new List<int> { 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25 }.Multiply(Brightness).ToList();
+			var rgb = new List<int> { 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList();
 			var rainbow = Helpers.Rainbow6.Multiply(Brightness).ToList();
 			rainbow.InsertRange(0, rainbow.Skip(1).Reverse().ToList());
 
-			var color = new LightColor(-96, 96, whiteRed, rgb, pastel, rainbow);
+			var color = new LightColor(-96, 96, whiteRed, pastel, rgb, rainbow);
 
 			var center = new Point(0, 0);
 			for (var angle = 0; angle < 90; ++angle)
@@ -740,7 +740,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Paths (161750)
 			var paths = Paths();
-			song.AddSegmentWithRepeat(paths, 0, 72, 161750, 3750, 3);
+			song.AddSegmentWithRepeat(paths, 0, 72, 161750, 5625, 2);
 			song.AddPaletteSequence(161750, 0);
 			song.AddPaletteSequence(166875, 167875, null, 1);
 			song.AddPaletteSequence(173000, 0);

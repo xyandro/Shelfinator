@@ -196,7 +196,7 @@ namespace Shelfinator.Creator.Songs
 			{
 				var lights = bodyLayout.GetMappedLights(squaresLayout, order[ctr % 25]);
 				foreach (var light in lights)
-					segment.AddLight(light, times[ctr], times[ctr] + 4848, color, ctr % 6, Segment.Absolute, 0x000000);
+					segment.AddLight(light, times[ctr], times[ctr] + 606, color, ctr % 6, Segment.Absolute, 0x000000);
 			}
 			return segment;
 		}
@@ -500,7 +500,6 @@ namespace Shelfinator.Creator.Songs
 			var song = new Song("popular.wav");
 
 			// PulseSquares (500)
-			Emulator.TestPosition = 500;
 			var pulseSquares = PulseSquares();
 			song.AddSegmentWithRepeat(pulseSquares, 0, 100, 500, 2424, 4);
 			song.AddPaletteSequence(500, 0);

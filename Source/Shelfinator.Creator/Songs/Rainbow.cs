@@ -549,7 +549,6 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(203627, 204627, null, 2);
 			song.AddPaletteSequence(209578, 210578, null, 3);
 
-			Emulator.TestPosition = 194895;
 			return song;
 		}
 	}
