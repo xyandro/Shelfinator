@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
@@ -64,6 +65,10 @@ namespace Shelfinator.Creator
 			dotStarBitmap.Source = bitmap;
 			controller = new Controller(this, this);
 			mediaPlayer.MediaEnded += (s, e) => Stop();
+
+			viewport3D1.Camera = new PerspectiveCamera { Position = new Point3D(6, 5, 4), LookDirection = new Vector3D(-6, -5, -4) };
+			meshMain.Positions = new Point3DCollection(new List<Point3D> { new Point3D(0, 0, 0), new Point3D(1, 0, 0), new Point3D(0, 1, 0), new Point3D(1, 1, 0), new Point3D(0, 0, 1), new Point3D(1, 0, 1), new Point3D(0, 1, 1), new Point3D(1, 1, 1) });
+			meshMain.TriangleIndices = new Int32Collection(new List<int> { 2, 3, 1, 2, 1, 0, 7, 1, 3, 7, 5, 1, 6, 5, 7, 6, 4, 5, 6, 2, 0, 2, 0, 4, 2, 7, 3, 2, 6, 7, 0, 1, 5, 0, 5, 4 });
 		}
 
 		public void Run(List<int> songNumbers, bool startPaused) => new Thread(() => controller.Run(songNumbers, startPaused)).Start();

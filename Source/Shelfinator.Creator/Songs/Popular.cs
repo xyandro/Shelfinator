@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
@@ -328,6 +332,63 @@ namespace Shelfinator.Creator.Songs
 			}
 		}
 
+		Point3D RotatePoint(Point3D point, double xAngle, double yAngle, double zAngle)
+		{
+			point = new Point3D(point.X, point.Y * Math.Cos(xAngle) + point.Z * Math.Sin(xAngle), -point.Y * Math.Sin(xAngle) + point.Z * Math.Cos(xAngle));
+			point = new Point3D(point.X * Math.Cos(yAngle) + point.Z * Math.Sin(yAngle), point.Y, -point.X * Math.Sin(yAngle) + point.Z * Math.Cos(yAngle));
+			point = new Point3D(point.X * Math.Cos(zAngle) + point.Y * Math.Sin(zAngle), -point.X * Math.Sin(zAngle) + point.Y * Math.Cos(zAngle), point.Z);
+			return point;
+		}
+
+		Point AdjustPoint(Point3D point, double scale, double xOfs, double yOfs, double zOfs) => new Point(point.X * scale + xOfs, point.Y * scale + yOfs);
+
+		void RenderCanvas(Canvas canvas, Segment segment, int time)
+		{
+			canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
+			canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
+
+			var rtb = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, 96, 96, PixelFormats.Pbgra32);
+			rtb.Render(canvas);
+			var buffer = new uint[rtb.PixelWidth * rtb.PixelHeight];
+			rtb.CopyPixels(buffer, rtb.PixelWidth * 4, 0);
+
+			var bufferPos = 0;
+			for (var y = 0; y < rtb.PixelHeight; ++y)
+				for (var x = 0; x < rtb.PixelWidth; ++x)
+				{
+					var value = (int)(buffer[bufferPos++] & 0xffffff);
+					foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 1))
+						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(value, Brightness));
+				}
+		}
+
+		Segment Cube()
+		{
+			var segment = new Segment();
+			//var canvas = new Canvas() { Width = 97, Height = 97 };
+
+			//var viewPort = new Viewport3D { Camera = new PerspectiveCamera { Position = new Point3D(6, 5, 4), LookDirection = new Vector3D(-6, -5, -4) } };
+			//viewPort.Children.Add(new ModelVisual3D { Content = new DirectionalLight { Direction = new Vector3D(-1, -1, -1) } });
+			//viewPort.Children.Add(new ModelVisual3D
+			//{
+			//	Content = new GeometryModel3D
+			//	{
+			//		Geometry = new MeshGeometry3D
+			//		{
+			//			Positions = new Point3DCollection(new List<Point3D> { new Point3D(0, 0, 0), new Point3D(1, 0, 0), new Point3D(0, 1, 0), new Point3D(1, 1, 0), new Point3D(0, 0, 1), new Point3D(1, 0, 1), new Point3D(0, 1, 1), new Point3D(1, 1, 1) }),
+			//			TriangleIndices = new Int32Collection(new List<int> { 2, 3, 1, 2, 1, 0, 7, 1, 3, 7, 5, 1, 6, 5, 7, 6, 4, 5, 6, 2, 0, 2, 0, 4, 2, 7, 3, 2, 6, 7, 0, 1, 5, 0, 5, 4 })
+			//		},
+			//		Material = new DiffuseMaterial(Brushes.Red)
+			//	}
+			//});
+
+			//canvas.Children.Add(viewPort);
+
+			//RenderCanvas(canvas, segment, 0);
+
+			return segment;
+		}
+
 		Segment Crowd()
 		{
 			const int Loops = 3;
@@ -413,6 +474,10 @@ namespace Shelfinator.Creator.Songs
 		public Song Render()
 		{
 			var song = new Song("popular.wav");
+
+			// Cube (0)
+			var cube = Cube();
+			song.AddSegmentWithRepeat(cube, 0, 0, 0, 2424, 4);
 
 			// PulseSquares (500)
 			var pulseSquares = PulseSquares();

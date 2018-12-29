@@ -4,7 +4,31 @@
 	Title="Shelfinator" Background="Black" Visibility="Visible">
 
 	<Grid>
-		<Image Name="dotStarBitmap"/>
+		<Viewport3D Name="viewport3D1">
+			<ModelVisual3D>
+				<ModelVisual3D.Content>
+					<DirectionalLight x:Name="dirLightMain" Direction="-1,-1,-1">
+					</DirectionalLight>
+				</ModelVisual3D.Content>
+			</ModelVisual3D>
+			<ModelVisual3D>
+				<ModelVisual3D.Content>
+					<GeometryModel3D>
+						<GeometryModel3D.Geometry>
+							<MeshGeometry3D x:Name="meshMain"/>
+						</GeometryModel3D.Geometry>
+						<GeometryModel3D.Material>
+							<DiffuseMaterial x:Name="matDiffuseMain">
+								<DiffuseMaterial.Brush>
+									<SolidColorBrush Color="Red"/>
+								</DiffuseMaterial.Brush>
+							</DiffuseMaterial>
+						</GeometryModel3D.Material>
+					</GeometryModel3D>
+				</ModelVisual3D.Content>
+			</ModelVisual3D>
+		</Viewport3D>
+		<Image Name="dotStarBitmap" Visibility="Collapsed"/>
 		<MediaElement Name="mediaPlayer" LoadedBehavior="Manual" Visibility="Collapsed"/>
 	</Grid>
 </Window>
