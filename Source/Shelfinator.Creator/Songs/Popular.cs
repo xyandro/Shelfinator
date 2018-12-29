@@ -268,134 +268,25 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		List<Tuple<int, int, bool>> CalculateMaze(Random rand)
-		{
-			var walls = new List<Tuple<int, int>>();
-			for (var y = 0; y < 6; ++y)
-				for (var x = 0; x < 6; ++x)
-				{
-					if (x != 5)
-						walls.Add(Tuple.Create(x + y * 6, x + 1 + y * 6)); // Horizontal
-					if (y != 5)
-						walls.Add(Tuple.Create(x + y * 6, x + (y + 1) * 6)); // Vertical
-				}
-
-
-			var cellWalls = Enumerable.Range(0, 36).Select(i => new List<Tuple<int, int>>()).ToList();
-			foreach (var wall in walls)
-			{
-				cellWalls[wall.Item1].Add(wall);
-				cellWalls[wall.Item2].Add(wall);
-			}
-
-			var visited = Enumerable.Repeat(false, 36).ToList();
-			var wallList = new HashSet<Tuple<int, int>>();
-			var broken = new List<Tuple<int, int>>();
-			var first = true;
-			while ((first) || (wallList.Any()))
-			{
-				int cell;
-				if (first)
-				{
-					cell = rand.Next(36);
-					first = false;
-				}
-				else
-				{
-					var wall = wallList.OrderBy(x => rand.Next()).First();
-					wallList.Remove(wall);
-					if (visited[wall.Item1] == visited[wall.Item2])
-						continue;
-
-					broken.Add(wall);
-					cell = visited[wall.Item1] ? wall.Item2 : wall.Item1;
-				}
-
-				visited[cell] = true;
-				foreach (var cellWall in cellWalls[cell])
-					wallList.Add(cellWall);
-			}
-
-			return walls.Select(wall => Tuple.Create(wall.Item1, wall.Item2, broken.Contains(wall))).ToList();
-		}
-
-		bool rSolveMaze(int cell, Dictionary<int, List<int>> nextCells, List<int> path)
-		{
-			path.Add(cell);
-
-			if (cell == 35)
-				return true;
-
-			foreach (var nextCell in nextCells[cell])
-				if (!path.Contains(nextCell))
-					if (rSolveMaze(nextCell, nextCells, path))
-						return true;
-
-			path.RemoveAt(path.Count - 1);
-			return false;
-		}
-
-		List<int> SolveMaze(List<Tuple<int, int, bool>> walls)
-		{
-			var nextCells = walls.Where(tuple => tuple.Item3).SelectMany(tuple => new List<Tuple<int, int>> { Tuple.Create(tuple.Item1, tuple.Item2), Tuple.Create(tuple.Item2, tuple.Item1) }).Where(tuple => tuple.Item1 != tuple.Item2).GroupBy(tuple => tuple.Item1).ToDictionary(group => group.Key, group => group.Select(tuple => tuple.Item2).ToList());
-			var path = new List<int>();
-			rSolveMaze(0, nextCells, path);
-			return path;
-		}
-
-		Segment Maze(int seed)
+		Segment Wavey()
 		{
 			var segment = new Segment();
-
-			// Header
-			const string header = "0,0&1,0&5,0&6,0&0,1&1,1&2,1&4,1&5,1&6,1&0,2&1,2&2,2&3,2&4,2&5,2&6,2&0,3&1,3&3,3&5,3&6,3&0,4&1,4&5,4&6,4&0,5&1,5&5,5&6,5&0,6&1,6&5,6&6,6&0,7&1,7&5,7&6,7&11,0&10,1&11,1&12,1&9,2&10,2&11,2&12,2&13,2&8,3&9,3&13,3&14,3&8,4&9,4&10,4&11,4&12,4&13,4&14,4&8,5&9,5&10,5&11,5&12,5&13,5&14,5&8,6&9,6&13,6&14,6&8,7&9,7&13,7&14,7&16,0&17,0&18,0&19,0&20,0&21,0&16,1&17,1&18,1&19,1&20,1&21,1&19,2&20,2&18,3&19,3&17,4&18,4&16,5&17,5&16,6&17,6&18,6&19,6&20,6&21,6&16,7&17,7&18,7&19,7&20,7&21,7&23,0&24,0&25,0&26,0&27,0&28,0&23,1&24,1&25,1&26,1&27,1&28,1&23,2&24,2&23,3&24,3&25,3&26,3&23,4&24,4&25,4&26,4&23,5&24,5&23,6&24,6&25,6&26,6&27,6&28,6&23,7&24,7&25,7&26,7&27,7&28,7&30,0&31,0&30,1&31,1&30,2&31,2&30,3&31,3&30,4&31,4&30,6&31,6&30,7&31,7";
-			var headerColor = new LightColor(70, 1589, new List<int> { 0x00ffff, 0x0000ff }.Multiply(Brightness).ToList());
-			var headerCenter = new Point(15.5, 3.5);
-			header.Split('&').Select(Point.Parse).ForEach(point => segment.AddLight(headerLayout.GetPositionLight(point), 0, headerColor, ((point - headerCenter).Length * 100).Round()));
-
-			foreach (var light in bodyLayout.GetAllLights())
-				segment.AddLight(light, 0, Segment.Absolute, 0x010101);
-
-			var rand = new Random(seed);
-			var walls = CalculateMaze(rand);
-			foreach (var wall in walls)
-			{
-				if (wall.Item3)
-					continue;
-
-				var wallX = (wall.Item1 % 6) * 19;
-				var wallY = (wall.Item1 / 6) * 19;
-				if (wall.Item1 + 1 == wall.Item2)
-					wallX += rand.Next(2, 17);
-				else
-					wallY += rand.Next(2, 17);
-
-				foreach (var light in bodyLayout.GetPositionLights(wallX, wallY, 2, 2))
-					segment.AddLight(light, 0, Segment.Absolute, Helpers.MultiplyColor(0xff0000, Brightness));
-			}
-			foreach (var light in bodyLayout.GetPositionLights(0, 0, 2, 2))
-				segment.AddLight(light, 0, Segment.Absolute, Helpers.MultiplyColor(0x00ff00, Brightness));
-			foreach (var light in bodyLayout.GetPositionLights(95, 95, 2, 2))
-				segment.AddLight(light, 0, Segment.Absolute, Helpers.MultiplyColor(0x0000ff, Brightness));
-
-			int time = 1, x = 0, y = 0;
-			var solution = SolveMaze(walls);
-			foreach (var step in solution)
-			{
-				var newX = (step % 6) * 19;
-				var newY = (step / 6) * 19;
-				var xOfs = newX.CompareTo(x);
-				var yOfs = newY.CompareTo(y);
-				while ((x != newX) || (y != newY))
+			var colors = new List<int> { 0xffffff, 0xff0000, 0xffff00, 0x0000ff, 0xff00ff, 0x3aafa9 };
+			var lightColor = new LightColor(0, 291, colors.Select(x => new List<int> { x, 0x000000, x, 0x000000, x, 0x000000, x }.Multiply(Brightness).ToList()).ToList());
+			for (var x = 0; x < 97; ++x)
+				for (var y = 0; y < 97; y += 19)
 				{
-					x += xOfs;
-					y += yOfs;
-					foreach (var light in bodyLayout.GetPositionLights(x, y, 2, 2))
-						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0x00ff00, Brightness));
-					++time;
+					segment.AddLight(bodyLayout.GetPositionLight(x, y), 0, 1, lightColor, x + y, lightColor, x + y + 97, true);
+					segment.AddLight(bodyLayout.GetPositionLight(x, y + 1), 0, 1, lightColor, 97 - x + y, lightColor, 194 - x + y, true);
 				}
-			}
-
+			for (var y = 0; y < 97; ++y)
+				for (var x = 0; x < 97; x += 19)
+				{
+					if ((y + 1) % 19 - 1 < 3)
+						continue;
+					segment.AddLight(bodyLayout.GetPositionLight(x, y), 0, 1, lightColor, x + y, lightColor, x + y + 97, true);
+					segment.AddLight(bodyLayout.GetPositionLight(x + 1, y), 0, 1, lightColor, 97 + x - y, lightColor, 194 + x - y, true);
+				}
 			return segment;
 		}
 
@@ -540,19 +431,18 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(67872, 68872, null, 2);
 			song.AddPaletteSequence(78068, 0);
 
-			// Maze (78068)
-			var maze = Maze(0); // Solution length: 17
-			song.AddSegmentWithRepeat(maze, 0, 0, 78068, 9696);
-			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			maze = Maze(2003); // Solution length: 19
-			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 12120);
-			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			maze = Maze(3062193); // Solution length: 25
-			song.AddSegmentWithRepeat(maze, 0, 0, song.MaxTime(), 12120);
-			song.AddSegmentWithRepeat(maze, 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
-			song.AddSegmentWithRepeat(maze, maze.MaxTime() + 1, maze.MaxTime() + 1, song.MaxTime(), 2424);
+			// Wavey (78068)
+			var wavey = Wavey();
+			song.AddSegmentWithRepeat(wavey, 0, 1, 78068, 2424, 12);
+			song.AddPaletteSequence(78068, 0);
+			song.AddPaletteSequence(82416, 83416, null, 1);
+			song.AddPaletteSequence(87264, 88264, null, 2);
+			song.AddPaletteSequence(92112, 93112, null, 3);
+			song.AddPaletteSequence(96960, 97960, null, 4);
+			song.AddPaletteSequence(101808, 102808, null, 5);
+			song.AddPaletteSequence(107156, 0);
+
+			// Next (107156)
 
 			// Crowd (126548)
 			var crowd = Crowd();
