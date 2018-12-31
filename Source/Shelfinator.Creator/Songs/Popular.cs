@@ -207,7 +207,7 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, 192,
 				new List<int> { 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000 }.Multiply(Brightness).ToList(),
 				new List<int> { 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0000ff, 0x000000, 0x0000ff, 0x000000, 0x0000ff }.Multiply(Brightness).ToList(),
+				new List<int> { 0x0000ff, 0x000000, 0x000000, 0x0000ff, 0x000000, 0x000000, 0x0000ff }.Multiply(Brightness).ToList(),
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).Multiply(Brightness).ToList()
 			);
 			for (var ctr = 0; ctr < 97; ++ctr)
@@ -273,8 +273,8 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var lightColor = new LightColor(0, 291, new List<List<int>> {
-				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff, 0x000000, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
 				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
 				new List<int> { 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000 }.Multiply(Brightness).ToList(),
 				new List<int> { 0xff0000, 0x00ff00, 0x0000ff, 0xff0000, 0x00ff00, 0x0000ff, 0xff0000, 0x00ff00, 0x0000ff, 0xff0000 }.Multiply(Brightness).ToList(),
@@ -296,7 +296,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var colors = new List<int> { 0xffffff, 0x00ff00, 0xff00ff, 0xff0000, 0x00ffff, 0x0000ff, 0xffff00, 0xf7007c };
-			var lightColor = new LightColor(0, 291, colors.Select(x => new List<int> { x, 0x000000, x, 0x000000, x, 0x000000, x }.Multiply(Brightness).ToList()).ToList());
+			var lightColor = new LightColor(0, 291, colors.Select(x => new List<int> { x, 0x000000, 0x000000, 0x000000, x, 0x000000, 0x000000, 0x000000, x, 0x000000, 0x000000, 0x000000, x }.Multiply(Brightness).ToList()).ToList());
 			for (var x = 0; x < 97; ++x)
 				for (var y = 0; y < 97; y += 19)
 				{
@@ -466,13 +466,13 @@ namespace Shelfinator.Creator.Songs
 			var wavey = Wavey();
 			song.AddSegmentWithRepeat(wavey, 0, 1, 107156, 2424, 8);
 			song.AddPaletteSequence(107156, 0);
-			song.AddPaletteSequence(109580, 1);
-			song.AddPaletteSequence(112004, 2);
-			song.AddPaletteSequence(114428, 3);
-			song.AddPaletteSequence(116852, 4);
-			song.AddPaletteSequence(119276, 5);
-			song.AddPaletteSequence(121700, 6);
-			song.AddPaletteSequence(124124, 7);
+			song.AddPaletteSequence(109330, 109830, null, 1);
+			song.AddPaletteSequence(111754, 112254, null, 2);
+			song.AddPaletteSequence(114178, 114678, null, 3);
+			song.AddPaletteSequence(116602, 117102, null, 4);
+			song.AddPaletteSequence(119026, 119526, null, 5);
+			song.AddPaletteSequence(121450, 121950, null, 6);
+			song.AddPaletteSequence(123874, 124374, null, 7);
 			song.AddPaletteSequence(126548, 0);
 
 			// RainbowSquare (126548)
