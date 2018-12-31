@@ -206,7 +206,8 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 			var color = new LightColor(0, 192,
 				new List<int> { 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000, 0x00ff00, 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ffff, 0x00ffff, 0xff00ff, 0xff00ff, 0x00ffff, 0x00ffff, 0xff00ff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff }.Multiply(Brightness).ToList(),
+				new List<int> { 0x0000ff, 0x000000, 0x0000ff, 0x000000, 0x0000ff }.Multiply(Brightness).ToList(),
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).Multiply(Brightness).ToList()
 			);
 			for (var ctr = 0; ctr < 97; ++ctr)
@@ -329,7 +330,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment Crowd()
 		{
-			const int Loops = 4;
+			const int Loops = 3;
 			const int LoopDelay = 250;
 			const int StartDelay = LoopDelay / 8;
 			var colors = new List<int> { 0x80ff40, 0x0000ff, 0xffc000, 0x00ff80, 0xc040ff, 0xff8000, 0x0040ff, 0x80ff80, 0xffff00, 0x8000ff, 0xff00c0, 0xff4080, 0xc0ffff, 0x80c0ff, 0x40ffff, 0xff4000, 0x4040ff, 0x80ffff, 0x40ff00, 0xff00ff, 0xc080ff, 0xffc080, 0x40c0ff, 0xff40c0, 0xff80c0, 0xc0ff00, 0x00ff40, 0xc0ff40, 0x80ff00, 0x8080ff, 0xffff40, 0xc0ffc0, 0x00ffff, 0xff80ff, 0x40ff40, 0xffc0ff };
@@ -446,24 +447,20 @@ namespace Shelfinator.Creator.Songs
 			var syncSquares = SyncSquares();
 			song.AddSegmentWithRepeat(syncSquares, 29588, 48980, 29588, 19392);
 
-			// RainbowSquare (48980)
-			var rainbowSquare = RainbowSquare();
-			song.AddSegmentWithRepeat(rainbowSquare, 0, 1000, 48980, 2424, 12);
+			// SineShine (48980)
+			var sineShine = SineShine();
+			song.AddSegmentWithRepeat(sineShine, 0, 1, 48980, 2424, 12);
 			song.AddPaletteSequence(48980, 0);
-			song.AddPaletteSequence(58176, 59176, null, 1);
-			song.AddPaletteSequence(67872, 68872, null, 2);
+			song.AddPaletteSequence(53328, 54328, null, 1);
+			song.AddPaletteSequence(58176, 59176, null, 2);
+			song.AddPaletteSequence(63024, 64024, null, 3);
+			song.AddPaletteSequence(67872, 68872, null, 4);
+			song.AddPaletteSequence(72720, 73720, null, 5);
 			song.AddPaletteSequence(78068, 0);
 
-			// SineShine (78068)
-			var sineShine = SineShine();
-			song.AddSegmentWithRepeat(sineShine, 0, 1, 78068, 2424, 12);
-			song.AddPaletteSequence(78068, 0);
-			song.AddPaletteSequence(82416, 83416, null, 1);
-			song.AddPaletteSequence(87264, 88264, null, 2);
-			song.AddPaletteSequence(92112, 93112, null, 3);
-			song.AddPaletteSequence(96960, 97960, null, 4);
-			song.AddPaletteSequence(101808, 102808, null, 5);
-			song.AddPaletteSequence(107156, 0);
+			// Crowd (78068)
+			var crowd = Crowd();
+			song.AddSegmentWithRepeat(crowd, 0, 250 * 3, 78068, 2424 * 4 * 3);
 
 			// Wavey (107156)
 			var wavey = Wavey();
@@ -478,9 +475,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(124124, 7);
 			song.AddPaletteSequence(126548, 0);
 
-			// Crowd (126548)
-			var crowd = Crowd();
-			song.AddSegmentWithRepeat(crowd, 0, 250 * 4, 126548, 2424 * 4 * 4);
+			// RainbowSquare (126548)
+			var rainbowSquare = RainbowSquare();
+			song.AddSegmentWithRepeat(rainbowSquare, 0, 1000, 126548, 2424, 16);
+			song.AddPaletteSequence(126548, 0);
+			song.AddPaletteSequence(135744, 136744, null, 1);
+			song.AddPaletteSequence(145440, 146440, null, 2);
+			song.AddPaletteSequence(155136, 156136, null, 3);
+			song.AddPaletteSequence(165332, 0);
 
 			// Stairs (165332)
 			var stairs = Stairs();
