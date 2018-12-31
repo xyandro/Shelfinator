@@ -3,6 +3,7 @@
 #include <alsa/asoundlib.h>
 #include <sndfile.h>
 #include <thread>
+#include "Helpers.h"
 
 namespace Shelfinator
 {
@@ -11,6 +12,11 @@ namespace Shelfinator
 		Audio::ptr Audio::Create()
 		{
 			return ptr(new Audio());
+		}
+
+		Audio::Audio()
+		{
+			path = Helpers::GetRunPath();
 		}
 
 		void Audio::Play(std::string fileName)
@@ -26,7 +32,8 @@ namespace Shelfinator
 			snd_pcm_open(&pcm_handle, "default", SND_PCM_STREAM_PLAYBACK, 0);
 
 			SF_INFO sf_info;
-			auto infile = sf_open(fileName.c_str(), SFM_READ, &sf_info);
+			auto fullPath = path + fileName;
+			auto infile = sf_open(fullPath.c_str(), SFM_READ, &sf_info);
 			snd_pcm_hw_params_t *hw_params;
 			snd_pcm_hw_params_alloca(&hw_params);
 			snd_pcm_hw_params_any(pcm_handle, hw_params);

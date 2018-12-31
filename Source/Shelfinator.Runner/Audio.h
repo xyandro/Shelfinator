@@ -17,11 +17,13 @@ namespace Shelfinator
 			int GetTime();
 			void SetTime(int time);
 		private:
+			std::string path;
 			enum { Stopped, Playing, Stopping } playing = Stopped;
 			std::mutex mutex;
 			std::condition_variable condVar;
 			int time = -1;
 
+			Audio();
 			void PlayWAVThread(std::string fileName);
 		};
 	}
