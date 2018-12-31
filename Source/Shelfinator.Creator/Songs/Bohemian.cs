@@ -916,7 +916,7 @@ namespace Shelfinator.Creator.Songs
 			var flood = Flood();
 			song.AddSegmentWithRepeat(flood, 0, 4400, 202891, 4400 / 200 * 1600);
 
-			// Next (238104)
+			// Flashy (238104)
 			var flashy = Flashy();
 			song.AddSegmentWithRepeat(flashy, 0, 10000, 238104);
 

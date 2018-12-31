@@ -268,10 +268,33 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SineShine()
+		{
+			var segment = new Segment();
+			var lightColor = new LightColor(0, 291, new List<List<int>> {
+				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000, 0x000000, 0x00ff00, 0x000000, 0x0000ff, 0x000000, 0xff0000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0xff0000, 0x00ff00, 0x0000ff, 0xff0000, 0x00ff00, 0x0000ff, 0xff0000, 0x00ff00, 0x0000ff, 0xff0000 }.Multiply(Brightness).ToList(),
+				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).Multiply(Brightness).ToList(),
+			});
+			for (var x = 0; x < 97; ++x)
+				for (var y = 0; y < 97; ++y)
+				{
+					foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 1))
+					{
+						var yVal = (Math.Abs(48 - x) + Math.Sin(y * Math.PI / 180 * 360 / 96) * 48).Round();
+						segment.AddLight(light, 0, 1, lightColor, yVal + 97 * 2, lightColor, yVal + 97, true);
+					}
+				}
+			return segment;
+		}
+
 		Segment Wavey()
 		{
 			var segment = new Segment();
-			var colors = new List<int> { 0xffffff, 0xff0000, 0xffff00, 0x0000ff, 0xff00ff, 0x3aafa9 };
+			var colors = new List<int> { 0xffffff, 0x00ff00, 0xff00ff, 0xff0000, 0x00ffff, 0x0000ff, 0xffff00, 0xf7007c };
 			var lightColor = new LightColor(0, 291, colors.Select(x => new List<int> { x, 0x000000, x, 0x000000, x, 0x000000, x }.Multiply(Brightness).ToList()).ToList());
 			for (var x = 0; x < 97; ++x)
 				for (var y = 0; y < 97; y += 19)
@@ -431,9 +454,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(67872, 68872, null, 2);
 			song.AddPaletteSequence(78068, 0);
 
-			// Wavey (78068)
-			var wavey = Wavey();
-			song.AddSegmentWithRepeat(wavey, 0, 1, 78068, 2424, 12);
+			// SineShine (78068)
+			var sineShine = SineShine();
+			song.AddSegmentWithRepeat(sineShine, 0, 1, 78068, 2424, 12);
 			song.AddPaletteSequence(78068, 0);
 			song.AddPaletteSequence(82416, 83416, null, 1);
 			song.AddPaletteSequence(87264, 88264, null, 2);
@@ -442,7 +465,18 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(101808, 102808, null, 5);
 			song.AddPaletteSequence(107156, 0);
 
-			// Next (107156)
+			// Wavey (107156)
+			var wavey = Wavey();
+			song.AddSegmentWithRepeat(wavey, 0, 1, 107156, 2424, 8);
+			song.AddPaletteSequence(107156, 0);
+			song.AddPaletteSequence(109580, 1);
+			song.AddPaletteSequence(112004, 2);
+			song.AddPaletteSequence(114428, 3);
+			song.AddPaletteSequence(116852, 4);
+			song.AddPaletteSequence(119276, 5);
+			song.AddPaletteSequence(121700, 6);
+			song.AddPaletteSequence(124124, 7);
+			song.AddPaletteSequence(126548, 0);
 
 			// Crowd (126548)
 			var crowd = Crowd();
