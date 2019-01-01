@@ -25,3 +25,5 @@ file '1.wav'
 file '2.wav'
 file '3.wav'
 ffmpeg.exe -y -f concat -i a.txt -c copy "popular.wav"
+
+ffmpeg.exe -y -ss 00:00:05.500 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-NEID-youtube-LRP8d7hhpoQ.mkv" -ar 44100 -filter:a loudnorm "hallelujah.wav"

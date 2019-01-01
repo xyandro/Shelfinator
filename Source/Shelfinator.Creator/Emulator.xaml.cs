@@ -71,6 +71,7 @@ namespace Shelfinator.Creator
 		public void TestAll(int lightCount, int delay, byte brightness) => new Thread(() => controller.TestAll(lightCount, delay, brightness)).Start();
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+		bool ShiftDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
@@ -105,10 +106,9 @@ namespace Shelfinator.Creator
 
 		void CopyPosition()
 		{
-			var str = "";
+			var str = (ShiftDown ? DateTime.Now.TimeOfDay : mediaPlayer.Position).TotalMilliseconds.ToString();
 			if (ControlDown)
-				str = Clipboard.GetText() + ",";
-			str += mediaPlayer.Position.TotalMilliseconds.Round().ToString();
+				str = Clipboard.GetText() + "," + str;
 			Clipboard.SetText(str);
 		}
 
