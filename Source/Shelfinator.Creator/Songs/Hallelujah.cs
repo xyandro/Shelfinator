@@ -132,52 +132,42 @@ namespace Shelfinator.Creator.Songs
 			public Point Point => new Point(X, Y);
 		}
 
-		Segment SnowFall(out int time)
+		Segment SnowFall()
 		{
-			const int AddEach = 15;
+			const double InitialTime = 50;
+			const double TimeModifier = 0.999782689004043;
 			var segment = new Segment();
 			var rand = new Random(0x3984753);
-			var full = new bool[97, 97];
 			var flakes = new List<SnowFlake>();
 			var color = new LightColor(0, 1000, new List<int> { 0xffffff, 0x0000ff, 0x00ffff, 0xab97d2 }.Multiply(Brightness).ToList());
-			time = 0;
-			while (true)
+			var fallTime = 0;
+			for (var time = 0; time < 20000; ++time)
 			{
-				if (time % 10 == 0)
+				if (time >= fallTime)
 				{
-					var addColumn = Enumerable.Range(0, 97).Where(x => !full[x, 0]).OrderBy(x => rand.Next()).Distinct().Take(AddEach).ToList();
-					flakes.AddRange(addColumn.Select(column => new SnowFlake(column)));
+					var column = rand.Next(0, 97);
+					flakes.Add(new SnowFlake(column));
+					fallTime = (time + InitialTime * Math.Pow(TimeModifier, time)).Round();
 				}
 
-				foreach (var flake in flakes)
+				for (var ctr = 0; ctr < flakes.Count; ++ctr)
 				{
+					var flake = flakes[ctr];
 					if (time % flake.Speed != 0)
-						continue;
-					if ((flake.Y == 96) || (full[flake.X, flake.Y + 1]))
 						continue;
 
 					if (flake.Y != -1)
-					{
-						full[flake.X, flake.Y] = false;
 						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
 							segment.AddLight(light, time, Segment.Absolute, 0x000000);
-					}
+
 					++flake.Y;
-					full[flake.X, flake.Y] = true;
-					foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
-						segment.AddLight(light, time, color, flake.Color);
+
+					if (flake.Y > 96)
+						flakes.RemoveAt(ctr--);
+					else
+						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
+							segment.AddLight(light, time, color, flake.Color);
 				}
-
-				++time;
-
-				var done = true;
-				for (var x = 0; x < 97; ++x)
-					for (var y = 0; y < 97; ++y)
-						if (!full[x, y])
-							done = false;
-
-				if (done)
-					break;
 			}
 
 			return segment;
@@ -213,11 +203,10 @@ namespace Shelfinator.Creator.Songs
 
 			// SnowFall (48700)
 			Emulator.TestPosition = 48700;
-			var snowFall = SnowFall(out var snowFallTime);
-			song.AddSegmentWithRepeat(snowFall, 0, snowFallTime, 48700, 30000);
-			song.AddSegmentWithRepeat(snowFall, snowFallTime, snowFallTime, song.MaxTime(), 2000);
+			var snowFall = SnowFall();
+			song.AddSegmentWithRepeat(snowFall, 0, 20000, 48700, 40000);
 
-			// Next (80700)
+			// Next (88700)
 
 			// Fireworks
 

@@ -106,7 +106,7 @@ namespace Shelfinator.Creator
 
 		void CopyPosition()
 		{
-			var str = (ShiftDown ? DateTime.Now.TimeOfDay : mediaPlayer.Position).TotalMilliseconds.ToString();
+			var str = (ShiftDown ? DateTime.Now.TimeOfDay : mediaPlayer.Position).TotalMilliseconds.Round().ToString();
 			if (ControlDown)
 				str = Clipboard.GetText() + "," + str;
 			Clipboard.SetText(str);
