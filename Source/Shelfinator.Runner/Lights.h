@@ -15,7 +15,7 @@ namespace Shelfinator
 			void SetLight(int light, int value);
 			void Show(IDotStar::ptr dotStar);
 		private:
-			int lights[2440];
+			int lights[9665];
 			Lights();
 			void PreventOverage();
 		};
