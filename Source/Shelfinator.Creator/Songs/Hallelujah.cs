@@ -15,7 +15,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment Bounce()
 		{
-			const int Length = 1500;
+			const int Length = 750;
 			var segment = new Segment();
 			var points = new List<Point> { new Point(0, 0), new Point(0, 95), new Point(95, 95), new Point(95, 0) };
 			var direction = new List<Vector> { new Vector(0, 1), new Vector(1, 0), new Vector(0, -1), new Vector(-1, 0) };
@@ -43,7 +43,7 @@ namespace Shelfinator.Creator.Songs
 						}
 						++time;
 					}
-					velocity = -7d / 8d * (2d * duration / 95d + velocity);
+					velocity = -3d / 4d * (2d * duration / 95d + velocity);
 					pos = 95d;
 					if (velocity > -0.05)
 						break;
@@ -87,7 +87,7 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, 360, new List<List<int>>
 			{
 				new List<int> { 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x00ffff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList(),
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6.Take(1)).Multiply(Brightness).ToList(),
 			});
@@ -120,6 +120,69 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		class SnowFlake
+		{
+			static Random rand = new Random(0xdeadb33);
+			public int X { get; set; }
+			public int Y { get; set; } = -1;
+			public int Speed { get; set; } = rand.Next(6, 11);
+			public int Color { get; set; } = rand.Next(0, 1000);
+
+			public SnowFlake(int x) => X = x;
+			public Point Point => new Point(X, Y);
+		}
+
+		Segment SnowFall(out int time)
+		{
+			const int AddEach = 15;
+			var segment = new Segment();
+			var rand = new Random(0x3984753);
+			var full = new bool[97, 97];
+			var flakes = new List<SnowFlake>();
+			var color = new LightColor(0, 1000, new List<int> { 0xffffff, 0x0000ff, 0x00ffff, 0xab97d2 }.Multiply(Brightness).ToList());
+			time = 0;
+			while (true)
+			{
+				if (time % 10 == 0)
+				{
+					var addColumn = Enumerable.Range(0, 97).Where(x => !full[x, 0]).OrderBy(x => rand.Next()).Distinct().Take(AddEach).ToList();
+					flakes.AddRange(addColumn.Select(column => new SnowFlake(column)));
+				}
+
+				foreach (var flake in flakes)
+				{
+					if (time % flake.Speed != 0)
+						continue;
+					if ((flake.Y == 96) || (full[flake.X, flake.Y + 1]))
+						continue;
+
+					if (flake.Y != -1)
+					{
+						full[flake.X, flake.Y] = false;
+						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
+							segment.AddLight(light, time, Segment.Absolute, 0x000000);
+					}
+					++flake.Y;
+					full[flake.X, flake.Y] = true;
+					foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
+						segment.AddLight(light, time, color, flake.Color);
+				}
+
+				++time;
+
+				var done = true;
+				for (var x = 0; x < 97; ++x)
+					for (var y = 0; y < 97; ++y)
+						if (!full[x, y])
+							done = false;
+
+				if (done)
+					break;
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
@@ -128,7 +191,7 @@ namespace Shelfinator.Creator.Songs
 			// Bounce (0)
 			var bounce = Bounce();
 			song.AddSegmentWithRepeat(bounce, 0, 0, 0, 700);
-			song.AddSegmentWithRepeat(bounce, 0, 1500 * 4, 700, 16000);
+			song.AddSegmentWithRepeat(bounce, 0, 750 * 4, 700, 16000);
 
 			// Lines (16700)
 			var linesSquares = LinesSquares();
@@ -140,7 +203,6 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(32700, 0);
 
 			// SpinColor (32700)
-			Emulator.TestPosition = 32700;
 			var spinColor = SpinColor();
 			song.AddSegmentWithRepeat(spinColor, 0, 360, 32700, 8000, 2);
 			song.AddPaletteSequence(32700, 0);
@@ -149,9 +211,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(44200, 45200, null, 3);
 			song.AddPaletteSequence(48700, 0);
 
-			// Next (48700)
+			// SnowFall (48700)
+			Emulator.TestPosition = 48700;
+			var snowFall = SnowFall(out var snowFallTime);
+			song.AddSegmentWithRepeat(snowFall, 0, snowFallTime, 48700, 30000);
+			song.AddSegmentWithRepeat(snowFall, snowFallTime, snowFallTime, song.MaxTime(), 2000);
 
-			// Snowfall accumulating
+			// Next (80700)
+
 			// Fireworks
 
 			return song;
