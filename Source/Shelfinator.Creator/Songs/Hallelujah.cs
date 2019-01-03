@@ -53,7 +53,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment LinesSquares()
+		Segment FourCircle()
 		{
 			var segment = new Segment();
 			var color = new LightColor(0, 0, new List<List<int>>
@@ -183,9 +183,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentWithRepeat(bounce, 0, 0, 0, 700);
 			song.AddSegmentWithRepeat(bounce, 0, 750 * 4, 700, 16000);
 
-			// Lines (16700)
-			var linesSquares = LinesSquares();
-			song.AddSegmentWithRepeat(linesSquares, 0, 38, 16700, 4000, 4);
+			// FourCircle (16700)
+			var fourCircle = FourCircle();
+			song.AddSegmentWithRepeat(fourCircle, 0, 38, 16700, 4000, 4);
 			song.AddPaletteSequence(16700, 0);
 			song.AddPaletteSequence(20200, 21200, null, 1);
 			song.AddPaletteSequence(24200, 25200, null, 2);
