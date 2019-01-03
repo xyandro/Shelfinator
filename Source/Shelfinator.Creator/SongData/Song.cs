@@ -97,17 +97,14 @@ namespace Shelfinator.Creator.SongData
 				paletteSequences.Add(new PaletteSequence(endTime, int.MaxValue, endPaletteIndex, endPaletteIndex));
 		}
 
-		public void Save(string fileName)
+		public void Save(int songNumber)
 		{
-			using (var output = new BinaryWriter(File.Create(fileName)))
+			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.BuildDirectory, $"{songNumber}.pat"))))
 				Save(output);
 
-			var outputFile = Path.Combine(Path.GetDirectoryName(fileName), songFileName);
-			if (!File.Exists(outputFile))
-			{
-				var inputFile = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Song).Assembly.Location)), "Source", "Audio", songFileName);
-				File.Copy(inputFile, outputFile, true);
-			}
+			var audioFile = Path.Combine(Helpers.BuildDirectory, songFileName);
+			if (!File.Exists(audioFile))
+				File.Copy(Path.Combine(Helpers.AudioDirectory, songFileName), audioFile, true);
 		}
 
 		public void Save(BinaryWriter output)

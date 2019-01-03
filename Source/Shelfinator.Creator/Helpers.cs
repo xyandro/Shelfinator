@@ -116,5 +116,8 @@ namespace Shelfinator.Creator
 				return default(Point);
 			return new Point((xMin + xMax) / 2, (yMin + yMax) / 2);
 		}
+
+		public static string BuildDirectory { get; } = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Helpers).Assembly.Location))))), "Build");
+		public static string AudioDirectory { get; } = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Helpers).Assembly.Location)))), "Audio");
 	}
 }

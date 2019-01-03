@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using Shelfinator.Creator.Songs;
@@ -55,11 +54,7 @@ namespace Shelfinator.Creator
 					throw new Exception($"Song(s) not found");
 
 				foreach (var song in match)
-				{
-					var fileName = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), $"{song.SongNumber}.pat");
-					var rendered = song.Render();
-					rendered.Save(fileName);
-				}
+					song.Render().Save(song.SongNumber);
 			}
 
 			var window = new Emulator(small);

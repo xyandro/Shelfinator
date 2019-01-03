@@ -130,7 +130,7 @@ namespace Shelfinator.Creator
 
 			Dispatcher.Invoke(() =>
 			{
-				mediaPlayer.Source = new Uri(Path.Combine(Directory.GetCurrentDirectory(), fileName));
+				mediaPlayer.Source = new Uri(Path.Combine(Helpers.BuildDirectory, fileName));
 				mediaPlayer.Play();
 			});
 			playing = true;

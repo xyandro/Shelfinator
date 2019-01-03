@@ -83,7 +83,9 @@ namespace Shelfinator
 			char buf[1024];
 #ifdef _WIN32
 			GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
-			*(strrchr(buf, '\\') + 1) = 0;
+			for (auto ctr = 0; ctr < 5; ++ctr)
+				*strrchr(buf, '\\') = 0;
+			strcat(buf, "\\Build\\");
 #else
 			readlink("/proc/self/exe", buf, sizeof(buf) / sizeof(*buf));
 			*(strrchr(buf, '/') + 1) = 0;
