@@ -173,6 +173,24 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SyncFlash()
+		{
+			var times = new List<int> { 0, 750, 1000, 2000, 4000, 4750, 5000, 6000, 8000, 8750, 9000, 10000, 12000, 12750, 13000, 14500, 14750, 15000, 16750, 17000, 17333, 17667, 18000, 18333, 18667, 19000, 19333, 19667, 20000, 20333, 20667, 21000, 21333, 21667, 22000, 22333, 22667, 23000, 23333, 23667, 24000, 24333, 24667, 25000 };
+			var notes = new List<int> { 3, 1, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 1, 3, 2, 3, 4, 5, 5, 2, 1, 0, 3, 4, 5, 2, 1, 0, 5, 4, 3, 2, 1, 0, 3, 4, 5, 2, 1, 0, 5, 4 };
+			var segment = new Segment();
+			var color = new LightColor(0, 5, Helpers.Rainbow6.Multiply(Brightness).ToList());
+
+			for (var ctr = 0; ctr < notes.Count; ctr++)
+			{
+				var y = 19 * notes[ctr];
+				for (var x = 0; x < 97; ++x)
+					foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 2).Concat(bodyLayout.GetPositionLights(y, x, 2, 1)))
+						segment.AddLight(light, times[ctr] + Math.Abs(48 - x), times[ctr + 1], color, ctr % 6, Segment.Absolute, Helpers.MultiplyColor(0x000000, Brightness));
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
@@ -202,11 +220,15 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(48700, 0);
 
 			// SnowFall (48700)
-			Emulator.TestPosition = 48700;
 			var snowFall = SnowFall();
-			song.AddSegmentWithRepeat(snowFall, 0, 20000, 48700, 40000);
+			song.AddSegmentWithRepeat(snowFall, 0, 20000, 48700, 39000);
 
-			// Next (88700)
+			// SyncFlash (87700)
+			Emulator.TestPosition = 87700;
+			var syncFlash = SyncFlash();
+			song.AddSegmentWithRepeat(syncFlash, 0, 25000, 87700, 25000);
+
+			// Next (112700)
 
 			// Fireworks
 
