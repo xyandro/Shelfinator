@@ -135,12 +135,13 @@ namespace Shelfinator.Creator.Songs
 		Segment SnowFall()
 		{
 			const double InitialTime = 50;
-			const double TimeModifier = 0.999782689004043;
+			const double TimeModifier = 0.9995;
 			var segment = new Segment();
 			var rand = new Random(0x3984753);
 			var flakes = new List<SnowFlake>();
 			var color = new LightColor(0, 1000, new List<int> { 0xffffff, 0x0000ff, 0x00ffff, 0xab97d2 }.Multiply(Brightness).ToList());
 			var fallTime = 0;
+			var columnMax = Enumerable.Repeat(96, 97).ToList();
 			for (var time = 0; time < 20000; ++time)
 			{
 				if (time >= fallTime)
@@ -150,23 +151,33 @@ namespace Shelfinator.Creator.Songs
 					fallTime = (time + InitialTime * Math.Pow(TimeModifier, time)).Round();
 				}
 
+				foreach (var flake in flakes)
+				{
+					if (time % flake.Speed != 0)
+						continue;
+
+					if (flake.Y < columnMax[flake.X])
+						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
+							segment.AddLight(light, time, Segment.Absolute, 0x000000);
+				}
+
 				for (var ctr = 0; ctr < flakes.Count; ++ctr)
 				{
 					var flake = flakes[ctr];
 					if (time % flake.Speed != 0)
 						continue;
 
-					if (flake.Y != -1)
-						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
-							segment.AddLight(light, time, Segment.Absolute, 0x000000);
-
 					++flake.Y;
 
-					if (flake.Y > 96)
+					var remove = flake.Y >= columnMax[flake.X];
+					if (remove)
+						flake.Y = columnMax[flake.X]--;
+
+					foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
+						segment.AddLight(light, time, color, flake.Color);
+
+					if (remove)
 						flakes.RemoveAt(ctr--);
-					else
-						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
-							segment.AddLight(light, time, color, flake.Color);
 				}
 			}
 
