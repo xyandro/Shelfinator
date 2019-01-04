@@ -191,6 +191,53 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment RotateSquares(out int time)
+		{
+			var segment = new Segment();
+			var attached = new List<List<int>>
+			{
+				new List<int> { 0, 2, 4, 10, 12, 14, 20, 22, 24 },
+				new List<int> { 5, 7, 9, 15, 17, 19 },
+				new List<int> { 6, 8, 16, 18 },
+				new List<int> { 1, 3, 11, 13, 21, 23 },
+			};
+
+			var color = new LightColor(900, 6788,
+				new List<int> { 0xffffff, 0xffffff, 0x000000, 0x000000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
+				new List<int> { 0xffff00, 0xff00ff }.Multiply(Brightness).ToList(),
+				Helpers.Rainbow6.Multiply(Brightness).ToList()
+			);
+
+			var center = new Point(48, 48);
+			for (var y = 0; y < 97; y += 19)
+				for (var x = 0; x < 97; x += 19)
+					foreach (var light in bodyLayout.GetPositionLights(x, y, 2, 2))
+						segment.AddLight(light, 0, color, ((new Point(x, y) - center).Length * 100).Round());
+
+			var create = new List<Vector> { new Vector(0, 0), new Vector(19, 0), new Vector(19, 19), new Vector(0, 19) };
+			var dirs = new List<Vector> { new Vector(1, 0), new Vector(0, 1), new Vector(-1, 0), new Vector(0, -1) };
+			time = 0;
+			foreach (var set in attached)
+			{
+				var points = set.Select(square => new Point(square % 5 * 19, square / 5 * 19)).SelectMany(point => create.Select(dir => point + dir)).ToList();
+				for (var x = 0; x < 19; ++x)
+				{
+					for (var ctr = 0; ctr < points.Count; ctr++)
+					{
+						foreach (var light in bodyLayout.GetPositionLights(points[ctr], 2, 2))
+							segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0x000000, Brightness));
+						points[ctr] += dirs[ctr % 4];
+						foreach (var light in bodyLayout.GetPositionLights(points[ctr], 2, 2))
+							segment.AddLight(light, time, color, ((points[ctr] - center).Length * 100).Round());
+					}
+					++time;
+				}
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
@@ -224,11 +271,20 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentWithRepeat(snowFall, 0, 20000, 48700, 39000);
 
 			// SyncFlash (87700)
-			Emulator.TestPosition = 87700;
 			var syncFlash = SyncFlash();
 			song.AddSegmentWithRepeat(syncFlash, 0, 25000, 87700, 25000);
 
-			// Next (112700)
+			// RotateSquares (112700)
+			Emulator.TestPosition = 112700;
+			var rotateSquares = RotateSquares(out var rotateSquaresTime);
+			song.AddSegmentWithRepeat(rotateSquares, 0, rotateSquaresTime, 112700, 4000, 8);
+			song.AddPaletteSequence(112700, 0);
+			song.AddPaletteSequence(120200, 121200, null, 1);
+			song.AddPaletteSequence(128200, 129200, null, 2);
+			song.AddPaletteSequence(136200, 137200, null, 3);
+			song.AddPaletteSequence(144700, 0);
+
+			// Next (144700)
 
 			// Fireworks
 
