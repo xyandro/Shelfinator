@@ -278,6 +278,83 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SunSet(out int time)
+		{
+			const double HillStartY = 66;
+			const double HillMiddleX = 37;
+			const double HillMiddleY = 60;
+
+			const double SunStartY = 90;
+			const double SunMiddleX = 86;
+			const double SunMiddleY = 10;
+			const double SunRadius = 10;
+
+			const double RedPercent = 0.5;
+			const double FadePercent = 0.3;
+
+			const double HillA = (HillStartY - HillMiddleY) / (HillMiddleX * HillMiddleX);
+			const double SunA = (SunStartY - SunMiddleY) / (SunMiddleX * SunMiddleX);
+
+			var segment = new Segment();
+
+			var sunColor = new LightColor(new List<int> { Helpers.MultiplyColor(0xffff00, Brightness) }, new List<int> { 0x000000 });
+			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x000080, 0x000080 };
+			var reds = new List<int> { 0xff0000, 0xff7f00, 0x0000ff, 0x000080 };
+			var green = new LightColor(0, 10000, new List<int> { 0x00ff00, 0x00ff00, 0x008000 }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
+
+			var ground = Enumerable.Range(0, 97).Select(x => (HillA * Math.Pow(x - HillMiddleX, 2) + HillMiddleY).Round()).ToList();
+
+			for (time = 0; time < 137; ++time)
+			{
+				segment.Clear(time);
+
+				var sunX = 86 - time;
+				var sunY = (SunA * Math.Pow(sunX - SunMiddleX, 2) + SunMiddleY).Round();
+				var sunPoint = new Point(sunX, sunY);
+
+				var percent = (double)time / 136;
+
+				// Sky
+				double redPercent;
+				if (percent >= RedPercent)
+					redPercent = 1;
+				else if (percent >= FadePercent)
+					redPercent = (percent - FadePercent) / (RedPercent - FadePercent);
+				else
+					redPercent = 0;
+				var blue = new LightColor(0, 10000, blues.Zip(reds, (r, b) => Helpers.GradientColor(r, b, redPercent)).Multiply(Brightness).ToList(), new List<int> { 0x000000 });
+				for (var x = 0; x < 97; x++)
+					for (var y = 0; y < ground[x]; ++y)
+					{
+						var point = new Point(x, y);
+						foreach (var light in bodyLayout.GetPositionLights(point, 1, 1))
+							segment.AddLight(light, time, blue, ((point - sunPoint).Length * 100).Round());
+					}
+
+				// Sun
+				for (var x = -SunRadius; x <= SunRadius; ++x)
+				{
+					var val = (Math.Sqrt(Math.Pow(SunRadius, 2) - Math.Pow(x, 2))).Round();
+					var yStart = sunY - val;
+					var yEnd = sunY + val;
+					for (var y = yStart; y <= yEnd; ++y)
+						foreach (var light in bodyLayout.GetPositionLights(x + sunX, y, 1, 1))
+							segment.AddLight(light, time, sunColor);
+				}
+
+				// Ground
+				for (var x = 0; x < 97; x++)
+					for (var y = ground[x]; y < 97; ++y)
+					{
+						var point = new Point(x, y);
+						foreach (var light in bodyLayout.GetPositionLights(point, 1, 1))
+							segment.AddLight(light, time, green, ((point - sunPoint).Length * 100).Round());
+					}
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
@@ -324,11 +401,20 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(144700, 0);
 
 			// SineMix (144700)
-			Emulator.TestPosition = 144700;
 			var sineMix = SineMix();
 			song.AddSegmentWithRepeat(sineMix, 0, 360, 144700, 4000, 4);
 
 			// Next (160700)
+
+			// SunSet (240700)
+			Emulator.TestPosition = 240700;
+			var sunSet = SunSet(out var sunTime);
+			song.AddSegmentWithRepeat(sunSet, 0, sunTime, 240700, 22000);
+			song.AddPaletteSequence(240700, 0);
+			song.AddPaletteSequence(262200, 262700, null, 1);
+			song.AddPaletteSequence(262700, 0);
+
+			// End (262700)
 
 			// Fireworks?
 
