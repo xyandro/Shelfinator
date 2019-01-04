@@ -1,1 +1,1 @@
-rsync -avHSP --delete-excluded --exclude "Shelfinator*" ~/shelfinator/Build/ ~/shelfinator2/
+rsync -avHSP --delete-excluded --exclude "Shelfinator*" ~/shelfinator/Patterns/ ~/shelfinator2/

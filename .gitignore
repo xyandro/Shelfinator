@@ -1,7 +1,7 @@
 ﻿*.o
 *.user
 .vs
-/Build
+/Patterns
 bin
 Debug
 obj

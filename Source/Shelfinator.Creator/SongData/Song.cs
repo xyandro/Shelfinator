@@ -99,6 +99,7 @@ namespace Shelfinator.Creator.SongData
 
 		public void Save(int songNumber)
 		{
+			Directory.CreateDirectory(Helpers.BuildDirectory);
 			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.BuildDirectory, $"{songNumber}.pat"))))
 				Save(output);
 

@@ -85,7 +85,7 @@ namespace Shelfinator
 			GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
 			for (auto ctr = 0; ctr < 5; ++ctr)
 				*strrchr(buf, '\\') = 0;
-			strcat(buf, "\\Build\\");
+			strcat(buf, "\\Patterns\\");
 #else
 			readlink("/proc/self/exe", buf, sizeof(buf) / sizeof(*buf));
 			*(strrchr(buf, '/') + 1) = 0;
