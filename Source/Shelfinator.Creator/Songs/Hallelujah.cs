@@ -244,6 +244,40 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SineMix()
+		{
+			const int Size = 21;
+			const int MidPoint = (Size - 1) / 2;
+			var segment = new Segment();
+			var color = new List<int> { 0x0000ff, 0x00ff00, 0xff0000 };
+			var colorMap = new Dictionary<int, LightColor>();
+
+			var geoIncrement = Math.Pow(0.5, 1.0 / MidPoint);
+			var lineMult = Enumerable.Range(0, Size).Select(line => 1.5 - Math.Pow(geoIncrement, MidPoint - Math.Abs(MidPoint - line))).ToList();
+
+			for (var angle = 0; angle < 360; ++angle)
+			{
+				var lineColor = Enumerable.Repeat(0x000000, 97).ToList();
+				for (var bar = 0; bar < 3; ++bar)
+				{
+					var startLine = ((Math.Sin((angle + bar * 60) * Math.PI / 180) + 1d) / 2d * (97 - Size)).Round();
+					for (var line = 0; line < Size; ++line)
+						lineColor[startLine + line] += Helpers.MultiplyColor(color[bar], lineMult[line]);
+				}
+
+				segment.Clear(angle);
+				for (var line = 0; line < lineColor.Count; ++line)
+				{
+					if (!colorMap.ContainsKey(lineColor[line]))
+						colorMap[lineColor[line]] = new LightColor(0, 96, new List<int> { Helpers.MultiplyColor(lineColor[line], Brightness / 2), Helpers.MultiplyColor(lineColor[line], Brightness), Helpers.MultiplyColor(lineColor[line], Brightness / 4) });
+					for (var x = 0; x < 97; ++x)
+						foreach (var light in bodyLayout.GetPositionLights(x, line, 1, 1))
+							segment.AddLight(light, angle, colorMap[lineColor[line]], x);
+				}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
@@ -281,7 +315,6 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentWithRepeat(syncFlash, 0, 25000, 87700, 25000);
 
 			// RotateSquares (112700)
-			Emulator.TestPosition = 112700;
 			var rotateSquares = RotateSquares(out var rotateSquaresTime);
 			song.AddSegmentWithRepeat(rotateSquares, 0, rotateSquaresTime, 112700, 4000, 8);
 			song.AddPaletteSequence(112700, 0);
@@ -290,9 +323,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(136200, 137200, null, 3);
 			song.AddPaletteSequence(144700, 0);
 
-			// Next (144700)
+			// SineMix (144700)
+			Emulator.TestPosition = 144700;
+			var sineMix = SineMix();
+			song.AddSegmentWithRepeat(sineMix, 0, 360, 144700, 4000, 4);
 
-			// Fireworks
+			// Next (160700)
+
+			// Fireworks?
 
 			return song;
 		}
