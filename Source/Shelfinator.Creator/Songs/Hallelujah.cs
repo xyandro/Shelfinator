@@ -278,6 +278,35 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment WalkAround()
+		{
+			const int Distance = 20;
+
+			var maxDistance = ((Distance + Math.Sqrt(2) * 48) * 100).Round();
+
+			var segment = new Segment();
+			var color = new LightColor(0, maxDistance * 2,
+				new List<int> { 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x000000, 0xffff00, 0x000000, 0xff0000, 0x000000, 0xffff00, 0x000000, 0xff0000, 0x000000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList(),
+				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).Reverse().Multiply(Brightness).ToList()
+			);
+			for (var angle = 0; angle < 360; ++angle)
+			{
+				var point = new Point(48, 48);
+				var direction = new Vector(Math.Sin(angle * Math.PI / 180), Math.Cos(angle * Math.PI / 180));
+				point += direction * Distance;
+
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					Point point1 = bodyLayout.GetLightPosition(light);
+					var distance = (point1 - point).Length * 100 + maxDistance * (1 - angle / 360d);
+					segment.AddLight(light, angle, color, distance.Round());
+				}
+			}
+			return segment;
+		}
+
 		Segment SunSet(out int time)
 		{
 			const double HillStartY = 66;
@@ -404,10 +433,19 @@ namespace Shelfinator.Creator.Songs
 			var sineMix = SineMix();
 			song.AddSegmentWithRepeat(sineMix, 0, 360, 144700, 4000, 4);
 
-			// Next (160700)
+			// WalkAround (160700)
+			Emulator.TestPosition = 160700;
+			var walkAround = WalkAround();
+			song.AddSegmentWithRepeat(walkAround, 0, 360, 160700, 4000, 8);
+			song.AddPaletteSequence(160700, 0);
+			song.AddPaletteSequence(168200, 169200, null, 1);
+			song.AddPaletteSequence(176200, 177200, null, 2);
+			song.AddPaletteSequence(184200, 185200, null, 3);
+			song.AddPaletteSequence(192700, 0);
+
+			// Next (192700)
 
 			// SunSet (240700)
-			Emulator.TestPosition = 240700;
 			var sunSet = SunSet(out var sunTime);
 			song.AddSegmentWithRepeat(sunSet, 0, sunTime, 240700, 22000);
 			song.AddPaletteSequence(240700, 0);
