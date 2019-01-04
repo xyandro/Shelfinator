@@ -221,11 +221,6 @@ namespace Shelfinator.Creator.Songs
 			);
 
 			var center = new Point(48, 48);
-			for (var y = 0; y < 97; y += 19)
-				for (var x = 0; x < 97; x += 19)
-					foreach (var light in bodyLayout.GetPositionLights(x, y, 2, 2))
-						segment.AddLight(light, 0, color, ((new Point(x, y) - center).Length * 100).Round());
-
 			var create = new List<Vector> { new Vector(0, 0), new Vector(19, 0), new Vector(19, 19), new Vector(0, 19) };
 			var dirs = new List<Vector> { new Vector(1, 0), new Vector(0, 1), new Vector(-1, 0), new Vector(0, -1) };
 			time = 0;
