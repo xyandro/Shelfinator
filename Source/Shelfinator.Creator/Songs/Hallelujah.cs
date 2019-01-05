@@ -334,7 +334,87 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment SunSet(out int time)
+		class FireworkPart
+		{
+			public Point Point { get; set; }
+			public int Color { get; set; }
+
+			readonly static Random rand = new Random(0x876aec);
+			readonly Point startPoint;
+			readonly Vector direction;
+			int time = 0;
+
+			public FireworkPart(Point point, int angle, int color)
+			{
+				startPoint = Point = point;
+				direction = new Vector(Math.Sin(angle * Math.PI / 180), Math.Cos(angle * Math.PI / 180));
+				Color = color;
+			}
+
+			public void Move()
+			{
+				++time;
+				var gravity = new Vector(0, 0.01 * time * time);
+				Point = startPoint + direction * time + gravity;
+			}
+
+			public static IEnumerable<FireworkPart> Create()
+			{
+				const int Parts = 20;
+
+				var point = new Point(rand.Next(30, 67), rand.Next(30, 67));
+				var color = rand.Next(0, 7);
+				for (var ctr = 0; ctr < Parts; ++ctr)
+					yield return new FireworkPart(point, ctr * 360 / Parts, color);
+			}
+		}
+
+		Segment Fireworks(out int time)
+		{
+			var launchTimes = new List<int> { 0, 1000, 3000, 3750, 4000, 5000, 7000, 7750, 8000, 9000, 11000, 12000, 12250, 14083, 15167, 15833, 16167, 17167, 19083, 19750, 20083, 20583, 20667, 21000, 23083, 23667, 24083, 25083, 27083, 27667, 28083, 28167, 28250, 29417, 29750, 30083, 31417, 31750, 32083 };
+
+			var parts = new List<FireworkPart>();
+			var color = new LightColor(0, 6, Helpers.Rainbow6.Multiply(Brightness).ToList());
+			var segment = new Segment();
+			var bounds = new Rect(0, 0, 97, 97);
+			time = 0;
+			var launchIndex = 0;
+			while (true)
+			{
+				if ((launchIndex < launchTimes.Count) && (time == launchTimes[launchIndex]))
+				{
+					parts.AddRange(FireworkPart.Create());
+					++launchIndex;
+				}
+
+				if (time % 50 == 0)
+				{
+					foreach (var part in parts)
+						foreach (var light in bodyLayout.GetPositionLights(part.Point, 1, 1))
+							segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0x000000, Brightness));
+
+					for (var ctr = 0; ctr < parts.Count; ctr++)
+					{
+						parts[ctr].Move();
+						if (!bounds.Contains(parts[ctr].Point))
+							parts.RemoveAt(ctr--);
+					}
+
+					if (((launchIndex == launchTimes.Count)) && (!parts.Any()))
+						break;
+
+					foreach (var part in parts)
+						foreach (var light in bodyLayout.GetPositionLights(part.Point, 1, 1))
+							segment.AddLight(light, time, color, part.Color);
+				}
+
+				++time;
+			}
+
+			return segment;
+		}
+
+		Segment Sunset(out int time)
 		{
 			const double HillStartY = 66;
 			const double HillMiddleX = 37;
@@ -470,7 +550,6 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(192700, 0);
 
 			// AllSquares (192700)
-			Emulator.TestPosition = 192700;
 			var allSquares = AllSquares(out var moveSquaresTime);
 			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime, 192700, 8000, 2);
 			song.AddPaletteSequence(192700, 0);
@@ -479,18 +558,18 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(204700, 3);
 			song.AddPaletteSequence(208700, 0);
 
-			// Next (208700)
+			// Fireworks (208700)
+			var fireworks = Fireworks(out var fireworksTime);
+			song.AddSegmentWithRepeat(fireworks, 0, fireworksTime, 208700);
 
-			// SunSet (240700)
-			var sunSet = SunSet(out var sunTime);
-			song.AddSegmentWithRepeat(sunSet, 0, sunTime, 240700, 22000);
-			song.AddPaletteSequence(240700, 0);
+			// Sunset (248700)
+			var sunset = Sunset(out var sunTime);
+			song.AddSegmentWithRepeat(sunset, 0, sunTime, 248700, 14000);
+			song.AddPaletteSequence(248700, 0);
 			song.AddPaletteSequence(262200, 262700, null, 1);
 			song.AddPaletteSequence(262700, 0);
 
 			// End (262700)
-
-			// Fireworks?
 
 			return song;
 		}
