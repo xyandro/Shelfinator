@@ -131,7 +131,7 @@ namespace Shelfinator.Creator
 			Dispatcher.Invoke(() =>
 			{
 				//mediaPlayer.SpeedRatio = 0.8;
-				mediaPlayer.Source = new Uri(Path.Combine(Helpers.BuildDirectory, fileName));
+				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, fileName));
 				mediaPlayer.Play();
 			});
 			playing = true;

@@ -99,11 +99,11 @@ namespace Shelfinator.Creator.SongData
 
 		public void Save(int songNumber)
 		{
-			Directory.CreateDirectory(Helpers.BuildDirectory);
-			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.BuildDirectory, $"{songNumber}.pat"))))
+			Directory.CreateDirectory(Helpers.PatternDirectory);
+			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.PatternDirectory, $"{songNumber}.pat"))))
 				Save(output);
 
-			var audioFile = Path.Combine(Helpers.BuildDirectory, songFileName);
+			var audioFile = Path.Combine(Helpers.PatternDirectory, songFileName);
 			if (!File.Exists(audioFile))
 				File.Copy(Path.Combine(Helpers.AudioDirectory, songFileName), audioFile, true);
 		}
