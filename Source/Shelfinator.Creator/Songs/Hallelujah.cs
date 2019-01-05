@@ -426,7 +426,7 @@ namespace Shelfinator.Creator.Songs
 			const double SunRadius = 10;
 
 			const double RedPercent = 0.5;
-			const double FadePercent = 0.3;
+			const double FadePercent = 0.25;
 
 			const double HillA = (HillStartY - HillMiddleY) / (HillMiddleX * HillMiddleX);
 			const double SunA = (SunStartY - SunMiddleY) / (SunMiddleX * SunMiddleX);
@@ -434,9 +434,9 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var sunColor = new LightColor(new List<int> { Helpers.MultiplyColor(0xffff00, Brightness) }, new List<int> { 0x000000 });
-			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x000080, 0x000080 };
-			var reds = new List<int> { 0xff0000, 0xff7f00, 0x0000ff, 0x000080 };
-			var green = new LightColor(0, 10000, new List<int> { 0x00ff00, 0x00ff00, 0x008000 }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
+			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff};
+			var reds = new List<int> { 0xff0000, 0xff0000, 0xff7f00, 0x000010 };
+			var green = new LightColor(0, 10000, new List<int> { 0x00ff00, 0x00ff00, 0x001000 }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
 
 			var ground = Enumerable.Range(0, 97).Select(x => (HillA * Math.Pow(x - HillMiddleX, 2) + HillMiddleY).Round()).ToList();
 
