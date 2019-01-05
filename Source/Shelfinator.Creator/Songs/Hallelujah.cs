@@ -307,6 +307,33 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment AllSquares(out int time)
+		{
+			const string RectData = "19,0,59,59&19,57,40,40&0,57,21,21&19,0,78,78&19,19,40,40&38,57,21,21&19,38,59,59&57,38,40,40&0,76,21,21&57,57,40,40&0,19,78,78&57,0,40,40&0,19,59,59&19,19,21,21&0,38,59,59&0,0,78,78&38,19,59,59&57,0,21,21&19,19,78,78&38,0,21,21&0,0,40,40&0,0,21,21&76,38,21,21&19,57,21,21&76,0,21,21&38,38,21,21&0,19,40,40&19,0,21,21&0,57,40,40&76,76,21,21&76,19,21,21&38,76,21,21&38,38,59,59&38,38,40,40&38,19,21,21&0,0,59,59&38,0,59,59&57,76,21,21&0,0,97,97&57,57,21,21&19,19,59,59&0,38,40,40&19,38,40,40&38,19,40,40&76,57,21,21&19,76,21,21&0,38,21,21&19,38,21,21&57,38,21,21&38,0,40,40&38,57,40,40&19,0,40,40&0,19,21,21&57,19,40,40&57,19,21,21";
+			var segment = new Segment();
+			time = 0;
+			var rects = RectData.Split('&').Select(Rect.Parse).ToList();
+			var color = new LightColor(0, 1000,
+				new List<int> { 0x404040, 0xffffff }.Multiply(Brightness).ToList(),
+				new List<int> { 0xff0000, 0xff00ff }.Multiply(Brightness).ToList(),
+				new List<int> { 0x0000ff, 0x00ffff }.Multiply(Brightness).ToList(),
+				Helpers.Rainbow6.Multiply(Brightness).ToList()
+			);
+			foreach (var rect in rects)
+			{
+				var center = rect.Location + new Vector(rect.Width, rect.Height) / 2;
+				var min = (new Point(rect.X + rect.Width / 2, rect.Y + 1) - center).Length;
+				var max = (rect.Location - center).Length;
+				foreach (var light in bodyLayout.GetPositionLights(rect).Except(bodyLayout.GetPositionLights(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4)))
+				{
+					segment.AddLight(light, time, color, (((bodyLayout.GetLightPosition(light) - center).Length - min) / (max - min) * 1000).Round());
+					segment.AddLight(light, time + 1, Segment.Absolute, Helpers.MultiplyColor(0x000000, Brightness));
+				}
+				++time;
+			}
+			return segment;
+		}
+
 		Segment SunSet(out int time)
 		{
 			const double HillStartY = 66;
@@ -434,7 +461,6 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentWithRepeat(sineMix, 0, 360, 144700, 4000, 4);
 
 			// WalkAround (160700)
-			Emulator.TestPosition = 160700;
 			var walkAround = WalkAround();
 			song.AddSegmentWithRepeat(walkAround, 0, 360, 160700, 4000, 8);
 			song.AddPaletteSequence(160700, 0);
@@ -443,7 +469,17 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteSequence(184200, 185200, null, 3);
 			song.AddPaletteSequence(192700, 0);
 
-			// Next (192700)
+			// AllSquares (192700)
+			Emulator.TestPosition = 192700;
+			var allSquares = AllSquares(out var moveSquaresTime);
+			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime, 192700, 8000, 2);
+			song.AddPaletteSequence(192700, 0);
+			song.AddPaletteSequence(196700, 1);
+			song.AddPaletteSequence(200700, 2);
+			song.AddPaletteSequence(204700, 3);
+			song.AddPaletteSequence(208700, 0);
+
+			// Next (208700)
 
 			// SunSet (240700)
 			var sunSet = SunSet(out var sunTime);
