@@ -8,7 +8,7 @@ namespace Shelfinator.Creator.Songs
 {
 	class Hallelujah : ISong
 	{
-		public int SongNumber => 6;
+		public int SongNumber => 5;
 
 		const double Brightness = 1f / 16;
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
