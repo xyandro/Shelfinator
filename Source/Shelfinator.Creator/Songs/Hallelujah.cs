@@ -288,8 +288,8 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, maxDistance * 2,
 				new List<int> { 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000, 0xffffff, 0x000000 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x000000, 0xffff00, 0x000000, 0xff0000, 0x000000, 0xffff00, 0x000000, 0xff0000, 0x000000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList(),
-				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).Reverse().Multiply(Brightness).ToList()
+				new List<int> { 0x000000, 0x00ffff, 0x000000, 0xff00ff, 0x000000, 0x00ffff, 0x000000, 0xff00ff, 0x000000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x000000, 0x8b00ff, 0x000000, 0x0000ff, 0x000000, 0x00ff00, 0x000000, 0xffff00, 0x000000, 0xff7f00, 0x000000, 0xff0000, 0x000000, 0x8b00ff, 0x000000, 0x0000ff, 0x000000, 0x00ff00, 0x000000, 0xffff00, 0x000000, 0xff7f00, 0x000000, 0xff0000, 0x000000 }.Multiply(Brightness).ToList()
 			);
 			for (var angle = 0; angle < 360; ++angle)
 			{
@@ -362,7 +362,11 @@ namespace Shelfinator.Creator.Songs
 			{
 				const int Parts = 20;
 
-				var point = new Point(rand.Next(30, 67), rand.Next(30, 67));
+				var x = rand.Next(0, 8);
+				x = (x / 2 + 1) * 19 + (x % 2);
+				var y = rand.Next(0, 8);
+				y = (y / 2 + 1) * 19 + (y % 2);
+				var point = new Point(x, y);
 				var color = rand.Next(0, 7);
 				for (var ctr = 0; ctr < Parts; ++ctr)
 					yield return new FireworkPart(point, ctr * 360 / Parts, color);
@@ -434,7 +438,7 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var sunColor = new LightColor(new List<int> { Helpers.MultiplyColor(0xffff00, Brightness) }, new List<int> { 0x000000 });
-			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff};
+			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff };
 			var reds = new List<int> { 0xff0000, 0xff0000, 0xff7f00, 0x000010 };
 			var green = new LightColor(0, 10000, new List<int> { 0x00ff00, 0x00ff00, 0x001000 }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
 
