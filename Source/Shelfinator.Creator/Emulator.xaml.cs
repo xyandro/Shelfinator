@@ -45,8 +45,8 @@ namespace Shelfinator.Creator
 			if (small)
 			{
 				SizeToContent = SizeToContent.WidthAndHeight;
-				dotStarBitmap.Width = bitmap.PixelWidth;
-				dotStarBitmap.Height = bitmap.PixelHeight;
+				dotStarBitmap.Width = bitmap.PixelWidth + 1;
+				dotStarBitmap.Height = bitmap.PixelHeight + 1;
 				RenderOptions.SetBitmapScalingMode(dotStarBitmap, BitmapScalingMode.NearestNeighbor);
 
 				Loaded += (s, e) =>
@@ -112,15 +112,28 @@ namespace Shelfinator.Creator
 			Clipboard.SetText(str);
 		}
 
+		byte MapColor(byte color)
+		{
+			const int Diff = 10;
+			if (color == 0)
+				return 0;
+			return (byte)Math.Max(0, Math.Min(255 + (color - 16) * Diff, 255));
+		}
+
+		uint GetColor(int color)
+		{
+			var r = MapColor((byte)((color >> 24) & 0xff));
+			var g = MapColor((byte)((color >> 16) & 0xff));
+			var b = MapColor((byte)((color >> 8) & 0xff));
+			return 0xff000000 | (uint)(r << 16) | (uint)(g << 8) | b;
+		}
+
 		public void Show(int[] lights)
 		{
 			for (var light = 0; light < lights.Length; ++light)
 				if (bufferPosition.ContainsKey(light))
-				{
-					var color = (uint)(0xff000000 | Helpers.MultiplyColor(lights[light] >> 8, 16));
 					foreach (var position in bufferPosition[light])
-						buffer[position] = color;
-				}
+						buffer[position] = GetColor(lights[light]);
 			Dispatcher.Invoke(() => bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), buffer, bitmap.BackBufferStride, 0));
 		}
 
