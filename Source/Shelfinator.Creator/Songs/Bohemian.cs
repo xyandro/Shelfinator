@@ -11,7 +11,6 @@ namespace Shelfinator.Creator.Songs
 	{
 		public int SongNumber => 3;
 
-		const double Brightness = 1f / 16;
 		readonly Layout headerLayout, bodyLayout, squaresLayout;
 
 		public Bohemian()
@@ -45,7 +44,7 @@ namespace Shelfinator.Creator.Songs
 
 			var points = data.Split('/').Select(l => l.Split('&').Select(p => p.Split(',').Select(int.Parse).ToList()).Select(p => new Point(p[0], p[1])).ToList()).ToList();
 
-			var colors = new List<int> { 0xff0000, 0x00ff00, 0x0000ff, 0x800080 }.Multiply(Brightness).ToList();
+			var colors = new List<int> { 0x100000, 0x001000, 0x000010, 0x080008 };
 
 			for (var pass = 0; pass < 4; ++pass)
 			{
@@ -102,13 +101,13 @@ namespace Shelfinator.Creator.Songs
 				squareCenter[square] = squareLocations.First() + (squareLocations.Last() - squareLocations.First()) / 2;
 			}
 
-			var colors = new List<int> { 0x000080, 0x0000ff, 0x008000, 0x008080, 0x0080ff, 0x00ff00, 0x00ff80, 0x00ffff, 0x800000, 0x800080, 0x8000ff, 0x808000, 0x808080, 0x8080ff, 0x80ff00, 0x80ff80, 0x80ffff, 0xff0000, 0xff0080, 0xff00ff, 0xff8000, 0xff8080, 0xff80ff, 0xffff00, 0xffff80 }.Multiply(Brightness).ToList();
+			var colors = new List<int> { 0x000008, 0x000010, 0x000800, 0x000808, 0x000810, 0x001000, 0x001008, 0x001010, 0x080000, 0x080008, 0x080010, 0x080800, 0x080808, 0x080810, 0x081000, 0x081008, 0x081010, 0x100000, 0x100008, 0x100010, 0x100800, 0x100808, 0x100810, 0x101000, 0x101008 };
 			var time = 0;
 			foreach (var pathPoint in pathPoints)
 			{
 				foreach (var light in bodyLayout.GetPositionLights(pathPoint, 2, 2))
 				{
-					segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+					segment.AddLight(light, time, Segment.Absolute, 0x101010);
 					segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
 				}
 
@@ -140,15 +139,12 @@ namespace Shelfinator.Creator.Songs
 "9,44/19,45/19,46/19,47/19,48/19,49/19,50/19,51/19,52/19,53/19,54/19,55/19,56/19,57/19,58/19,59/19,60/19,61/19,62/19,63/19,64/19,65/19,66/19,67/19,68/19,69/19,70/19,71/19,72/19,73/19,74/19,75/19,76/19,77/19,78/19,79/19,80/19,81/19,82/19,83/19,84/19,85/19,86/19,87/19,88/19,89/19,90/19,91/19,92/19,93/19,94/19,95/18,95/17,95/16,95/15,95/14,95/13,95/12,95/11,95/10,95/9,95/8,95/7,95/6,95/5,95/4,95/3,95/2,95/1,95/0,95/0,94/0,93/0,92/0,91/0,90/0,89/0,88/0,87/0,86/0,85/0,84/0,83/0,82/0,81/0,80/0,79/0,78/" +
 "0,77/0,76/0,75/0,74/0,73/0,72/0,71/0,70/0,69/0,68/0,67/0,66/0,65/0,64/0,63/0,62/0,61/0,60/0,59/0,58/0,57/0,56/0,55/0,54/0,53/0,52/0,51/0,50/0,49/0,48/0,47/0,46/0,45/0,44/0,43/0,42/0,41/0,40/0,39/0,38/0,37/0,36/0,35/0,34/0,33/0,32/0,31/0,30/0,29/0,28/0,27/0,26/0,25/0,24/0,23/0,22/0,21/0,20/0,19/0,18/0,17/0,16/0,15/0,14/0,13/0,12/0,11/0,10/0,9/0,8/0,7/0,6/0,5/0,4/0,3/0,2/0,1";
 
-			const double SnakeBrightness = 1f / 16;
-			const double PelletBrightness = 1f / 16;
 			const int LengthIncrease = 32;
 			const int ColorVariation = 1000;
 
 			var segment = new Segment();
 
-			var colors = Helpers.Rainbow7.Multiply(SnakeBrightness).ToList();
-			colors.AddRange(colors.AsEnumerable().Reverse().Skip(1));
+			var colors = Helpers.Rainbow7.Concat(Helpers.Rainbow7.Reverse().Skip(1)).ToList();
 			var snakeLights = data.Split('/').Select(l => l.Split(',').Select(int.Parse).ToList()).Select(p => bodyLayout.GetPositionLights(p[0], p[1], 2, 2)).ToList();
 
 			var time = 0;
@@ -194,9 +190,7 @@ namespace Shelfinator.Creator.Songs
 					if (pellet == -1)
 						break;
 					foreach (var light in snakeLights[pellet.Value])
-					{
-						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, PelletBrightness));
-					}
+						segment.AddLight(light, time, Segment.Absolute, 0x101010);
 				}
 
 				++time;
@@ -302,7 +296,7 @@ namespace Shelfinator.Creator.Songs
 		Segment RenderGame(int numHunters, int numPlayers)
 		{
 			var segment = new Segment();
-			var colors = new List<int> { 0xff0000, 0x00ff00, 0xffff00, 0xff00ff, 0xff8000 };
+			var colors = new List<int> { 0x100000, 0x001000, 0x101000, 0x100010, 0x100800 };
 
 			const int HunterLockup = 1000;
 			const int PlayerLockup = 500;
@@ -338,8 +332,8 @@ namespace Shelfinator.Creator.Songs
 						stopTime = stopTime ?? time + EndingDelay;
 
 					segment.Clear(time);
-					players.ForEach(player => segment.AddLight(SongHelper.GetLight(player.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(player.Tagged ? 0x0000ff : player.Color, Brightness)));
-					hunters.ForEach(hunter => segment.AddLight(SongHelper.GetLight(hunter.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness / (hunter.Tagged ? 3 : 1))));
+					players.ForEach(player => segment.AddLight(SongHelper.GetLight(player.Position).Value, time, Segment.Absolute, player.Tagged ? 0x000010 : player.Color));
+					hunters.ForEach(hunter => segment.AddLight(SongHelper.GetLight(hunter.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(0x101010, hunter.Tagged ? 1d / 3 : 1)));
 				}
 
 				++time;
@@ -404,10 +398,10 @@ namespace Shelfinator.Creator.Songs
 			var segments = new List<Tuple<Segment, int>>();
 
 			var color = new LightColor(0, 1000,
-				new List<int> { 0x000000, 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x000000, 0x0000ff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x000000, 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x000000, 0x00ff00 }.Multiply(Brightness).ToList()
+				new List<int> { 0x000000, 0x101010 },
+				new List<int> { 0x000000, 0x000010 },
+				new List<int> { 0x000000, 0x100000 },
+				new List<int> { 0x000000, 0x001000 }
 			);
 
 			var segment = new Segment();
@@ -429,9 +423,9 @@ namespace Shelfinator.Creator.Songs
 			var ordered = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
 
 			var color = new LightColor(0, 1,
-				new List<int> { 0xff0000, 0x0000ff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0000ff, 0x00ff00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ff00, 0xff0000 }.Multiply(Brightness).ToList()
+				new List<int> { 0x100000, 0x000010 },
+				new List<int> { 0x000010, 0x001000 },
+				new List<int> { 0x001000, 0x100000 }
 			);
 
 			for (var time = 0; time < 1000; time += 5)
@@ -476,10 +470,10 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var faceLights = data.Split('P').Select(part => part.Split('/').Select(l => l.Split('&').Select(p => p.Split(',').Select(int.Parse).ToList()).Select(p => bodyLayout.GetPositionLight(p[0], p[1])).ToList()).ToList()).ToList();
-			var color = new LightColor(0, 100, new List<List<int>> {
-				new List<int> { 0xff6969, 0xd34949, 0xda3232, 0xb80000, 0x620000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x32d0d3, 0x0000ff, 0x66ffff }.Multiply(Brightness).ToList(),
-				Helpers.Rainbow6.Multiply(Brightness).ToList()
+			var color = new LightColor(0, 100, new List<IReadOnlyList<int>> {
+				new List<int> { 0x100707, 0x0d0505, 0x0e0303, 0x0c0000, 0x060000 },
+				new List<int> { 0x030d0d, 0x000010, 0x061010 },
+				Helpers.Rainbow6
 			});
 
 			foreach (var facePart in faceLights)
@@ -504,7 +498,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		int[,] CloudsGetPixels(string fileName, double Brightness)
+		int[,] CloudsGetPixels(string fileName, double brightness)
 		{
 			int[,] pixels;
 			using (var stream = typeof(Bohemian).Assembly.GetManifestResourceStream(fileName))
@@ -526,7 +520,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					for (var x = 0; x < bmp.Width; ++x)
 					{
-						pixels[x, y] = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), Brightness);
+						pixels[x, y] = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), brightness);
 						ofs += sizeof(int);
 					}
 					ofs += lineSkip;
@@ -540,7 +534,7 @@ namespace Shelfinator.Creator.Songs
 		Segment Clouds()
 		{
 			var empty = new int[97, 97];
-			var pixels = CloudsGetPixels("Shelfinator.Creator.Songs.Layout.Clouds.png", Brightness);
+			var pixels = CloudsGetPixels("Shelfinator.Creator.Songs.Layout.Clouds.png", 1d / 16);
 
 			var segment = new Segment();
 
@@ -600,7 +594,7 @@ namespace Shelfinator.Creator.Songs
 							mult = Length - mult;
 						mult = Math.Max(Math.Min(1, mult / 20), 0);
 						var thisColor = Helpers.MultiplyColor(color, mult);
-						lights[light] = Helpers.AddColor(lights[light], thisColor);
+						lights[light] = Helpers.LimitColor(Helpers.AddColor(lights[light], thisColor), 16);
 					}
 			}
 		}
@@ -625,63 +619,63 @@ namespace Shelfinator.Creator.Songs
 
 				switch (time)
 				{
-					case 0: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(0, 96))); break;
-					case 200: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(0, 0))); break;
-					case 400: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(96, 0))); break;
-					case 600: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(96, 96))); break;
+					case 0: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(0, 96))); break;
+					case 200: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(0, 0))); break;
+					case 400: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(96, 0))); break;
+					case 600: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(96, 96))); break;
 					case 800:
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(0, 96)));
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(96, 0)));
+						points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(0, 96)));
+						points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(96, 0)));
 						break;
 					case 1000:
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(0, 0)));
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(96, 96)));
+						points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(0, 0)));
+						points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(96, 96)));
 						break;
 					case 1200:
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(0, 96)));
-						points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(96, 0)));
+						points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(0, 96)));
+						points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(96, 0)));
 						break;
-					case 1400: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(58, 94))); break;
-					case 1509: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(19, 66))); break;
-					case 1614: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(0, 90))); break;
-					case 1717: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(51, 95))); break;
-					case 1818: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(53, 57))); break;
-					case 1915: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(2, 95))); break;
-					case 2010: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(19, 32))); break;
-					case 2103: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(9, 0))); break;
-					case 2193: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(64, 96))); break;
-					case 2281: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(36, 76))); break;
-					case 2366: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(0, 68))); break;
-					case 2449: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(3, 19))); break;
-					case 2530: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(77, 2))); break;
-					case 2609: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(39, 71))); break;
-					case 2685: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(69, 77))); break;
-					case 2760: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(19, 69))); break;
-					case 2832: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(47, 95))); break;
-					case 2903: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(1, 25))); break;
-					case 2972: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(57, 81))); break;
-					case 3039: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(58, 85))); break;
-					case 3104: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(58, 33))); break;
-					case 3168: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(6, 39))); break;
-					case 3229: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(70, 20))); break;
-					case 3290: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(70, 77))); break;
-					case 3348: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(20, 94))); break;
-					case 3405: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(1, 13))); break;
-					case 3461: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(74, 95))); break;
-					case 3515: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(38, 10))); break;
-					case 3567: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(69, 39))); break;
-					case 3619: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(90, 39))); break;
-					case 3669: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(21, 20))); break;
-					case 3717: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(58, 0))); break;
-					case 3764: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(76, 41))); break;
-					case 3810: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(77, 19))); break;
-					case 3855: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(80, 77))); break;
-					case 3899: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(28, 1))); break;
-					case 3941: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(0, 0))); break;
-					case 3983: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(33, 96))); break;
-					case 4023: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0xff0000, Brightness), bodyLayout.GetPositionLight(58, 92))); break;
-					case 4062: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x00ff00, Brightness), bodyLayout.GetPositionLight(53, 1))); break;
-					case 4100: points.Add(new FloodPoint(next, Helpers.MultiplyColor(0x0000ff, Brightness), bodyLayout.GetPositionLight(64, 39))); break;
+					case 1400: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(58, 94))); break;
+					case 1509: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(19, 66))); break;
+					case 1614: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(0, 90))); break;
+					case 1717: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(51, 95))); break;
+					case 1818: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(53, 57))); break;
+					case 1915: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(2, 95))); break;
+					case 2010: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(19, 32))); break;
+					case 2103: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(9, 0))); break;
+					case 2193: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(64, 96))); break;
+					case 2281: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(36, 76))); break;
+					case 2366: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(0, 68))); break;
+					case 2449: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(3, 19))); break;
+					case 2530: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(77, 2))); break;
+					case 2609: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(39, 71))); break;
+					case 2685: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(69, 77))); break;
+					case 2760: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(19, 69))); break;
+					case 2832: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(47, 95))); break;
+					case 2903: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(1, 25))); break;
+					case 2972: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(57, 81))); break;
+					case 3039: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(58, 85))); break;
+					case 3104: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(58, 33))); break;
+					case 3168: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(6, 39))); break;
+					case 3229: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(70, 20))); break;
+					case 3290: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(70, 77))); break;
+					case 3348: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(20, 94))); break;
+					case 3405: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(1, 13))); break;
+					case 3461: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(74, 95))); break;
+					case 3515: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(38, 10))); break;
+					case 3567: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(69, 39))); break;
+					case 3619: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(90, 39))); break;
+					case 3669: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(21, 20))); break;
+					case 3717: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(58, 0))); break;
+					case 3764: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(76, 41))); break;
+					case 3810: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(77, 19))); break;
+					case 3855: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(80, 77))); break;
+					case 3899: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(28, 1))); break;
+					case 3941: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(0, 0))); break;
+					case 3983: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(33, 96))); break;
+					case 4023: points.Add(new FloodPoint(next, 0x100000, bodyLayout.GetPositionLight(58, 92))); break;
+					case 4062: points.Add(new FloodPoint(next, 0x001000, bodyLayout.GetPositionLight(53, 1))); break;
+					case 4100: points.Add(new FloodPoint(next, 0x000010, bodyLayout.GetPositionLight(64, 39))); break;
 				}
 
 				var colors = next.ToDictionary(x => x.Key, x => 0);
@@ -715,7 +709,7 @@ namespace Shelfinator.Creator.Songs
 
 				var angles = allLocations.GetAngles(center).Cycle(0, 360 / BladeCount).AdjustToZero().Scale(0, 360 / BladeCount, 0, 500).Round().ToList();
 
-				var rainbow = Helpers.Rainbow7.Concat(Helpers.Rainbow7[0]).Multiply(Brightness).ToList();
+				var rainbow = Helpers.Rainbow7.Concat(Helpers.Rainbow7[0]).ToList();
 				var useColors = new LightColor(angles.Min(), angles.Max(), rainbow);
 				for (var ctr = 0; ctr < allLights.Count; ++ctr)
 					for (var repeat = 0; repeat < 9000; repeat += 500)
@@ -738,7 +732,7 @@ namespace Shelfinator.Creator.Songs
 			var offsets = Enumerable.Range(0, centers.Count).Select(index => index * 360 / centers.Count).OrderBy(x => rand.Next()).ToList();
 			var angles = positions.Select((list, index) => list.Select(p => Helpers.GetAngle(p, centers[index]) + offsets[index]).ToList()).ToList();
 
-			var color = new LightColor(0, 20, Helpers.Rainbow6.Select(value => new List<int> { value, 0x000000 }.Multiply(Brightness).ToList()).ToList());
+			var color = new LightColor(0, 20, Helpers.Rainbow6.Select(value => new List<int> { value, 0x000000 }).Cast<IReadOnlyList<int>>().ToList());
 
 			for (var angle = 0; angle < 360; angle += 5)
 				for (var listCtr = 0; listCtr < lights.Count; listCtr++)
@@ -770,11 +764,11 @@ namespace Shelfinator.Creator.Songs
 
 			var results = Song.Split('|').Select(x => x.Split('/').Select(p => bodyLayout.GetPositionLights(new Rect(Point.Parse(p), new Size(2, 2)))).ToList()).ToList();
 
-			var color = new LightColor(0, 3, new List<List<int>> {
-				new List<int> { 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0xffffff, 0xff0000, 0xffffff, 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0080ff, 0x01ffff, 0x3f00ff, 0x89d0f0 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x17b7ab, 0xe71880, 0xbcd63d, 0xf15a25 }.Multiply(Brightness).ToList(),
+			var color = new LightColor(0, 3, new List<IReadOnlyList<int>> {
+				new List<int> { 0x101010 },
+				new List<int> { 0x101010, 0x100000, 0x101010, 0x100000 },
+				new List<int> { 0x000810, 0x001010, 0x040010, 0x090d0f },
+				new List<int> { 0x010b0b, 0x0e0208, 0x0c0d04, 0x0f0602 },
 			});
 			var segment = new Segment();
 			foreach (var result in results)
@@ -814,7 +808,7 @@ namespace Shelfinator.Creator.Songs
 			values.Add(centers.Select(p => p.X - p.Y).Scale(null, null, 0, 100).Round().ToList());
 			values.Add(centers.Select(p => p.X - p.Y).Scale(null, null, 100, 0).Round().ToList());
 
-			var color = new LightColor(0, 100, Helpers.Rainbow6.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 100, Helpers.Rainbow6);
 
 			var time = 0;
 			for (var paletteCtr = 0; paletteCtr < values.Count; paletteCtr++)
@@ -839,7 +833,7 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 			var lights = squaresLayout.GetAllLights().Except(0).OrderBy(light => light).Select(light => bodyLayout.GetPositionLights(squaresLayout.GetLightPositions(light))).ToList();
 
-			var color = new LightColor(0, 24, Helpers.Rainbow7.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 24, Helpers.Rainbow7);
 
 			var rand = new Random(10);
 			var order = Enumerable.Range(0, lights.Count).OrderBy(x => rand.Next()).ToList();

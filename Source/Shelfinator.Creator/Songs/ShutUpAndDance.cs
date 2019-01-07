@@ -14,7 +14,6 @@ namespace Shelfinator.Creator.Songs
 	{
 		public int SongNumber => 4;
 
-		const double Brightness = 1f / 16;
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
 		void ShapeChangeRender(Segment segment, Layout layout, int currentValue, double addAngle, double firstPercent, int time, double brightness, int color)
@@ -122,7 +121,7 @@ namespace Shelfinator.Creator.Songs
 			{
 				for (var angle = 0; angle < 360; angle += 5)
 				{
-					ShapeChangeRender(segment, bodyLayout, value, angle, angle / 360D, time, Brightness, Helpers.GradientColor(useColor[value], useColor[value + 1], angle / 360D));
+					ShapeChangeRender(segment, bodyLayout, value, angle, angle / 360D, time, 1d / 16, Helpers.GradientColor(useColor[value], useColor[value + 1], angle / 360D));
 					time += 5;
 				}
 
@@ -130,7 +129,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					for (var angle = 0; angle < 360; angle += 5)
 					{
-						ShapeChangeRender(segment, bodyLayout, value, angle, 1, time, Brightness, useColor[value + 1]);
+						ShapeChangeRender(segment, bodyLayout, value, angle, 1, time, 1d / 16, useColor[value + 1]);
 						time += 5;
 					}
 				}
@@ -144,7 +143,7 @@ namespace Shelfinator.Creator.Songs
 
 			Random rand = new Random(0xfacade);
 			var segment = new Segment();
-			var colors = Helpers.Rainbow6.Concat(0x000000).Multiply(Brightness).ToList();
+			var colors = Helpers.Rainbow6.Concat(0x000000).ToList();
 			for (var colorCtr = 0; colorCtr < colors.Count; colorCtr++)
 			{
 				var baseTime = BaseIncrement * colorCtr;
@@ -160,11 +159,10 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 
-			var whiteRed = new List<int> { 0xffffff, 0xff0000, 0xffffff, 0xff0000, 0xffffff, 0xff0000 }.Multiply(Brightness).ToList();
-			var pastel = new List<int> { 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25, 0x17b7ab, 0xbcd63d, 0xe71880, 0xf15a25 }.Multiply(Brightness).ToList();
-			var rgb = new List<int> { 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff, 0xff00ff, 0x00ffff }.Multiply(Brightness).ToList();
-			var rainbow = Helpers.Rainbow6.Multiply(Brightness).ToList();
-			rainbow.InsertRange(0, rainbow.Skip(1).Reverse().ToList());
+			var whiteRed = new List<int> { 0x101010, 0x100000, 0x101010, 0x100000, 0x101010, 0x100000 };
+			var pastel = new List<int> { 0x010b0b, 0x0c0d04, 0x0e0208, 0x0f0602, 0x010b0b, 0x0c0d04, 0x0e0208, 0x0f0602, 0x010b0b, 0x0c0d04, 0x0e0208, 0x0f0602 };
+			var rgb = new List<int> { 0x100010, 0x001010, 0x100010, 0x001010, 0x100010, 0x001010 };
+			var rainbow = Helpers.Rainbow6.Skip(1).Reverse().Concat(Helpers.Rainbow6).ToList();
 
 			var color = new LightColor(-96, 96, whiteRed, pastel, rgb, rainbow);
 
@@ -247,10 +245,10 @@ namespace Shelfinator.Creator.Songs
 			var squareLights = lightLocations.Split('|').Select(l => l.Split('/').Select(p => bodyLayout.GetPositionLight(Point.Parse(p))).ToList()).ToList();
 
 			var segment = new Segment();
-			var color = new LightColor(0, 3, new List<List<int>>
+			var color = new LightColor(0, 3, new List<IReadOnlyList<int>>
 			{
-				new List<int> { 0xffffff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0000ff, 0x00ff00, 0xff0000, 0x800080 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x101010 },
+				new List<int> { 0x000010, 0x001000, 0x100000, 0x080008 },
 			});
 			for (var squareCtr = 0; squareCtr < squareLights.Count; squareCtr++)
 			{
@@ -310,14 +308,14 @@ namespace Shelfinator.Creator.Songs
 			}
 		}
 
-		void RenderStars(Layout layout, Segment segment, List<StarData> stars, int time, double Brightness)
+		void RenderStars(Layout layout, Segment segment, List<StarData> stars, int time)
 		{
 			var board = new double[97, 97];
 			stars.ForEach(star => RenderStar(board, star));
 			for (var y = 0; y < 96; ++y)
 				for (var x = 0; x < 96; ++x)
 					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Math.Min(1, board[x, y]) * Brightness));
+						segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0x101010, Math.Min(1, board[x, y])));
 		}
 
 		void RenderStar(double[,] board, StarData star)
@@ -352,7 +350,7 @@ namespace Shelfinator.Creator.Songs
 			var stars = Enumerable.Range(0, NumStars).Select(x => new StarData(true)).ToList();
 			for (var time = 0; time < Duration; ++time)
 			{
-				RenderStars(bodyLayout, segment, stars, time, Brightness);
+				RenderStars(bodyLayout, segment, stars, time);
 				UpdateStars(stars);
 			}
 
@@ -363,7 +361,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 
-			var color = new LightColor(0, 5, Helpers.Rainbow6.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 5, Helpers.Rainbow6);
 
 			var center = new Point(48, 48);
 			var distances = bodyLayout.GetAllLights().Select(light => Tuple.Create(light, (bodyLayout.GetLightPosition(light) - center).Length)).ToList();
@@ -393,7 +391,7 @@ namespace Shelfinator.Creator.Songs
 
 			var paddleDest = columnTime.Select((val, index) => new { time = val, column = columns[index] }).OrderBy(o => o.time).Select(o => o.column).ToList();
 
-			var color = new LightColor(0, 95, Helpers.Rainbow6.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 95, Helpers.Rainbow6);
 
 			double paddlePos = 0;
 			int paddleIndex = 0, paddleSteps = 0;
@@ -408,7 +406,7 @@ namespace Shelfinator.Creator.Songs
 					{
 						y = 95 - time;
 						foreach (var light in bodyLayout.GetPositionLights(columns[columnCtr], y + 2, 2, 1))
-							segment.AddLight(light, time, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+							segment.AddLight(light, time, Segment.Absolute, 0x101010);
 					}
 					else if (useTime < 116)
 						y = 0;
@@ -417,7 +415,7 @@ namespace Shelfinator.Creator.Songs
 						y = 0;
 						foreach (var light in bodyLayout.GetPositionLights(columns[columnCtr], 2, 2, 1))
 						{
-							segment.AddLight(light, 96, Segment.Absolute, Helpers.MultiplyColor(0xffffff, Brightness));
+							segment.AddLight(light, 96, Segment.Absolute, 0x101010);
 							segment.AddLight(light, time - 20, time, null, Segment.Absolute, 0x000000);
 						}
 					}
@@ -480,7 +478,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			const int Concurrency = 25;
 
-			var color = new LightColor(0, 6, new List<List<int>> { new List<int> { Helpers.MultiplyColor(0xffffff, 1f / 8) }, Helpers.Rainbow6.Multiply(Brightness).ToList() });
+			var color = new LightColor(0, 6, new List<IReadOnlyList<int>> { new List<int> { 0x202020 }, Helpers.Rainbow6.Multiply(2) });
 
 			var segment = new Segment();
 			var rand = new Random(0xbadf00d);
@@ -498,28 +496,28 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 
-			var color0 = new LightColor(0, 1, new List<List<int>>
+			var color0 = new LightColor(0, 1, new List<IReadOnlyList<int>>
 			{
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xffff00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xffff00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0000ff }.Multiply(Brightness).ToList(),
-				new List<int> { 0x0000ff }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x100000 },
+				new List<int> { 0x100000 },
+				new List<int> { 0x101000 },
+				new List<int> { 0x101000 },
+				new List<int> { 0x000010 },
+				new List<int> { 0x000010 },
+				new List<int> { 0x100000 },
+				new List<int> { 0x100000 },
 
 			});
-			var color1 = new LightColor(0, 1, new List<List<int>>
+			var color1 = new LightColor(0, 1, new List<IReadOnlyList<int>>
 			{
-				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff7f00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff7f00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x4b0082 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x4b0082 }.Multiply(Brightness).ToList(),
-				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x000000 },
+				new List<int> { 0x100800 },
+				new List<int> { 0x100800 },
+				new List<int> { 0x001000 },
+				new List<int> { 0x001000 },
+				new List<int> { 0x050008 },
+				new List<int> { 0x050008 },
+				new List<int> { 0x000000 },
 			});
 
 			foreach (var light in bodyLayout.GetAllLights())
@@ -534,7 +532,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment Paths()
 		{
-			const double DarkBrightness = 1f / 48;
+			const double DarkBrightness = 1f / 3;
 			const string Paths =
 "0,0&1,0&2,0&3,0&4,0&5,0&6,0&7,0&8,0&9,0&10,0&10,1&9,1&8,1&7,1&6,1&5,1&4,1&3,1&2,1&1,1&1,2&0,2&0,1/11,0&12,0&13,0&14,0&15,0&16,0&17,0&18,0&19,0&20,0&20,1&20,2&20,3&19,3&19,2&19,1&18,1&17,1&16,1&15,1&14,1&13,1&12,1&11,1/21,0&22,0&23,0&24,0&25,0&26,0&27,0&28,0&29,0&30,0&31,0&32,0&32,1&31,1&30,1&29,1&28,1&27,1&26,1&25,1&24,1&23,1&22,1&21,1/33,0&34,0&35,0&36,0&37,0&38,0&39,0&40,0&41,0&41,1&40,1&39,1&39,2&39,3&39,4&38,4&38,3&38,2&38,1&37,1&36,1&35,1&34,1&33,1/42,0&43,0&44,0&45,0&46,0&47,0&48,0&49,0&50" +
 ",0&50,1&49,1&48,1&47,1&46,1&45,1&44,1&43,1&42,1/51,0&52,0&53,0&54,0&55,0&56,0&57,0&58,0&59,0&60,0&60,1&59,1&58,1&58,2&58,3&57,3&57,2&57,1&56,1&55,1&54,1&53,1&52,1&51,1/61,0&62,0&63,0&64,0&65,0&66,0&67,0&68,0&69,0&70,0&71,0&72,0&72,1&71,1&70,1&69,1&68,1&67,1&66,1&65,1&64,1&63,1&62,1&61,1/73,0&74,0&75,0&76,0&77,0&78,0&79,0&80,0&81,0&81,1&80,1&79,1&78,1&77,1&77,2&77,3&77,4&76,4&76,3&76,2&76,1&75,1&74,1&73,1/82,0&83,0&84,0&85,0&86,0&87,0&88,0&89,0&90,0&91,0&92,0&93,0&93,1&92,1&91,1&90,1&89,1&88,1&87" +
@@ -565,9 +563,9 @@ namespace Shelfinator.Creator.Songs
 			var paths = Paths.Split('/').Select(l => l.Split('&').Select(p => bodyLayout.GetPositionLight(Point.Parse(p))).ToList()).ToList();
 			var pathColor = new List<int> { 2, 6, 4, 3, 1, 6, 1, 4, 5, 4, 6, 5, 1, 2, 5, 5, 4, 4, 2, 5, 1, 6, 3, 3, 3, 3, 2, 1, 5, 2, 3, 5, 1, 6, 4, 3, 1, 6, 4, 3, 5, 3, 3, 5, 5, 2, 1, 2, 6, 4, 1, 2, 1, 3, 4, 5, 2, 5, 3, 5, 6, 1, 3, 3, 1, 3, 5, 5, 5, 2, 6, 6, 5, 4, 3, 3, 3, 3, 5, 2, 4, 1, 3, 1, 6, 5, 2, 4, 5, 4, 2, 4 };
 
-			var pastels = new List<int> { 0xf7ec45, 0xc8e06e, 0xf6b65c, 0xc7a3c7, 0xf2a2bb, 0x9cc9ea };
-			var brightColor = new LightColor(1, 6, pastels.Multiply(Brightness).ToList(), Helpers.Rainbow6.Multiply(Brightness).ToList());
-			var darkColor = new LightColor(1, 6, pastels.Multiply(DarkBrightness).ToList(), Helpers.Rainbow6.Multiply(DarkBrightness).ToList());
+			var pastels = new List<int> { 0x0f0f04, 0x0d0e07, 0x0f0b06, 0x0c0a0c, 0x0f0a0c, 0x0a0d0f };
+			var brightColor = new LightColor(1, 6, pastels.ToList(), Helpers.Rainbow6);
+			var darkColor = new LightColor(1, 6, pastels.Multiply(DarkBrightness), Helpers.Rainbow6.Multiply(DarkBrightness));
 
 			var segment = new Segment();
 
@@ -611,7 +609,7 @@ namespace Shelfinator.Creator.Songs
 			var squareLights = lightLocations.Split('|').Select(l => l.Split('/').Select(p => bodyLayout.GetPositionLight(Point.Parse(p))).ToList()).ToList();
 
 			var segment = new Segment();
-			var color = new LightColor(0, 72, new List<int> { 0xff0000, 0xffff00, 0x0000ff, 0x00ff00, 0xff0000 }.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 72, new List<int> { 0x100000, 0x101000, 0x000010, 0x001000, 0x100000 });
 			Func<int, int> delay = position => position % 18 == 0 ? 500 : 20;
 			for (var squareCtr = 0; squareCtr < squareLights.Count; squareCtr++)
 			{
@@ -641,7 +639,7 @@ namespace Shelfinator.Creator.Songs
 			const int Spacing = 80;
 
 			var segment = new Segment();
-			var color = new LightColor(0, 5, Helpers.Rainbow6.Multiply(Brightness).ToList());
+			var color = new LightColor(0, 5, Helpers.Rainbow6);
 			var rand = new Random(0xfacade);
 			var time = 0;
 			for (var colorCtr = 0; colorCtr < Helpers.Rainbow6.Count; ++colorCtr)

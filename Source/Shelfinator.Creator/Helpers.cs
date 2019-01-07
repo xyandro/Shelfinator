@@ -9,8 +9,8 @@ namespace Shelfinator.Creator
 {
 	static class Helpers
 	{
-		static public IReadOnlyList<int> Rainbow6 = new List<int> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x8b00ff };
-		static public IReadOnlyList<int> Rainbow7 = new List<int> { 0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3 };
+		static public IReadOnlyList<int> Rainbow6 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010 };
+		static public IReadOnlyList<int> Rainbow7 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x050008, 0x09000d };
 
 		static public Stream GetEmbeddedStream(string embeddedName) => typeof(Helpers).Assembly.GetManifestResourceStream(embeddedName);
 		static public BitmapSource GetEmbeddedBitmap(string embeddedName) => BitmapFrame.Create(GetEmbeddedStream(embeddedName));
@@ -92,6 +92,8 @@ namespace Shelfinator.Creator
 		public static int MakeColor(double red, double green, double blue) => MakeColor(ToByte(red), ToByte(green), ToByte(blue));
 
 		public static int MakeColor(byte red, byte green, byte blue) => red << 16 | green << 8 | blue;
+
+		public static int LimitColor(int color, int maxValue) => MakeColor(Math.Min(maxValue, color >> 16 & 0xff), Math.Min(maxValue, color >> 8 & 0xff), Math.Min(maxValue, color & 0xff));
 
 		public static Point GetCenter(IEnumerable<Point> points)
 		{
