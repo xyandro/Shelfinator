@@ -75,12 +75,12 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("hello.wav");
 			var hello = GetHello();
-			song.AddSegmentWithRepeat(hello, 0, 0, 0, 1500);
-			song.AddSegmentWithRepeat(hello, 0, 8000, song.MaxTime());
+			song.AddSegment(hello, 0, 0, 0, 1500);
+			song.AddSegment(hello, 0, 8000, song.MaxTime());
 
-			song.AddPaletteSequence(0, 0);
-			song.AddPaletteSequence(5000, 6000, null, 1);
-			song.AddPaletteSequence(7000, 8000, null, 2);
+			song.AddPaletteChange(0, 0);
+			song.AddPaletteChange(5000, 6000, 1);
+			song.AddPaletteChange(7000, 8000, 2);
 			return song;
 		}
 	}

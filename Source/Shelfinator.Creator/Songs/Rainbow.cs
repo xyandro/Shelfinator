@@ -454,98 +454,98 @@ namespace Shelfinator.Creator.Songs
 
 			// Squares
 			var squares = Squares();
-			song.AddSegmentWithRepeat(squares, 0, squares.MaxTime(), 0, 24038);
-			song.AddPaletteSequence(0, 0);
-			song.AddPaletteSequence(10055, 10255, null, 1); // "colors are everything"
-			song.AddPaletteSequence(11587, 12587, null, 2);
-			song.AddPaletteSequence(15988, 16188, null, 3);
-			song.AddPaletteSequence(19138, 21138, null, 4);
-			song.AddPaletteSequence(21677, 22677, null, 5);
-			song.AddPaletteSequence(24038, 0);
+			song.AddSegment(squares, 0, squares.MaxTime(), 0, 24038);
+			song.AddPaletteChange(0, 0);
+			song.AddPaletteChange(10055, 10255, 1); // "colors are everything"
+			song.AddPaletteChange(11587, 12587, 2);
+			song.AddPaletteChange(15988, 16188, 3);
+			song.AddPaletteChange(19138, 21138, 4);
+			song.AddPaletteChange(21677, 22677, 5);
+			song.AddPaletteChange(24038, 0);
 
 			// Traffic (24156)
 			var traffic = Traffic(out var trafficLength);
 			var displayTime = 3200;
 
-			song.AddSegmentWithRepeat(traffic, 0, trafficLength * 2, 24156, displayTime * 2);
-			song.AddSegmentWithRepeat(traffic, trafficLength * 2, trafficLength * 3, song.MaxTime(), displayTime);
-			song.AddSegmentWithRepeat(traffic, trafficLength * 3, traffic.MaxTime(), song.MaxTime(), displayTime * (traffic.MaxTime() - trafficLength * 3) / trafficLength);
+			song.AddSegment(traffic, 0, trafficLength * 2, 24156, displayTime * 2);
+			song.AddSegment(traffic, trafficLength * 2, trafficLength * 3, song.MaxTime(), displayTime);
+			song.AddSegment(traffic, trafficLength * 3, traffic.MaxTime(), song.MaxTime(), displayTime * (traffic.MaxTime() - trafficLength * 3) / trafficLength);
 
-			song.AddPaletteSequence(24156, 24656, null, 0);
-			song.AddPaletteSequence(26101, 26601, null, 1);
-			song.AddPaletteSequence(28059, 28559, null, 0);
-			song.AddPaletteSequence(30084, 30584, null, 1);
-			song.AddPaletteSequence(32107, 32607, null, 0);
-			song.AddPaletteSequence(34083, 34583, null, 1);
-			song.AddPaletteSequence(36091, 36591, null, 0);
-			song.AddPaletteSequence(38196, 38696, null, 1);
-			song.AddPaletteSequence(40800, 0);
+			song.AddPaletteChange(24156, 24656, 0);
+			song.AddPaletteChange(26101, 26601, 1);
+			song.AddPaletteChange(28059, 28559, 0);
+			song.AddPaletteChange(30084, 30584, 1);
+			song.AddPaletteChange(32107, 32607, 0);
+			song.AddPaletteChange(34083, 34583, 1);
+			song.AddPaletteChange(36091, 36591, 0);
+			song.AddPaletteChange(38196, 38696, 1);
+			song.AddPaletteChange(40800, 0);
 
 			// Grow (40800)
 			var rainbowGrow = RainbowGrow();
-			song.AddSegmentWithRepeat(rainbowGrow, 0, rainbowGrow.MaxTime(), 40800, 1200);
+			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 40800, 1200);
 
 			// Rainbow, chorus (42000)
 			var rainbowRotate = RainbowRotate();
-			song.AddSegmentWithRepeat(rainbowRotate, 0, 360, 42000, 2000, 7);
+			song.AddSegment(rainbowRotate, 0, 360, 42000, 2000, 7);
 
 			// Shrink (56000)
-			song.AddSegmentWithRepeat(rainbowGrow, rainbowGrow.MaxTime(), 0, 56000, 1200);
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 56000, 1200);
 
 			// Spiral 58074
 			var spiral = Spiral();
-			song.AddSegmentWithRepeat(spiral, 0, spiral.MaxTime(), 57874, 23994);
+			song.AddSegment(spiral, 0, spiral.MaxTime(), 57874, 23994);
 
 			// Flex (82068)
 			var flex = Flex();
-			song.AddSegmentWithRepeat(flex, 0, 1136, 82068, 16029);
+			song.AddSegment(flex, 0, 1136, 82068, 16029);
 
 			// Rainbow (98097)
-			song.AddSegmentWithRepeat(rainbowRotate, 0, 360, 98097, 2000, 8);
-			song.AddSegmentWithRepeat(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
+			song.AddSegment(rainbowRotate, 0, 360, 98097, 2000, 8);
+			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
 
 			// Shrink (126097)
-			song.AddSegmentWithRepeat(rainbowGrow, rainbowGrow.MaxTime(), 0, 128097, 1600);
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 128097, 1600);
 
 			// Sweep (130138-146138)
 			var sweep = Sweep();
-			song.AddSegmentWithRepeat(sweep, 0, 4320, 130138, 7000, 2); // 14 sweeps
-			song.AddSegmentWithRepeat(sweep, 0, 1234, song.MaxTime(), 2000); // 2 more sweeps
+			song.AddSegment(sweep, 0, 4320, 130138, 7000, 2); // 14 sweeps
+			song.AddSegment(sweep, 0, 1234, song.MaxTime(), 2000); // 2 more sweeps
 
-			song.AddPaletteSequence(130138, 0);
-			song.AddPaletteSequence(137642, 138642, null, 1);
-			song.AddPaletteSequence(141608, 142608, null, 2);
-			song.AddPaletteSequence(146138, 0);
+			song.AddPaletteChange(130138, 0);
+			song.AddPaletteChange(137642, 138642, 1);
+			song.AddPaletteChange(141608, 142608, 2);
+			song.AddPaletteChange(146138, 0);
 
 			// Plasma (146138)
 			var plasma = Plasma(out var plasmaTime);
-			song.AddSegmentWithRepeat(plasma, 0, plasmaTime, 146138, 4000, 3);
+			song.AddSegment(plasma, 0, plasmaTime, 146138, 4000, 3);
 
 			// Slow plasma (158138)
-			var item = song.RepeatSegmentByVelocity(plasma, 0, plasmaTime, 158138, 4174, plasmaTime, 0, 4000);
+			var item = song.AddSegmentByVelocity(plasma, 0, plasmaTime, 158138, 4174, plasmaTime, 0, 4000);
 			var stopTime = item.SegmentTime(162312);
-			song.AddSegmentWithRepeat(plasma, stopTime, stopTime, 162312, 4564);
+			song.AddSegment(plasma, stopTime, stopTime, 162312, 4564);
 
 			// Grow (166876)
-			song.AddSegmentWithRepeat(rainbowGrow, 0, rainbowGrow.MaxTime(), 166876, 1200);
+			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 166876, 1200);
 
 			// Rainbow, chorus (168076)
-			song.AddSegmentWithRepeat(rainbowRotate, 0, 360, 168076, 2000, 6);
-			song.AddSegmentWithRepeat(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
+			song.AddSegment(rainbowRotate, 0, 360, 168076, 2000, 6);
+			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
 
 			// Shrink (194076)
-			song.AddSegmentWithRepeat(rainbowGrow, rainbowGrow.MaxTime(), 0, 194076, 1600);
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 194076, 1600);
 
 			// Spin (195895)
 			var spin = Spin();
-			song.AddSegmentWithRepeat(spin, 0, 1000, 195895, 1000);
-			song.AddSegmentWithRepeat(spin, 1000, 2000, song.MaxTime(), 1000, 16);
-			song.AddSegmentWithRepeat(spin, 2000, 3000, song.MaxTime(), 1000);
+			song.AddSegment(spin, 0, 1000, 195895, 1000);
+			song.AddSegment(spin, 1000, 2000, song.MaxTime(), 1000, 16);
+			song.AddSegment(spin, 2000, 3000, song.MaxTime(), 1000);
 
-			song.AddPaletteSequence(195895, 0);
-			song.AddPaletteSequence(199550, 200550, null, 1);
-			song.AddPaletteSequence(203627, 204627, null, 2);
-			song.AddPaletteSequence(209578, 210578, null, 3);
+			song.AddPaletteChange(195895, 0);
+			song.AddPaletteChange(199550, 200550, 1);
+			song.AddPaletteChange(203627, 204627, 2);
+			song.AddPaletteChange(209578, 210578, 3);
 
 			return song;
 		}

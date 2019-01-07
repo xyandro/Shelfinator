@@ -507,78 +507,78 @@ namespace Shelfinator.Creator.Songs
 
 			// Bounce (0)
 			var bounce = Bounce();
-			song.AddSegmentWithRepeat(bounce, 0, 0, 0, 700);
-			song.AddSegmentWithRepeat(bounce, 0, 750 * 4, 700, 16000);
+			song.AddSegment(bounce, 0, 0, 0, 700);
+			song.AddSegment(bounce, 0, 750 * 4, 700, 16000);
 
 			// FourCircle (16700)
 			var spinColor = FourCircle();
-			song.AddSegmentWithRepeat(spinColor, 0, 360, 16700, 8000, 2);
-			song.AddPaletteSequence(16700, 0);
-			song.AddPaletteSequence(20200, 21200, null, 1);
-			song.AddPaletteSequence(24200, 25200, null, 2);
-			song.AddPaletteSequence(28200, 29200, null, 3);
-			song.AddPaletteSequence(32700, 0);
+			song.AddSegment(spinColor, 0, 360, 16700, 8000, 2);
+			song.AddPaletteChange(16700, 0);
+			song.AddPaletteChange(20200, 21200, 1);
+			song.AddPaletteChange(24200, 25200, 2);
+			song.AddPaletteChange(28200, 29200, 3);
+			song.AddPaletteChange(32700, 0);
 
 			// LinesSquares (32700)
 			var fourCircle = LinesSquares();
-			song.AddSegmentWithRepeat(fourCircle, 0, 38, 32700, 4000, 4);
-			song.AddPaletteSequence(32700, 0);
-			song.AddPaletteSequence(36200, 37200, null, 1);
-			song.AddPaletteSequence(40200, 41200, null, 2);
-			song.AddPaletteSequence(44200, 45200, null, 3);
-			song.AddPaletteSequence(48700, 0);
+			song.AddSegment(fourCircle, 0, 38, 32700, 4000, 4);
+			song.AddPaletteChange(32700, 0);
+			song.AddPaletteChange(36200, 37200, 1);
+			song.AddPaletteChange(40200, 41200, 2);
+			song.AddPaletteChange(44200, 45200, 3);
+			song.AddPaletteChange(48700, 0);
 
 			// SnowFall (48700)
 			var snowFall = SnowFall();
-			song.AddSegmentWithRepeat(snowFall, 0, 16000, 48700, 39000);
+			song.AddSegment(snowFall, 0, 16000, 48700, 39000);
 
 			// SyncFlash (87700)
 			var syncFlash = SyncFlash();
-			song.AddSegmentWithRepeat(syncFlash, 0, 25000, 87700, 25000);
+			song.AddSegment(syncFlash, 0, 25000, 87700, 25000);
 
 			// RotateSquares (112700)
 			var rotateSquares = RotateSquares(out var rotateSquaresTime);
-			song.AddSegmentWithRepeat(rotateSquares, 0, rotateSquaresTime, 112700, 4000, 8);
-			song.AddPaletteSequence(112700, 0);
-			song.AddPaletteSequence(120200, 121200, null, 1);
-			song.AddPaletteSequence(128200, 129200, null, 2);
-			song.AddPaletteSequence(136200, 137200, null, 3);
-			song.AddPaletteSequence(144700, 0);
+			song.AddSegment(rotateSquares, 0, rotateSquaresTime, 112700, 4000, 8);
+			song.AddPaletteChange(112700, 0);
+			song.AddPaletteChange(120200, 121200, 1);
+			song.AddPaletteChange(128200, 129200, 2);
+			song.AddPaletteChange(136200, 137200, 3);
+			song.AddPaletteChange(144700, 0);
 
 			// SineMix (144700)
 			var sineMix = SineMix();
-			song.AddSegmentWithRepeat(sineMix, 0, 360, 144700, 4000, 4);
+			song.AddSegment(sineMix, 0, 360, 144700, 4000, 4);
 
 			// WalkAround (160700)
 			var walkAround = WalkAround();
-			song.AddSegmentWithRepeat(walkAround, 0, 360, 160700, 4000, 8);
-			song.AddPaletteSequence(160700, 0);
-			song.AddPaletteSequence(168200, 169200, null, 1);
-			song.AddPaletteSequence(176200, 177200, null, 2);
-			song.AddPaletteSequence(184200, 185200, null, 3);
-			song.AddPaletteSequence(192700, 0);
+			song.AddSegment(walkAround, 0, 360, 160700, 4000, 8);
+			song.AddPaletteChange(160700, 0);
+			song.AddPaletteChange(168200, 169200, 1);
+			song.AddPaletteChange(176200, 177200, 2);
+			song.AddPaletteChange(184200, 185200, 3);
+			song.AddPaletteChange(192700, 0);
 
 			// AllSquares (192700)
 			var allSquares = AllSquares(out var moveSquaresTime);
-			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime, 192700, 8000);
-			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime * 7 / 8, song.MaxTime(), 7000);
-			song.AddPaletteSequence(192700, 0);
-			song.AddPaletteSequence(196700, 1);
-			song.AddPaletteSequence(200700, 2);
-			song.AddPaletteSequence(204700, 3);
-			song.AddPaletteSequence(208700, 0);
+			song.AddSegment(allSquares, 0, moveSquaresTime, 192700, 8000);
+			song.AddSegment(allSquares, 0, moveSquaresTime * 7 / 8, song.MaxTime(), 7000);
+			song.AddPaletteChange(192700, 0);
+			song.AddPaletteChange(196700, 1);
+			song.AddPaletteChange(200700, 2);
+			song.AddPaletteChange(204700, 3);
+			song.AddPaletteChange(208700, 0);
 
 			// Fireworks (207700)
 			var fireworks = Fireworks(out var fireworksTime);
-			song.AddSegmentWithRepeat(fireworks, 0, fireworksTime, 207700);
+			song.AddSegment(fireworks, 0, fireworksTime, 207700);
 
 			// Sunset (248700)
 			var sunset = Sunset(out var sunTime);
-			song.AddSegmentWithRepeat(sunset, 0, sunTime, 248700, 14000);
-			song.AddPaletteSequence(248700, 0);
-			song.AddPaletteSequence(248700, 249700, null, 1);
-			song.AddPaletteSequence(262200, 262700, null, 2);
-			song.AddPaletteSequence(262700, 0);
+			song.AddSegment(sunset, 0, sunTime, 248700, 14000);
+			song.AddPaletteChange(248700, 0);
+			song.AddPaletteChange(248700, 249700, 1);
+			song.AddPaletteChange(262200, 262700, 2);
+			song.AddPaletteChange(262700, 0);
 
 			// End (262700)
 

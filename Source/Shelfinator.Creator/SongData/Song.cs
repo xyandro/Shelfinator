@@ -26,14 +26,14 @@ namespace Shelfinator.Creator.SongData
 			return segments.IndexOf(segment);
 		}
 
-		public SegmentItem AddSegmentWithRepeat(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
+		public SegmentItem AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
 		{
 			var segmentDuration = segmentEndTime - segmentStartTime;
 			duration = duration ?? segmentDuration;
 			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration.Value * repeat, segmentDuration, segmentDuration, duration.Value));
 		}
 
-		public SegmentItem RepeatSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
+		public SegmentItem AddSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
 		{
 			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration, startVelocity, endVelocity, baseVelocity));
 		}
@@ -61,21 +61,21 @@ namespace Shelfinator.Creator.SongData
 
 		public int MaxTime() => segmentItems.Select(s => s.EndTime).DefaultIfEmpty(0).Max();
 
-		public void AddPaletteSequence(int time, int paletteIndex) => AddPaletteSequence(time, time, paletteIndex, paletteIndex);
+		public void AddPaletteChange(int time, int paletteIndex) => AddPaletteChange(time, time, paletteIndex);
 
-		public void AddPaletteSequence(int startTime, int endTime, int? startPaletteIndex, int endPaletteIndex)
+		public void AddPaletteChange(int startTime, int endTime, int endPaletteIndex)
 		{
 			if (startTime > endTime)
 				throw new ArgumentException("startTime > endTime");
-
-			if (startTime == endTime)
-				startPaletteIndex = endPaletteIndex;
 
 			var index = 0;
 			while (startTime >= paletteSequences[index].EndTime)
 				++index;
 
-			if (!startPaletteIndex.HasValue)
+			int startPaletteIndex;
+			if (startTime == endTime)
+				startPaletteIndex = endPaletteIndex;
+			else
 			{
 				if (paletteSequences[index].StartPaletteIndex != paletteSequences[index].EndPaletteIndex)
 					throw new Exception("Can't determine start palette index");
@@ -92,7 +92,7 @@ namespace Shelfinator.Creator.SongData
 			else
 				paletteSequences[index].EndTime = startTime;
 
-			paletteSequences.Add(new PaletteSequence(startTime, endTime, startPaletteIndex.Value, endPaletteIndex));
+			paletteSequences.Add(new PaletteSequence(startTime, endTime, startPaletteIndex, endPaletteIndex));
 			if (endTime != int.MaxValue)
 				paletteSequences.Add(new PaletteSequence(endTime, int.MaxValue, endPaletteIndex, endPaletteIndex));
 		}
