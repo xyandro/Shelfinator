@@ -8,7 +8,7 @@ namespace Shelfinator.Creator.Songs
 {
 	class Hallelujah : ISong
 	{
-		public int SongNumber => 5;
+		public int SongNumber => 6;
 
 		const double Brightness = 1f / 16;
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
@@ -53,7 +53,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment FourCircle()
+		Segment LinesSquares()
 		{
 			var segment = new Segment();
 			var color = new LightColor(0, 0, new List<List<int>>
@@ -80,7 +80,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment SpinColor()
+		Segment FourCircle()
 		{
 			const int RotateDist = 97 / 4;
 			const int ColorDist = RotateDist - 5;
@@ -142,12 +142,13 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, 1000, new List<int> { 0xffffff, 0x0000ff, 0x00ffff, 0xab97d2 }.Multiply(Brightness).ToList());
 			var fallTime = 0;
 			var columnMax = Enumerable.Repeat(96, 97).ToList();
-			for (var time = 0; time < 20000; ++time)
+			var columnOrder = new List<int> { 20, 69, 89, 84, 72, 59, 43, 21, 13, 70, 32, 8, 31, 47, 94, 85, 6, 96, 42, 52, 91, 62, 35, 14, 24, 45, 27, 67, 1, 28, 25, 68, 37, 74, 5, 40, 4, 23, 33, 63, 53, 57, 75, 41, 71, 60, 78, 56, 95, 58, 48, 7, 82, 50, 83, 65, 87, 80, 46, 49, 77, 54, 18, 29, 39, 81, 90, 51, 55, 34, 36, 88, 93, 92, 12, 22, 66, 38, 19, 0, 10, 61, 9, 76, 17, 44, 15, 26, 86, 2, 16, 64, 3, 30, 11, 79, 73 };
+			var column = 0;
+			for (var time = 0; time < 16000; ++time)
 			{
 				if (time >= fallTime)
 				{
-					var column = rand.Next(0, 97);
-					flakes.Add(new SnowFlake(column));
+					flakes.Add(new SnowFlake(columnOrder[column++ % columnOrder.Count]));
 					fallTime = (time + InitialTime * Math.Pow(TimeModifier, time)).Round();
 				}
 
@@ -358,14 +359,12 @@ namespace Shelfinator.Creator.Songs
 				Point = startPoint + direction * time + gravity;
 			}
 
-			public static IEnumerable<FireworkPart> Create()
+			public static IEnumerable<FireworkPart> Create(int position)
 			{
 				const int Parts = 20;
 
-				var x = rand.Next(0, 8);
-				x = (x / 2 + 1) * 19 + (x % 2);
-				var y = rand.Next(0, 8);
-				y = (y / 2 + 1) * 19 + (y % 2);
+				var x = (position % 4 + 1) * 19;
+				var y = (position / 4 + 1) * 19;
 				var point = new Point(x, y);
 				var color = rand.Next(0, 7);
 				for (var ctr = 0; ctr < Parts; ++ctr)
@@ -375,7 +374,8 @@ namespace Shelfinator.Creator.Songs
 
 		Segment Fireworks(out int time)
 		{
-			var launchTimes = new List<int> { 0, 1000, 3000, 3750, 4000, 5000, 7000, 7750, 8000, 9000, 11000, 12000, 12250, 14083, 15167, 15833, 16167, 17167, 19083, 19750, 20083, 20583, 20667, 21000, 23083, 23667, 24083, 25083, 27083, 27667, 28083, 28167, 28250, 29417, 29750, 30083, 31417, 31750, 32083 };
+			var launchTimes = new List<int> { 0, 750, 1000, 2000, 4000, 4750, 5000, 6000, 8000, 8750, 9000, 10000, 12000, 13000, 13250, 14250, 15083, 16167, 16833, 17167, 18167, 20083, 20750, 21083, 21583, 21667, 22000, 24083, 24667, 25083, 26083, 28083, 28667, 29083, 29167, 29250, 30417, 30750, 31083, 32417, 32750, 33083, 33125, 33167, 33208, 33250, 33292, 33333, 33375, 33417, 33458, 33500, 33542, 33583, 33625, 33667, 33708 };
+			var positions = new List<int> { 4, 13, 0, 15, 2, 3, 6, 1, 8, 12, 7, 9, 10, 11, 5, 14, 4, 13, 0, 15, 2, 3, 6, 1, 8, 12, 7, 9, 10, 11, 5, 14, 4, 13, 0, 15, 2, 3, 6, 1, 8, 2, 15, 9, 0, 1, 4, 10, 3, 12, 7, 14, 11, 6, 5, 8, 13 };
 
 			var parts = new List<FireworkPart>();
 			var color = new LightColor(0, 6, Helpers.Rainbow6.Multiply(Brightness).ToList());
@@ -385,9 +385,9 @@ namespace Shelfinator.Creator.Songs
 			var launchIndex = 0;
 			while (true)
 			{
-				if ((launchIndex < launchTimes.Count) && (time == launchTimes[launchIndex]))
+				while ((launchIndex < launchTimes.Count) && (time == launchTimes[launchIndex]))
 				{
-					parts.AddRange(FireworkPart.Create());
+					parts.AddRange(FireworkPart.Create(positions[launchIndex]));
 					++launchIndex;
 				}
 
@@ -424,7 +424,7 @@ namespace Shelfinator.Creator.Songs
 			const double HillMiddleX = 37;
 			const double HillMiddleY = 60;
 
-			const double SunStartY = 90;
+			const double SunStartY = 105;
 			const double SunMiddleX = 86;
 			const double SunMiddleY = 10;
 			const double SunRadius = 10;
@@ -437,10 +437,11 @@ namespace Shelfinator.Creator.Songs
 
 			var segment = new Segment();
 
-			var sunColor = new LightColor(new List<int> { Helpers.MultiplyColor(0xffff00, Brightness) }, new List<int> { 0x000000 });
+			var sunColor = new LightColor(new List<int> { 0x000000 }, new List<int> { Helpers.MultiplyColor(0xffff00, Brightness) }, new List<int> { 0x000000 });
 			var blues = new List<int> { 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff };
-			var reds = new List<int> { 0xff0000, 0xff0000, 0xff7f00, 0x000010 };
-			var green = new LightColor(0, 10000, new List<int> { 0x00ff00, 0x00ff00, 0x001000 }.Multiply(Brightness).ToList(), new List<int> { 0x000000 });
+			var blueReds = new List<int> { 0xff0000, 0xff0000, 0xff7f00, 0x000010 };
+			var greens = new List<int> { 0x00ff00, 0x00ff00, 0x00ff00, 0x00ff00 };
+			var greenReds = new List<int> { 0x00ff00, 0x00ff00, 0x00ff00, 0x001000 };
 
 			var ground = Enumerable.Range(0, 97).Select(x => (HillA * Math.Pow(x - HillMiddleX, 2) + HillMiddleY).Round()).ToList();
 
@@ -462,7 +463,7 @@ namespace Shelfinator.Creator.Songs
 					redPercent = (percent - FadePercent) / (RedPercent - FadePercent);
 				else
 					redPercent = 0;
-				var blue = new LightColor(0, 10000, blues.Zip(reds, (r, b) => Helpers.GradientColor(r, b, redPercent)).Multiply(Brightness).ToList(), new List<int> { 0x000000 });
+				var blue = new LightColor(0, 10000, new List<int> { 0x000000 }, blues.Zip(blueReds, (r, b) => Helpers.GradientColor(r, b, redPercent)).Multiply(Brightness).ToList(), new List<int> { 0x000000 });
 				for (var x = 0; x < 97; x++)
 					for (var y = 0; y < ground[x]; ++y)
 					{
@@ -483,6 +484,7 @@ namespace Shelfinator.Creator.Songs
 				}
 
 				// Ground
+				var green = new LightColor(0, 10000, new List<int> { 0x000000 }, greens.Zip(greenReds, (r, b) => Helpers.GradientColor(r, b, redPercent)).Multiply(Brightness).ToList(), new List<int> { 0x000000 });
 				for (var x = 0; x < 97; x++)
 					for (var y = ground[x]; y < 97; ++y)
 					{
@@ -506,17 +508,17 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentWithRepeat(bounce, 0, 750 * 4, 700, 16000);
 
 			// FourCircle (16700)
-			var fourCircle = FourCircle();
-			song.AddSegmentWithRepeat(fourCircle, 0, 38, 16700, 4000, 4);
+			var spinColor = FourCircle();
+			song.AddSegmentWithRepeat(spinColor, 0, 360, 16700, 8000, 2);
 			song.AddPaletteSequence(16700, 0);
 			song.AddPaletteSequence(20200, 21200, null, 1);
 			song.AddPaletteSequence(24200, 25200, null, 2);
 			song.AddPaletteSequence(28200, 29200, null, 3);
 			song.AddPaletteSequence(32700, 0);
 
-			// SpinColor (32700)
-			var spinColor = SpinColor();
-			song.AddSegmentWithRepeat(spinColor, 0, 360, 32700, 8000, 2);
+			// LinesSquares (32700)
+			var fourCircle = LinesSquares();
+			song.AddSegmentWithRepeat(fourCircle, 0, 38, 32700, 4000, 4);
 			song.AddPaletteSequence(32700, 0);
 			song.AddPaletteSequence(36200, 37200, null, 1);
 			song.AddPaletteSequence(40200, 41200, null, 2);
@@ -525,7 +527,7 @@ namespace Shelfinator.Creator.Songs
 
 			// SnowFall (48700)
 			var snowFall = SnowFall();
-			song.AddSegmentWithRepeat(snowFall, 0, 20000, 48700, 39000);
+			song.AddSegmentWithRepeat(snowFall, 0, 16000, 48700, 39000);
 
 			// SyncFlash (87700)
 			var syncFlash = SyncFlash();
@@ -555,22 +557,24 @@ namespace Shelfinator.Creator.Songs
 
 			// AllSquares (192700)
 			var allSquares = AllSquares(out var moveSquaresTime);
-			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime, 192700, 8000, 2);
+			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime, 192700, 8000);
+			song.AddSegmentWithRepeat(allSquares, 0, moveSquaresTime * 7 / 8, song.MaxTime(), 7000);
 			song.AddPaletteSequence(192700, 0);
 			song.AddPaletteSequence(196700, 1);
 			song.AddPaletteSequence(200700, 2);
 			song.AddPaletteSequence(204700, 3);
 			song.AddPaletteSequence(208700, 0);
 
-			// Fireworks (208700)
+			// Fireworks (207700)
 			var fireworks = Fireworks(out var fireworksTime);
-			song.AddSegmentWithRepeat(fireworks, 0, fireworksTime, 208700);
+			song.AddSegmentWithRepeat(fireworks, 0, fireworksTime, 207700);
 
 			// Sunset (248700)
 			var sunset = Sunset(out var sunTime);
 			song.AddSegmentWithRepeat(sunset, 0, sunTime, 248700, 14000);
 			song.AddPaletteSequence(248700, 0);
-			song.AddPaletteSequence(262200, 262700, null, 1);
+			song.AddPaletteSequence(248700, 249700, null, 1);
+			song.AddPaletteSequence(262200, 262700, null, 2);
 			song.AddPaletteSequence(262700, 0);
 
 			// End (262700)

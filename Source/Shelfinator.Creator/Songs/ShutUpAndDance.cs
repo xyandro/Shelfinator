@@ -368,7 +368,7 @@ namespace Shelfinator.Creator.Songs
 			var center = new Point(48, 48);
 			var distances = bodyLayout.GetAllLights().Select(light => Tuple.Create(light, (bodyLayout.GetLightPosition(light) - center).Length)).ToList();
 
-			for (var circle = 0; circle < 18; ++circle)
+			for (var circle = 0; circle < 17; ++circle)
 			{
 				for (var x = 9; x < 68; ++x)
 				{
@@ -483,7 +483,7 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, 6, new List<List<int>> { new List<int> { Helpers.MultiplyColor(0xffffff, 1f / 8) }, Helpers.Rainbow6.Multiply(Brightness).ToList() });
 
 			var segment = new Segment();
-			var rand = new Random();
+			var rand = new Random(0xbadf00d);
 			var lights = bodyLayout.GetAllLights().OrderBy(x => rand.Next()).ToList();
 			for (var time = 0; time < lights.Count; ++time)
 			{
@@ -512,14 +512,14 @@ namespace Shelfinator.Creator.Songs
 			});
 			var color1 = new LightColor(0, 1, new List<List<int>>
 			{
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
 				new List<int> { 0xff7f00 }.Multiply(Brightness).ToList(),
 				new List<int> { 0xff7f00 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x00ff00 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x4b0082 }.Multiply(Brightness).ToList(),
 				new List<int> { 0x4b0082 }.Multiply(Brightness).ToList(),
-				new List<int> { 0xff0000 }.Multiply(Brightness).ToList(),
+				new List<int> { 0x000000 }.Multiply(Brightness).ToList(),
 			});
 
 			foreach (var light in bodyLayout.GetAllLights())

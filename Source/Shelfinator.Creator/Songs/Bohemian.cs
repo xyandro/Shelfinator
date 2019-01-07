@@ -734,7 +734,7 @@ namespace Shelfinator.Creator.Songs
 			var positions = squaresLayout.GetAllLights().Except(0).OrderBy(light => light).Select(light => squaresLayout.GetLightPositions(light)).ToList();
 			var lights = positions.Select(list => list.Select(light => bodyLayout.GetPositionLight(light)).ToList()).ToList();
 			var centers = positions.Select(list => Helpers.GetCenter(list)).ToList();
-			var rand = new Random();
+			var rand = new Random(0xbadbeef);
 			var offsets = Enumerable.Range(0, centers.Count).Select(index => index * 360 / centers.Count).OrderBy(x => rand.Next()).ToList();
 			var angles = positions.Select((list, index) => list.Select(p => Helpers.GetAngle(p, centers[index]) + offsets[index]).ToList()).ToList();
 
