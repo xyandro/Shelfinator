@@ -38,7 +38,7 @@ namespace Shelfinator.Creator.Songs
 						{
 							var newPosition = points[pointCtr] + direction[pointCtr] * mult;
 							foreach (var light in bodyLayout.GetPositionLights(newPosition.X.Round(), newPosition.Y.Round(), 2, 2))
-								segment.AddLight(light, time, Segment.Absolute, color[(pointCtr + 4 - dir) % 4]);
+								segment.AddLight(light, time, color[(pointCtr + 4 - dir) % 4]);
 						}
 						++time;
 					}
@@ -63,19 +63,23 @@ namespace Shelfinator.Creator.Songs
 				new List<int> { 0x100010 },
 			});
 			for (var time = 0; time < 38; ++time)
+			{
+				segment.Clear(time);
 				for (var x = 0; x < 97; ++x)
 					for (var y = 0; y < 97; y += 38)
 					{
-						var useColor = ((x + 38 - time) % 38) <= 20 ? color : Segment.Absolute;
+						if (((x + 38 - time) % 38) > 20)
+							continue;
 						foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 2))
-							segment.AddLight(light, time, useColor);
+							segment.AddLight(light, time, color, 0);
 						foreach (var light in bodyLayout.GetPositionLights(96 - x, y + 19, 1, 2))
-							segment.AddLight(light, time, useColor);
+							segment.AddLight(light, time, color, 0);
 						foreach (var light in bodyLayout.GetPositionLights(y, x, 2, 1))
-							segment.AddLight(light, time, useColor);
+							segment.AddLight(light, time, color, 0);
 						foreach (var light in bodyLayout.GetPositionLights(y + 19, 96 - x, 2, 1))
-							segment.AddLight(light, time, useColor);
+							segment.AddLight(light, time, color, 0);
 					}
+			}
 			return segment;
 		}
 
@@ -158,7 +162,7 @@ namespace Shelfinator.Creator.Songs
 
 					if (flake.Y < columnMax[flake.X])
 						foreach (var light in bodyLayout.GetPositionLights(flake.Point, 1, 1))
-							segment.AddLight(light, time, Segment.Absolute, 0x000000);
+							segment.AddLight(light, time, 0x000000);
 				}
 
 				for (var ctr = 0; ctr < flakes.Count; ++ctr)
@@ -196,7 +200,7 @@ namespace Shelfinator.Creator.Songs
 				var y = 19 * notes[ctr];
 				for (var x = 0; x < 97; ++x)
 					foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 2).Concat(bodyLayout.GetPositionLights(y, x, 2, 1)))
-						segment.AddLight(light, times[ctr] + Math.Abs(48 - x), times[ctr + 1], color, ctr % 6, Segment.Absolute, 0x000000);
+						segment.AddLight(light, times[ctr] + Math.Abs(48 - x), times[ctr + 1], color, ctr % 6, 0x000000);
 			}
 
 			return segment;
@@ -232,7 +236,7 @@ namespace Shelfinator.Creator.Songs
 					for (var ctr = 0; ctr < points.Count; ctr++)
 					{
 						foreach (var light in bodyLayout.GetPositionLights(points[ctr], 2, 2))
-							segment.AddLight(light, time, Segment.Absolute, 0x000000);
+							segment.AddLight(light, time, 0x000000);
 						points[ctr] += dirs[ctr % 4];
 						foreach (var light in bodyLayout.GetPositionLights(points[ctr], 2, 2))
 							segment.AddLight(light, time, color, ((points[ctr] - center).Length * 100).Round());
@@ -327,7 +331,7 @@ namespace Shelfinator.Creator.Songs
 				foreach (var light in bodyLayout.GetPositionLights(rect).Except(bodyLayout.GetPositionLights(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4)))
 				{
 					segment.AddLight(light, time, color, (((bodyLayout.GetLightPosition(light) - center).Length - min) / (max - min) * 1000).Round());
-					segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
+					segment.AddLight(light, time + 1, 0x000000);
 				}
 				++time;
 			}
@@ -394,7 +398,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					foreach (var part in parts)
 						foreach (var light in bodyLayout.GetPositionLights(part.Point, 1, 1))
-							segment.AddLight(light, time, Segment.Absolute, 0x000000);
+							segment.AddLight(light, time, 0x000000);
 
 					for (var ctr = 0; ctr < parts.Count; ctr++)
 					{
@@ -479,7 +483,7 @@ namespace Shelfinator.Creator.Songs
 					var yEnd = sunY + val;
 					for (var y = yStart; y <= yEnd; ++y)
 						foreach (var light in bodyLayout.GetPositionLights(x + sunX, y, 1, 1))
-							segment.AddLight(light, time, sunColor);
+							segment.AddLight(light, time, sunColor, 0);
 				}
 
 				// Ground

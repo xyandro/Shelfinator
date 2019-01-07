@@ -168,8 +168,8 @@ namespace Shelfinator.Creator.Songs
 						var lights = bodyLayout.GetPositionLights(point.position, 2, 2);
 						foreach (var light in lights)
 						{
-							segment.AddLight(light, time, color);
-							segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
+							segment.AddLight(light, time, color, 0);
+							segment.AddLight(light, time + 1, 0x000000);
 						}
 						point.Move(movePhase[phase]);
 					}
@@ -195,7 +195,7 @@ namespace Shelfinator.Creator.Songs
 			{
 				var lights = bodyLayout.GetMappedLights(squaresLayout, order[ctr % 25]);
 				foreach (var light in lights)
-					segment.AddLight(light, times[ctr], times[ctr] + 606, color, ctr % 6, Segment.Absolute, 0x000000);
+					segment.AddLight(light, times[ctr], times[ctr] + 606, color, ctr % 6, 0x000000);
 			}
 			return segment;
 		}
@@ -360,13 +360,13 @@ namespace Shelfinator.Creator.Songs
 					var done = true;
 					foreach (var person in people)
 					{
-						segment.AddLight(bodyLayout.GetPositionLight(person.Position), time, Segment.Absolute, person.Color);
+						segment.AddLight(bodyLayout.GetPositionLight(person.Position), time, person.Color);
 						if (person.Position != person.Destination)
 						{
 							done = false;
 							person.Position = SongHelper.NextLocation(person.Position, person.Destination);
 						}
-						segment.AddLight(bodyLayout.GetPositionLight(person.Position), time + next, Segment.Absolute, person.Color);
+						segment.AddLight(bodyLayout.GetPositionLight(person.Position), time + next, person.Color);
 					}
 					time += next;
 					next = 1;

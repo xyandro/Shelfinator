@@ -129,7 +129,7 @@ namespace Shelfinator.Creator.Songs
 				if ((offOffset >= 0) && (offOffset < songLights.Count))
 				{
 					foreach (var light in songLights[offOffset])
-						segment.AddLight(light, time, Segment.Absolute, 0x000000);
+						segment.AddLight(light, time, 0x000000);
 					drawn = true;
 				}
 				if (!drawn)
@@ -312,7 +312,7 @@ namespace Shelfinator.Creator.Songs
 			{
 				for (var time = 0; time < 96; ++time)
 				{
-					bodyLayout.GetAllLights().ForEach(light => segment.AddLight(light, time + pass * 142, Segment.Absolute, 0x000000));
+					bodyLayout.GetAllLights().ForEach(light => segment.AddLight(light, time + pass * 142, 0x000000));
 					for (var xPosition = 0; xPosition < 6; ++xPosition)
 						for (var yPosition = 0; yPosition < 6; ++yPosition)
 						{
@@ -366,7 +366,7 @@ namespace Shelfinator.Creator.Songs
 							{
 								var color = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), 1d / 16);
 								foreach (var light in bodyLayout.GetPositionLights(x, y, 1, 1))
-									segment.AddLight(light, plasmaTime, Segment.Absolute, color);
+									segment.AddLight(light, plasmaTime, color);
 
 								ofs += sizeof(int);
 							}
@@ -409,7 +409,7 @@ namespace Shelfinator.Creator.Songs
 						color[colorPercent1] = new Dictionary<double, LightColor>();
 					if (!color[colorPercent1].ContainsKey(colorPercent2))
 						color[colorPercent1][colorPercent2] = new LightColor(0, 0, colors.Select(item => new List<int> { Helpers.AddColor(Helpers.MultiplyColor(item[0], colorPercent1), Helpers.MultiplyColor(item[1], colorPercent2)) }).Cast<IReadOnlyList<int>>().ToList());
-					segment.AddLight(light, time, color[colorPercent1][colorPercent2]);
+					segment.AddLight(light, time, color[colorPercent1][colorPercent2], 0);
 				}
 			}
 
@@ -442,7 +442,7 @@ namespace Shelfinator.Creator.Songs
 				for (var repeat = 0; repeat < 2000; repeat += 1000)
 				{
 					segment.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, distances[ctr].Round());
-					segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, Segment.Absolute, 0x000000);
+					segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, 0, 0x000000);
 				}
 
 			return segment;

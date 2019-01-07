@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
 
 namespace Shelfinator.Creator.SongData
 {
 	class Segment
 	{
-		static public LightColor Absolute { get; } = new LightColor(0x000000);
-
 		readonly Dictionary<int, List<Light>> lights = new Dictionary<int, List<Light>>();
 		readonly List<LightColor> colors = new List<LightColor>();
 		readonly Dictionary<LightColor, int> colorLookup = new Dictionary<LightColor, int>();
@@ -21,12 +19,12 @@ namespace Shelfinator.Creator.SongData
 			return lights[light];
 		}
 
-		public void AddLight(int light, int time, LightColor color) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), 0, GetColorIndex(color).Value, 0, false);
 		public void AddLight(int light, int time, LightColor color, int colorValue) => DoAddLight(light, time, int.MaxValue, GetColorIndex(color), colorValue, GetColorIndex(color).Value, colorValue, false);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, 0, intermediates);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, LightColor endColor, int endColorValue, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), 0, GetColorIndex(endColor).Value, endColorValue, intermediates);
-		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, 0, intermediates);
+		public void AddLight(int light, int time, int color) => DoAddLight(light, time, int.MaxValue, -1, color, -1, color, false);
 		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, LightColor endColor, int endColorValue, bool intermediates = false) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, GetColorIndex(endColor).Value, endColorValue, intermediates);
+		public void AddLight(int light, int startTime, int endTime, int startColor, LightColor endColor, int endColorValue) => DoAddLight(light, startTime, endTime, -1, startColor, GetColorIndex(endColor).Value, endColorValue, false);
+		public void AddLight(int light, int startTime, int endTime, LightColor startColor, int startColorValue, int endColor) => DoAddLight(light, startTime, endTime, GetColorIndex(startColor), startColorValue, -1, endColor, false);
+		public void AddLight(int light, int startTime, int endTime, int startColor, int endColor) => DoAddLight(light, startTime, endTime, -1, startColor, -1, endColor, false);
 
 		void DoAddLight(int light, int startTime, int endTime, int? startColorIndex, int startColorValue, int endColorIndex, int endColorValue, bool intermediates)
 		{
@@ -86,7 +84,7 @@ namespace Shelfinator.Creator.SongData
 				list.Add(new Light(endTime, int.MaxValue, endColorIndex, endColorValue, endColorIndex, endColorValue, false));
 		}
 
-		public void Clear(int time) => lights.Keys.ForEach(light => AddLight(light, time, Absolute, 0x000000));
+		public void Clear(int time) => lights.Keys.ForEach(light => AddLight(light, time, 0x000000));
 
 		public int MaxTime() => lights.Max(pair => pair.Value.Max(lightData => lightData.EndTime == int.MaxValue ? lightData.StartTime : lightData.EndTime));
 
@@ -94,8 +92,6 @@ namespace Shelfinator.Creator.SongData
 		{
 			if (color == null)
 				return null;
-			if (color == Absolute)
-				return -1;
 			if (!colorLookup.ContainsKey(color))
 			{
 				colorLookup[color] = colors.Count;

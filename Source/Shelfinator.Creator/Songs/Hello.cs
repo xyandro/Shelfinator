@@ -56,16 +56,16 @@ namespace Shelfinator.Creator.Songs
 			var color = new LightColor(0, 1000, Helpers.Rainbow7, new List<int> { 0x101010 }, new List<int> { 0x000000 });
 			for (var ctr = 0; ctr < headerLights.Count; ++ctr)
 			{
-				segment.AddLight(headerLights[ctr], headerDistanceInts[ctr], headerDistanceInts[ctr] + 400, null, color, headerLocations[ctr].X.Round() * 1000 / headerBottomRight.X.Round());
+				segment.AddLight(headerLights[ctr], headerDistanceInts[ctr], headerDistanceInts[ctr] + 400, null, 0, color, headerLocations[ctr].X.Round() * 1000 / headerBottomRight.X.Round());
 				if (!headerHelloLights.Contains(headerLights[ctr]))
-					segment.AddLight(headerLights[ctr], headerDistanceInts[ctr] + 1000, headerDistanceInts[ctr] + 1400, null, Segment.Absolute, 0x000000);
+					segment.AddLight(headerLights[ctr], headerDistanceInts[ctr] + 1000, headerDistanceInts[ctr] + 1400, null, 0, 0x000000);
 			}
 
 			for (var ctr = 0; ctr < bodyLights.Count; ++ctr)
 			{
-				segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr], bodyDistanceInts[ctr] + 400, null, color, bodyLocations[ctr].X.Round() * 1000 / bodyBottomRight.X.Round());
+				segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr], bodyDistanceInts[ctr] + 400, null, 0, color, bodyLocations[ctr].X.Round() * 1000 / bodyBottomRight.X.Round());
 				if (!bodyHelloLights.Contains(bodyLights[ctr]))
-					segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, Segment.Absolute, 0x000000);
+					segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, 0, 0x000000);
 			}
 
 			return segment;

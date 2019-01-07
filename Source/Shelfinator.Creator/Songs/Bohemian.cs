@@ -63,8 +63,8 @@ namespace Shelfinator.Creator.Songs
 					foreach (var point in points[ctr])
 					{
 						var light = GetLight(point);
-						segment.AddLight(light, startTime, startTime + 300, Segment.Absolute, 0x000000, Segment.Absolute, colors[pass]);
-						segment.AddLight(light, startTime + 1200, startTime + 1200 + 300, null, Segment.Absolute, 0x000000);
+						segment.AddLight(light, startTime, startTime + 300, 0x000000, colors[pass]);
+						segment.AddLight(light, startTime + 1200, startTime + 1200 + 300, null, 0, 0x000000);
 					}
 				}
 			}
@@ -107,8 +107,8 @@ namespace Shelfinator.Creator.Songs
 			{
 				foreach (var light in bodyLayout.GetPositionLights(pathPoint, 2, 2))
 				{
-					segment.AddLight(light, time, Segment.Absolute, 0x101010);
-					segment.AddLight(light, time + 1, Segment.Absolute, 0x000000);
+					segment.AddLight(light, time, 0x101010);
+					segment.AddLight(light, time + 1, 0x000000);
 				}
 
 				foreach (var square in squareLights.Keys)
@@ -116,8 +116,8 @@ namespace Shelfinator.Creator.Songs
 					var focusAngle = Helpers.GetAngle(squareCenter[square], pathPoint);
 					var useLight = squareLights[square].OrderBy(light => Math.Abs(focusAngle - Helpers.GetAngle(bodyLayout.GetLightPosition(light), squareCenter[square]))).First();
 
-					segment.AddLight(useLight, time, Segment.Absolute, colors[square - 1]);
-					segment.AddLight(useLight, time + 1, Segment.Absolute, 0x000000);
+					segment.AddLight(useLight, time, colors[square - 1]);
+					segment.AddLight(useLight, time + 1, 0x000000);
 				}
 
 				++time;
@@ -180,7 +180,7 @@ namespace Shelfinator.Creator.Songs
 					if (snakeEnd >= snakeLights.Count)
 						snakeEnd -= snakeLights.Count;
 					foreach (var light in snakeLights[snakeEnd])
-						segment.AddLight(light, time, Segment.Absolute, 0x000000);
+						segment.AddLight(light, time, 0x000000);
 					busy[snakeEnd] = false;
 				}
 
@@ -190,7 +190,7 @@ namespace Shelfinator.Creator.Songs
 					if (pellet == -1)
 						break;
 					foreach (var light in snakeLights[pellet.Value])
-						segment.AddLight(light, time, Segment.Absolute, 0x101010);
+						segment.AddLight(light, time, 0x101010);
 				}
 
 				++time;
@@ -332,8 +332,8 @@ namespace Shelfinator.Creator.Songs
 						stopTime = stopTime ?? time + EndingDelay;
 
 					segment.Clear(time);
-					players.ForEach(player => segment.AddLight(SongHelper.GetLight(player.Position).Value, time, Segment.Absolute, player.Tagged ? 0x000010 : player.Color));
-					hunters.ForEach(hunter => segment.AddLight(SongHelper.GetLight(hunter.Position).Value, time, Segment.Absolute, Helpers.MultiplyColor(0x101010, hunter.Tagged ? 1d / 3 : 1)));
+					players.ForEach(player => segment.AddLight(SongHelper.GetLight(player.Position).Value, time, player.Tagged ? 0x000010 : player.Color));
+					hunters.ForEach(hunter => segment.AddLight(SongHelper.GetLight(hunter.Position).Value, time, Helpers.MultiplyColor(0x101010, hunter.Tagged ? 1d / 3 : 1)));
 				}
 
 				++time;
@@ -479,7 +479,7 @@ namespace Shelfinator.Creator.Songs
 			foreach (var facePart in faceLights)
 				foreach (var lightListOrder in facePart)
 					foreach (var light in lightListOrder)
-						segment.AddLight(light, 0, Segment.Absolute, PassiveColor);
+						segment.AddLight(light, 0, PassiveColor);
 
 			for (var time = 0; time < 3120; ++time)
 			{
@@ -491,7 +491,7 @@ namespace Shelfinator.Creator.Songs
 					var offOffset = (time - Length) % facePart.Count;
 					if (offOffset >= 0)
 						foreach (var light in facePart[offOffset])
-							segment.AddLight(light, time, Segment.Absolute, PassiveColor);
+							segment.AddLight(light, time, PassiveColor);
 				}
 			}
 
@@ -542,7 +542,7 @@ namespace Shelfinator.Creator.Songs
 				for (var y = 0; y < 97; ++y)
 					for (var x = 0; x < 97; ++x)
 						foreach (var light in bodyLayout.GetPositionLights((x + offset) % 97, (y + offset) % 97, 1, 1))
-							segment.AddLight(light, offset, Segment.Absolute, pixels[x, y]);
+							segment.AddLight(light, offset, pixels[x, y]);
 
 			return segment;
 		}
@@ -683,7 +683,7 @@ namespace Shelfinator.Creator.Songs
 					point.AddColor(colors);
 
 				foreach (var pair in colors)
-					segment.AddLight(pair.Key, time, Segment.Absolute, pair.Value);
+					segment.AddLight(pair.Key, time, pair.Value);
 
 				++time;
 			}
@@ -715,7 +715,7 @@ namespace Shelfinator.Creator.Songs
 					for (var repeat = 0; repeat < 9000; repeat += 500)
 					{
 						segment.AddLight(allLights[ctr], angles[ctr] + repeat, angles[ctr] + repeat + Fade, null, 0, useColors, angles[ctr]);
-						segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, Segment.Absolute, 0x000000);
+						segment.AddLight(allLights[ctr], angles[ctr] + repeat + Delay, angles[ctr] + repeat + Delay + Fade, null, 0, 0x000000);
 					}
 			}
 			return segment;
@@ -775,7 +775,7 @@ namespace Shelfinator.Creator.Songs
 				for (var time = 0; time < Concurrency * 4; ++time)
 				{
 					foreach (var light in result.SelectMany(x => x))
-						segment.AddLight(light, time, Segment.Absolute, 0x000000);
+						segment.AddLight(light, time, 0x000000);
 					for (var ctr = 0; ctr < result.Count; ctr += Concurrency)
 						foreach (var light in result[(time + ctr) % result.Count])
 							segment.AddLight(light, time, color, (ctr / Concurrency) % 4);
@@ -815,13 +815,13 @@ namespace Shelfinator.Creator.Songs
 			{
 				for (var listCtr = 0; listCtr < lights.Count; listCtr++)
 					foreach (var light in lights[listCtr])
-						segment.AddLight(light, time, time + FadeTime, null, color, values[paletteCtr][listCtr]);
+						segment.AddLight(light, time, time + FadeTime, null, 0, color, values[paletteCtr][listCtr]);
 				time += DisplayTime;
 			}
 
 			for (var listCtr = 0; listCtr < lights.Count; listCtr++)
 				foreach (var light in lights[listCtr])
-					segment.AddLight(light, time, time + FadeTime, null, Segment.Absolute, 0);
+					segment.AddLight(light, time, time + FadeTime, null, 0, 0);
 
 			return segment;
 		}
@@ -843,7 +843,7 @@ namespace Shelfinator.Creator.Songs
 				foreach (var light in lights[order[ctr % 25]])
 					segment.AddLight(light, times[ctr], color, order[ctr % 25]);
 				foreach (var light in lights[order[ctr % 25]])
-					segment.AddLight(light, times[ctr + 1], times[ctr + 1] + Delay, null, Segment.Absolute, 0x000000);
+					segment.AddLight(light, times[ctr + 1], times[ctr + 1] + Delay, null, 0, 0x000000);
 			}
 
 			return segment;
