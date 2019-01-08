@@ -103,15 +103,13 @@ namespace Shelfinator.Creator.SongData
 			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.PatternDirectory, $"{songNumber}.pat"))))
 				Save(output);
 
-			var audioFile = Path.Combine(Helpers.PatternDirectory, songFileName);
+			var audioFile = Path.Combine(Helpers.PatternDirectory, $"{songNumber}.wav");
 			if (!File.Exists(audioFile))
 				File.Copy(Path.Combine(Helpers.AudioDirectory, songFileName), audioFile, true);
 		}
 
 		public void Save(BinaryWriter output)
 		{
-			output.Write(songFileName ?? "");
-
 			output.Write(segments.Count);
 			foreach (var segment in segments)
 				segment.Save(output);

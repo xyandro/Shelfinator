@@ -32,7 +32,6 @@ namespace Shelfinator
 
 			void Song::ReadFile(BufferFile::ptr file)
 			{
-				SongFileName = file->GetString();
 				ReadSegments(file);
 				segmentItems.Read(file);
 				paletteSequences.Read(file);
@@ -43,6 +42,11 @@ namespace Shelfinator
 				segments.resize(file->GetInt());
 				for (auto ctr = 0; ctr < segments.size(); ++ctr)
 					segments[ctr].Read(file);
+			}
+
+			std::string Song::SongFileName()
+			{
+				return FileName.substr(0, FileName.find_last_of(".")) + ".wav";
 			}
 
 			void Song::SetLights(int time, double brightness, Lights::ptr lights)

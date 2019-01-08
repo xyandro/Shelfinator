@@ -114,7 +114,7 @@ namespace Shelfinator
 				songIndex -= songs->Count();
 
 			song = songs->LoadSong(songIndex);
-			audio->Play(song->SongFileName);
+			audio->Play(song->SongFileName());
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 		}
 
