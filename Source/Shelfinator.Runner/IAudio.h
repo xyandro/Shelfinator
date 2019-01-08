@@ -10,10 +10,11 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<IAudio> ptr;
-			virtual void Play(std::string fileName) = 0;
+			virtual void Open(std::string fileName) = 0;
+			virtual void Close() = 0;
+			virtual void Play(int time = 0) = 0;
 			virtual void Stop() = 0;
 			virtual int GetTime() = 0;
-			virtual void SetTime(int time) = 0;
 		};
 	}
 }

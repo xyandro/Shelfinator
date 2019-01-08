@@ -57,8 +57,8 @@ namespace Shelfinator
 				banner = Banner::Create(L"▶", 0, 1000);
 				paused = !paused;
 				break;
-			case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
-			case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
+			case Rewind: audio->Play(audio->GetTime() - 5000); break;
+			case FastForward: audio->Play(audio->GetTime() + 5000); break;
 			case Previous:
 				if (audio->GetTime() < 2000)
 					--songIndex;
@@ -114,7 +114,8 @@ namespace Shelfinator
 				songIndex -= songs->Count();
 
 			song = songs->LoadSong(songIndex);
-			audio->Play(song->SongFileName());
+			audio->Open(song->SongFileName());
+			audio->Play();
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 		}
 

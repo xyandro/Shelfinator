@@ -14,9 +14,19 @@ namespace Shelfinator
 			return ptr(new Audio(audio));
 		}
 
-		void Audio::Play(std::string fileName)
+		void Audio::Open(std::string fileName)
 		{
-			return audio->Play(gcnew System::String(fileName.c_str()));
+			return audio->Open(gcnew System::String(fileName.c_str()));
+		}
+
+		void Audio::Close()
+		{
+			return audio->Close();
+		}
+
+		void Audio::Play(int time)
+		{
+			return audio->Play(time);
 		}
 
 		void Audio::Stop()
@@ -28,11 +38,5 @@ namespace Shelfinator
 		{
 			return audio->GetTime();
 		}
-
-		void Audio::SetTime(int time)
-		{
-			return audio->SetTime(time);
-		}
-
 	}
 }

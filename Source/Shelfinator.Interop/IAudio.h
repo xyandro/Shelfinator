@@ -6,10 +6,11 @@ namespace Shelfinator
 	{
 		public interface class IAudio
 		{
-			void Play(System::String ^fileName);
+			void Open(System::String ^fileName);
+			void Close();
+			void Play(int time);
 			void Stop();
 			int GetTime();
-			void SetTime(int time);
 		};
 	}
 }

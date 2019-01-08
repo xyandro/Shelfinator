@@ -98,7 +98,7 @@ namespace Shelfinator.Creator
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
 				case Key.S: controller.Stop(); break;
 				case Key.P: CopyPosition(); break;
-				case Key.T: SetTime(TestPosition); break;
+				case Key.T: Play(TestPosition); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
@@ -137,14 +137,31 @@ namespace Shelfinator.Creator
 			Dispatcher.Invoke(() => bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), buffer, bitmap.BackBufferStride, 0));
 		}
 
-		public void Play(string fileName)
+		public void Open(string fileName)
+		{
+			Close();
+
+			Dispatcher.Invoke(() =>
+			{
+				//mediaPlayer.SpeedRatio = 0.8;
+				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, fileName));
+			});
+		}
+
+		public new void Close()
+		{
+			Stop();
+			Dispatcher.Invoke(() => mediaPlayer.Source = null);
+		}
+
+		public void Play(int time = 0)
 		{
 			Stop();
 
 			Dispatcher.Invoke(() =>
 			{
 				//mediaPlayer.SpeedRatio = 0.8;
-				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, fileName));
+				mediaPlayer.Position = TimeSpan.FromMilliseconds(time);
 				mediaPlayer.Play();
 			});
 			playing = true;
@@ -163,13 +180,6 @@ namespace Shelfinator.Creator
 			if (!playing)
 				return -1;
 			return Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
-		}
-
-		public void SetTime(int time)
-		{
-			if (!playing)
-				return;
-			Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(time));
 		}
 	}
 }
