@@ -24,9 +24,9 @@ namespace Shelfinator
 			return audio->Close();
 		}
 
-		void Audio::Play(int time)
+		void Audio::Play()
 		{
-			return audio->Play(time);
+			return audio->Play();
 		}
 
 		void Audio::Stop()
@@ -37,6 +37,21 @@ namespace Shelfinator
 		int Audio::GetTime()
 		{
 			return audio->GetTime();
+		}
+
+		void Audio::SetTime(int time)
+		{
+			return audio->SetTime(time);
+		}
+
+		bool Audio::Playing()
+		{
+			return audio->Playing();
+		}
+
+		bool Audio::Finished()
+		{
+			return audio->Finished();
 		}
 	}
 }

@@ -36,16 +36,10 @@ namespace Shelfinator.Creator
 			var args = e.Args.ToList();
 			var build = CheckExistsAndRemove(args, "build");
 			var all = CheckExistsAndRemove(args, "all");
-			var test = CheckExistsAndRemove(args, "test");
-			var testAll = CheckExistsAndRemove(args, "testall");
 			var small = CheckExistsAndRemove(args, "small");
 			var startPaused = CheckExistsAndRemove(args, "pause");
 
 			var songNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
-			if ((test) && (songNumbers.Count != 5))
-				throw new Exception("Test must provide firstLight, lightCount, concurrency, delay, and brightness");
-			if ((testAll) && (songNumbers.Count != 3))
-				throw new Exception("TestAll must provide lightCount, delay, and brightness");
 
 			if (build)
 			{
@@ -57,13 +51,7 @@ namespace Shelfinator.Creator
 					song.Render().Save(song.SongNumber);
 			}
 
-			var window = new Emulator(small);
-			if (test)
-				window.Test(songNumbers[0], songNumbers[1], songNumbers[2], songNumbers[3], (byte)songNumbers[4]);
-			else if (testAll)
-				window.TestAll(songNumbers[0], songNumbers[1], (byte)songNumbers[2]);
-			else
-				window.Run(songNumbers, startPaused);
+			var window = new Emulator(small, songNumbers, startPaused);
 		}
 
 		protected override void OnExit(ExitEventArgs e)

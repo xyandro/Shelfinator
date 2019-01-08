@@ -15,9 +15,12 @@ namespace Shelfinator
 			static ptr Create(Interop::IAudio ^audio);
 			void Open(std::string fileName);
 			void Close();
-			void Play(int time = 0);
+			void Play();
 			void Stop();
 			int GetTime();
+			void SetTime(int time);
+			bool Playing();
+			bool Finished();
 		private:
 			gcroot<Interop::IAudio^> audio;
 			Audio(Interop::IAudio ^audio);

@@ -20,16 +20,14 @@ namespace Shelfinator
 		{
 		public:
 			typedef std::shared_ptr<Controller> ptr;
-			static ptr Create(IDotStar::ptr dotStar, IAudio::ptr audio);
+			static ptr Create(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount);
 			~Controller();
-			void Run(int *songNumbers, int songNumberCount, bool startPaused);
-			void Test(int firstLight, int lightCount, int concurrency, int delay, unsigned char brightness);
-			void TestAll(int lightCount, int delay, unsigned char brightness);
+			void Run(bool startPaused);
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:
-			bool running = true, paused = false;
-			int songIndex = -1, selectedNumber = -1;
+			bool running = true;
+			int songIndex = -1, selectedSong = -1;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;
@@ -43,9 +41,9 @@ namespace Shelfinator
 #endif
 			std::queue<RemoteCode> remoteCodes;
 
-			Controller(IDotStar::ptr dotStar, IAudio::ptr audio);
-			bool HandleRemote();
-			void LoadSong(bool startAtEnd = false);
+			Controller(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount);
+			void HandleRemote();
+			void LoadSong(bool play = true);
 		};
 	}
 }

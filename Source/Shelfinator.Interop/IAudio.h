@@ -8,9 +8,12 @@ namespace Shelfinator
 		{
 			void Open(System::String ^fileName);
 			void Close();
-			void Play(int time);
+			void Play();
 			void Stop();
 			int GetTime();
+			void SetTime(int time);
+			bool Playing();
+			bool Finished();
 		};
 	}
 }

@@ -17,9 +17,9 @@ namespace Shelfinator.Creator
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
 		readonly WriteableBitmap bitmap;
 		readonly uint[] buffer;
-		bool playing = false;
+		bool playing = false, finished = true;
 
-		public Emulator(bool small)
+		public Emulator(bool small, List<int> songNumbers, bool startPaused)
 		{
 			InitializeComponent();
 
@@ -62,13 +62,10 @@ namespace Shelfinator.Creator
 				WindowState = WindowState.Maximized;
 			}
 			dotStarBitmap.Source = bitmap;
-			controller = new Controller(this, this);
-			mediaPlayer.MediaEnded += (s, e) => Stop();
+			controller = new Controller(this, this, songNumbers);
+			mediaPlayer.MediaEnded += (s, e) => { Stop(); finished = true; };
+			new Thread(() => controller.Run(startPaused)).Start();
 		}
-
-		public void Run(List<int> songNumbers, bool startPaused) => new Thread(() => controller.Run(songNumbers, startPaused)).Start();
-		public void Test(int firstLight, int lightCount, int concurrency, int delay, byte brightness) => new Thread(() => controller.Test(firstLight, lightCount, concurrency, delay, brightness)).Start();
-		public void TestAll(int lightCount, int delay, byte brightness) => new Thread(() => controller.TestAll(lightCount, delay, brightness)).Start();
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
 		bool ShiftDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
@@ -82,8 +79,6 @@ namespace Shelfinator.Creator
 				case Key.Space: controller.AddRemoteCode(RemoteCode.Pause); break;
 				case Key.Left: controller.AddRemoteCode(ControlDown ? RemoteCode.Previous : RemoteCode.Rewind); break;
 				case Key.Right: controller.AddRemoteCode(ControlDown ? RemoteCode.Next : RemoteCode.FastForward); break;
-				case Key.Up: controller.AddRemoteCode(RemoteCode.VolumeUp); break;
-				case Key.Down: controller.AddRemoteCode(RemoteCode.VolumeDown); break;
 				case Key.Enter: controller.AddRemoteCode(RemoteCode.Enter); break;
 				case Key.D0: controller.AddRemoteCode(RemoteCode.D0); break;
 				case Key.D1: controller.AddRemoteCode(RemoteCode.D1); break;
@@ -98,7 +93,7 @@ namespace Shelfinator.Creator
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
 				case Key.S: controller.Stop(); break;
 				case Key.P: CopyPosition(); break;
-				case Key.T: Play(TestPosition); break;
+				case Key.T: SetTime(TestPosition); break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
@@ -146,40 +141,34 @@ namespace Shelfinator.Creator
 				//mediaPlayer.SpeedRatio = 0.8;
 				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, fileName));
 			});
+
+			finished = false;
 		}
 
 		public new void Close()
 		{
 			Stop();
 			Dispatcher.Invoke(() => mediaPlayer.Source = null);
+			finished = true;
 		}
 
-		public void Play(int time = 0)
+		public void Play()
 		{
-			Stop();
-
-			Dispatcher.Invoke(() =>
-			{
-				//mediaPlayer.SpeedRatio = 0.8;
-				mediaPlayer.Position = TimeSpan.FromMilliseconds(time);
-				mediaPlayer.Play();
-			});
+			Dispatcher.Invoke(() => mediaPlayer.Play());
 			playing = true;
 		}
 
 		public void Stop()
 		{
-			if (!playing)
-				return;
-			Dispatcher.Invoke(() => mediaPlayer.Stop());
+			Dispatcher.Invoke(() => mediaPlayer.Pause());
 			playing = false;
 		}
 
-		public int GetTime()
-		{
-			if (!playing)
-				return -1;
-			return Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
-		}
+		public int GetTime() => Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
+
+		public void SetTime(int time = 0) => Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(time));
+
+		public bool Playing() => playing;
+		public bool Finished() => finished;
 	}
 }

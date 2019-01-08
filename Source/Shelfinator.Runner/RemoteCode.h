@@ -10,11 +10,9 @@ namespace Shelfinator
 		Pause,\
 		Rewind,\
 		FastForward,\
-		Enter,\
 		Previous,\
 		Next,\
-		VolumeUp,\
-		VolumeDown,\
+		Info,\
 		D0,\
 		D1,\
 		D2,\
@@ -25,7 +23,7 @@ namespace Shelfinator
 		D7,\
 		D8,\
 		D9,\
-		Info,\
+		Enter,\
 
 		enum RemoteCode { REMOTE_CODES };
 	}
