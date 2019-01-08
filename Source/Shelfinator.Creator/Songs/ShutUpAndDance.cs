@@ -668,7 +668,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("shutupanddance.wav");
+			var song = new Song("shutupanddance.mp3");
 			song.AddPaletteChange(0, 0);
 
 			// ShapeChange (500)

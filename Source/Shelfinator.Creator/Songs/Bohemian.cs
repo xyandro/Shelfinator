@@ -851,7 +851,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("bohemian.wav");
+			var song = new Song("bohemian.mp3");
 
 			// Spiral (0)
 			var spiral = Spiral();

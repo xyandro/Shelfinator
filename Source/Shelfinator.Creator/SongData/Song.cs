@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -105,7 +106,12 @@ namespace Shelfinator.Creator.SongData
 
 			var audioFile = Path.Combine(Helpers.PatternDirectory, $"{songNumber}.wav");
 			if (!File.Exists(audioFile))
-				File.Copy(Path.Combine(Helpers.AudioDirectory, songFileName), audioFile, true);
+			{
+				var ffmpegs = new List<string> { @"C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe" };
+				var ffmpeg = ffmpegs.Where(File.Exists).First();
+				using (var process = Process.Start(ffmpeg, $@"-i ""{Path.Combine(Helpers.AudioDirectory, songFileName)}"" ""{audioFile}"""))
+					process.WaitForExit();
+			}
 		}
 
 		public void Save(BinaryWriter output)

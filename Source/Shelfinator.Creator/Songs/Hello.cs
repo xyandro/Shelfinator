@@ -73,7 +73,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("hello.wav");
+			var song = new Song("hello.mp3");
 			var hello = GetHello();
 			song.AddSegment(hello, 0, 0, 0, 1500);
 			song.AddSegment(hello, 0, 8000, song.MaxTime());

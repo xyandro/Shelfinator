@@ -503,7 +503,7 @@ namespace Shelfinator.Creator.Songs
 		public Song Render()
 		{
 			// First measure starts at 700, measures are 2000 throughout the song until the end
-			var song = new Song("hallelujah.wav");
+			var song = new Song("hallelujah.mp3");
 
 			// Bounce (0)
 			var bounce = Bounce();

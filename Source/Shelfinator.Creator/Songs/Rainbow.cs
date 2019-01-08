@@ -450,7 +450,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("rainbow.wav");
+			var song = new Song("rainbow.mp3");
 
 			// Squares
 			var squares = Squares();

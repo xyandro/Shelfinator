@@ -408,7 +408,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("popular.wav");
+			var song = new Song("popular.mp3");
 
 			// PulseSquares (500)
 			var pulseSquares = PulseSquares();
