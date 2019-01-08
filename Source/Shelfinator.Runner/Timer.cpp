@@ -11,17 +11,27 @@ namespace Shelfinator
 
 		Timer::Timer()
 		{
-			timer = Now();
+			Restart();
 		}
 
-		int Timer::Millis()
+		void Timer::Restart()
 		{
-			return (int)std::chrono::duration_cast<std::chrono::milliseconds>(Now() - timer).count();
+			start = Now();
+		}
+
+		int Timer::Elapsed()
+		{
+			return CalcDiff(start, Now());
 		}
 
 		std::chrono::steady_clock::time_point Timer::Now()
 		{
 			return std::chrono::steady_clock::now();
+		}
+
+		int Timer::CalcDiff(std::chrono::steady_clock::time_point time1, std::chrono::steady_clock::time_point time2)
+		{
+			return (int)std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count();
 		}
 	}
 }

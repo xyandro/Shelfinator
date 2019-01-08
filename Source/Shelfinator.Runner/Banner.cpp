@@ -173,7 +173,8 @@ namespace Shelfinator
 
 		void Banner::SetLights(Lights::ptr lights)
 		{
-			auto x1 = scrollDuration <= 0 ? 0 : timer->Millis() * (width - 31) / scrollDuration;
+			auto elapsed = timer->Elapsed();
+			auto x1 = scrollDuration <= 0 ? 0 : elapsed * (width - 31) / scrollDuration;
 			if (x1 > width - 31)
 				x1 = width - 31;
 			if (x1 < 0)
@@ -185,21 +186,22 @@ namespace Shelfinator
 
 			auto xOfs = (32 - x2 + x1) / 2 - x1;
 
-			auto fade = fadeDuration <= 0 ? 1 : 1 - ((double)timer->Millis() - scrollDuration) / fadeDuration;
+			auto fade = fadeDuration <= 0 ? 1 : 1 - ((double)elapsed - scrollDuration) / fadeDuration;
 			if (fade < 0)
 				fade = 0;
 			if (fade > 1)
 				fade = 1;
 
+			auto useColor = Helpers::MultiplyColor(color, fade);
 			for (auto y = 0; y < 8; ++y)
 				for (auto x = x1; x < x2; ++x)
 					if (grid[y][x])
-						lights->SetLight(lightPosition[y][xOfs + x], Helpers::MultiplyColor(color, fade));
+						lights->SetLight(lightPosition[y][xOfs + x], useColor);
 		}
 
 		bool Banner::Expired()
 		{
-			return timer->Millis() >= scrollDuration + fadeDuration;
+			return timer->Elapsed() >= scrollDuration + fadeDuration;
 		}
 	}
 }

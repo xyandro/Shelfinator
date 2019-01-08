@@ -11,9 +11,6 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		const double Controller::multipliers[] = { -4, -3, -2, -1, -0.75, -0.5, -0.25, -0.125, 0, 0.125, 0.25, 0.5, 0.75, 1, 2, 3, 4 };
-		std::wstring Controller::multiplierNames[] = { L"◀◀◀◀", L"◀◀◀", L"◀◀", L"◀", L"◀3/4", L"◀1/2", L"◀1/4", L"◀1/8", L"‖", L"1/8▶", L"1/4▶", L"1/2▶", L"3/4▶", L"▶", L"▶▶", L"▶▶▶", L"▶▶▶▶" };
-
 		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IAudio::ptr audio)
 		{
 			return ptr(new Controller(dotStar, audio));
@@ -23,7 +20,7 @@ namespace Shelfinator
 		{
 			this->dotStar = dotStar;
 			this->audio = audio;
-			timer = Timer::Create();
+			remoteTimer = Timer::Create();
 			songs = Songs::Create();
 		}
 
@@ -36,8 +33,7 @@ namespace Shelfinator
 		{
 			auto result = true;
 			auto useSelectedNumber = false;
-			auto now = timer->Millis();
-			if ((selectedNumber != -1) && (now - lastRemoteTime >= 1000))
+			if ((selectedNumber != -1) && (remoteTimer->Elapsed() >= 1000))
 				useSelectedNumber = true;
 
 			auto code = None;
@@ -54,8 +50,8 @@ namespace Shelfinator
 			{
 			case Play:
 			case Pause:
-				banner = Banner::Create(L"▶", 0, 1000);
 				paused = !paused;
+				banner = Banner::Create(paused ? L"‖" : L"▶", 0, 1000);
 				break;
 			case Rewind: audio->Play(audio->GetTime() - 5000); break;
 			case FastForward: audio->Play(audio->GetTime() + 5000); break;
@@ -119,9 +115,10 @@ namespace Shelfinator
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 		}
 
-		int frameCount = 0;
 		void Controller::Run(int *songNumbers, int songNumberCount, bool startPaused)
 		{
+			int frameCount = 0;
+
 			if (songNumberCount == 0)
 				songs->MakeFirst(1); // Hello
 			else
@@ -130,7 +127,7 @@ namespace Shelfinator
 
 			paused = startPaused;
 
-			auto startDraw = timer->Millis();
+			auto startDraw = Timer::Create();
 			auto driver = Driver::Create(dotStar);
 			while (running)
 			{
@@ -138,13 +135,8 @@ namespace Shelfinator
 					continue;
 
 				auto lights = Lights::Create();
-				if (banner)
-				{
-					if (banner->Expired())
-						banner.reset();
-					else
-						banner->SetLights(lights);
-				}
+				if ((banner) && (banner->Expired()))
+					banner.reset();
 
 				auto time = audio->GetTime();
 				if (time == -1)
@@ -164,14 +156,13 @@ namespace Shelfinator
 				else
 					song->SetLights(time, 1, lights);
 
+				if (banner)
+					banner->SetLights(lights);
+
 				driver->SetLights(lights);
 
 				if (++frameCount == 100)
-				{
-					auto drawTime = timer->Millis() - startDraw;
-					auto fps = (double)frameCount / drawTime * 1000;
-					fprintf(stderr, "FPS is %f.\n", fps);
-				}
+					fprintf(stderr, "FPS is %f.\n", (double)frameCount / startDraw->Elapsed() * 1000);
 			}
 			driver->SetLights(Lights::Create());
 		}
@@ -243,12 +234,11 @@ namespace Shelfinator
 			if (remoteCode == None)
 				return;
 
-			auto now = timer->Millis();
 			std::unique_lock<std::mutex> lock(remoteMutex);
-			if ((remoteCode != lastRemoteCode) || (now - lastRemoteTime >= REMOTEDELAYMS))
+			if ((remoteCode != lastRemoteCode) || (remoteTimer->Elapsed() >= REMOTEDELAYMS))
 			{
 				remoteCodes.push(remoteCode);
-				lastRemoteTime = now;
+				remoteTimer->Restart();
 				lastRemoteCode = remoteCode;
 			}
 		}

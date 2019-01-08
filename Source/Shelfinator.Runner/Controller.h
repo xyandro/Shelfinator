@@ -28,18 +28,15 @@ namespace Shelfinator
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:
-			static const double multipliers[];
-			static std::wstring multiplierNames[];
-
 			bool running = true, paused = false;
-			int songIndex = -1, selectedNumber = -1, lastRemoteTime = -1;
+			int songIndex = -1, selectedNumber = -1;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;
 			IAudio::ptr audio;
 			SongData::Song::ptr song;
 			Songs::ptr songs;
-			Timer::ptr timer;
+			Timer::ptr remoteTimer;
 
 #ifndef __CLR_VER
 			std::mutex remoteMutex;

@@ -12,11 +12,13 @@ namespace Shelfinator
 		public:
 			typedef std::shared_ptr<Timer> ptr;
 			static ptr Create();
-			int Millis();
+			void Restart();
+			int Elapsed();
+			static std::chrono::steady_clock::time_point Now();
+			static int CalcDiff(std::chrono::steady_clock::time_point time1, std::chrono::steady_clock::time_point time2);
 		private:
-			std::chrono::steady_clock::time_point timer;
+			std::chrono::steady_clock::time_point start;
 			Timer();
-			std::chrono::steady_clock::time_point Now();
 		};
 	}
 }
