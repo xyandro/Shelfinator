@@ -12,19 +12,26 @@ namespace Shelfinator
 		public:
 			typedef std::shared_ptr<Audio> ptr;
 			static ptr Create();
-			void Play(std::string fileName);
+			void Open(std::string fileName);
+			void Close();
+			void Play();
 			void Stop();
 			int GetTime();
 			void SetTime(int time);
+			bool Playing();
+			bool Finished();
 		private:
-			std::string path;
-			enum { Stopped, Playing, Stopping } playing = Stopped;
+			static const unsigned char Header[];
+
+			bool finished = true;
+			enum { IsStopped, IsPlaying, IsStopping } playing = IsStopped;
 			std::mutex mutex;
 			std::condition_variable condVar;
-			int time = -1;
+			int startTime = 0, currentTime = 0;
+			FILE *file;
 
-			Audio();
-			void PlayWAVThread(std::string fileName);
+			void ValidateHeader();
+			void PlayWAVThread();
 		};
 	}
 }

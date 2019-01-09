@@ -27,29 +27,12 @@ void SetupBreakhandler()
 
 int main(int argc, char **argv)
 {
-	printf("Starting Shelfinator!\n");
-
-	SetupBreakhandler();
-
-	controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create(), Shelfinator::Runner::Audio::Create());
-	Shelfinator::Runner::Remote::Run(controller);
-
-	if ((argc > 1) && (strcmp(argv[1], "test") == 0))
+	try
 	{
-		if (argc == 7)
-			controller->Test(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), (unsigned char)atoi(argv[6]));
-		else
-			fprintf(stderr, "Usage: %s test firstLight lightCount concurrency delay brightness\n", argv[0]);
-	}
-	else if ((argc > 1) && (strcmp(argv[1], "testall") == 0))
-	{
-		if (argc == 5)
-			controller->TestAll(atoi(argv[2]), atoi(argv[3]), (unsigned char)atoi(argv[4]));
-		else
-			fprintf(stderr, "Usage: %s testall lightCount delay brightness\n", argv[0]);
-	}
-	else
-	{
+		printf("Starting Shelfinator!\n");
+
+		SetupBreakhandler();
+
 		auto startPaused = false;
 		auto songNumbers = new int[argc];
 		int songNumberCount = 0;
@@ -68,9 +51,19 @@ int main(int argc, char **argv)
 				songNumbers[songNumberCount++] = value;
 		}
 
-		controller->Run(songNumbers, songNumberCount, startPaused);
+		controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create(), Shelfinator::Runner::Audio::Create(), songNumbers, songNumberCount);
+		Shelfinator::Runner::Remote::Run(controller);
+		controller->Run(startPaused);
 
 		delete[] songNumbers;
+	}
+	catch (const char *str)
+	{
+		fprintf(stderr, "Error: %s\n", str);
+	}
+	catch (...)
+	{
+		fprintf(stderr, "Error.\n");
 	}
 
 	return 0;

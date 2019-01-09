@@ -4,7 +4,7 @@ all: ../Patterns/shelfinator
 
 ../Patterns/shelfinator: $(OBJS)
 	mkdir -p ../Patterns
-	g++ -o $@ $^ -lasound -llirc_client -lsndfile -pthread
+	g++ -o $@ $^ -lasound -llirc_client -pthread
 
 %.o: Shelfinator.Runner/%.cpp Shelfinator.Runner/%.h
 	g++ -c -o $@ $<
