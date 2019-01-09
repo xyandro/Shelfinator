@@ -27,7 +27,7 @@ namespace Shelfinator
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:
 			bool running = true;
-			int songIndex = -1, selectedSong = -1;
+			int selectedSong = -1;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;
 			IDotStar::ptr dotStar;

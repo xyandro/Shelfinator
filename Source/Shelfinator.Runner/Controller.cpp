@@ -79,14 +79,14 @@ namespace Shelfinator
 						break;
 					}
 
-					--songIndex;
+					songs->Move(-1);
 					LoadSong();
 					break;
 				case Next:
-					++songIndex;
+					songs->Move(1);
 					LoadSong();
 					break;
-				case Info: banner = Banner::Create(std::to_wstring(songs->GetValue(songIndex)), 0, 1000, 1); break;
+				case Info: banner = Banner::Create(std::to_wstring(songs->CurrentSong()), 0, 1000, 1); break;
 				case D0:
 				case D1:
 				case D2:
@@ -110,12 +110,8 @@ namespace Shelfinator
 
 				if (useSelectedSong)
 				{
-					auto found = songs->GetIndex(selectedSong);
-					if (found != -1)
-					{
-						songIndex = found;
+					if (songs->SetCurrent(selectedSong))
 						LoadSong();
-					}
 
 					selectedSong = -1;
 				}
@@ -128,13 +124,7 @@ namespace Shelfinator
 		void Controller::LoadSong(bool play)
 		{
 			audio->Stop();
-
-			while (songIndex < 0)
-				songIndex += songs->Count();
-			while (songIndex >= songs->Count())
-				songIndex -= songs->Count();
-
-			song = songs->LoadSong(songIndex);
+			song = songs->LoadSong();
 			audio->Open(song->SongFileName());
 			if (play)
 				audio->Play();
@@ -154,7 +144,7 @@ namespace Shelfinator
 
 				if (audio->Finished())
 				{
-					++songIndex;
+					songs->Move(1);
 					LoadSong(!startPaused);
 					if (startPaused)
 					{

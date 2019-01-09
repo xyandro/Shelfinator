@@ -23,7 +23,13 @@ namespace Shelfinator
 		{
 			path = Helpers::GetRunPath();
 			SetupSongs();
+			index = WrapIndex(-1);
 			std::thread(&Songs::LoadSongsThread, this).detach();
+		}
+
+		int Songs::CurrentSong()
+		{
+			return songNumbers[index];
 		}
 
 		void Songs::LoadSongsThread()
@@ -67,29 +73,54 @@ namespace Shelfinator
 			}
 		}
 
-		SongData::Song::ptr Songs::LoadSong(int index)
+		bool Songs::SetCurrent(int songNumber)
 		{
-			static const int fetchPositions[] = { 0,1,-1 };
+			auto found = std::find(songNumbers.begin(), songNumbers.end(), songNumber);
+			if (found == songNumbers.end())
+				return false;
+			SetIndex((int)std::distance(songNumbers.begin(), found));
+			return true;
+		}
+
+		void Songs::Move(int offset)
+		{
+			SetIndex(index + offset);
+		}
+
+		int Songs::WrapIndex(int index)
+		{
+			while (index < 0)
+				index += (int)songNumbers.size();
+			while (index >= songNumbers.size())
+				index -= (int)songNumbers.size();
+			return index;
+		}
+
+		void Songs::SetIndex(int newIndex)
+		{
+			static const int fetchPositions[] = { 0, 1, -1 };
+
+			index = WrapIndex(newIndex);
 
 			std::unique_lock<decltype(mutex)> lock(mutex);
 			songQueue.clear();
 			for (auto ctr = 0; ctr < sizeof(fetchPositions) / sizeof(*fetchPositions); ++ctr)
-			{
-				auto useIndex = index + fetchPositions[ctr];
-				while (useIndex < 0)
-					useIndex += (int)songNumbers.size();
-				while (useIndex >= songNumbers.size())
-					useIndex -= (int)songNumbers.size();
-				songQueue.push_back(songNumbers[useIndex]);
-			}
+				songQueue.push_back(songNumbers[WrapIndex(index + fetchPositions[ctr])]);
 			++queueValue;
 			condVar.notify_all();
+		}
 
+		SongData::Song::ptr Songs::LoadSong()
+		{
 			auto songNumber = songNumbers[index];
-			while (songCache.find(songNumber) == songCache.end())
+			std::unique_lock<decltype(mutex)> lock(mutex);
+			while (true)
+			{
+				auto itr = songCache.find(songNumber);
+				if (itr != songCache.end())
+					return itr->second;
 				condVar.wait(lock);
-
-			return songCache[songNumber];
+			}
 		}
 
 		void Songs::AddIfSongFile(std::string fileName)
@@ -148,24 +179,6 @@ namespace Shelfinator
 			auto result = *found;
 			songNumbers.erase(found);
 			songNumbers.insert(songNumbers.begin(), result);
-		}
-
-		int Songs::GetValue(int index)
-		{
-			return songNumbers[index];
-		}
-
-		int Songs::GetIndex(int value)
-		{
-			auto found = std::find(songNumbers.begin(), songNumbers.end(), value);
-			if (found != songNumbers.end())
-				return (int)std::distance(songNumbers.begin(), found);
-			return -1;
-		}
-
-		int Songs::Count()
-		{
-			return (int)songNumbers.size();
 		}
 	}
 }

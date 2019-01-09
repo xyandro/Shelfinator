@@ -19,10 +19,10 @@ namespace Shelfinator
 			typedef std::shared_ptr<Songs> ptr;
 			static ptr Create();
 			void MakeFirst(int songNumber);
-			int GetValue(int index);
-			int GetIndex(int value);
-			int Count();
-			SongData::Song::ptr LoadSong(int index);
+			bool SetCurrent(int songNumber);
+			void Move(int offset);
+			int CurrentSong();
+			SongData::Song::ptr LoadSong();
 		private:
 			std::string path;
 			std::vector<int> songNumbers;
@@ -32,8 +32,10 @@ namespace Shelfinator
 			std::mutex mutex;
 			std::condition_variable condVar;
 #endif
-			int queueValue = 0;
+			int queueValue = 0, index;
 			Songs();
+			void SetIndex(int newIndex);
+			int WrapIndex(int index);
 			void AddIfSongFile(std::string fileName);
 			void SetupSongs();
 			void LoadSongsThread();
