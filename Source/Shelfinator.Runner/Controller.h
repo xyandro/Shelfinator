@@ -26,7 +26,8 @@ namespace Shelfinator
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:
-			bool running = true, startPaused = false;
+			bool running = true;
+			enum { TestPaused, Paused, Running } runStatus = Running;
 			int selectedSong = -1;
 			RemoteCode lastRemoteCode = None;
 			Banner::ptr banner;

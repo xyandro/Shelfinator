@@ -20,7 +20,7 @@ namespace Shelfinator
 		{
 			this->dotStar = dotStar;
 			this->audio = audio;
-			this->startPaused = startPaused;
+			runStatus = startPaused ? TestPaused : Running;
 			remoteTimer = Timer::Create();
 
 			songs = Songs::Create();
@@ -60,10 +60,11 @@ namespace Shelfinator
 				{
 				case Play:
 				case Pause:
-					if (startPaused)
+					if (runStatus != Running)
 					{
-						startPaused = false;
+						runStatus = (code == Play) || (runStatus == Paused) ? Running : Paused;
 						audio->Close();
+						banner = Banner::Create(runStatus == Running ? L"▶" : L"‖", 0, 1000);
 						break;
 					}
 
@@ -131,13 +132,12 @@ namespace Shelfinator
 
 		void Controller::LoadSong()
 		{
-			startPaused = false;
+			runStatus = Running;
 			audio->Stop();
 			song = songs->LoadSong();
 			audio->Open(song->SongFileName());
 			audio->Play();
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
-			banner.reset();
 		}
 
 		void Controller::PlayTestSong()
@@ -160,12 +160,15 @@ namespace Shelfinator
 
 				if (audio->Finished())
 				{
-					if (startPaused)
-						PlayTestSong();
-					else
+					switch (runStatus)
 					{
+					case TestPaused:
+						PlayTestSong();
+						break;
+					case Running:
 						songs->Move(1);
 						LoadSong();
+						break;
 					}
 				}
 
