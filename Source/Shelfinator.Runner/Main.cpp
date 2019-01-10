@@ -51,9 +51,9 @@ int main(int argc, char **argv)
 				songNumbers[songNumberCount++] = value;
 		}
 
-		controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create(), Shelfinator::Runner::Audio::Create(), songNumbers, songNumberCount);
+		controller = Shelfinator::Runner::Controller::Create(Shelfinator::Runner::DotStar::Create(), Shelfinator::Runner::Audio::Create(), songNumbers, songNumberCount, startPaused);
 		Shelfinator::Runner::Remote::Run(controller);
-		controller->Run(startPaused);
+		controller->Run();
 
 		delete[] songNumbers;
 	}

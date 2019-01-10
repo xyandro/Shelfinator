@@ -11,15 +11,16 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount)
+		Controller::ptr Controller::Create(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount, bool startPaused)
 		{
-			return ptr(new Controller(dotStar, audio, songNumbers, songNumberCount));
+			return ptr(new Controller(dotStar, audio, songNumbers, songNumberCount, startPaused));
 		}
 
-		Controller::Controller(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount)
+		Controller::Controller(IDotStar::ptr dotStar, IAudio::ptr audio, int *songNumbers, int songNumberCount, bool startPaused)
 		{
 			this->dotStar = dotStar;
 			this->audio = audio;
+			this->startPaused = startPaused;
 			remoteTimer = Timer::Create();
 
 			songs = Songs::Create();
@@ -59,6 +60,13 @@ namespace Shelfinator
 				{
 				case Play:
 				case Pause:
+					if (startPaused)
+					{
+						startPaused = false;
+						audio->Close();
+						break;
+					}
+
 					if (audio->Playing())
 					{
 						audio->Stop();
@@ -121,18 +129,26 @@ namespace Shelfinator
 			}
 		}
 
-		void Controller::LoadSong(bool play)
+		void Controller::LoadSong()
 		{
+			startPaused = false;
 			audio->Stop();
 			song = songs->LoadSong();
 			audio->Open(song->SongFileName());
-			if (play)
-				audio->Play();
+			audio->Play();
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 			banner.reset();
 		}
 
-		void Controller::Run(bool startPaused)
+		void Controller::PlayTestSong()
+		{
+			auto fileName = Helpers::GetRunPath() + "0.pat";
+			song = SongData::Song::Read(fileName.c_str());
+			audio->Open(song->SongFileName());
+			audio->Play();
+		}
+
+		void Controller::Run()
 		{
 			auto driver = Driver::Create(dotStar);
 			while (running)
@@ -144,12 +160,12 @@ namespace Shelfinator
 
 				if (audio->Finished())
 				{
-					songs->Move(1);
-					LoadSong(!startPaused);
 					if (startPaused)
+						PlayTestSong();
+					else
 					{
-						startPaused = false;
-						banner = Banner::Create(L"•   ", 0, 86400000);
+						songs->Move(1);
+						LoadSong();
 					}
 				}
 

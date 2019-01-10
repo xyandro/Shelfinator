@@ -12,9 +12,9 @@ namespace Shelfinator
 		public ref class Controller
 		{
 		public:
-			Controller(IDotStar ^dotStar, IAudio ^audio, System::Collections::Generic::List<int> ^songNumbers);
+			Controller(IDotStar ^dotStar, IAudio ^audio, System::Collections::Generic::List<int> ^songNumbers, bool startPaused);
 			~Controller();
-			void Run(bool startPaused);
+			void Run();
 			void Stop();
 			void AddRemoteCode(RemoteCode remoteCode);
 		private:

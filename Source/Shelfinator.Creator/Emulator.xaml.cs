@@ -62,9 +62,9 @@ namespace Shelfinator.Creator
 				WindowState = WindowState.Maximized;
 			}
 			dotStarBitmap.Source = bitmap;
-			controller = new Controller(this, this, songNumbers);
+			controller = new Controller(this, this, songNumbers, startPaused);
 			mediaPlayer.MediaEnded += (s, e) => { Stop(); finished = true; };
-			new Thread(() => controller.Run(startPaused)).Start();
+			new Thread(() => controller.Run()).Start();
 		}
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);

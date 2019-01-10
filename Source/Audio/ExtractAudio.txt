@@ -27,3 +27,12 @@ file '3.wav'
 ffmpeg.exe -y -f concat -i a.txt "popular.mp3"
 
 ffmpeg.exe -y -ss 00:00:05.500 -t 00:04:22.700 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-LRP8d7hhpoQ.webm" -ar 44100 -filter:a loudnorm "hallelujah.mp3"
+
+ffmpeg.exe -y -i "beep-07.wav" -ar 44100 -ac 2 -filter:a loudnorm "beep.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:10 -ar 44100 "silence.wav"
+Write a.txt:
+file 'silence.wav'
+file 'beep.wav'
+file 'silence.wav'
+ffmpeg.exe -y -f concat -i a.txt "beep2.wav"
+ffmpeg.exe -y -ss 00:00:09 -t 00:00:05 -i "beep2.wav" "test.mp3"
