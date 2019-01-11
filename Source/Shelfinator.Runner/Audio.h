@@ -27,7 +27,7 @@ namespace Shelfinator
 			enum { IsStopped, IsPlaying, IsStopping } playing = IsStopped;
 			std::mutex mutex;
 			std::condition_variable condVar;
-			int startTime = 0, currentTime = 0;
+			int startTime = 0, currentTime = 0, dataOffset = 0;
 			FILE *file;
 
 			void ValidateHeader();

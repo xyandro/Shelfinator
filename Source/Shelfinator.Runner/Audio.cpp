@@ -8,8 +8,6 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
-		const unsigned char Audio::Header[] = { 82, 73, 70, 70, 0, 0, 0, 0, 87, 65, 86, 69, 102, 109, 116, 32, 16, 0, 0, 0, 1, 0, 2, 0, 68, 172, 0, 0, 16, 177, 2, 0, 4, 0, 16, 0, 76, 73, 83, 84, 26, 0, 0, 0, 73, 78, 70, 79, 73, 83, 70, 84, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 97, 116, 97 };
-
 		Audio::ptr Audio::Create()
 		{
 			return ptr(new Audio());
@@ -30,20 +28,88 @@ namespace Shelfinator
 
 		void Audio::ValidateHeader()
 		{
-			unsigned char buffer[sizeof(Header)];
-			auto used = 0;
-			fseek(file, 0, SEEK_SET);
-			while (used < sizeof(Header))
+#pragma pack(push, 1)
+			struct WavChunk
 			{
-				auto block = (int)fread(buffer + used, 1, sizeof(Header) - used, file);
-				if (block == 0)
-					throw "Invalid audio file";
-				used += block;
-			}
+				char chunkID[4];
+				int size;
+			};
+			struct WavChunkHeader : WavChunk
+			{
+				char format[4];
+			};
+			struct WavChunkFormat : WavChunk
+			{
+				short audioFormat;
+				short numChannels;
+				int sampleRate;
+				int byteRate;
+				short blockAlign;
+				short bitsPerSample;
+			};
+#pragma pack(pop)
 
-			for (auto ctr = 0; ctr < sizeof(Header); ++ctr)
-				if (((ctr < 4) || (ctr >= 8)) && ((ctr < 56) || (ctr >= 70)) && (Header[ctr] != buffer[ctr]))
-					throw "Invalid audio file";
+			char buffer[1024];
+			auto used = 0;
+			auto size = 0;
+			auto totalSize = -1;
+			while (true)
+			{
+				if (size == 0)
+				{
+					size = sizeof(WavChunk);
+					used = 0;
+				}
+
+				while (used < size)
+				{
+					auto block = (int)fread(buffer + used, 1, size - used, file);
+					if (block == 0)
+						throw "Failed to read from audio file";
+					used += block;
+				}
+
+				size = 0;
+				auto wavChunk = (WavChunk&)buffer;
+				if (strncmp(wavChunk.chunkID, "RIFF", 4) == 0)
+				{
+					if (used != sizeof(WavChunkHeader))
+						size = sizeof(WavChunkHeader);
+					else
+					{
+						auto wavChunkHeader = (WavChunkHeader&)buffer;
+						if (strncmp(wavChunkHeader.format, "WAVE", 4) != 0)
+							throw "Audio file lacks WAVE identifier";
+						totalSize = wavChunkHeader.size;
+					}
+				}
+				else if (strncmp(wavChunk.chunkID, "fmt ", 4) == 0)
+				{
+					if (used != sizeof(WavChunkFormat))
+						size = sizeof(WavChunkFormat);
+					else
+					{
+						auto wavChunkFormat = (WavChunkFormat&)buffer;
+						if (wavChunkFormat.audioFormat != 1)
+							throw "Invalid audio format";
+						if (wavChunkFormat.numChannels != 2)
+							throw "Invalid audio channel count";
+						if (wavChunkFormat.sampleRate != 44100)
+							throw "Invalid audio sample rate";
+						if (wavChunkFormat.bitsPerSample != 16)
+							throw "Invalid audio bits per sample";
+					}
+				}
+				else if (strncmp(wavChunk.chunkID, "data", 4) == 0)
+				{
+					dataOffset = (int)ftell(file);
+					if (dataOffset + wavChunk.size - totalSize - 8 != 0)
+						throw "Audio has extra data";
+					break;
+				}
+				else
+					fseek(file, wavChunk.size, SEEK_CUR);
+			}
 		}
 
 		void Audio::Close()
@@ -67,7 +133,7 @@ namespace Shelfinator
 		void Audio::PlayWAVThread()
 		{
 			const auto frameSize = (int)sizeof(short) * 2;
-			fseek(file, sizeof(Header) + startTime / 10 * 441 * frameSize, SEEK_SET);
+			fseek(file, dataOffset + startTime / 10 * 441 * frameSize, SEEK_SET);
 
 			snd_pcm_t *pcm_handle;
 			snd_pcm_open(&pcm_handle, "default", SND_PCM_STREAM_PLAYBACK, 0);
