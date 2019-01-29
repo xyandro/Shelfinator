@@ -36,3 +36,10 @@ file 'beep.wav'
 file 'silence.wav'
 ffmpeg.exe -y -f concat -i a.txt "beep2.wav"
 ffmpeg.exe -y -ss 00:00:09 -t 00:00:05 -i "beep2.wav" "test.mp3"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "silence.wav"
+ffmpeg.exe -y -ss 00:00:00.100 -i "Sound Of An Orchestra-201kDUdQFqU.webm" -ar 44100 -filter:a loudnorm "orchestra.wav"
+Write a.txt:
+file 'silence.wav'
+file 'orchestra.wav'
+ffmpeg.exe -y -f concat -i a.txt "orchestra.mp3"

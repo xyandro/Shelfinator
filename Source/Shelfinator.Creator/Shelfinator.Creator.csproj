@@ -101,6 +101,7 @@
     <EmbeddedResource Include="Songs\Love\Phoebe.png" />
     <EmbeddedResource Include="Songs\Love\Sophie.png" />
     <EmbeddedResource Include="Songs\Love\Timo.png" />
+    <Compile Include="Songs\Orchestra.cs" />
     <Compile Include="Songs\Popular.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
