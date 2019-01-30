@@ -27,16 +27,16 @@ namespace Shelfinator.Creator.SongData
 			return segments.IndexOf(segment);
 		}
 
-		public SegmentItem AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
+		public void AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
 		{
-			var segmentDuration = segmentEndTime - segmentStartTime;
+			var segmentDuration = Math.Abs(segmentEndTime - segmentStartTime);
 			duration = duration ?? segmentDuration;
-			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration.Value * repeat, segmentDuration, segmentDuration, duration.Value));
+			InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, Math.Abs(segmentEndTime - segmentStartTime) * repeat, startTime, startTime + duration.Value * repeat, segmentDuration, segmentDuration, duration.Value));
 		}
 
-		public SegmentItem AddSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
+		public void AddSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int segmentTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
 		{
-			return InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, startTime, startTime + duration, startVelocity, endVelocity, baseVelocity));
+			InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, segmentTime, startTime, startTime + duration, startVelocity, endVelocity, baseVelocity));
 		}
 
 		public int GetDurationForRepeat(int segmentDuration, int startVelocity, int endVelocity, int baseVelocity, int repeat = 1)

@@ -519,12 +519,11 @@ namespace Shelfinator.Creator.Songs
 
 			// Plasma (146138)
 			var plasma = Plasma(out var plasmaTime);
-			song.AddSegment(plasma, 0, plasmaTime, 146138, 4000, 3);
+			song.AddSegment(plasma, 0, plasmaTime, 146138, 4000, 4);
 
-			// Slow plasma (158138)
-			var item = song.AddSegmentByVelocity(plasma, 0, plasmaTime, 158138, 4174, plasmaTime, 0, 4000);
-			var stopTime = item.SegmentTime(162312);
-			song.AddSegment(plasma, stopTime, stopTime, 162312, 4564);
+			// Slow plasma (162138)
+			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 162138, 4000, plasmaTime, 0, 4000);
+			song.AddSegment(plasma, 0, 0, 166138, 738);
 
 			// Grow (166876)
 			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 166876, 1200);

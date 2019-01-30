@@ -928,7 +928,7 @@ namespace Shelfinator.Creator.Songs
 			// Runner (264645)
 			var runner = Runner();
 			song.AddSegment(runner, 0, 76, 264645, 6924, 4);
-			song.AddSegmentByVelocity(runner, 0, 76, 292341, 2947, 76, 0, 6924);
+			song.AddSegmentByVelocity(runner, 0, 76, 19, 292341, 2947, 76, 0, 6924);
 			song.AddPaletteChange(264645, 0);
 			song.AddPaletteChange(271069, 272069, 1);
 			song.AddPaletteChange(277993, 278993, 2);
