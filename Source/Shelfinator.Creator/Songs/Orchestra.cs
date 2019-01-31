@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Shelfinator.Creator.SongData;
 
@@ -47,6 +48,50 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment VertHoriz()
+		{
+			var segment = new Segment();
+			var points = new List<Tuple<int, int, Point, Vector>>();
+			for (var square = 0; square < 49; ++square)
+			{
+				var x = square % 7 * 19 - 19;
+				var y = square / 7 * 19 - 19;
+				if (square % 2 == 0)
+				{
+					points.Add(Tuple.Create(0, 19, new Point(x, y), new Vector(1, 0)));
+					points.Add(Tuple.Create(19, 19, new Point(x + 19, y), new Vector(0, 1)));
+					points.Add(Tuple.Create(0, 19, new Point(x + 19, y + 19), new Vector(-1, 0)));
+					points.Add(Tuple.Create(19, 19, new Point(x, y + 19), new Vector(0, -1)));
+				}
+				else
+				{
+					points.Add(Tuple.Create(0, 5, new Point(x, y + 13), new Vector(0, 1)));
+					points.Add(Tuple.Create(6, 13, new Point(x, y + 19), new Vector(1, 0)));
+
+					points.Add(Tuple.Create(19, 5, new Point(x + 13, y + 19), new Vector(1, 0)));
+					points.Add(Tuple.Create(25, 13, new Point(x + 19, y + 19), new Vector(0, -1)));
+
+					points.Add(Tuple.Create(0, 5, new Point(x + 19, y + 6), new Vector(0, -1)));
+					points.Add(Tuple.Create(6, 13, new Point(x + 19, y), new Vector(-1, 0)));
+
+					points.Add(Tuple.Create(19, 5, new Point(x + 6, y), new Vector(-1, 0)));
+					points.Add(Tuple.Create(25, 13, new Point(x, y), new Vector(0, 1)));
+				}
+			}
+			for (var time = 0; time < 38; ++time)
+			{
+				segment.Clear(time);
+
+				foreach (var point in points)
+					if (point.Item1 == 0)
+						foreach (var light in bodyLayout.GetPositionLights(point.Item3, 2, 2))
+							segment.AddLight(light, time, 0x101010);
+
+				points = points.Select(tuple => Tuple.Create(Math.Max(0, tuple.Item1 - 1), tuple.Item2 - (tuple.Item1 == 0 ? 1 : 0), tuple.Item3 + (tuple.Item1 == 0 ? tuple.Item4 : default(Vector)), tuple.Item4)).Where(tuple => tuple.Item2 >= 0).ToList();
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490
@@ -61,9 +106,10 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(8780, 9780, 3);
 			song.AddPaletteChange(12560, 13560, 4);
 			song.AddPaletteChange(16840, 0);
-			Emulator.TestPosition = 1720;
 
-			// Next 16840
+			// VertHoriz 16840
+			var vertHoriz = VertHoriz();
+			song.AddSegment(vertHoriz, 0, 38, 16840, 1890, 4);
 
 			// Next 24400
 
