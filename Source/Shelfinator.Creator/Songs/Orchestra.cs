@@ -48,66 +48,50 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment VertHoriz()
+		Segment BeatPattern(out int time)
 		{
+			var beats = new List<int> { 0, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13466, 14175, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900, 19609, 20318, 20790, 21499, 22208, 22680, 23389 };
 			var segment = new Segment();
-			var points = new List<Tuple<int, int, Point, Vector>>();
-			for (var square = 0; square < 49; ++square)
+			var points = new List<Tuple<Point, Vector>>();
+			var colors = new List<LightColor>
+			{
+				new LightColor(0, 1, new List<int> { 0x000010, 0x100000 }),
+				new LightColor(0, 1, new List<int> { 0x01020a, 0x101010 }),
+				new LightColor(0, 1, new List<int> { 0x100010, 0x001010 }),
+			};
+			for (var square = 0; square < 49; square += 2)
 			{
 				var x = square % 7 * 19 - 19;
 				var y = square / 7 * 19 - 19;
-				if (square % 2 == 0)
-				{
-					points.Add(Tuple.Create(0, 19, new Point(x, y), new Vector(1, 0)));
-					points.Add(Tuple.Create(19, 19, new Point(x + 19, y), new Vector(0, 1)));
-					points.Add(Tuple.Create(0, 19, new Point(x + 19, y + 19), new Vector(-1, 0)));
-					points.Add(Tuple.Create(19, 19, new Point(x, y + 19), new Vector(0, -1)));
-				}
-				else
-				{
-					points.Add(Tuple.Create(0, 5, new Point(x, y + 13), new Vector(0, 1)));
-					points.Add(Tuple.Create(6, 13, new Point(x, y + 19), new Vector(1, 0)));
-
-					points.Add(Tuple.Create(19, 5, new Point(x + 13, y + 19), new Vector(1, 0)));
-					points.Add(Tuple.Create(25, 13, new Point(x + 19, y + 19), new Vector(0, -1)));
-
-					points.Add(Tuple.Create(0, 5, new Point(x + 19, y + 6), new Vector(0, -1)));
-					points.Add(Tuple.Create(6, 13, new Point(x + 19, y), new Vector(-1, 0)));
-
-					points.Add(Tuple.Create(19, 5, new Point(x + 6, y), new Vector(-1, 0)));
-					points.Add(Tuple.Create(25, 13, new Point(x, y), new Vector(0, 1)));
-				}
+				points.Add(Tuple.Create(new Point(x, y), new Vector(1, 0)));
+				points.Add(Tuple.Create(new Point(x + 19, y), new Vector(0, 1)));
+				points.Add(Tuple.Create(new Point(x + 19, y + 19), new Vector(-1, 0)));
+				points.Add(Tuple.Create(new Point(x, y + 19), new Vector(0, -1)));
 			}
-			for (var time = 0; time < 38; ++time)
+			var center = new Point(47.5, 47.5);
+			var distances = bodyLayout.GetAllLights().ToDictionary(light => light, light => ((bodyLayout.GetLightPosition(light) - center).Length - 9.51314879522022).Round());
+			for (time = 0; time < 1890 * 15; time += 10)
 			{
-				segment.Clear(time);
+				var useLights = new HashSet<int>();
+				var pointTime = time * 19 / 1890 % 19;
+				foreach (var tuple in points)
+					foreach (var light in bodyLayout.GetPositionLights(tuple.Item1 + tuple.Item2 * pointTime, 2, 2))
+						useLights.Add(light);
 
-				foreach (var point in points)
-					if (point.Item1 == 0)
-						foreach (var light in bodyLayout.GetPositionLights(point.Item3, 2, 2))
-							segment.AddLight(light, time, 0x101010);
-
-				points = points.Select(tuple => Tuple.Create(Math.Max(0, tuple.Item1 - 1), tuple.Item2 - (tuple.Item1 == 0 ? 1 : 0), tuple.Item3 + (tuple.Item1 == 0 ? tuple.Item4 : default(Vector)), tuple.Item4)).Where(tuple => tuple.Item2 >= 0).ToList();
-			}
-			return segment;
-		}
-
-		Segment Beats()
-		{
-			var times = new List<double> { 0, 708.75, 1417.5, 2126.25, 2835, 3307.5, 3780, 4488.75, 5197.5, 5906.25, 6615, 7087.5, 7560, 8268.75, 8977.5, 9450, 10158.75, 10867.5, 11340, 12048.75, 12757.5, 13230, 13938.75, 14647.5, 15120, 15828.75 }.Select(x => (int)x).ToList();
-			var segment = new Segment();
-			foreach (var time in times)
-			{
-				segment.Clear(time);
 				foreach (var light in bodyLayout.GetAllLights())
-					segment.AddLight(light, time, time + 500, 0x101010, 0x000000);
+				{
+					var index = beats.BinarySearch(time - distances[light] * 30);
+					if (index < 0)
+						index = Math.Max(0, ~index - 1);
+					segment.AddLight(light, time, colors[index % colors.Count], useLights.Contains(light) ? 1 : 0);
+				}
 			}
 			return segment;
 		}
 
 		public Song Render()
 		{
-			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490
+			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
 
 			// Lines (1720)
 			var lines = Lines();
@@ -120,14 +104,12 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(12560, 13560, 4);
 			song.AddPaletteChange(16840, 0);
 
-			// VertHoriz (16840)
-			var vertHoriz = VertHoriz();
-			song.AddSegment(vertHoriz, 0, 38, 16840, 1890, 4);
+			// BeatPattern (16840)
+			var beatPattern = BeatPattern(out int beatPatternTime);
+			song.AddSegment(beatPattern, 0, beatPatternTime, 16840);
+			Emulator.TestPosition = 16840;
 
-			// Beats (24400)
-			var beats = Beats();
-			song.AddSegment(beats, 0, 177490, 24400);
-			Emulator.TestPosition = 24400;
+			// Next (45190)
 
 			return song;
 		}
