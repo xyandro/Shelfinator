@@ -89,6 +89,34 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment BeatCircles()
+		{
+			var beatTimes = new List<double> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13230 };
+			var beatCenters = new int[22, 2] { { 0, 24 }, { 4, 20 }, { 7, 17 }, { 11, 13 }, { 2, 22 }, { 10, 14 }, { 6, 18 }, { 8, 16 }, { 0, 24 }, { 4, 20 }, { 7, 17 }, { 11, 13 }, { 2, 22 }, { 10, 14 }, { 6, 18 }, { 8, 16 }, { 0, 24 }, { 4, 20 }, { 7, 17 }, { 11, 13 }, { 2, 22 }, { 10, 14 } };
+
+			var colors = new List<int> { 0xff0000, 0x00ff00, 0x0000ff };
+			var centers = Enumerable.Range(0, 25).Select(index => new Point(index % 5 * 19 + 10, index / 5 * 19 + 10)).ToList();
+			var distances = bodyLayout.GetAllLights().ToDictionary(light => light, light => centers.ToDictionary(center => center, center => (bodyLayout.GetLightPosition(light) - center).Length - 9));
+			var segment = new Segment();
+			for (var time = 0; time < 15120; time += 10)
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var color = 0x000000;
+					for (var beatCtr = 0; beatCtr < beatTimes.Count; beatCtr++)
+						for (var beatCenterCtr = 0; beatCenterCtr < beatCenters.GetLength(1); beatCenterCtr++)
+						{
+							var dist = time - distances[light][centers[beatCenters[beatCtr, beatCenterCtr]]] * 10 - beatTimes[beatCtr];
+							if ((dist >= 0) && (dist < 100))
+							{
+								var useColor = dist < 10 ? 0x101010 : colors[(beatCtr * beatCenters.GetLength(1) + beatCenterCtr) % colors.Count];
+								color = Helpers.AddColor(color, useColor);
+							}
+						}
+					segment.AddLight(light, time, Helpers.MultiplyColor(color, 1d / 16));
+				}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -107,9 +135,12 @@ namespace Shelfinator.Creator.Songs
 			// BeatPattern (16840)
 			var beatPattern = BeatPattern(out int beatPatternTime);
 			song.AddSegment(beatPattern, 0, beatPatternTime, 16840);
-			Emulator.TestPosition = 16840;
 
-			// Next (45190)
+			// BeatCircles (45190)
+			var beatCircles = BeatCircles();
+			song.AddSegment(beatCircles, 0, 15120, 45190);
+
+			// Next (60310)
 
 			return song;
 		}
