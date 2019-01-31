@@ -92,6 +92,19 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Beats()
+		{
+			var times = new List<double> { 0, 708.75, 1417.5, 2126.25, 2835, 3307.5, 3780, 4488.75, 5197.5, 5906.25, 6615, 7087.5, 7560, 8268.75, 8977.5, 9450, 10158.75, 10867.5, 11340, 12048.75, 12757.5, 13230, 13938.75, 14647.5, 15120, 15828.75 }.Select(x => (int)x).ToList();
+			var segment = new Segment();
+			foreach (var time in times)
+			{
+				segment.Clear(time);
+				foreach (var light in bodyLayout.GetAllLights())
+					segment.AddLight(light, time, time + 500, 0x101010, 0x000000);
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490
@@ -107,11 +120,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(12560, 13560, 4);
 			song.AddPaletteChange(16840, 0);
 
-			// VertHoriz 16840
+			// VertHoriz (16840)
 			var vertHoriz = VertHoriz();
 			song.AddSegment(vertHoriz, 0, 38, 16840, 1890, 4);
 
-			// Next 24400
+			// Beats (24400)
+			var beats = Beats();
+			song.AddSegment(beats, 0, 177490, 24400);
+			Emulator.TestPosition = 24400;
 
 			return song;
 		}
