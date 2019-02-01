@@ -220,6 +220,41 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Blinds()
+		{
+			const int Size = 12;
+			const int Border = 7;
+			const int Speed = 30;
+			var segment = new Segment();
+			var color = new List<LightColor>
+			{
+				new LightColor(900, 6788, new List<IReadOnlyList<int>> { new List<int> { 0x101000, 0x001010 }, new List<int> { 0x100000, 0x000010 }, new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010 } }),
+				new LightColor(900, 6788, new List<IReadOnlyList<int>> { new List<int> { 0x100010, 0x101000 }, new List<int> { 0x001000, 0x100000 }, new List<int> { 0x000010, 0x090010, 0x100000, 0x100800, 0x101000, 0x001000 } }),
+				new LightColor(900, 6788, new List<IReadOnlyList<int>> { new List<int> { 0x001010, 0x100010 }, new List<int> { 0x000010, 0x001000 }, new List<int> { 0x101000, 0x001000, 0x000010, 0x090010, 0x100000, 0x100800 } }),
+			};
+			var center = new Point(48, 48);
+			var lights = bodyLayout.GetAllLights();
+			var distances = lights.ToDictionary(light => light, light => ((bodyLayout.GetLightPosition(light) - center).Length * 100).Round());
+			for (var angle = 0; angle < 360; ++angle)
+			{
+				var useAngle = angle * Math.PI / 180;
+				var cos = Math.Cos(useAngle);
+				var sin = Math.Sin(useAngle);
+				var dist = Size * 2 * Speed * angle / 360;
+
+				segment.Clear(angle);
+				foreach (var light in lights)
+				{
+					var point = bodyLayout.GetLightPosition(light);
+					var xPos = ((point.X - 48) * cos - (point.Y - 48) * sin + 500).Round() + dist;
+					if (xPos % (Size + Border) < Size)
+						segment.AddLight(light, angle, color[xPos % ((Size + Border) * 6) / (Size + Border) / 2], distances[light]);
+					//segment.AddLight(light, angle, color[xPos % (Size * 3) / Size], distances[light]);
+				}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -266,7 +301,15 @@ namespace Shelfinator.Creator.Songs
 			var beatGrow = BeatGrow();
 			song.AddSegment(beatGrow, 0, 64, 103780, 15120);
 
-			// Next (118900)
+			// Blinds (118900)
+			var blinds = Blinds();
+			song.AddSegment(blinds, 0, 360, 118900, 1890 * 6, 2);
+			song.AddPaletteChange(118900, 0);
+			song.AddPaletteChange(125960, 126960, 1);
+			song.AddPaletteChange(133520, 134520, 2);
+			song.AddPaletteChange(141580, 0);
+
+			// Next (141580)
 
 			return song;
 		}
