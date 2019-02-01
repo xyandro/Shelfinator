@@ -15,20 +15,26 @@ namespace Shelfinator.Creator.Songs
 		Segment Lines()
 		{
 			const int Length = 39;
-			var points = new List<Point> { new Point(19, 0), new Point(19, 1), new Point(19, 2), new Point(19, 3), new Point(19, 4), new Point(19, 5), new Point(19, 6), new Point(19, 7), new Point(19, 8), new Point(19, 9), new Point(19, 10), new Point(19, 11), new Point(19, 12), new Point(19, 13), new Point(19, 14), new Point(19, 15), new Point(19, 16), new Point(19, 17), new Point(19, 18), new Point(19, 19), new Point(18, 19), new Point(17, 19), new Point(16, 19), new Point(15, 19), new Point(14, 19), new Point(13, 19), new Point(12, 19), new Point(11, 19), new Point(10, 19), new Point(9, 19), new Point(8, 19), new Point(7, 19), new Point(6, 19), new Point(5, 19), new Point(4, 19), new Point(3, 19), new Point(2, 19), new Point(1, 19), new Point(0, 19), new Point(0, 18), new Point(0, 17), new Point(0, 16), new Point(0, 15), new Point(0, 14), new Point(0, 13), new Point(0, 12), new Point(0, 11), new Point(0, 10), new Point(0, 9), new Point(0, 8), new Point(0, 7), new Point(0, 6), new Point(0, 5), new Point(0, 4), new Point(0, 3), new Point(0, 2), new Point(0, 1), new Point(0, 0), new Point(0, -1), new Point(0, -2), new Point(0, -3), new Point(0, -4), new Point(0, -5), new Point(0, -6), new Point(0, -7), new Point(0, -8), new Point(0, -9), new Point(0, -10), new Point(0, -11), new Point(0, -12), new Point(0, -13), new Point(0, -14), new Point(0, -15), new Point(0, -16), new Point(0, -17), new Point(0, -18), new Point(0, -19), new Point(-1, -19), new Point(-2, -19), new Point(-3, -19), new Point(-4, -19), new Point(-5, -19), new Point(-6, -19), new Point(-7, -19), new Point(-8, -19), new Point(-9, -19), new Point(-10, -19), new Point(-11, -19), new Point(-12, -19), new Point(-13, -19), new Point(-14, -19), new Point(-15, -19), new Point(-16, -19), new Point(-17, -19), new Point(-18, -19), new Point(-19, -19), new Point(-19, -18), new Point(-19, -17), new Point(-19, -16), new Point(-19, -15), new Point(-19, -14), new Point(-19, -13), new Point(-19, -12), new Point(-19, -11), new Point(-19, -10), new Point(-19, -9), new Point(-19, -8), new Point(-19, -7), new Point(-19, -6), new Point(-19, -5), new Point(-19, -4), new Point(-19, -3), new Point(-19, -2), new Point(-19, -1), new Point(-19, 0), new Point(-18, 0), new Point(-17, 0), new Point(-16, 0), new Point(-15, 0), new Point(-14, 0), new Point(-13, 0), new Point(-12, 0), new Point(-11, 0), new Point(-10, 0), new Point(-9, 0), new Point(-8, 0), new Point(-7, 0), new Point(-6, 0), new Point(-5, 0), new Point(-4, 0), new Point(-3, 0), new Point(-2, 0), new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(4, 0), new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(10, 0), new Point(11, 0), new Point(12, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0), new Point(16, 0), new Point(17, 0), new Point(18, 0) };
-			var lightColor = new LightColor(0, 39,
+			const string PointsData =
+"0,0&1,0&2,0&3,0&4,0&5,0&6,0&7,0&8,0&9,0&10,0&11,0&12,0&13,0&14,0&15,0&16,0&17,0&18,0&19,0&19,1&19,2&19,3&19,4&19,5&19,6&19,7&19,8&19,9&19,10&19,11&19,12&19,13&19,14&19,15&19,16&19,17&19,18&19,19&18,19&17,19&16,19&15,19&14,19&13,19&12,19&11,19&10,19&9,19&8,19&7,19&6,19&5,19&4,19&3,19&2,19&1,19&0,19&0,18&0,17&0,16&0,15&0,14&0,13&0,12&0,11&0,10&0,9&0,8&0,7&0,6&0,5&0,4&0,3&0,2&0,1&0,0&0,-1&0,-2&0,-3&0,-4&0,-5&0,-6&0,-7&0,-8&0,-9&0,-10&0,-11&0,-12&0,-13&0,-14&0,-15&0,-16&0,-17&0,-18&0,-19&-1,-19&-2,-" +
+"19&-3,-19&-4,-19&-5,-19&-6,-19&-7,-19&-8,-19&-9,-19&-10,-19&-11,-19&-12,-19&-13,-19&-14,-19&-15,-19&-16,-19&-17,-19&-18,-19&-19,-19&-19,-18&-19,-17&-19,-16&-19,-15&-19,-14&-19,-13&-19,-12&-19,-11&-19,-10&-19,-9&-19,-8&-19,-7&-19,-6&-19,-5&-19,-4&-19,-3&-19,-2&-19,-1&-19,0&-19,0&-19,-1&-19,-2&-19,-3&-19,-4&-19,-5&-19,-6&-19,-7&-19,-8&-19,-9&-19,-10&-19,-11&-19,-12&-19,-13&-19,-14&-19,-15&-19,-16&-19,-17&-19,-18&-19,-19&-18,-19&-17,-19&-16,-19&-15,-19&-14,-19&-13,-19&-12,-19&-11,-19&-10,-19&-9,-19" +
+"&-8,-19&-7,-19&-6,-19&-5,-19&-4,-19&-3,-19&-2,-19&-1,-19&0,-19&0,-18&0,-17&0,-16&0,-15&0,-14&0,-13&0,-12&0,-11&0,-10&0,-9&0,-8&0,-7&0,-6&0,-5&0,-4&0,-3&0,-2&0,-1&0,0&0,1&0,2&0,3&0,4&0,5&0,6&0,7&0,8&0,9&0,10&0,11&0,12&0,13&0,14&0,15&0,16&0,17&0,18&0,19&1,19&2,19&3,19&4,19&5,19&6,19&7,19&8,19&9,19&10,19&11,19&12,19&13,19&14,19&15,19&16,19&17,19&18,19&19,19&19,18&19,17&19,16&19,15&19,14&19,13&19,12&19,11&19,10&19,9&19,8&19,7&19,6&19,5&19,4&19,3&19,2&19,1&19,0&18,0&17,0&16,0&15,0&14,0&13,0&12,0&11,0" +
+"&10,0&9,0&8,0&7,0&6,0&5,0&4,0&3,0&2,0&1,0&0,0&-1,0&-2,0&-3,0&-4,0&-5,0&-6,0&-7,0&-8,0&-9,0&-10,0&-11,0&-12,0&-13,0&-14,0&-15,0&-16,0&-17,0&-18,0&-19,0&-19,-1&-19,-2&-19,-3&-19,-4&-19,-5&-19,-6&-19,-7&-19,-8&-19,-9&-19,-10&-19,-11&-19,-12&-19,-13&-19,-14&-19,-15&-19,-16&-19,-17&-19,-18&-19,-19&-18,-19&-17,-19&-16,-19&-15,-19&-14,-19&-13,-19&-12,-19&-11,-19&-10,-19&-9,-19&-8,-19&-7,-19&-6,-19&-5,-19&-4,-19&-3,-19&-2,-19&-1,-19&0,-19&0,-19&-1,-19&-2,-19&-3,-19&-4,-19&-5,-19&-6,-19&-7,-19&-8,-19&-9," +
+"-19&-10,-19&-11,-19&-12,-19&-13,-19&-14,-19&-15,-19&-16,-19&-17,-19&-18,-19&-19,-19&-19,-18&-19,-17&-19,-16&-19,-15&-19,-14&-19,-13&-19,-12&-19,-11&-19,-10&-19,-9&-19,-8&-19,-7&-19,-6&-19,-5&-19,-4&-19,-3&-19,-2&-19,-1&-19,0&-18,0&-17,0&-16,0&-15,0&-14,0&-13,0&-12,0&-11,0&-10,0&-9,0&-8,0&-7,0&-6,0&-5,0&-4,0&-3,0&-2,0&-1,0";
+			var points = PointsData.Split('&').Select(Point.Parse).ToList();
+			var color = new LightColor(0, 39,
 				new List<int> { 0x000000 },
 				new List<int> { 0x101010 },
 				new List<int> { 0x100000, 0x001000 },
 				new List<int> { 0x001000, 0x000010 },
 				new List<int> { 0x000010, 0x100000 }
 			);
-			var parts = new List<Tuple<int, int, int, bool, bool, LightColor>>
+			var funcs = new List<Func<Point, Point>>
 			{
-				Tuple.Create(0, 19, 19, false, false, lightColor),
-				Tuple.Create(0, 76, 76, true, true, lightColor),
-				Tuple.Create(76, 76, 19, false, true, lightColor),
-				Tuple.Create(76, 19, 76, true, false, lightColor),
+				point => new Point(point.X + 19, point.Y + 19),
+				point => new Point(-point.Y + 76, point.X + 19),
+				point => new Point(-point.X + 76, -point.Y + 76),
+				point => new Point(point.Y + 19, -point.X + 76),
 			};
 
 			var segment = new Segment();
@@ -37,12 +43,12 @@ namespace Shelfinator.Creator.Songs
 			{
 				segment.Clear(time);
 				for (var ctr = 0; ctr < Length; ++ctr)
-					foreach (var part in parts)
-					{
-						var add = points[(point + part.Item1 + ctr) % points.Count];
-						foreach (var light in bodyLayout.GetPositionLights((part.Item4 ? -1 : 1) * add.X + part.Item2, (part.Item5 ? -1 : 1) * add.Y + part.Item3, 2, 2))
-							segment.AddLight(light, time, part.Item6, ctr);
-					}
+				{
+					var add = points[(point + ctr) % points.Count];
+					foreach (var func in funcs)
+						foreach (var light in bodyLayout.GetPositionLights(func(add), 2, 2))
+							segment.AddLight(light, time, color, ctr);
+				}
 				++time;
 			}
 			return segment;
@@ -259,10 +265,10 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
 
-			// Lines (1720)
+			// Lines (intro: 500; measures: 1720)
 			var lines = Lines();
-			song.AddSegment(lines, 54, 152, 500, 1220);
-			song.AddSegment(lines, 0, 152, 1720, 1890, 8);
+			song.AddSegment(lines, 259, 382, 500, 1220);
+			song.AddSegment(lines, 0, 382, 1720, 1890 * 2, 4);
 			song.AddPaletteChange(500, 0);
 			song.AddPaletteChange(500, 1720, 1);
 			song.AddPaletteChange(5000, 6000, 2);
