@@ -117,6 +117,40 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Corners()
+		{
+			const int Size = 6;
+
+			var color = new LightColor(9, 68, new List<IReadOnlyList<int>>
+			{
+				new List<int> { 0x101010, 0x010101 },
+				new List<int> { 0x100000, 0x000010 },
+				new List<int> { 0x000010, 0x001000 },
+				new List<int> { 0x001000, 0x100000 },
+				new List<int> { 0x001010, 0x010010 },
+				Helpers.Rainbow6,
+			});
+			var segment = new Segment();
+			var center = new Point(48, 48);
+			var dist = bodyLayout.GetAllLights().ToDictionary(light => light, light => (bodyLayout.GetLightPosition(light) - center).Length.Round());
+			for (var time = 0; time < 19; ++time)
+			{
+				segment.Clear(time);
+				for (var ctr1 = 0; ctr1 < 97; ctr1 += 19)
+					for (var ctr2 = 0; ctr2 < 7; ++ctr2)
+					{
+						var lights = new List<int>();
+						lights.AddRange(bodyLayout.GetPositionLights(time - 18 - Size / 2 - Size % 2 + ctr2 * 19, ctr1, Size, 1));
+						lights.AddRange(bodyLayout.GetPositionLights(1 - time - Size / 2 + ctr2 * 19, ctr1 + 1, Size, 1));
+						lights.AddRange(bodyLayout.GetPositionLights(ctr1 + 1, time - 18 - Size / 2 - Size % 2 + ctr2 * 19, 1, Size));
+						lights.AddRange(bodyLayout.GetPositionLights(ctr1, 1 - time - Size / 2 + ctr2 * 19, 1, Size));
+						foreach (var light in lights)
+							segment.AddLight(light, time, color, dist[light]);
+					}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -140,7 +174,18 @@ namespace Shelfinator.Creator.Songs
 			var beatCircles = BeatCircles();
 			song.AddSegment(beatCircles, 0, 15120, 45190);
 
-			// Next (60310)
+			// Corners (60310)
+			var corners = Corners();
+			song.AddSegment(corners, 0, 19, 60310, 1890, 12);
+			song.AddPaletteChange(60310, 0);
+			song.AddPaletteChange(63590, 64590, 1);
+			song.AddPaletteChange(67370, 68370, 2);
+			song.AddPaletteChange(71150, 72150, 3);
+			song.AddPaletteChange(74930, 75930, 4);
+			song.AddPaletteChange(78710, 79710, 5);
+			song.AddPaletteChange(82990, 0);
+
+			// Next (82990)
 
 			return song;
 		}
