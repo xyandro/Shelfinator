@@ -59,5 +59,12 @@ namespace Shelfinator.Creator
 			foreach (var item in source)
 				action(item);
 		}
+
+		static public void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource, int> action)
+		{
+			var index = 0;
+			foreach (var item in source)
+				action(item, index++);
+		}
 	}
 }

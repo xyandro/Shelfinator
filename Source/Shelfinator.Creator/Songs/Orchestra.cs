@@ -125,9 +125,7 @@ namespace Shelfinator.Creator.Songs
 			{
 				new List<int> { 0x101010, 0x010101 },
 				new List<int> { 0x100000, 0x000010 },
-				new List<int> { 0x000010, 0x001000 },
-				new List<int> { 0x001000, 0x100000 },
-				new List<int> { 0x001010, 0x010010 },
+				new List<int> { 0x001010, 0x100010 },
 				Helpers.Rainbow6,
 			});
 			var segment = new Segment();
@@ -148,6 +146,51 @@ namespace Shelfinator.Creator.Songs
 							segment.AddLight(light, time, color, dist[light]);
 					}
 			}
+			return segment;
+		}
+
+		Segment SquareCircles(out int time)
+		{
+			var segment = new Segment();
+			var paths = new List<Tuple<double, double>>
+			{
+				Tuple.Create(19d, 0d),
+				Tuple.Create(53.7401153701776d, 135d),
+				Tuple.Create(38d, 0d),
+				Tuple.Create(26.8700576850888d, 135d),
+				Tuple.Create(19d, 0d),
+			};
+			var color = new LightColor(0, 3, new List<IReadOnlyList<int>>
+			{
+				new List<int> { 0x101010, 0x100000, 0x001000, 0x000010 },
+				new List<int> { 0x100000, 0x001000, 0x000010, 0x101010 },
+				new List<int> { 0x001000, 0x000010, 0x101010, 0x100000 },
+				new List<int> { 0x000010, 0x101010, 0x100000, 0x001000 },
+			});
+			time = 0;
+			double distance, angle;
+			for (var pathIndex = 1; pathIndex < paths.Count; ++pathIndex)
+			{
+				for (var step = 0; step <= 80; ++step)
+				{
+					var min = paths[pathIndex - 1];
+					var max = paths[pathIndex];
+					distance = (max.Item1 - min.Item1) * step / 80 + min.Item1;
+					angle = (max.Item2 - min.Item2) * step / 80 + min.Item2;
+
+					segment.Clear(time);
+					for (var circle = 0; circle < 4; ++circle)
+					{
+						var useAngle = (angle + circle * 90) * Math.PI / 180;
+						var center = new Point(distance * Math.Cos(useAngle) + 48, distance * Math.Sin(useAngle) + 48);
+						foreach (var light in bodyLayout.GetAllLights())
+							if ((bodyLayout.GetLightPosition(light) - center).LengthSquared < 200.5)
+								segment.AddLight(light, time, color, circle);
+					}
+					time += step == 0 ? 20 : 1;
+				}
+			}
+
 			return segment;
 		}
 
@@ -176,16 +219,22 @@ namespace Shelfinator.Creator.Songs
 
 			// Corners (60310)
 			var corners = Corners();
-			song.AddSegment(corners, 0, 19, 60310, 1890, 12);
+			song.AddSegment(corners, 0, 19, 60310, 1890, 8);
 			song.AddPaletteChange(60310, 0);
 			song.AddPaletteChange(63590, 64590, 1);
 			song.AddPaletteChange(67370, 68370, 2);
 			song.AddPaletteChange(71150, 72150, 3);
-			song.AddPaletteChange(74930, 75930, 4);
-			song.AddPaletteChange(78710, 79710, 5);
-			song.AddPaletteChange(82990, 0);
+			song.AddPaletteChange(75430, 0);
 
-			// Next (82990)
+			// SquareCircles (75430)
+			var squareCircles = SquareCircles(out var squareCirclesTime);
+			song.AddSegment(squareCircles, 100, 400, 75430, 1890 * 3);
+			song.AddSegment(squareCircles, 0, 400, song.MaxTime(), 1890 * 4, 3);
+			song.AddPaletteChange(75430, 0);
+			new List<int> { 0, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13466, 14175, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900, 19609, 20318, 20790, 21499, 22208, 22680, 23389, 24098, 24570, 25279, 25988, 26460 }.Skip(1).Select(x => x + 75430).ForEach((x, index) => song.AddPaletteChange(x - 100, x + 100, (index + 1) % 4));
+			song.AddPaletteChange(103780, 0);
+
+			// Next (103780)
 
 			return song;
 		}

@@ -21,6 +21,8 @@ namespace Shelfinator.Creator.SongData
 
 		public LightColor(params IReadOnlyList<int>[] colors) : this(0, 0, colors.ToList()) { }
 
+		public LightColor(List<IReadOnlyList<int>> colors) : this(0, 0, colors) { }
+
 		public LightColor(int minValue, int maxValue, params IReadOnlyList<int>[] colors) : this(minValue, maxValue, colors.ToList()) { }
 
 		public void Save(BinaryWriter output)
