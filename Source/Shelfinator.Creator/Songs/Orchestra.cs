@@ -191,6 +191,35 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment BeatGrow()
+		{
+			var times = new List<int> { 0, 3, 6, 9, 12, 14, 16, 19, 22, 25, 28, 30, 32, 35, 38, 41, 44, 46, 48, 51, 54, 56 };
+
+			var lights = bodyLayout.GetAllLights();
+			var center = new Point(48, 48);
+			var distances = lights.ToDictionary(light => light, light => 800 - (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 13.5864371095928).Round());
+			var buckets = distances.GroupBy(pair => Math.Min(pair.Value * times.Count / 800, times.Count - 1)).OrderByDescending(group => group.Key).Select(group => group.Select(x => x.Key).ToList()).ToList();
+			buckets = buckets.TakeEach(4).Concat(buckets.Skip(2).TakeEach(4)).Concat(buckets.Skip(1).TakeEach(2)).ToList();
+
+			var segment = new Segment();
+			var color = new LightColor(0, 1600, Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6[0]).ToList());
+			var active = new HashSet<int>();
+			var timeIndex = 0;
+			for (var time = 0; time < 64; ++time)
+			{
+				if ((timeIndex < times.Count) && (times[timeIndex] == time))
+					buckets[timeIndex++].ForEach(light => active.Add(light));
+
+				foreach (var light in lights)
+					if (active.Contains(light))
+					{
+						var colorValue = time % 8 * 100 + distances[light];
+						segment.AddLight(light, time, time + 1, color, colorValue, color, colorValue + 100, true);
+					}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -233,7 +262,11 @@ namespace Shelfinator.Creator.Songs
 			new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9450, 10159, 10868, 11340, 12049, 12758, 13230, 13939, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900 }.Skip(1).Select(x => x + 82990).ForEach((x, index) => song.AddPaletteChange(x - 100, x + 100, (index + 1) % 4));
 			song.AddPaletteChange(103780, 0);
 
-			// Next (103780)
+			// BeatGrow (103780)
+			var beatGrow = BeatGrow();
+			song.AddSegment(beatGrow, 0, 64, 103780, 15120);
+
+			// Next (118900)
 
 			return song;
 		}

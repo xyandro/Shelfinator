@@ -66,5 +66,16 @@ namespace Shelfinator.Creator
 			foreach (var item in source)
 				action(item, index++);
 		}
+
+		static public IEnumerable<TSource> TakeEach<TSource>(this IEnumerable<TSource> source, int n)
+		{
+			var index = 0;
+			foreach (var item in source)
+				if (--index <= 0)
+				{
+					yield return item;
+					index = n;
+				}
+		}
 	}
 }
