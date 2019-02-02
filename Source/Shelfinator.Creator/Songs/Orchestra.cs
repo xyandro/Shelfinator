@@ -241,21 +241,20 @@ namespace Shelfinator.Creator.Songs
 			var center = new Point(48, 48);
 			var lights = bodyLayout.GetAllLights();
 			var distances = lights.ToDictionary(light => light, light => ((bodyLayout.GetLightPosition(light) - center).Length * 100).Round());
-			for (var angle = 0; angle < 360; ++angle)
+			for (var time = 0; time < 720; ++time)
 			{
-				var useAngle = angle * Math.PI / 180;
-				var cos = Math.Cos(useAngle);
-				var sin = Math.Sin(useAngle);
-				var dist = Size * 2 * Speed * angle / 360;
+				var angle = time * Math.PI / 180 / 2;
+				var cos = Math.Cos(angle);
+				var sin = Math.Sin(angle);
+				var dist = Size * 2 * Speed * time / 720;
 
-				segment.Clear(angle);
+				segment.Clear(time);
 				foreach (var light in lights)
 				{
 					var point = bodyLayout.GetLightPosition(light);
 					var xPos = ((point.X - 48) * cos - (point.Y - 48) * sin + 500).Round() + dist;
 					if (xPos % (Size + Border) < Size)
-						segment.AddLight(light, angle, color[xPos % ((Size + Border) * 6) / (Size + Border) / 2], distances[light]);
-					//segment.AddLight(light, angle, color[xPos % (Size * 3) / Size], distances[light]);
+						segment.AddLight(light, time, color[xPos % ((Size + Border) * 6) / (Size + Border) / 2], distances[light]);
 				}
 			}
 			return segment;
@@ -309,7 +308,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Blinds (118900)
 			var blinds = Blinds();
-			song.AddSegment(blinds, 0, 360, 118900, 1890 * 6, 2);
+			song.AddSegment(blinds, 0, 720, 118900, 1890 * 6, 2);
 			song.AddPaletteChange(118900, 0);
 			song.AddPaletteChange(125960, 126960, 1);
 			song.AddPaletteChange(133520, 134520, 2);
