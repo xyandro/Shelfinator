@@ -260,6 +260,51 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment BeatSpiral()
+		{
+			const double A = 4;
+			var colors = new List<LightColor>
+			{
+				new LightColor(0, 100, new List<int> { 0x010000, 0x100000 }),
+				new LightColor(0, 100, new List<int> { 0x000100, 0x001000 }),
+				new LightColor(0, 100, new List<int> { 0x000001, 0x000010 }),
+			};
+			var colorSpacing = A * 2 * Math.PI / colors.Count;
+
+			var beats = new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9450, 10159, 10868, 11340, 12049, 12758, 13230, 13939, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900, 18900 }.Select((val, index) => new { val, index }).GroupBy(obj => obj.index % colors.Count).OrderBy(group => group.Key).Select(group => group.Select(obj => obj.val).ToList()).ToList();
+
+			var segment = new Segment();
+			var center = new Point(48, 48);
+			for (var time = 0; time < 1890 * 11; time += 20)
+			{
+				var useAngle = time * 360 / 1890 * Math.PI / 180;
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var point = bodyLayout.GetLightPosition(light);
+
+					var angle = Math.Atan2(point.Y - 48, point.X - 48) - useAngle;
+					var distance = (point - center).Length;
+					var numLoops = (distance - angle * A) / colorSpacing + 999;
+					distance -= colorSpacing * (numLoops - Math.Floor(numLoops));
+					var arm = (int)numLoops % colors.Count;
+
+					var index = beats[arm].BinarySearch(time);
+					if (index < 0)
+						index = Math.Max(0, ~index - 1);
+					var diffTime = time - beats[arm][index];
+					int brightness;
+					if (diffTime < 0)
+						brightness = 0;
+					else
+						brightness = Math.Max(0, 100 - diffTime / 5);
+
+					segment.AddLight(light, time, colors[arm], brightness);
+				}
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -314,7 +359,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(133520, 134520, 2);
 			song.AddPaletteChange(141580, 0);
 
-			// Next (141580)
+			// BeatSpiral (141580)
+			var beatSpiral = BeatSpiral();
+			song.AddSegment(beatSpiral, 0, 1890 * 11, 141580);
+
+			// Next (162370)
 
 			return song;
 		}
