@@ -261,24 +261,25 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment BeatSpiral()
+		void AddSpiral(Song song, int startTime)
 		{
 			const double A = 4;
-			var colors = new List<LightColor>
+			const int NumArms = 3;
+			var color = new LightColor(0, NumArms - 1, new List<IReadOnlyList<int>>
 			{
-				new LightColor(0, 100, new List<int> { 0x010000, 0x100000 }),
-				new LightColor(0, 100, new List<int> { 0x000100, 0x001000 }),
-				new LightColor(0, 100, new List<int> { 0x000001, 0x000010 }),
-			};
-			var colorSpacing = A * 2 * Math.PI / colors.Count;
-
-			var beats = new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9450, 10159, 10868, 11340, 12049, 12758, 13230, 13939, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900, 18900 }.Select((val, index) => new { val, index }).GroupBy(obj => obj.index % colors.Count).OrderBy(group => group.Key).Select(group => group.Select(obj => obj.val).ToList()).ToList();
+				new List<int> { 0x101010, 0x000000, 0x000000 },
+				new List<int> { 0x000010, 0x000010, 0x000000 },
+				new List<int> { 0x100010, 0x001010, 0x000000 },
+				new List<int> { 0x000010, 0x001010, 0x040818 },
+				new List<int> { 0x100000, 0x001000, 0x000010 },
+			});
+			var colorSpacing = A * 2 * Math.PI / NumArms;
 
 			var segment = new Segment();
 			var center = new Point(48, 48);
-			for (var time = 0; time < 1890 * 11; time += 20)
+			for (var rotateAngle = 0; rotateAngle < 360; ++rotateAngle)
 			{
-				var useAngle = time * 360 / 1890 * Math.PI / 180;
+				var useAngle = rotateAngle * Math.PI / 180;
 				foreach (var light in bodyLayout.GetAllLights())
 				{
 					var point = bodyLayout.GetLightPosition(light);
@@ -287,23 +288,47 @@ namespace Shelfinator.Creator.Songs
 					var distance = (point - center).Length;
 					var numLoops = (distance - angle * A) / colorSpacing + 999;
 					distance -= colorSpacing * (numLoops - Math.Floor(numLoops));
-					var arm = (int)numLoops % colors.Count;
+					var arm = (int)numLoops % NumArms;
 
-					var index = beats[arm].BinarySearch(time);
-					if (index < 0)
-						index = Math.Max(0, ~index - 1);
-					var diffTime = time - beats[arm][index];
-					int brightness;
-					if (diffTime < 0)
-						brightness = 0;
-					else
-						brightness = Math.Max(0, 100 - diffTime / 5);
-
-					segment.AddLight(light, time, colors[arm], brightness);
+					segment.AddLight(light, rotateAngle, color, arm);
 				}
 			}
 
-			return segment;
+			var beatLengths = new List<int> { 135, 135, 135, 135, 90, 90, 135, 135, 135, 135, 90, 90, 135, 135, 90, 135, 135, 90, 135, 135, 90, 135, 135, 90, 135, 135, 90, 135, 135, 90, 360 };
+			var clockwise = true;
+			var absPos = 0;
+			var segPos = 0;
+			foreach (var beatLength in beatLengths)
+			{
+				var multiplier = clockwise ? 5 : -3;
+				var nextSegPos = segPos + beatLength * multiplier;
+				while (segPos != nextSegPos)
+				{
+					if ((segPos == 0) && (nextSegPos < 0))
+					{
+						segPos += 360;
+						nextSegPos += 360;
+					}
+					if ((segPos == 360) && (nextSegPos > 360))
+					{
+						segPos -= 360;
+						nextSegPos -= 360;
+					}
+					var segLen = Math.Min(Math.Max(0, nextSegPos), 360) - segPos;
+					var absLen = segLen / multiplier;
+					song.AddSegment(segment, segPos, segPos + segLen, startTime + absPos * 1890 / 360, absLen * 1890 / 360);
+					segPos += segLen;
+					absPos += absLen;
+				}
+				clockwise = !clockwise;
+			}
+			const int FadeTime = 200;
+			song.AddPaletteChange(startTime, 0);
+			song.AddPaletteChange(startTime + 3780 - FadeTime / 2, startTime + 3780 + FadeTime / 2, 1);
+			song.AddPaletteChange(startTime + 7560 - FadeTime / 2, startTime + 7560 + FadeTime / 2, 2);
+			song.AddPaletteChange(startTime + 11340 - FadeTime / 2, startTime + 11340 + FadeTime / 2, 3);
+			song.AddPaletteChange(startTime + 15120 - FadeTime / 2, startTime + 15120 + FadeTime / 2, 4);
+			song.AddPaletteChange(startTime + 20790, 0);
 		}
 
 		Segment BeatSquares()
@@ -403,9 +428,8 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(133520, 134520, 2);
 			song.AddPaletteChange(141580, 0);
 
-			// BeatSpiral (141580)
-			var beatSpiral = BeatSpiral();
-			song.AddSegment(beatSpiral, 0, 1890 * 11, 141580);
+			// Spiral (141580)
+			AddSpiral(song, 141580);
 
 			// BeatSquares (162370)
 			var beatSquares = BeatSquares();
