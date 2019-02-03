@@ -11,6 +11,7 @@ namespace Shelfinator.Creator.Songs
 		public int SongNumber => 7;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
+		readonly Layout squaresLayout = new Layout("Shelfinator.Creator.Songs.Layout.Squares.png");
 
 		Segment Lines()
 		{
@@ -97,7 +98,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment BeatCircles()
 		{
-			var beatTimes = new List<double> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13230 };
+			var beatTimes = new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13230 };
 			var points = new List<Point> { new Point(0, 0), new Point(96, 0), new Point(96, 96), new Point(0, 96) };
 
 			var colors = new List<int> { 0xff0000, 0x00ff00, 0x0000ff };
@@ -305,6 +306,49 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment BeatSquares()
+		{
+			const int FadeTime = 200;
+			var times = new List<int> { 0, 300, 600, 900, 1200, 1400, 1600, 1900, 2200, 2500, 2800, 3000, 3200, 3500, 3800, 4100, 4400, 4600, 4800, 5100, 5400, 5600 };
+
+			var squareTimes = "13/3/15/23/11/7/9/19/17/1/5/25/21/8/14/18/12/2&4/10&20/22&24/16&6/0".Split('/').Select(x => x.Split('&').Select(int.Parse).ToList()).ToList();
+
+			var lights = bodyLayout.GetAllLights();
+			var center = new Point(48, 48);
+
+			var squareLights = Enumerable.Range(0, 26).ToDictionary(square => square, square => bodyLayout.GetMappedLights(squaresLayout, square));
+			var distances = squareLights.Select(pair => new { square = pair.Key, dist = default(int?), lights = pair.Value }).SelectMany(obj => obj.lights.Select(light => new { light, obj.dist })).ToDictionary(obj => obj.light, obj => obj.dist);
+
+			var segment = new Segment();
+			var color = new LightColor(0, 1600, Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6[0]).ToList());
+			var timeIndex = 0;
+			for (var time = 0; time < 6400; time += 100)
+			{
+				if ((timeIndex < times.Count) && (times[timeIndex] == time))
+				{
+					squareTimes[timeIndex].ForEach(square => squareLights[square].ForEach(light => distances[light] = 800 - (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 13.5864371095928).Round()));
+					timeIndex++;
+				}
+
+				segment.Clear(time);
+				foreach (var pair in distances)
+					if (pair.Value.HasValue)
+					{
+						var colorValue = time % 800 + pair.Value.Value;
+						segment.AddLight(pair.Key, time, time + 100, color, colorValue, color, colorValue + 100, true);
+					}
+			}
+
+			var clearSquares = squareTimes.SelectMany(x => x).Reverse().ToList();
+			for (var ctr = 0; ctr < clearSquares.Count; ctr++)
+			{
+				var time = ctr * FadeTime / clearSquares.Count + 6400 - FadeTime;
+				foreach (var light in squareLights[clearSquares[ctr]])
+					segment.AddLight(light, time, 0x000000);
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
@@ -363,7 +407,11 @@ namespace Shelfinator.Creator.Songs
 			var beatSpiral = BeatSpiral();
 			song.AddSegment(beatSpiral, 0, 1890 * 11, 141580);
 
-			// Next (162370)
+			// BeatSquares (162370)
+			var beatSquares = BeatSquares();
+			song.AddSegment(beatSquares, 0, 6400, 162370, 15120);
+
+			// End (177490)
 
 			return song;
 		}

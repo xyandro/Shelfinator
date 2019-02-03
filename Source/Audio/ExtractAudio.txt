@@ -1,44 +1,44 @@
-ffmpeg.exe -y -ss 00:00:34.350 -t 00:03:35 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.mp3"
-ffmpeg.exe -y -ss 00:00:05.000 -t 00:05:55.000 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm "bohemian.mp3"
+ffmpeg.exe -y -ss 34.35 -t 215 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.mp3"
+ffmpeg.exe -y -ss 5 -t 355 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm "bohemian.mp3"
 
-ffmpeg.exe -y -t 00:02:56.877 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "1.wav"
-ffmpeg.exe -y -ss 00:03:17.401 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "2.wav"
+ffmpeg.exe -y -t 176.877 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "1.wav"
+ffmpeg.exe -y -ss 197.401 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "2.wav"
 Write a.txt:
 file '1.wav'
 file '2.wav'
 ffmpeg.exe -y -f concat -i a.txt -c copy "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav"
 
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "silence.wav"
-ffmpeg.exe -y -ss 00:00:17.502 -t 00:03:16.875 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav" -ar 44100 -filter:a loudnorm "song.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 0.5 -ar 44100 "silence.wav"
+ffmpeg.exe -y -ss 17.502 -t 196.875 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav" -ar 44100 -filter:a loudnorm "song.wav"
 Write a.txt:
 file 'silence.wav'
 file 'song.wav'
 ffmpeg.exe -y -f concat -i a.txt "shutupanddance.mp3"
 
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:09.500 -ar 44100 "hello.mp3"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 9.5 -ar 44100 "hello.mp3"
 
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "1.wav"
-ffmpeg.exe -y -ss 00:00:00.082 -i "MIKA feat Ariana Grande 'Popular Song' [audio]-4H6qwPJT9W0.mkv" -ar 44100 -filter:a loudnorm "2.wav"
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.408 -ar 44100 "3.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 0.5 -ar 44100 "1.wav"
+ffmpeg.exe -y -ss 0.082 -i "MIKA feat Ariana Grande 'Popular Song' [audio]-4H6qwPJT9W0.mkv" -ar 44100 -filter:a loudnorm "2.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 0.408 -ar 44100 "3.wav"
 Write a.txt:
 file '1.wav'
 file '2.wav'
 file '3.wav'
 ffmpeg.exe -y -f concat -i a.txt "popular.mp3"
 
-ffmpeg.exe -y -ss 00:00:05.500 -t 00:04:22.700 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-LRP8d7hhpoQ.webm" -ar 44100 -filter:a loudnorm "hallelujah.mp3"
+ffmpeg.exe -y -ss 5.5 -t 262.7 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-LRP8d7hhpoQ.webm" -ar 44100 -filter:a loudnorm "hallelujah.mp3"
 
 ffmpeg.exe -y -i "beep-07.wav" -ar 44100 -ac 2 -filter:a loudnorm "beep.wav"
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:10 -ar 44100 "silence.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 10 -ar 44100 "silence.wav"
 Write a.txt:
 file 'silence.wav'
 file 'beep.wav'
 file 'silence.wav'
 ffmpeg.exe -y -f concat -i a.txt "beep2.wav"
-ffmpeg.exe -y -ss 00:00:09 -t 00:00:05 -i "beep2.wav" "test.mp3"
+ffmpeg.exe -y -ss 9 -t 5 -i "beep2.wav" "test.mp3"
 
-ffmpeg.exe -y -f lavfi -i anullsrc -t 00:00:00.500 -ar 44100 "silence.wav"
-ffmpeg.exe -y -ss 00:00:00.100 -i "Sound Of An Orchestra-201kDUdQFqU.webm" -ar 44100 -filter:a loudnorm "orchestra.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 0.5 -ar 44100 "silence.wav"
+ffmpeg.exe -y -ss 0.1 -i "Sound Of An Orchestra-201kDUdQFqU.webm" -ar 44100 -filter:a loudnorm "orchestra.wav"
 Write a.txt:
 file 'silence.wav'
 file 'orchestra.wav'
