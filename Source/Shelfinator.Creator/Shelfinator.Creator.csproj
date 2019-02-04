@@ -109,6 +109,7 @@
     <Compile Include="Songs\ShutUpAndDance.cs" />
     <Compile Include="Songs\SongHelper.cs" />
     <Compile Include="Songs\Test.cs" />
+    <Compile Include="Songs\Working.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">
