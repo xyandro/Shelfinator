@@ -71,6 +71,8 @@
     </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Layout.cs" />
+    <Compile Include="Midi.cs" />
+    <Compile Include="MidiNote.cs" />
     <Compile Include="MoreLinq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

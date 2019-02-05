@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Shelfinator.Interop;
 
 namespace Shelfinator.Creator
@@ -13,6 +15,8 @@ namespace Shelfinator.Creator
 	partial class Emulator : IDotStar, IAudio
 	{
 		public static int TestPosition { get; set; }
+		public static List<MidiNote> TestNotes { get; set; }
+
 		readonly Controller controller;
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
 		readonly WriteableBitmap bitmap;
@@ -65,10 +69,36 @@ namespace Shelfinator.Creator
 			controller = new Controller(this, this, songNumbers, startPaused);
 			mediaPlayer.MediaEnded += (s, e) => { Stop(); finished = true; };
 			new Thread(() => controller.Run()).Start();
+			new Thread(() => PlayTestNotes()).Start();
 		}
 
 		bool ControlDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
 		bool ShiftDown => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+
+		void PlayTestNotes()
+		{
+			using (var midi = new Midi())
+			{
+				var playing = new List<MidiNote>();
+				while (true)
+				{
+					if (TestNotes?.Any() != true)
+					{
+						Thread.Sleep(100);
+						continue;
+					}
+
+					var time = GetTime() + 200 * mediaPlayer.SpeedRatio;
+					var notes = TestNotes.Where(note => (time >= note.StartTime) && (time < note.EndTime)).ToList();
+					foreach (var note in playing.Except(notes))
+						midi.NoteOff(note.NoteValue);
+					foreach (var note in notes.Except(playing))
+						midi.NoteOn(note.NoteValue, 60);
+					playing = notes;
+					Thread.Sleep(10);
+				}
+			}
+		}
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
