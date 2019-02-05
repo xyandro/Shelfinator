@@ -209,7 +209,7 @@ namespace Shelfinator.Creator.Songs
 			buckets = buckets.TakeEach(4).Concat(buckets.Skip(2).TakeEach(4)).Concat(buckets.Skip(1).TakeEach(2)).ToList();
 
 			var segment = new Segment();
-			var color = new LightColor(0, 1600, Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6[0]).ToList());
+			var color = new LightColor(0, 7200, Enumerable.Repeat(Helpers.Rainbow6, 9).SelectMany(x => x).Concat(Helpers.Rainbow6[0]).ToList());
 			var active = new HashSet<int>();
 			var timeIndex = 0;
 			for (var time = 0; time < 64; ++time)
@@ -220,7 +220,7 @@ namespace Shelfinator.Creator.Songs
 				foreach (var light in lights)
 					if (active.Contains(light))
 					{
-						var colorValue = time % 8 * 100 + distances[light];
+						var colorValue = time * 100 + distances[light];
 						segment.AddLight(light, time, time + 1, color, colorValue, color, colorValue + 100, true);
 					}
 			}
@@ -345,7 +345,7 @@ namespace Shelfinator.Creator.Songs
 			var distances = squareLights.Select(pair => new { square = pair.Key, dist = default(int?), lights = pair.Value }).SelectMany(obj => obj.lights.Select(light => new { light, obj.dist })).ToDictionary(obj => obj.light, obj => obj.dist);
 
 			var segment = new Segment();
-			var color = new LightColor(0, 1600, Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6[0]).ToList());
+			var color = new LightColor(0, 7200, Enumerable.Repeat(Helpers.Rainbow6, 9).SelectMany(x => x).Concat(Helpers.Rainbow6[0]).ToList());
 			var timeIndex = 0;
 			for (var time = 0; time < 6400; time += 100)
 			{
@@ -359,7 +359,7 @@ namespace Shelfinator.Creator.Songs
 				foreach (var pair in distances)
 					if (pair.Value.HasValue)
 					{
-						var colorValue = time % 800 + pair.Value.Value;
+						var colorValue = time + pair.Value.Value;
 						segment.AddLight(pair.Key, time, time + 100, color, colorValue, color, colorValue + 100, true);
 					}
 			}
