@@ -106,11 +106,11 @@
     <EmbeddedResource Include="Songs\Love\Timo.png" />
     <Compile Include="Songs\Orchestra.cs" />
     <Compile Include="Songs\Popular.cs" />
+    <Compile Include="Songs\Pynk.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
     <Compile Include="Songs\SongHelper.cs" />
     <Compile Include="Songs\Test.cs" />
-    <Compile Include="Songs\Working.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">

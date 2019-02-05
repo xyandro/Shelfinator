@@ -6,7 +6,7 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Working : ISong
+	class Pynk : ISong
 	{
 		public int SongNumber => 8;
 
@@ -120,13 +120,20 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("orchestra.mp3");
+			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
+
+			var segment = new Segment();
+			foreach (var light in bodyLayout.GetAllLights())
+				segment.AddLight(light, 0, 1, 0x101010, 0x000000);
+			song.AddSegment(segment, 0, 1, 750, 594);
+			song.AddSegment(segment, 0, 1, 1938, 594);
+			song.AddSegment(segment, 0, 1, 2532, 2376, 100);
 
 			//var squares = Squares();
 			//song.AddSegment(squares, 0, 360, 0, 1890, 10);
 
-			var wavy = Wavy();
-			song.AddSegment(wavy, 0, 1000, 0, 1890 * 10);
+			//var wavy = Wavy();
+			//song.AddSegment(wavy, 0, 1000, 0, 1890 * 10);
 
 			return song;
 		}

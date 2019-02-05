@@ -43,3 +43,14 @@ Write a.txt:
 file 'silence.wav'
 file 'orchestra.wav'
 ffmpeg.exe -y -f concat -i a.txt "orchestra.mp3"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 0.75 -ar 44100 "silence.wav"
+ffmpeg.exe -y -ss 22.563 -t 240 -i "Janelle Monáe - PYNK [Official Music Video]-PaYvlVR_BEc.mkv" -ar 44100 -filter:a loudnorm "pynk.wav"
+copy pynk.wav bytes 1467022-1571802 to bytes 78-104858
+copy pynk.wav bytes 1467022-1571802 to bytes 209642-314422
+zero pynk.wav bytes 104858-209642
+Write a.txt:
+file 'silence.wav'
+file 'pynk.wav'
+file 'silence.wav'
+ffmpeg.exe -y -f concat -i a.txt "pynk.mp3"
