@@ -12,6 +12,343 @@ namespace Shelfinator.Creator.Songs
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
+		Segment Intro()
+		{
+			const int SnapTime = 297;
+			const int SnapFadeTime = 150;
+			const int BeatSize = 20;
+			const int NoteSize = 9;
+			var segment = new Segment();
+
+			var innerLights = bodyLayout.GetPositionLights(38, 38, 21, 21).Except(bodyLayout.GetPositionLights(40, 40, 17, 17)).ToList();
+			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
+			var outerLights = bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(2, 2, 93, 93)).ToList();
+
+			var center = new Point(48, 48);
+			var snapColor = new LightColor(0, 1000, new List<int> { 0x000010, 0x000001 });
+			for (var time = 750; time <= 59556; time += 1188)
+				if ((time != 20946) && (time != 58962))
+					foreach (var light in innerLights)
+					{
+						var colorValue = (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 194.47172793051).Round();
+						segment.AddLight(light, time - colorValue * SnapFadeTime / 1000, snapColor, colorValue);
+						segment.AddLight(light, time - colorValue * SnapFadeTime / 1000 + SnapTime, 0x000000);
+					}
+
+			var beats = new List<MidiNote>
+			{
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 2532, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 2730, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 2928, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 3126, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 3423, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 4908, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 5106, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 5304, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 5799, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 6393, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 6987, 297),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 7284, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 7482, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 7680, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 7878, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 8175, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 9660, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 9858, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 10056, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 10551, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 11145, 495),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 11640, 396),
+
+				new MidiNote(MidiNote.PianoNote.C, 3, 12036, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 12234, 198),
+				new MidiNote(MidiNote.PianoNote.C, 5, 12432, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 12630, 297),
+				new MidiNote(MidiNote.PianoNote.C, 3, 12927, 1485),
+
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 14412, 198),
+				new MidiNote(MidiNote.PianoNote.AFlat, 3, 14610, 198),
+				new MidiNote(MidiNote.PianoNote.AFlat, 4, 14808, 198),
+				new MidiNote(MidiNote.PianoNote.G, 5, 15006, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 15303, 594),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 15897, 495),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 16392, 396),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 16788, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 16986, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 17184, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 17679, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 19164, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 19362, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 19560, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 19758, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 20055, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 20649, 891),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 21540, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 21738, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 21936, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 6, 22134, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 22431, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 23916, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 24114, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 24312, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 24807, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 25401, 495),
+				new MidiNote(MidiNote.PianoNote.G, 2, 25896, 396),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 26292, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 26490, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 26688, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 6, 26886, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 27183, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 28668, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 28866, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 29064, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 29559, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 30153, 297),
+				new MidiNote(MidiNote.PianoNote.F, 4, 30450, 198),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 30648, 198),
+				new MidiNote(MidiNote.PianoNote.F, 4, 30846, 198),
+
+				new MidiNote(MidiNote.PianoNote.C, 3, 31044, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 31242, 198),
+				new MidiNote(MidiNote.PianoNote.C, 5, 31440, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 31638, 297),
+				new MidiNote(MidiNote.PianoNote.C, 3, 31935, 1485),
+
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 33420, 198),
+				new MidiNote(MidiNote.PianoNote.AFlat, 3, 33618, 198),
+				new MidiNote(MidiNote.PianoNote.C, 5, 33816, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 34014, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 34311, 594),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 34905, 495),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 35400, 396),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 35796, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 35994, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 36192, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 6, 36390, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 36687, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 38172, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 38370, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 38568, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 39063, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 39657, 594),
+				new MidiNote(MidiNote.PianoNote.G, 2, 40251, 297),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 40548, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 40746, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 40944, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 41142, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 41439, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 42924, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 43122, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 43320, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 43815, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 44409, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 45003, 297),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 45300, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 45498, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 45696, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 45894, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 46191, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 47676, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 47874, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 48072, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 48567, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 49161, 495),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 49656, 396),
+
+				new MidiNote(MidiNote.PianoNote.C, 3, 50052, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 50250, 198),
+				new MidiNote(MidiNote.PianoNote.C, 5, 50448, 198),
+				new MidiNote(MidiNote.PianoNote.C, 4, 50646, 297),
+				new MidiNote(MidiNote.PianoNote.C, 3, 50943, 1485),
+
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 52428, 198),
+				new MidiNote(MidiNote.PianoNote.AFlat, 3, 52626, 198),
+				new MidiNote(MidiNote.PianoNote.AFlat, 4, 52824, 198),
+				new MidiNote(MidiNote.PianoNote.G, 5, 53022, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 53319, 594),
+				new MidiNote(MidiNote.PianoNote.AFlat, 2, 53913, 495),
+				new MidiNote(MidiNote.PianoNote.BFlat, 2, 54408, 396),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 54804, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 55002, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 55200, 495),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 55695, 1485),
+
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 57180, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 57378, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 57576, 198),
+				new MidiNote(MidiNote.PianoNote.EFlat, 4, 57774, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 58071, 594),
+				new MidiNote(MidiNote.PianoNote.EFlat, 3, 58665, 594),
+			};
+
+			var minBeatValue = beats.Min(beat => beat.NoteValue);
+			var maxBeatValue = beats.Max(beat => beat.NoteValue);
+			var beatDist = (89d - BeatSize) / (maxBeatValue - minBeatValue);
+			foreach (var beat in beats)
+			{
+				var minVal = (beatDist * (beat.NoteValue - minBeatValue)).Round() + 4;
+				var maxVal = minVal + BeatSize - 1;
+				foreach (var light in outerLights)
+				{
+					var pos = bodyLayout.GetLightPosition(light);
+					var show = false;
+
+					if ((pos.Y < 2) && (pos.X >= minVal) && (pos.X <= maxVal))
+						show = true;
+					if ((pos.Y >= 95) && ((96 - pos.X) >= minVal) && ((96 - pos.X) <= maxVal))
+						show = true;
+					if ((pos.X < 2) && ((96 - pos.Y) >= minVal) && ((96 - pos.Y) <= maxVal))
+						show = true;
+					if ((pos.X >= 95) && (pos.Y >= minVal) && (pos.Y <= maxVal))
+						show = true;
+
+					if (show)
+					{
+						segment.AddLight(light, beat.StartTime, beat.StartTime + 198, 0x001000, 0x000400);
+						segment.AddLight(light, beat.EndTime, 0x000000);
+					}
+				}
+			}
+
+			foreach (var light in middleLights)
+			{
+				segment.AddLight(light, 16788, 21540, 0x040102, 0x401020);
+				segment.AddLight(light, 21540, 0x000000);
+			}
+
+			var notes = new List<MidiNote>
+			{
+				new MidiNote(MidiNote.PianoNote.G, 5, 21540, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 22134, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 22431, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 22728, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 23025, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 23322, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 23619, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 25104, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 25698, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 26292, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 26886, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 27183, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 27480, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 27777, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 28074, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 28371, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 29856, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 30450, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 31044, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 31638, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 31935, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 32232, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 32529, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 32826, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 33123, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 34608, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 35202, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 35796, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 36390, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 36687, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 36984, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 37281, 297),
+				new MidiNote(MidiNote.PianoNote.D, 5, 37578, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 37875, 2673),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 40548, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 40548, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 41142, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 41142, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 41439, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 41439, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 41736, 297),  new MidiNote(MidiNote.PianoNote.F, 5, 41736, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 42033, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 42033, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 42330, 297),      new MidiNote(MidiNote.PianoNote.D, 5, 42330, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 42627, 1485), new MidiNote(MidiNote.PianoNote.C, 5, 42627, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 44112, 594),      new MidiNote(MidiNote.PianoNote.AFlat, 4, 44112, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 44706, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 44706, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 45300, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 45300, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 45894, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 45894, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 46191, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 46191, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 46488, 297),  new MidiNote(MidiNote.PianoNote.F, 5, 46488, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 46785, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 46785, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 47082, 297),      new MidiNote(MidiNote.PianoNote.D, 5, 47082, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 47379, 1485), new MidiNote(MidiNote.PianoNote.C, 5, 47379, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 48864, 594),      new MidiNote(MidiNote.PianoNote.AFlat, 4, 48864, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 49458, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 49458, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 50052, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 50052, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 50646, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 50646, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 50943, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 50943, 297),
+				new MidiNote(MidiNote.PianoNote.AFlat, 5, 51240, 297),  new MidiNote(MidiNote.PianoNote.F, 5, 51240, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 51537, 297),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 51537, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 51834, 297),      new MidiNote(MidiNote.PianoNote.D, 5, 51834, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 52131, 1485), new MidiNote(MidiNote.PianoNote.C, 5, 52131, 1485),
+				new MidiNote(MidiNote.PianoNote.C, 5, 53616, 594),      new MidiNote(MidiNote.PianoNote.AFlat, 4, 53616, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 54210, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 54210, 594),
+
+				new MidiNote(MidiNote.PianoNote.G, 5, 54804, 594),      new MidiNote(MidiNote.PianoNote.EFlat, 5, 54804, 594),
+				new MidiNote(MidiNote.PianoNote.G, 5, 55398, 297),
+				new MidiNote(MidiNote.PianoNote.G, 5, 55695, 297),
+				new MidiNote(MidiNote.PianoNote.F, 5, 55992, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 56289, 297),
+				new MidiNote(MidiNote.PianoNote.D, 5, 56586, 297),
+				new MidiNote(MidiNote.PianoNote.EFlat, 5, 56883, 297),
+			};
+
+			var minNoteValue = notes.Min(note => note.NoteValue);
+			var maxNoteValue = notes.Max(note => note.NoteValue);
+			var noteDist = (51d - NoteSize) / (maxNoteValue - minNoteValue);
+
+			foreach (var note in notes)
+			{
+				var minVal = (noteDist * (note.NoteValue - minNoteValue)).Round() + 23;
+				var maxVal = minVal + NoteSize - 1;
+				foreach (var light in middleLights)
+				{
+					var pos = bodyLayout.GetLightPosition(light);
+					var show = false;
+
+					if ((pos.Y <= 20) && (pos.X >= minVal) && (pos.X <= maxVal))
+						show = true;
+					if ((pos.Y >= 76) && ((96 - pos.X) >= minVal) && ((96 - pos.X) <= maxVal))
+						show = true;
+					if ((pos.X <= 20) && ((96 - pos.Y) >= minVal) && ((96 - pos.Y) <= maxVal))
+						show = true;
+					if ((pos.X >= 76) && (pos.Y >= minVal) && (pos.Y <= maxVal))
+						show = true;
+
+					if (show)
+					{
+						segment.AddLight(light, note.StartTime, note.StartTime + 198, 0x100408, 0x040102);
+						segment.AddLight(light, note.EndTime, 0x000000);
+					}
+				}
+			}
+
+			var endTimes = new List<int> { 58962, 59111, 59259, 59408 };
+			for (int i = 0; i < endTimes.Count; i++)
+				foreach (var light in bodyLayout.GetAllLights())
+					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x040102 : 0x080204);
+
+			return segment;
+		}
+
 		Segment Squares()
 		{
 			const int NumSquares = 6;
@@ -122,12 +459,11 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
 
-			var segment = new Segment();
-			foreach (var light in bodyLayout.GetAllLights())
-				segment.AddLight(light, 0, 1, 0x101010, 0x000000);
-			song.AddSegment(segment, 0, 1, 750, 594);
-			song.AddSegment(segment, 0, 1, 1938, 594);
-			song.AddSegment(segment, 0, 1, 2532, 2376, 100);
+			// Intro (0)
+			var intro = Intro();
+			song.AddSegment(intro, 0, 59556, 0);
+
+			// Next (59556)
 
 			//var squares = Squares();
 			//song.AddSegment(squares, 0, 360, 0, 1890, 10);
