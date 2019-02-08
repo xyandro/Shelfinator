@@ -358,7 +358,7 @@ namespace Shelfinator.Creator.Songs
 			const double EvenSize = (MaxRadius - MinRadius) / NumSquares;
 
 			var segment = new Segment();
-			var color = new LightColor(0, NumSquares - 1, Helpers.Rainbow6);
+			var color = new LightColor(0, NumSquares - 1, Helpers.Rainbow6, Helpers.Rainbow6.Reverse().ToList());
 			for (var angle = 0; angle < 360; ++angle)
 			{
 				segment.Clear(angle);
@@ -463,10 +463,14 @@ namespace Shelfinator.Creator.Songs
 			var intro = Intro();
 			song.AddSegment(intro, 0, 59556, 0);
 
-			// Next (59556)
+			// Squares (59556)
+			var squares = Squares();
+			song.AddSegment(squares, 0, 360, 59556, 4752, 4);
+			song.AddPaletteChange(59556, 0);
+			song.AddPaletteChange(68560, 69560, 1);
+			song.AddPaletteChange(78564, 0);
 
-			//var squares = Squares();
-			//song.AddSegment(squares, 0, 360, 0, 1890, 10);
+			// Next (78564)
 
 			//var wavy = Wavy();
 			//song.AddSegment(wavy, 0, 1000, 0, 1890 * 10);
