@@ -485,6 +485,45 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment RotateBoxes(out int time)
+		{
+			const int Delay = 10;
+			var squares = Enumerable.Range(1, 7).SelectMany(y => Enumerable.Range(1, 7).Select(x => y * 9 + x)).ToList();
+			var paths = new List<List<Tuple<int, int, int>>>();
+			paths.Add(squares.Select(square => Tuple.Create(square, square + 1, square % 2)).ToList());
+			paths.Add(squares.Select(square => Tuple.Create(square, square + 9, (square + 1) % 2)).ToList());
+			paths.Add(squares.Select(square => Tuple.Create(square, square - 1, square % 2)).ToList());
+			paths.Add(squares.Select(square => Tuple.Create(square, square - 9, (square + 1) % 2)).ToList());
+
+			time = 0;
+			var color = new LightColor(0, 1,
+				new List<int> { 0x100010, 0x001010 },
+				new List<int> { 0x100408, 0x000000 });
+			var segment = new Segment();
+			foreach (var path in paths)
+				for (var ctr = 0; ctr <= 19; ++ctr)
+				{
+					var percent = ctr / 19d;
+					foreach (var part in path)
+					{
+						var fromPoint = new Point(part.Item1 % 9 * 19 - 37, part.Item1 / 9 * 19 - 37);
+						var toPoint = new Point(part.Item2 % 9 * 19 - 37, part.Item2 / 9 * 19 - 37);
+						var point = fromPoint + (toPoint - fromPoint) * percent;
+						foreach (var light in bodyLayout.GetPositionLights(point, 19, 19))
+							segment.AddLight(light, time, color, part.Item3);
+					}
+					if (ctr % 19 == 0)
+						time += Delay;
+					else
+						++time;
+				}
+
+			foreach (var light in bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)))
+				segment.AddLight(light, 0, 0x000000);
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -515,7 +554,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(101824, 102824, 1);
 			song.AddPaletteChange(107076, 0);
 
-			// Next (107076)
+			// RotateBoxes (107076)
+			var rotateBoxes = RotateBoxes(out var rotateBoxesTime);
+			song.AddSegment(rotateBoxes, 0, rotateBoxesTime, 107076, 4752, 4);
+			song.AddPaletteChange(107076, 0);
+			song.AddPaletteChange(116080, 117080, 1);
+			song.AddPaletteChange(126084, 0);
+
+			// Next (126084)
 
 			return song;
 		}
