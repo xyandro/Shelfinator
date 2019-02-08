@@ -581,6 +581,41 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Window()
+		{
+			const double FakeSize = 30;
+			const int Step = 5;
+
+			var xDiff = new Vector(19, 0);
+			var yDiff = new Vector(0, 19);
+			var segment = new Segment();
+			var colors = new List<IReadOnlyList<int>> { new List<int> { 0x101010, 0x010101 }, new List<int> { 0x100000, 0x000010 }, new List<int> { 0x100010, 0x001010 }, Helpers.Rainbow6 };
+			var color = new LightColor(0, 720, colors.Select(list => list.Concat(list).Concat(list.Take(1)).ToList()).ToList());
+			var distances = bodyLayout.GetAllLights().ToDictionary(light => light, light => 360 - (((bodyLayout.GetLightPosition(light) - Helpers.Center).Length - 9) * 6.11389669931678).Round());
+			for (var time = 0; time < 360; time += Step)
+			{
+				segment.Clear(time);
+
+				var horizSize = new Size(Math.Max(0, (FakeSize / 2 * Math.Cos(time * Math.PI / 180) + 21d / 2d).Round()), 2);
+				var horizPoint = new Point((21 - horizSize.Width) / 2, 0);
+				var vertSize = new Size(2, Math.Max(0, (FakeSize / 2 * Math.Cos((time + 180) * Math.PI / 180) + 21d / 2d).Round()));
+				var vertPoint = new Point(0, (21 - vertSize.Height) / 2);
+
+				var data = new List<Tuple<Point, Size>>
+				{
+					Tuple.Create(horizPoint, horizSize),
+					Tuple.Create(vertPoint, vertSize),
+				};
+
+				for (var y = 0; y < 6; ++y)
+					for (var x = 0; x < 6; ++x)
+						foreach (var datum in data)
+							foreach (var light in bodyLayout.GetPositionLights(datum.Item1 + xDiff * x + yDiff * y, datum.Item2))
+								segment.AddLight(light, time, time + Step, color, time + distances[light], color, time + distances[light] + Step, true);
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -622,7 +657,16 @@ namespace Shelfinator.Creator.Songs
 			var slideSquares = SlideSquares(out var slideSquaresTime);
 			song.AddSegment(slideSquares, 0, slideSquaresTime, 126084, 19008);
 
-			// Next (145092)
+			// Window (145092)
+			var window = Window();
+			song.AddSegment(window, 0, 360, 145092, 2376, 8);
+			song.AddPaletteChange(145092, 0);
+			song.AddPaletteChange(149344, 150344, 1);
+			song.AddPaletteChange(154096, 155096, 2);
+			song.AddPaletteChange(158848, 159848, 3);
+			song.AddPaletteChange(164100, 0);
+
+			// Next (164100)
 
 			return song;
 		}
