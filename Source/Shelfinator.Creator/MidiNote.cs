@@ -30,7 +30,7 @@
 		public int EndTime { get => StartTime + Length; set => Length = value - StartTime; }
 		public int Length { get; set; }
 
-		public MidiNote(PianoNote note, int octave, int startTime, int length)
+		public MidiNote(PianoNote note, int octave, int startTime = 0, int length = 0)
 		{
 			Note = note;
 			Octave = octave;
@@ -38,11 +38,13 @@
 			Length = length;
 		}
 
-		public MidiNote(int noteValue, int startTime, int length)
+		public MidiNote(int noteValue, int startTime = 0, int length = 0)
 		{
 			NoteValue = noteValue;
 			StartTime = startTime;
 			Length = length;
 		}
+
+		public override string ToString() => $"{Note}{Octave} ({NoteValue}): {StartTime}-{EndTime} ({Length})";
 	}
 }

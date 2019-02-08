@@ -74,6 +74,7 @@
     <Compile Include="Midi.cs" />
     <Compile Include="MidiNote.cs" />
     <Compile Include="MoreLinq.cs" />
+    <Compile Include="PitchFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
