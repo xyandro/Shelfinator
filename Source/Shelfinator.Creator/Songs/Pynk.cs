@@ -24,13 +24,12 @@ namespace Shelfinator.Creator.Songs
 			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
 			var outerLights = bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(2, 2, 93, 93)).ToList();
 
-			var center = new Point(48, 48);
 			var snapColor = new LightColor(0, 1000, new List<int> { 0x000010, 0x000001 });
 			for (var time = 750; time <= 59556; time += 1188)
 				if ((time != 20946) && (time != 58962))
 					foreach (var light in innerLights)
 					{
-						var colorValue = (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 194.47172793051).Round();
+						var colorValue = (((bodyLayout.GetLightPosition(light) - Helpers.Center).Length - 9) * 194.47172793051).Round();
 						segment.AddLight(light, time - colorValue * SnapFadeTime / 1000, snapColor, colorValue);
 						segment.AddLight(light, time - colorValue * SnapFadeTime / 1000 + SnapTime, 0x000000);
 					}
@@ -344,21 +343,26 @@ namespace Shelfinator.Creator.Songs
 			var endTimes = new List<int> { 58962, 59111, 59259, 59408 };
 			for (int i = 0; i < endTimes.Count; i++)
 				foreach (var light in bodyLayout.GetAllLights())
-					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x040102 : 0x080204);
+					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x080204 : 0x040102);
 
 			return segment;
 		}
 
-		Segment Squares()
+		Segment SineSquares()
 		{
-			const int NumSquares = 6;
+			const int NumSquares = 5;
 			const double MinRadius = 8.999;
 			const double MaxRadius = 48.001;
 			const double MaxVariance = 30;
 			const double EvenSize = (MaxRadius - MinRadius) / NumSquares;
 
 			var segment = new Segment();
-			var color = new LightColor(0, NumSquares - 1, Helpers.Rainbow6, Helpers.Rainbow6.Reverse().ToList());
+			var color = new LightColor(0, NumSquares - 1,
+				new List<int> { 0x080204, 0x080204, 0x080204, 0x080204, 0x080204 },
+				new List<int> { 0x080204, 0x000000, 0x080204, 0x000000, 0x080204 },
+				new List<int> { 0x100010, 0x000000, 0x001010, 0x000000, 0x100010 },
+				new List<int> { 0x100000, 0x000000, 0x001000, 0x000000, 0x000010 },
+				new List<int> { 0x100000, 0x101000, 0x001000, 0x000010, 0x090010 });
 			for (var angle = 0; angle < 360; ++angle)
 			{
 				segment.Clear(angle);
@@ -401,7 +405,6 @@ namespace Shelfinator.Creator.Songs
 		{
 			const int TotalTime = 600;
 			var segment = new Segment();
-			var center = new Point(48, 48);
 			var color = new LightColor(0, 1000, Helpers.Rainbow6);
 			var lines = new List<Tuple<Point, Size, int, int, bool>>
 			{
@@ -443,14 +446,15 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment MoveBoxes()
+		Segment MoveBoxes(out int time)
 		{
+			const int BoxDelay = 10;
 			var moves = new List<Tuple<int, int>> { Tuple.Create(8, 0), Tuple.Create(8, 2), Tuple.Create(8, 16), Tuple.Create(8, 14), Tuple.Create(10, 2), Tuple.Create(10, 4), Tuple.Create(10, 18), Tuple.Create(10, 16), Tuple.Create(12, 4), Tuple.Create(12, 6), Tuple.Create(12, 20), Tuple.Create(12, 18), Tuple.Create(22, 14), Tuple.Create(22, 16), Tuple.Create(22, 30), Tuple.Create(22, 28), Tuple.Create(24, 16), Tuple.Create(24, 18), Tuple.Create(24, 32), Tuple.Create(24, 30), Tuple.Create(26, 18), Tuple.Create(26, 20), Tuple.Create(26, 34), Tuple.Create(26, 32), Tuple.Create(36, 28), Tuple.Create(36, 30), Tuple.Create(36, 44), Tuple.Create(36, 42), Tuple.Create(38, 30), Tuple.Create(38, 32), Tuple.Create(38, 46), Tuple.Create(38, 44), Tuple.Create(40, 32), Tuple.Create(40, 34), Tuple.Create(40, 48), Tuple.Create(40, 46) };
 			var segment = new Segment();
-			var center = new Point(48, 48);
-			var distance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 16.9830463869911).Round());
-			var color = new LightColor(0, 1000, new List<IReadOnlyList<int>> { new List<int> { 0x000010, 0x001000, 0x000010, 0x001000 }, new List<int> { 0x100010, 0x001010, 0x100010, 0x001010 } });
-			for (var time = 0; time < 39; ++time)
+			var distance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - Helpers.Center).Length - 9) * 16.9830463869911).Round());
+			var color = new LightColor(0, 1000, new List<int> { 0x000010, 0x001000, 0x000010, 0x001000 }, new List<int> { 0x100010, 0x001010, 0x100010, 0x001010 });
+			time = 0;
+			for (var ctr = 0; ctr <= 38; ++ctr)
 			{
 				segment.Clear(time);
 				foreach (var move in moves)
@@ -458,20 +462,25 @@ namespace Shelfinator.Creator.Songs
 					var fromSquare = move.Item1;
 					var toSquare = move.Item2;
 
-					var useTime = time;
-					if (time >= 19)
+					var offset = 0;
+					if (ctr >= 19)
 					{
 						Helpers.Swap(ref fromSquare, ref toSquare);
-						useTime -= 19;
+						offset = 19;
 					}
 
 					var fromPoint = new Point(fromSquare % 7 * 19 - 18, fromSquare / 7 * 19 - 18);
 					var toPoint = new Point(toSquare % 7 * 19 - 18, toSquare / 7 * 19 - 18);
-					var diff = (toPoint - fromPoint) / 19;
-					var point = fromPoint + diff * useTime;
+					var point = fromPoint + (toPoint - fromPoint) / 19 * (ctr - offset);
 					foreach (var light in bodyLayout.GetPositionLights(point, 19, 19).Except(bodyLayout.GetPositionLights(point.X + 1, point.Y + 1, 17, 17)))
 						segment.AddLight(light, time, color, distance[light]);
 				}
+				if (ctr % 19 != 0)
+					++time;
+				else if (ctr != 19)
+					time += BoxDelay / 2;
+				else
+					time += BoxDelay;
 			}
 			return segment;
 		}
@@ -484,21 +493,24 @@ namespace Shelfinator.Creator.Songs
 			var intro = Intro();
 			song.AddSegment(intro, 0, 59556, 0);
 
-			// Squares (59556)
-			var squares = Squares();
-			song.AddSegment(squares, 0, 360, 59556, 4752, 4);
+			// SineSquares (59556)
+			var sineSquares = SineSquares();
+			song.AddSegment(sineSquares, 0, 360, 59556, 4752, 4);
 			song.AddPaletteChange(59556, 0);
-			song.AddPaletteChange(68560, 69560, 1);
+			song.AddPaletteChange(59556, 60744, 1);
+			song.AddPaletteChange(63808, 64808, 2);
+			song.AddPaletteChange(68560, 69560, 3);
+			song.AddPaletteChange(73312, 74312, 4);
 			song.AddPaletteChange(78564, 0);
 
 			// Wavy (78564)
 			var wavy = Wavy();
-			song.AddSegment(wavy, 0, 600, 78564, 16632);
-			song.AddSegment(wavy, 600, 600, song.MaxTime(), 2376);
+			song.AddSegment(wavy, 0, 600, 78564, 17820);
+			song.AddSegment(wavy, 600, 600, song.MaxTime(), 1188);
 
 			// MoveBoxes (97572)
-			var moveBoxes = MoveBoxes();
-			song.AddSegment(moveBoxes, 0, 39, 97572, 2376, 4);
+			var moveBoxes = MoveBoxes(out var moveBoxesTime);
+			song.AddSegment(moveBoxes, 0, moveBoxesTime, 97572, 2376, 4);
 			song.AddPaletteChange(97572, 0);
 			song.AddPaletteChange(101824, 102824, 1);
 			song.AddPaletteChange(107076, 0);

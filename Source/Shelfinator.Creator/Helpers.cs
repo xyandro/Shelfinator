@@ -9,8 +9,9 @@ namespace Shelfinator.Creator
 {
 	static class Helpers
 	{
-		static public IReadOnlyList<int> Rainbow6 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010 };
-		static public IReadOnlyList<int> Rainbow7 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x050008, 0x09000d };
+		readonly static public IReadOnlyList<int> Rainbow6 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010 };
+		readonly static public IReadOnlyList<int> Rainbow7 = new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x050008, 0x09000d };
+		readonly static public Point Center = new Point(48, 48);
 
 		static public Stream GetEmbeddedStream(string embeddedName) => typeof(Helpers).Assembly.GetManifestResourceStream(embeddedName);
 		static public BitmapSource GetEmbeddedBitmap(string embeddedName) => BitmapFrame.Create(GetEmbeddedStream(embeddedName));
