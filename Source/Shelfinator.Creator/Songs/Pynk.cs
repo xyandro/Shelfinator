@@ -443,6 +443,39 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment MoveBoxes()
+		{
+			var moves = new List<Tuple<int, int>> { Tuple.Create(8, 0), Tuple.Create(8, 2), Tuple.Create(8, 16), Tuple.Create(8, 14), Tuple.Create(10, 2), Tuple.Create(10, 4), Tuple.Create(10, 18), Tuple.Create(10, 16), Tuple.Create(12, 4), Tuple.Create(12, 6), Tuple.Create(12, 20), Tuple.Create(12, 18), Tuple.Create(22, 14), Tuple.Create(22, 16), Tuple.Create(22, 30), Tuple.Create(22, 28), Tuple.Create(24, 16), Tuple.Create(24, 18), Tuple.Create(24, 32), Tuple.Create(24, 30), Tuple.Create(26, 18), Tuple.Create(26, 20), Tuple.Create(26, 34), Tuple.Create(26, 32), Tuple.Create(36, 28), Tuple.Create(36, 30), Tuple.Create(36, 44), Tuple.Create(36, 42), Tuple.Create(38, 30), Tuple.Create(38, 32), Tuple.Create(38, 46), Tuple.Create(38, 44), Tuple.Create(40, 32), Tuple.Create(40, 34), Tuple.Create(40, 48), Tuple.Create(40, 46) };
+			var segment = new Segment();
+			var center = new Point(48, 48);
+			var distance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 16.9830463869911).Round());
+			var color = new LightColor(0, 1000, new List<IReadOnlyList<int>> { new List<int> { 0x000010, 0x001000, 0x000010, 0x001000 }, new List<int> { 0x100010, 0x001010, 0x100010, 0x001010 } });
+			for (var time = 0; time < 39; ++time)
+			{
+				segment.Clear(time);
+				foreach (var move in moves)
+				{
+					var fromSquare = move.Item1;
+					var toSquare = move.Item2;
+
+					var useTime = time;
+					if (time >= 19)
+					{
+						Helpers.Swap(ref fromSquare, ref toSquare);
+						useTime -= 19;
+					}
+
+					var fromPoint = new Point(fromSquare % 7 * 19 - 18, fromSquare / 7 * 19 - 18);
+					var toPoint = new Point(toSquare % 7 * 19 - 18, toSquare / 7 * 19 - 18);
+					var diff = (toPoint - fromPoint) / 19;
+					var point = fromPoint + diff * useTime;
+					foreach (var light in bodyLayout.GetPositionLights(point, 19, 19).Except(bodyLayout.GetPositionLights(point.X + 1, point.Y + 1, 17, 17)))
+						segment.AddLight(light, time, color, distance[light]);
+				}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -463,7 +496,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(wavy, 0, 600, 78564, 16632);
 			song.AddSegment(wavy, 600, 600, song.MaxTime(), 2376);
 
-			// Next (97572)
+			// MoveBoxes (97572)
+			var moveBoxes = MoveBoxes();
+			song.AddSegment(moveBoxes, 0, 39, 97572, 2376, 4);
+			song.AddPaletteChange(97572, 0);
+			song.AddPaletteChange(101824, 102824, 1);
+			song.AddPaletteChange(107076, 0);
+
+			// Next (107076)
 
 			return song;
 		}

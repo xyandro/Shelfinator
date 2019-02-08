@@ -121,5 +121,12 @@ namespace Shelfinator.Creator
 
 		public static string PatternDirectory { get; } = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Helpers).Assembly.Location))))), "Patterns");
 		public static string AudioDirectory { get; } = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(typeof(Helpers).Assembly.Location)))), "Audio");
+
+		public static void Swap<T>(ref T item1, ref T item2)
+		{
+			var tmp = item1;
+			item1 = item2;
+			item2 = tmp;
+		}
 	}
 }
