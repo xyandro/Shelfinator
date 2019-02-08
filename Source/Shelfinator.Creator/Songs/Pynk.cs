@@ -524,6 +524,63 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		enum SlideSquaresDirection { Up, Right, Down, Left, Fill, None }
+		Segment SlideSquares(out int time)
+		{
+			var dist = new Dictionary<int, List<Tuple<Vector, int>>>();
+			for (var square = 0; square < 25; ++square)
+			{
+				dist[square] = new List<Tuple<Vector, int>>();
+				var squarePoint = new Point(square % 5 * 19 + 1, square / 5 * 19 + 1);
+				foreach (var light in bodyLayout.GetPositionLights(squarePoint, 19, 19))
+				{
+					var lightPoint = bodyLayout.GetLightPosition(light);
+					dist[square].Add(Tuple.Create(lightPoint - squarePoint, (((lightPoint - Helpers.Center).Length - 9) * 16.9830463869911).Round()));
+				}
+			}
+			var color = new LightColor(0, 1000, Helpers.Rainbow6);
+			var squares = new int?[5, 5] { { 10, 15, 20, 21, 22 }, { 16, 17, 12, 13, 23 }, { 5, 6, null, 8, 18 }, { 0, 11, 2, 7, 19 }, { 1, 3, 4, 9, 14 } };
+			var moves = new List<SlideSquaresDirection> { SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.None, SlideSquaresDirection.Fill, SlideSquaresDirection.None, SlideSquaresDirection.None };
+			time = 0;
+			var segment = new Segment();
+			var moveDict = new Dictionary<SlideSquaresDirection, Vector>
+			{
+				[SlideSquaresDirection.Up] = new Vector(0, -1),
+				[SlideSquaresDirection.Down] = new Vector(0, 1),
+				[SlideSquaresDirection.Left] = new Vector(-1, 0),
+				[SlideSquaresDirection.Right] = new Vector(1, 0),
+			};
+			foreach (var move in moves)
+			{
+				segment.Clear(time);
+				var empty = default(Point);
+				for (var y = 0; y < 5; ++y)
+					for (var x = 0; x < 5; ++x)
+					{
+						var point = new Point(x * 19 + 1, y * 19 + 1);
+						if (squares[x, y].HasValue)
+						{
+							foreach (var pair in dist[squares[x, y].Value])
+								segment.AddLight(bodyLayout.GetPositionLight(point + pair.Item1), time, color, pair.Item2);
+						}
+						else
+							empty = new Point(x, y);
+					}
+
+				if (moveDict.ContainsKey(move))
+				{
+					var dest = empty + moveDict[move];
+					squares[empty.X.Round(), empty.Y.Round()] = squares[dest.X.Round(), dest.Y.Round()];
+					squares[dest.X.Round(), dest.Y.Round()] = null;
+				}
+				else if (move == SlideSquaresDirection.Fill)
+					squares[empty.X.Round(), empty.Y.Round()] = empty.Y.Round() * 5 + empty.X.Round();
+
+				++time;
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -561,7 +618,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(116080, 117080, 1);
 			song.AddPaletteChange(126084, 0);
 
-			// Next (126084)
+			// SlideSquares (126084)
+			var slideSquares = SlideSquares(out var slideSquaresTime);
+			song.AddSegment(slideSquares, 0, slideSquaresTime, 126084, 19008);
+
+			// Next (145092)
 
 			return song;
 		}
