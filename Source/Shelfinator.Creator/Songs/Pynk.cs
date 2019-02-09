@@ -648,6 +648,39 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Circles()
+		{
+			const double TravelRadius = 10;
+			const double CircleRadius1 = 97d / 2 - TravelRadius;
+			const double CircleRadius2 = 30;
+			const double Factor2 = 1.5;
+			const double CircleRadius3 = CircleRadius2 - (CircleRadius1 - CircleRadius2);
+			const double Factor3 = 3;
+
+			var segment = new Segment();
+			var centerAdjust = new Vector(48, 48);
+			for (var angle = 0; angle < 720; angle += 2)
+			{
+				var useAngle = angle * Math.PI / 180;
+				var center1 = new Point(TravelRadius * Math.Cos(useAngle), TravelRadius * Math.Sin(useAngle));
+				var center2 = center1 + new Vector((CircleRadius1 - CircleRadius2) * Math.Cos(useAngle * Factor2), (CircleRadius1 - CircleRadius2) * Math.Sin(useAngle * Factor2));
+				var center3 = center2 + new Vector((CircleRadius2 - CircleRadius3) * Math.Cos(useAngle * Factor3), (CircleRadius2 - CircleRadius3) * Math.Sin(useAngle * Factor3));
+
+				segment.Clear(angle);
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var lightLocation = bodyLayout.GetLightPosition(light);
+					if ((lightLocation - center3 - centerAdjust).LengthSquared <= CircleRadius3 * CircleRadius3)
+						segment.AddLight(light, angle, 0x000010);
+					else if ((lightLocation - center2 - centerAdjust).LengthSquared <= CircleRadius2 * CircleRadius2)
+						segment.AddLight(light, angle, 0x001000);
+					else if ((lightLocation - center1 - centerAdjust).LengthSquared <= CircleRadius1 * CircleRadius1)
+						segment.AddLight(light, angle, 0x100000);
+				}
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -702,7 +735,11 @@ namespace Shelfinator.Creator.Songs
 			var sineWaves = SineWaves();
 			song.AddSegment(sineWaves, 0, 360, 164100, 4752, 4);
 
-			// Next (183108)
+			// Circles (183108)
+			var circles = Circles();
+			song.AddSegment(circles, 0, 720, 183108, 4752, 4);
+
+			// Next (202116)
 
 			return song;
 		}
