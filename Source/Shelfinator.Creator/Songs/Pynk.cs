@@ -11,7 +11,6 @@ namespace Shelfinator.Creator.Songs
 		public int SongNumber => 8;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
-		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 
 		List<Func<Point, Point>> Rotations = new List<Func<Point, Point>>
 		{
@@ -507,8 +506,8 @@ namespace Shelfinator.Creator.Songs
 
 			time = 0;
 			var color = new LightColor(0, 1,
-				new List<int> { 0x100010, 0x001010 },
-				new List<int> { 0x100408, 0x000000 });
+				new List<int> { 0x101010, 0x100000 },
+				new List<int> { 0x100408, 0x091009 });
 			var segment = new Segment();
 			foreach (var path in paths)
 				for (var ctr = 0; ctr <= 19; ++ctr)
@@ -552,8 +551,8 @@ namespace Shelfinator.Creator.Songs
 					}
 			}
 			var color = new LightColor(0, 1000, Helpers.Rainbow6);
-			var positions = new List<Point> { new Point(58, 1), new Point(77, 1), new Point(58, 39), new Point(77, 20), new Point(77, 39), new Point(39, 1), new Point(39, 20), new Point(58, 58), new Point(39, 58), new Point(77, 58), new Point(1, 1), new Point(58, 20), new Point(20, 39), new Point(20, 58), new Point(77, 77), new Point(1, 20), new Point(20, 1), new Point(20, 20), new Point(39, 77), new Point(58, 77), new Point(1, 39), new Point(1, 58), new Point(1, 77), new Point(20, 77) };
-			var moves = new List<SlideSquaresDirection> { SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None };
+			var positions = new List<Point> { new Point(1, 20), new Point(20, 1), new Point(39, 1), new Point(77, 1), new Point(77, 20), new Point(1, 39), new Point(1, 1), new Point(39, 20), new Point(58, 1), new Point(77, 39), new Point(1, 58), new Point(20, 20), new Point(39, 58), new Point(58, 20), new Point(77, 58), new Point(1, 77), new Point(20, 39), new Point(39, 77), new Point(58, 39), new Point(77, 77), new Point(20, 77), new Point(20, 58), new Point(58, 77), new Point(58, 58) };
+			var moves = new List<SlideSquaresDirection> { SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Left, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Left, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None };
 
 			var time = 0;
 			var segment = new Segment();
@@ -598,7 +597,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment Window()
 		{
-			const double FakeSize = 30;
+			const double FakeSize = 25;
 			const int Step = 5;
 
 			var xDiff = new Vector(19, 0);
@@ -633,8 +632,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment SineWaves()
 		{
-			var bodyColor = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
-			var headerColor = new LightColor(0, 255, Enumerable.Repeat(Helpers.Rainbow6, 43).SelectMany(x => x).Take(256).ToList());
+			var color = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
 			var offsets = new List<double> { -90, -36.86989765, -11.53695903, 11.53695903, 36.86989765, 90 };
 			var segment = new Segment();
 			for (var angle = 0; angle < 360; angle += 2)
@@ -648,15 +646,8 @@ namespace Shelfinator.Creator.Songs
 					{
 						var newPoint = rotation(point);
 						foreach (var light in bodyLayout.GetPositionLights(newPoint.X + 47.5, newPoint.Y + 47.5, 2, 2))
-							segment.AddLight(light, angle, bodyColor, y);
+							segment.AddLight(light, angle, color, y);
 					}
-				}
-
-				for (var x = 0; x < 32; ++x)
-				{
-					var val = (3d * Math.Sin((x * 4d / 31d + angle * 8d / 180d) * Math.PI) + 3d).Round();
-					foreach (var light in headerLayout.GetPositionLights(x, val, 1, 2))
-						segment.AddLight(light, angle, headerColor, x);
 				}
 			}
 
@@ -728,7 +719,7 @@ namespace Shelfinator.Creator.Songs
 
 			var diff = new Vector(47.5, 47.5);
 			var segment = new Segment();
-			var color = new LightColor(0, path.Count - Length, new List<int> { 0x100408, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010, 0x100408 }, new List<int> { 0x000000 });
+			var color = new LightColor(0, path.Count - Length, new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010, 0x100000 }, new List<int> { 0x401020 });
 			time = 0;
 			while (true)
 			{
@@ -784,18 +775,18 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(116080, 117080, 1);
 			song.AddPaletteChange(126084, 0);
 
-			// SlideSquares (126084)
-			var slideSquares = SlideSquares(out var slideSquaresTime);
-			song.AddSegment(slideSquares, 0, slideSquaresTime, 126084, 19008);
-
-			// Window (145092)
+			// Window (126084)
 			var window = Window();
-			song.AddSegment(window, 0, 360, 145092, 2376, 8);
+			song.AddSegment(window, 0, 360, 126084, 2376, 8);
+			song.AddPaletteChange(126084, 0);
+			song.AddPaletteChange(130336, 131336, 1);
+			song.AddPaletteChange(135088, 136088, 2);
+			song.AddPaletteChange(139840, 140840, 3);
 			song.AddPaletteChange(145092, 0);
-			song.AddPaletteChange(149344, 150344, 1);
-			song.AddPaletteChange(154096, 155096, 2);
-			song.AddPaletteChange(158848, 159848, 3);
-			song.AddPaletteChange(164100, 0);
+
+			// SlideSquares (145092)
+			var slideSquares = SlideSquares(out var slideSquaresTime);
+			song.AddSegment(slideSquares, 0, slideSquaresTime, 145092, 19008);
 
 			// SineWaves (164100)
 			var sineWaves = SineWaves();
@@ -814,12 +805,14 @@ namespace Shelfinator.Creator.Songs
 
 			// SquarePath (223500)
 			var squarePath = SquarePath(out var squarePathTime);
-			song.AddSegment(squarePath, 0, squarePathTime, 223500, 2376, 6);
-			song.AddSegment(squarePath, squarePathTime - 1, squarePathTime - 1, song.MaxTime(), 2376);
+			song.AddSegment(squarePath, 0, squarePathTime, 223500, 4752, 3);
+			song.AddSegment(squarePath, 0, squarePathTime / 2, song.MaxTime(), 2376);
+			song.AddSegment(squarePath, squarePathTime / 2, squarePathTime / 2, song.MaxTime(), 2376);
 			song.AddPaletteChange(223500, 0);
-			song.AddPaletteChange(239132, 240132, 1);
+			song.AddPaletteChange(240132, 241320, 1);
+			song.AddPaletteChange(242508, 0);
 
-			// End (240132)
+			// End (242508)
 
 			return song;
 		}
