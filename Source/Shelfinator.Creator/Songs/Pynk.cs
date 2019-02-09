@@ -616,6 +616,38 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SineWaves()
+		{
+			var rotations = new List<Func<Point, Point>>
+			{
+				point => new Point(point.X, point.Y),
+				point => new Point(-point.Y, point.X),
+				point => new Point(-point.X, -point.Y),
+				point => new Point(point.Y, -point.X),
+			};
+
+			var color = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
+			var offsets = new List<double> { -90, -36.86989765, -11.53695903, 11.53695903, 36.86989765, 90 };
+			var segment = new Segment();
+			for (var angle = 0; angle < 360; angle += 2)
+			{
+				segment.Clear(angle);
+				for (var y = 0; y < 6; ++y)
+				{
+					var point = new Point(47.5 * Math.Sin((angle / 180 * 360 + angle % 180 + offsets[y]) * Math.PI / 180), -47.5 + y * 19);
+
+					foreach (var rotation in rotations)
+					{
+						var newPoint = rotation(point);
+						foreach (var light in bodyLayout.GetPositionLights(newPoint.X + 47.5, newPoint.Y + 47.5, 2, 2))
+							segment.AddLight(light, angle, color, y);
+					}
+				}
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -666,7 +698,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(158848, 159848, 3);
 			song.AddPaletteChange(164100, 0);
 
-			// Next (164100)
+			// SineWaves (164100)
+			var sineWaves = SineWaves();
+			song.AddSegment(sineWaves, 0, 360, 164100, 4752, 4);
+
+			// Next (183108)
 
 			return song;
 		}
