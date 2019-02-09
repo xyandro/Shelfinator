@@ -62,7 +62,7 @@ namespace Shelfinator.Creator.SongData
 			if ((newLight.StartTime == newLight.EndTime) && ((newLight.StartColorIndex != newLight.EndColorIndex) || (newLight.StartColorValue != newLight.EndColorValue)))
 				throw new ArgumentException("Must have time range to fade colors");
 
-			if (newLight.StartColorIndex != newLight.EndColorIndex)
+			if ((newLight.StartColorIndex != newLight.EndColorIndex) || (newLight.StartColorValue == newLight.EndColorValue))
 				newLight.Intermediates = false;
 
 			if ((newLight.StartColorIndex == newLight.EndColorIndex) && (newLight.StartColorValue == newLight.EndColorValue))

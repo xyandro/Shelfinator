@@ -690,6 +690,27 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment RingPulse()
+		{
+			var segment = new Segment();
+			var color1 = new LightColor(0, 2000, new List<int> { 0x000000, 0x100408, 0x000000, 0x100408, 0x000000, 0x100408, 0x000000, 0x100408, 0x000000 });
+			var color2 = new LightColor(0, 2000, new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 });
+			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
+			foreach (var light in bodyLayout.GetAllLights())
+			{
+				var distance = middleLights.Select(middleLight => (bodyLayout.GetLightPosition(light) - bodyLayout.GetLightPosition(middleLight)).LengthSquared).OrderBy(len => len).Select(len => (Math.Sqrt(len) * 37.216146378239344).Round()).First();
+
+				// The 250 added to all the numbers is for the snaps, which are on the 2nd and 4th beats
+				segment.AddLight(light, 0, color1, 250);
+				segment.AddLight(light, 250 + distance, 1250, color1, 0, color1, 1000 - distance, true);
+				segment.AddLight(light, 1250, 2250, color1, 1000 - distance, color1, 2000 - distance, true);
+				segment.AddLight(light, 2250, 2250 + distance, color1, 2000 - distance, color1, 2000, true);
+				segment.AddLight(light, 2250 + distance, 3250, color2, 0, color2, 1000 - distance, true);
+				segment.AddLight(light, 3250, 4250, color2, 1000 - distance, color2, 2000 - distance, true);
+			}
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -748,7 +769,14 @@ namespace Shelfinator.Creator.Songs
 			var circles = Circles();
 			song.AddSegment(circles, 0, 720, 183108, 4752, 4);
 
-			// Next (202116)
+			// RingPulse (202116)
+			var ringPulse = RingPulse();
+			song.AddSegment(ringPulse, 0, 1000, 202116, 2376);
+			song.AddSegment(ringPulse, 1000, 2000, song.MaxTime(), 2376, 4);
+			song.AddSegment(ringPulse, 2000, 3000, song.MaxTime(), 2376);
+			song.AddSegment(ringPulse, 3000, 4000, song.MaxTime(), 2376, 3);
+
+			// Next (223500)
 
 			return song;
 		}
