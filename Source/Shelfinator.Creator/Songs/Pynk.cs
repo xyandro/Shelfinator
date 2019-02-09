@@ -13,6 +13,15 @@ namespace Shelfinator.Creator.Songs
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 
+		List<Func<Point, Point>> Rotations = new List<Func<Point, Point>>
+		{
+			point => new Point(point.X, point.Y),
+			point => new Point(-point.Y, point.X),
+			point => new Point(-point.X, -point.Y),
+			point => new Point(point.Y, -point.X),
+		};
+
+
 		Segment Intro()
 		{
 			const int SnapTime = 198;
@@ -619,14 +628,6 @@ namespace Shelfinator.Creator.Songs
 
 		Segment SineWaves()
 		{
-			var rotations = new List<Func<Point, Point>>
-			{
-				point => new Point(point.X, point.Y),
-				point => new Point(-point.Y, point.X),
-				point => new Point(-point.X, -point.Y),
-				point => new Point(point.Y, -point.X),
-			};
-
 			var bodyColor = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
 			var headerColor = new LightColor(0, 255, Enumerable.Repeat(Helpers.Rainbow6, 43).SelectMany(x => x).Take(256).ToList());
 			var offsets = new List<double> { -90, -36.86989765, -11.53695903, 11.53695903, 36.86989765, 90 };
@@ -638,7 +639,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					var point = new Point(47.5 * Math.Sin((angle / 180 * 360 + angle % 180 + offsets[y]) * Math.PI / 180), -47.5 + y * 19);
 
-					foreach (var rotation in rotations)
+					foreach (var rotation in Rotations)
 					{
 						var newPoint = rotation(point);
 						foreach (var light in bodyLayout.GetPositionLights(newPoint.X + 47.5, newPoint.Y + 47.5, 2, 2))
@@ -711,6 +712,36 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment SquarePath(out int time)
+		{
+			const int Length = 18;
+			const string data =
+"0,0/1,0/2,0/3,0/4,0/5,0/6,0/7,0/8,0/9,0/10,0/11,0/12,0/13,0/14,0/15,0/16,0/17,0/18,0/19,0/19,1/19,2/19,3/19,4/19,5/19,6/19,7/19,8/19,9/19,10/19,11/19,12/19,13/19,14/19,15/19,16/19,17/19,18/19,19/20,19/21,19/22,19/23,19/24,19/25,19/26,19/27,19/28,19/29,19/30,19/31,19/32,19/33,19/34,19/35,19/36,19/37,19/38,19/38,20/38,21/38,22/38,23/38,24/38,25/38,26/38,27/38,28/38,29/38,30/38,31/38,32/38,33/38,34/38,35/38,36/38,37/38,38/39,38/40,38/41,38/42,38/43,38/44,38/45,38/46,38/47,38/48,38/49,38/50,38/51,38" +
+"/52,38/53,38/54,38/55,38/56,38/57,38/57,39/57,40/57,41/57,42/57,43/57,44/57,45/57,46/57,47/57,48/57,49/57,50/57,51/57,52/57,53/57,54/57,55/57,56/57,57/58,57/59,57/60,57/61,57/62,57/63,57/64,57/65,57/66,57/67,57/68,57/69,57/70,57/71,57/72,57/73,57/74,57/75,57/76,57/76,58/76,59/76,60/76,61/76,62/76,63/76,64/76,65/76,66/76,67/76,68/76,69/76,70/76,71/76,72/76,73/76,74/76,75/76,76/77,76/78,76/79,76/80,76/81,76/82,76/83,76/84,76/85,76/86,76/87,76/88,76/89,76/90,76/91,76/92,76/93,76/94,76/95,76/95,77/9" +
+"5,78/95,79/95,80/95,81/95,82/95,83/95,84/95,85/95,86/95,87/95,88/95,89/95,90/95,91/95,92/95,93/95,94/95,95";
+			var path = data.Split('/').Select(Point.Parse).ToList();
+
+			var diff = new Vector(47.5, 47.5);
+			var segment = new Segment();
+			var color = new LightColor(0, path.Count - Length, new List<int> { 0x100408, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010, 0x100408 }, new List<int> { 0x000000 });
+			time = 0;
+			while (true)
+			{
+				segment.Clear(time);
+				var end = time + Length;
+				if (end > path.Count)
+					break;
+				for (var ctr = time; ctr < end; ++ctr)
+					foreach (var point in new List<Point> { path[ctr], new Point(path[ctr].Y, path[ctr].X) })
+						foreach (var rotation in Rotations)
+							foreach (var light in bodyLayout.GetPositionLights(rotation(point - diff) + diff, 2, 2))
+								segment.AddLight(light, time, time + 1, color, time, color, time + 1, true);
+				++time;
+			}
+
+			return segment;
+		}
+
 		public Song Render()
 		{
 			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
@@ -776,7 +807,14 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(ringPulse, 2000, 3000, song.MaxTime(), 2376);
 			song.AddSegment(ringPulse, 3000, 4000, song.MaxTime(), 2376, 3);
 
-			// Next (223500)
+			// SquarePath (223500)
+			var squarePath = SquarePath(out var squarePathTime);
+			song.AddSegment(squarePath, 0, squarePathTime, 223500, 2376, 6);
+			song.AddSegment(squarePath, squarePathTime - 1, squarePathTime - 1, song.MaxTime(), 2376);
+			song.AddPaletteChange(223500, 0);
+			song.AddPaletteChange(239132, 240132, 1);
+
+			// End (240132)
 
 			return song;
 		}
