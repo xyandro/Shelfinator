@@ -11,6 +11,7 @@ namespace Shelfinator.Creator.Songs
 		public int SongNumber => 8;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
+		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 
 		Segment Intro()
 		{
@@ -626,7 +627,8 @@ namespace Shelfinator.Creator.Songs
 				point => new Point(point.Y, -point.X),
 			};
 
-			var color = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
+			var bodyColor = new LightColor(0, 5, new List<int> { 0x100000, 0x001000, 0x000010, 0x101000, 0x100010, 0x001010 });
+			var headerColor = new LightColor(0, 255, Enumerable.Repeat(Helpers.Rainbow6, 43).SelectMany(x => x).Take(256).ToList());
 			var offsets = new List<double> { -90, -36.86989765, -11.53695903, 11.53695903, 36.86989765, 90 };
 			var segment = new Segment();
 			for (var angle = 0; angle < 360; angle += 2)
@@ -640,8 +642,15 @@ namespace Shelfinator.Creator.Songs
 					{
 						var newPoint = rotation(point);
 						foreach (var light in bodyLayout.GetPositionLights(newPoint.X + 47.5, newPoint.Y + 47.5, 2, 2))
-							segment.AddLight(light, angle, color, y);
+							segment.AddLight(light, angle, bodyColor, y);
 					}
+				}
+
+				for (var x = 0; x < 32; ++x)
+				{
+					var val = (3d * Math.Sin((x * 4d / 31d + angle * 8d / 180d) * Math.PI) + 3d).Round();
+					foreach (var light in headerLayout.GetPositionLights(x, val, 1, 2))
+						segment.AddLight(light, angle, headerColor, x);
 				}
 			}
 
