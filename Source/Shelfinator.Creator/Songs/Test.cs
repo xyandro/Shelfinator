@@ -10,7 +10,7 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("test.mp3");
+			var song = new Song("test.ogg");
 			song.AddPaletteChange(0, 0);
 
 			var segment = new Segment();

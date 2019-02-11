@@ -740,79 +740,79 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("pynk.mp3"); // First sound is at 750; Measures start at 2532, repeat every 2376, and stop at 240132. Beats appear quantized to 2376/24 = 99
+			var song = new Song("pynk.ogg"); // First sound is at 1000; Measures start at 2782, repeat every 2376, and stop at 240382. Beats appear quantized to 2376/24 = 99
 
-			// Intro (750)
+			// Intro (1000)
 			var intro = Intro();
-			song.AddSegment(intro, 0, 58806, 750);
+			song.AddSegment(intro, 0, 58806, 1000);
 
-			// SineSquares (59556)
+			// SineSquares (59806)
 			var sineSquares = SineSquares();
-			song.AddSegment(sineSquares, 0, 360, 59556, 4752, 4);
-			song.AddPaletteChange(59556, 0);
-			song.AddPaletteChange(59556, 60744, 1);
-			song.AddPaletteChange(63808, 64808, 2);
-			song.AddPaletteChange(68560, 69560, 3);
-			song.AddPaletteChange(73312, 74312, 4);
-			song.AddPaletteChange(78564, 0);
+			song.AddSegment(sineSquares, 0, 360, 59806, 4752, 4);
+			song.AddPaletteChange(59806, 0);
+			song.AddPaletteChange(59806, 60994, 1);
+			song.AddPaletteChange(64058, 65058, 2);
+			song.AddPaletteChange(68810, 69810, 3);
+			song.AddPaletteChange(73562, 74562, 4);
+			song.AddPaletteChange(78814, 0);
 
-			// Wavy (78564)
+			// Wavy (78814)
 			var wavy = Wavy();
-			song.AddSegment(wavy, 0, 600, 78564, 17820);
+			song.AddSegment(wavy, 0, 600, 78814, 17820);
 			song.AddSegment(wavy, 600, 600, song.MaxTime(), 1188);
 
-			// MoveBoxes (97572)
+			// MoveBoxes (97822)
 			var moveBoxes = MoveBoxes(out var moveBoxesTime);
-			song.AddSegment(moveBoxes, 0, moveBoxesTime, 97572, 2376, 4);
-			song.AddPaletteChange(97572, 0);
-			song.AddPaletteChange(101824, 102824, 1);
-			song.AddPaletteChange(107076, 0);
+			song.AddSegment(moveBoxes, 0, moveBoxesTime, 97822, 2376, 4);
+			song.AddPaletteChange(97822, 0);
+			song.AddPaletteChange(102074, 103074, 1);
+			song.AddPaletteChange(107326, 0);
 
-			// RotateBoxes (107076)
+			// RotateBoxes (107326)
 			var rotateBoxes = RotateBoxes(out var rotateBoxesTime);
-			song.AddSegment(rotateBoxes, 0, rotateBoxesTime, 107076, 4752, 4);
-			song.AddPaletteChange(107076, 0);
-			song.AddPaletteChange(116080, 117080, 1);
-			song.AddPaletteChange(126084, 0);
+			song.AddSegment(rotateBoxes, 0, rotateBoxesTime, 107326, 4752, 4);
+			song.AddPaletteChange(107326, 0);
+			song.AddPaletteChange(116330, 117330, 1);
+			song.AddPaletteChange(126334, 0);
 
-			// Window (126084)
+			// Window (126334)
 			var window = Window();
-			song.AddSegment(window, 0, 360, 126084, 2376, 8);
-			song.AddPaletteChange(126084, 0);
-			song.AddPaletteChange(130336, 131336, 1);
-			song.AddPaletteChange(135088, 136088, 2);
-			song.AddPaletteChange(139840, 140840, 3);
-			song.AddPaletteChange(145092, 0);
+			song.AddSegment(window, 0, 360, 126334, 2376, 8);
+			song.AddPaletteChange(126334, 0);
+			song.AddPaletteChange(130586, 131586, 1);
+			song.AddPaletteChange(135338, 136338, 2);
+			song.AddPaletteChange(140090, 141090, 3);
+			song.AddPaletteChange(145342, 0);
 
-			// SlideSquares (145092)
+			// SlideSquares (145342)
 			var slideSquares = SlideSquares(out var slideSquaresTime);
-			song.AddSegment(slideSquares, 0, slideSquaresTime, 145092, 19008);
+			song.AddSegment(slideSquares, 0, slideSquaresTime, 145342, 19008);
 
-			// SineWaves (164100)
+			// SineWaves (164350)
 			var sineWaves = SineWaves();
-			song.AddSegment(sineWaves, 0, 360, 164100, 4752, 4);
+			song.AddSegment(sineWaves, 0, 360, 164350, 4752, 4);
 
-			// Circles (183108)
+			// Circles (183358)
 			var circles = Circles();
-			song.AddSegment(circles, 0, 720, 183108, 4752, 4);
+			song.AddSegment(circles, 0, 720, 183358, 4752, 4);
 
-			// RingPulse (202116)
+			// RingPulse (202366)
 			var ringPulse = RingPulse();
-			song.AddSegment(ringPulse, 0, 1000, 202116, 2376);
+			song.AddSegment(ringPulse, 0, 1000, 202366, 2376);
 			song.AddSegment(ringPulse, 1000, 2000, song.MaxTime(), 2376, 4);
 			song.AddSegment(ringPulse, 2000, 3000, song.MaxTime(), 2376);
 			song.AddSegment(ringPulse, 3000, 4000, song.MaxTime(), 2376, 3);
 
-			// SquarePath (223500)
+			// SquarePath (223750)
 			var squarePath = SquarePath(out var squarePathTime);
-			song.AddSegment(squarePath, 0, squarePathTime, 223500, 4752, 3);
+			song.AddSegment(squarePath, 0, squarePathTime, 223750, 4752, 3);
 			song.AddSegment(squarePath, 0, squarePathTime / 2, song.MaxTime(), 2376);
 			song.AddSegment(squarePath, squarePathTime / 2, squarePathTime / 2, song.MaxTime(), 2376);
-			song.AddPaletteChange(223500, 0);
-			song.AddPaletteChange(240132, 241320, 1);
-			song.AddPaletteChange(242508, 0);
+			song.AddPaletteChange(223750, 0);
+			song.AddPaletteChange(240382, 241570, 1);
+			song.AddPaletteChange(242758, 0);
 
-			// End (242508)
+			// End (242758)
 
 			return song;
 		}

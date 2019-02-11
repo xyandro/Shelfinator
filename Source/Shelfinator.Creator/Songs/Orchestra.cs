@@ -376,66 +376,66 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("orchestra.mp3"); // First sound is at 500; Measures start at 1720, repeat every 1890, and stop at 177490. Beats appear quantized to 1890/8 = 236.25
+			var song = new Song("orchestra.ogg"); // First sound is at 1000; Measures start at 2220, repeat every 1890, and stop at 177990. Beats appear quantized to 1890/8 = 236.25
 
-			// Lines (intro: 500; measures: 1720)
+			// Lines (intro: 1000; measures: 2220)
 			var lines = Lines();
-			song.AddSegment(lines, 259, 382, 500, 1220);
-			song.AddSegment(lines, 0, 382, 1720, 1890 * 2, 4);
-			song.AddPaletteChange(500, 0);
-			song.AddPaletteChange(500, 1720, 1);
-			song.AddPaletteChange(5000, 6000, 2);
-			song.AddPaletteChange(8780, 9780, 3);
-			song.AddPaletteChange(12560, 13560, 4);
-			song.AddPaletteChange(16840, 0);
+			song.AddSegment(lines, 259, 382, 1000, 1220);
+			song.AddSegment(lines, 0, 382, 2220, 1890 * 2, 4);
+			song.AddPaletteChange(1000, 0);
+			song.AddPaletteChange(1000, 2220, 1);
+			song.AddPaletteChange(5500, 6500, 2);
+			song.AddPaletteChange(9280, 10280, 3);
+			song.AddPaletteChange(13060, 14060, 4);
+			song.AddPaletteChange(17340, 0);
 
-			// BeatPattern (16840)
+			// BeatPattern (17340)
 			var beatPattern = BeatPattern(out int beatPatternTime);
-			song.AddSegment(beatPattern, 0, beatPatternTime, 16840);
+			song.AddSegment(beatPattern, 0, beatPatternTime, 17340);
 
-			// BeatCircles (45190)
+			// BeatCircles (45690)
 			var beatCircles = BeatCircles();
-			song.AddSegment(beatCircles, 0, 15120, 45190);
+			song.AddSegment(beatCircles, 0, 15120, 45690);
 
-			// Corners (60310)
+			// Corners (60810)
 			var corners = Corners();
-			song.AddSegment(corners, 0, 19, 60310, 1890, 12);
-			song.AddPaletteChange(60310, 0);
-			song.AddPaletteChange(63590, 64590, 1);
-			song.AddPaletteChange(67370, 68370, 2);
-			song.AddPaletteChange(71150, 72150, 3);
-			song.AddPaletteChange(74930, 75930, 4);
-			song.AddPaletteChange(78710, 79710, 5);
-			song.AddPaletteChange(82990, 0);
+			song.AddSegment(corners, 0, 19, 60810, 1890, 12);
+			song.AddPaletteChange(60810, 0);
+			song.AddPaletteChange(64090, 65090, 1);
+			song.AddPaletteChange(67870, 68870, 2);
+			song.AddPaletteChange(71650, 72650, 3);
+			song.AddPaletteChange(75430, 76430, 4);
+			song.AddPaletteChange(79210, 80210, 5);
+			song.AddPaletteChange(83490, 0);
 
-			// SquareCircles (82990)
+			// SquareCircles (83490)
 			var squareCircles = SquareCircles(out var squareCirclesTime);
-			song.AddSegment(squareCircles, 100, 400, 82990, 1890 * 3);
+			song.AddSegment(squareCircles, 100, 400, 83490, 1890 * 3);
 			song.AddSegment(squareCircles, 0, 400, song.MaxTime(), 1890 * 4, 2);
-			song.AddPaletteChange(82990, 0);
-			new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9450, 10159, 10868, 11340, 12049, 12758, 13230, 13939, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900 }.Skip(1).Select(x => x + 82990).ForEach((x, index) => song.AddPaletteChange(x - 100, x + 100, (index + 1) % 4));
-			song.AddPaletteChange(103780, 0);
+			song.AddPaletteChange(83490, 0);
+			new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9450, 10159, 10868, 11340, 12049, 12758, 13230, 13939, 14648, 15120, 15829, 16538, 17010, 17719, 18428, 18900 }.Skip(1).Select(x => x + 83490).ForEach((x, index) => song.AddPaletteChange(x - 100, x + 100, (index + 1) % 4));
+			song.AddPaletteChange(104280, 0);
 
-			// BeatGrow (103780)
+			// BeatGrow (104280)
 			var beatGrow = BeatGrow();
-			song.AddSegment(beatGrow, 0, 64, 103780, 15120);
+			song.AddSegment(beatGrow, 0, 64, 104280, 15120);
 
-			// Blinds (118900)
+			// Blinds (119400)
 			var blinds = Blinds();
-			song.AddSegment(blinds, 0, 1440, 118900, 1890 * 6, 2);
-			song.AddPaletteChange(118900, 0);
-			song.AddPaletteChange(125960, 126960, 1);
-			song.AddPaletteChange(133520, 134520, 2);
-			song.AddPaletteChange(141580, 0);
+			song.AddSegment(blinds, 0, 1440, 119400, 1890 * 6, 2);
+			song.AddPaletteChange(119400, 0);
+			song.AddPaletteChange(126460, 127460, 1);
+			song.AddPaletteChange(134020, 135020, 2);
+			song.AddPaletteChange(142080, 0);
 
-			// Spiral (141580)
-			AddSpiral(song, 141580);
+			// Spiral (142080)
+			AddSpiral(song, 142080);
 
-			// BeatSquares (162370)
+			// BeatSquares (162870)
 			var beatSquares = BeatSquares();
-			song.AddSegment(beatSquares, 0, 6400, 162370, 15120);
+			song.AddSegment(beatSquares, 0, 6400, 162870, 15120);
 
-			// End (177490)
+			// End (177990)
 
 			return song;
 		}

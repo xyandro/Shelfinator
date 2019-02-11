@@ -450,101 +450,101 @@ namespace Shelfinator.Creator.Songs
 
 		public Song Render()
 		{
-			var song = new Song("rainbow.mp3");
+			var song = new Song("rainbow.ogg");
 
 			// Squares
 			var squares = Squares();
-			song.AddSegment(squares, 0, squares.MaxTime(), 0, 24038);
-			song.AddPaletteChange(0, 0);
-			song.AddPaletteChange(10055, 10255, 1); // "colors are everything"
-			song.AddPaletteChange(11587, 12587, 2);
-			song.AddPaletteChange(15988, 16188, 3);
-			song.AddPaletteChange(19138, 21138, 4);
-			song.AddPaletteChange(21677, 22677, 5);
-			song.AddPaletteChange(24038, 0);
+			song.AddSegment(squares, 0, squares.MaxTime(), 1000, 24038);
+			song.AddPaletteChange(1000, 0);
+			song.AddPaletteChange(11055, 11255, 1); // "colors are everything"
+			song.AddPaletteChange(12587, 13587, 2);
+			song.AddPaletteChange(16988, 17188, 3);
+			song.AddPaletteChange(20138, 22138, 4);
+			song.AddPaletteChange(22677, 23677, 5);
+			song.AddPaletteChange(25038, 0);
 
-			// Traffic (24156)
+			// Traffic (25156)
 			var traffic = Traffic(out var trafficLength);
 			var displayTime = 3200;
 
-			song.AddSegment(traffic, 0, trafficLength * 2, 24156, displayTime * 2);
+			song.AddSegment(traffic, 0, trafficLength * 2, 25156, displayTime * 2);
 			song.AddSegment(traffic, trafficLength * 2, trafficLength * 3, song.MaxTime(), displayTime);
 			song.AddSegment(traffic, trafficLength * 3, traffic.MaxTime(), song.MaxTime(), displayTime * (traffic.MaxTime() - trafficLength * 3) / trafficLength);
 
-			song.AddPaletteChange(24156, 24656, 0);
-			song.AddPaletteChange(26101, 26601, 1);
-			song.AddPaletteChange(28059, 28559, 0);
-			song.AddPaletteChange(30084, 30584, 1);
-			song.AddPaletteChange(32107, 32607, 0);
-			song.AddPaletteChange(34083, 34583, 1);
-			song.AddPaletteChange(36091, 36591, 0);
-			song.AddPaletteChange(38196, 38696, 1);
-			song.AddPaletteChange(40800, 0);
+			song.AddPaletteChange(25156, 25656, 0);
+			song.AddPaletteChange(27101, 27601, 1);
+			song.AddPaletteChange(29059, 29559, 0);
+			song.AddPaletteChange(31084, 31584, 1);
+			song.AddPaletteChange(33107, 33607, 0);
+			song.AddPaletteChange(35083, 35583, 1);
+			song.AddPaletteChange(37091, 37591, 0);
+			song.AddPaletteChange(39196, 39696, 1);
+			song.AddPaletteChange(41800, 0);
 
-			// Grow (40800)
+			// Grow (41800)
 			var rainbowGrow = RainbowGrow();
-			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 40800, 1200);
+			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 41800, 1200);
 
-			// Rainbow, chorus (42000)
+			// Rainbow, chorus (43000)
 			var rainbowRotate = RainbowRotate();
-			song.AddSegment(rainbowRotate, 0, 360, 42000, 2000, 7);
+			song.AddSegment(rainbowRotate, 0, 360, 43000, 2000, 7);
 
-			// Shrink (56000)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 56000, 1200);
+			// Shrink (57000)
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 57000, 1200);
 
-			// Spiral 58074
+			// Spiral 59074
 			var spiral = Spiral();
-			song.AddSegment(spiral, 0, spiral.MaxTime(), 57874, 23994);
+			song.AddSegment(spiral, 0, spiral.MaxTime(), 58874, 23994);
 
-			// Flex (82068)
+			// Flex (83068)
 			var flex = Flex();
-			song.AddSegment(flex, 0, 1136, 82068, 16029);
+			song.AddSegment(flex, 0, 1136, 83068, 16029);
 
-			// Rainbow (98097)
-			song.AddSegment(rainbowRotate, 0, 360, 98097, 2000, 8);
+			// Rainbow (99097)
+			song.AddSegment(rainbowRotate, 0, 360, 99097, 2000, 8);
 			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
 
-			// Shrink (126097)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 128097, 1600);
+			// Shrink (127097)
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 129097, 1600);
 
-			// Sweep (130138-146138)
+			// Sweep (131138-147138)
 			var sweep = Sweep();
-			song.AddSegment(sweep, 0, 4320, 130138, 7000, 2); // 14 sweeps
+			song.AddSegment(sweep, 0, 4320, 131138, 7000, 2); // 14 sweeps
 			song.AddSegment(sweep, 0, 1234, song.MaxTime(), 2000); // 2 more sweeps
 
-			song.AddPaletteChange(130138, 0);
-			song.AddPaletteChange(137642, 138642, 1);
-			song.AddPaletteChange(141608, 142608, 2);
-			song.AddPaletteChange(146138, 0);
+			song.AddPaletteChange(131138, 0);
+			song.AddPaletteChange(138642, 139642, 1);
+			song.AddPaletteChange(142608, 143608, 2);
+			song.AddPaletteChange(147138, 0);
 
-			// Plasma (146138)
+			// Plasma (147138)
 			var plasma = Plasma(out var plasmaTime);
-			song.AddSegment(plasma, 0, plasmaTime, 146138, 4000, 4);
+			song.AddSegment(plasma, 0, plasmaTime, 147138, 4000, 4);
 
-			// Slow plasma (162138)
-			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 162138, 4000, plasmaTime, 0, 4000);
-			song.AddSegment(plasma, 0, 0, 166138, 738);
+			// Slow plasma (163138)
+			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 163138, 4000, plasmaTime, 0, 4000);
+			song.AddSegment(plasma, 0, 0, 167138, 738);
 
-			// Grow (166876)
-			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 166876, 1200);
+			// Grow (167876)
+			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 167876, 1200);
 
-			// Rainbow, chorus (168076)
-			song.AddSegment(rainbowRotate, 0, 360, 168076, 2000, 6);
+			// Rainbow, chorus (169076)
+			song.AddSegment(rainbowRotate, 0, 360, 169076, 2000, 6);
 			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
 
-			// Shrink (194076)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 194076, 1600);
+			// Shrink (195076)
+			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 195076, 1600);
 
-			// Spin (195895)
+			// Spin (196895)
 			var spin = Spin();
-			song.AddSegment(spin, 0, 1000, 195895, 1000);
+			song.AddSegment(spin, 0, 1000, 196895, 1000);
 			song.AddSegment(spin, 1000, 2000, song.MaxTime(), 1000, 16);
 			song.AddSegment(spin, 2000, 3000, song.MaxTime(), 1000);
 
-			song.AddPaletteChange(195895, 0);
-			song.AddPaletteChange(199550, 200550, 1);
-			song.AddPaletteChange(203627, 204627, 2);
-			song.AddPaletteChange(209578, 210578, 3);
+			song.AddPaletteChange(196895, 0);
+			song.AddPaletteChange(200550, 201550, 1);
+			song.AddPaletteChange(204627, 205627, 2);
+			song.AddPaletteChange(210578, 211578, 3);
 
 			return song;
 		}
