@@ -64,3 +64,5 @@ file 'silence1.wav'
 file 'pynk.wav'
 file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "pynk.ogg"
+
+ffmpeg.exe -y -f lavfi -i anullsrc -t 240 -ar 44100 "new.ogg"
