@@ -10,9 +10,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class ShutUpAndDance : ISong
+	class ShutUpAndDance : SongCreator
 	{
-		public int SongNumber => 4;
+		public override int SongNumber => 4;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
@@ -666,7 +666,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("shutupanddance.ogg");
 			song.AddPaletteChange(0, 0);

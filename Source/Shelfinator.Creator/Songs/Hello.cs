@@ -5,9 +5,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Hello : ISong
+	class Hello : SongCreator
 	{
-		public int SongNumber => 1;
+		public override int SongNumber => 1;
 
 		Segment GetHello()
 		{
@@ -71,7 +71,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("hello.ogg");
 			var hello = GetHello();

@@ -6,9 +6,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Hallelujah : ISong
+	class Hallelujah : SongCreator
 	{
-		public int SongNumber => 6;
+		public override int SongNumber => 6;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
@@ -500,7 +500,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			// First measure starts at 1400, measures are 2000 throughout the song until the end
 			var song = new Song("hallelujah.ogg");

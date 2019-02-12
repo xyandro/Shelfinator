@@ -27,7 +27,7 @@ namespace Shelfinator.Creator
 		{
 			base.OnStartup(e);
 
-			var songs = typeof(ISong).Assembly.DefinedTypes.Where(t => (!t.IsInterface) && (typeof(ISong).IsAssignableFrom(t))).Select(t => Activator.CreateInstance(t)).Cast<ISong>().ToList();
+			var songs = typeof(SongCreator).Assembly.DefinedTypes.Where(t => (!t.IsAbstract) && (typeof(SongCreator).IsAssignableFrom(t))).Select(t => Activator.CreateInstance(t)).Cast<SongCreator>().ToList();
 
 			var dups = string.Join("\n", songs.GroupBy(p => p.SongNumber).Where(group => group.Skip(1).Any()).Select(group => $"{group.Key}: {string.Join(", ", group.Select(p => p.GetType().Name))}"));
 			if (dups != "")
@@ -43,7 +43,7 @@ namespace Shelfinator.Creator
 
 			if (build)
 			{
-				var match = songs.Where(p => (all) || (songNumbers.Contains(p.SongNumber)));
+				var match = songs.Where(p => ((all) && (!p.Test)) || (songNumbers.Contains(p.SongNumber))).ToList();
 				if (!match.Any())
 					throw new Exception($"Song(s) not found");
 

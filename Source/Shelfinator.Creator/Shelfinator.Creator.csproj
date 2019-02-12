@@ -87,7 +87,6 @@
     <Compile Include="Songs\Bohemian.cs" />
     <Compile Include="Songs\Hallelujah.cs" />
     <Compile Include="Songs\Hello.cs" />
-    <Compile Include="Songs\ISong.cs" />
     <EmbeddedResource Include="Songs\Layout\Clouds.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar.png" />
@@ -110,6 +109,7 @@
     <Compile Include="Songs\Pynk.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
+    <Compile Include="Songs\SongCreator.cs" />
     <Compile Include="Songs\SongHelper.cs" />
     <Compile Include="Songs\Test.cs" />
   </ItemGroup>

@@ -7,9 +7,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Bohemian : ISong
+	class Bohemian : SongCreator
 	{
-		public int SongNumber => 3;
+		public override int SongNumber => 3;
 
 		readonly Layout headerLayout, bodyLayout, squaresLayout;
 
@@ -849,7 +849,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("bohemian.ogg");
 

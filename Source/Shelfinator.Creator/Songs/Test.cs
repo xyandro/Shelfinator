@@ -2,13 +2,13 @@
 
 namespace Shelfinator.Creator.Songs
 {
-	class Test : ISong
+	class Test : SongCreator
 	{
-		public int SongNumber => 0;
+		public override int SongNumber => 0;
 
 		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("test.ogg");
 			song.AddPaletteChange(0, 0);

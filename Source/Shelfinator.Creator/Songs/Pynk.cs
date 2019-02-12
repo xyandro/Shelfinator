@@ -6,9 +6,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Pynk : ISong
+	class Pynk : SongCreator
 	{
-		public int SongNumber => 8;
+		public override int SongNumber => 8;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
@@ -738,7 +738,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("pynk.ogg"); // First sound is at 1000; Measures start at 2782, repeat every 2376, and stop at 240382. Beats appear quantized to 2376/24 = 99
 

@@ -6,9 +6,9 @@ using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
 {
-	class Orchestra : ISong
+	class Orchestra : SongCreator
 	{
-		public int SongNumber => 7;
+		public override int SongNumber => 7;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 		readonly Layout squaresLayout = new Layout("Shelfinator.Creator.Songs.Layout.Squares.png");
@@ -374,7 +374,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		public Song Render()
+		public override Song Render()
 		{
 			var song = new Song("orchestra.ogg"); // First sound is at 1000; Measures start at 2220, repeat every 1890, and stop at 177990. Beats appear quantized to 1890/8 = 236.25
 
