@@ -68,6 +68,33 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Shift(out int time)
+		{
+			time = 0;
+			var segment = new Segment();
+			for (var ctr = 0; ctr < 34; ++ctr)
+			//for (var angle = 0; angle < 360; angle += 5)
+			{
+				segment.Clear(time);
+				var shift = 17 - Math.Abs(17 - ctr);
+				//var shift = Math.Max(0, Math.Min((21d * (0.5d - Math.Cos(angle / 180d * Math.PI) / 2d) - 2).Round(), 17));
+				for (var y = 0; y < 4; ++y)
+					for (var x = 0; x < 4; ++x)
+					{
+						foreach (var light in bodyLayout.GetPositionLights(x * 38 - shift, y * 38, 19, 2))
+							segment.AddLight(light, time, 0x101010);
+						foreach (var light in bodyLayout.GetPositionLights(x * 38 + 2 + shift, y * 38 + 19, 19, 2))
+							segment.AddLight(light, time, 0x101010);
+						foreach (var light in bodyLayout.GetPositionLights(x * 38 + 19, y * 38 - shift, 2, 19))
+							segment.AddLight(light, time, 0x101010);
+						foreach (var light in bodyLayout.GetPositionLights(x * 38, y * 38 + 2 + shift, 2, 19))
+							segment.AddLight(light, time, 0x101010);
+					}
+				++time;
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("new.ogg");
@@ -76,9 +103,13 @@ namespace Shelfinator.Creator.Songs
 			//var timeWarp = TimeWarp(out var timeWarpTime);
 			//song.AddSegment(timeWarp, 0, timeWarpTime, 0, 10000);
 
-			// Wipe (0)
-			var wipe = Wipe(out var wipeTime);
-			song.AddSegment(wipe, 0, wipeTime, 0, wipeTime);
+			//// Wipe (0)
+			//var wipe = Wipe(out var wipeTime);
+			//song.AddSegment(wipe, 0, wipeTime, 0, wipeTime);
+
+			// Shift (0)
+			var shift = Shift(out var shiftTime);
+			song.AddSegment(shift, 0, shiftTime, 0, 1000, 10);
 
 			return song;
 		}
