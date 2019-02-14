@@ -533,7 +533,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		enum SlideSquaresDirection { Up, Right, Down, Left, None }
+		enum SlideSquaresDirection { Up, Right, Down, Left }
 		Segment SlideSquares(out int outTime)
 		{
 			const int Delay = 10;
@@ -551,8 +551,8 @@ namespace Shelfinator.Creator.Songs
 					}
 			}
 			var color = new LightColor(0, 1000, Helpers.Rainbow6);
-			var positions = new List<Point> { new Point(1, 20), new Point(20, 1), new Point(39, 1), new Point(77, 1), new Point(77, 20), new Point(1, 39), new Point(1, 1), new Point(39, 20), new Point(58, 1), new Point(77, 39), new Point(1, 58), new Point(20, 20), new Point(39, 58), new Point(58, 20), new Point(77, 58), new Point(1, 77), new Point(20, 39), new Point(39, 77), new Point(58, 39), new Point(77, 77), new Point(20, 77), new Point(20, 58), new Point(58, 77), new Point(58, 58) };
-			var moves = new List<SlideSquaresDirection> { SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Right, SlideSquaresDirection.Right, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Left, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Left, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Down, SlideSquaresDirection.Left, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.Up, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None, SlideSquaresDirection.None };
+			var positions = new List<Point> { new Point(39, 1), new Point(58, 39), new Point(77, 1), new Point(77, 20), new Point(58, 58), new Point(39, 20), new Point(20, 1), new Point(20, 20), new Point(58, 1), new Point(77, 58), new Point(1, 1), new Point(58, 20), new Point(58, 77), new Point(77, 39), new Point(39, 77), new Point(20, 39), new Point(1, 20), new Point(1, 77), new Point(39, 58), new Point(77, 77), new Point(1, 39), new Point(1, 58), new Point(20, 58), new Point(20, 77) };
+			var moves = new List<Tuple<SlideSquaresDirection, int>> { Tuple.Create(SlideSquaresDirection.Up, 1), Tuple.Create(SlideSquaresDirection.Right, 1), Tuple.Create(SlideSquaresDirection.Down, 2), Tuple.Create(SlideSquaresDirection.Left, 2), Tuple.Create(SlideSquaresDirection.Up, 3), Tuple.Create(SlideSquaresDirection.Right, 3), Tuple.Create(SlideSquaresDirection.Down, 4), Tuple.Create(SlideSquaresDirection.Left, 4), Tuple.Create(SlideSquaresDirection.Up, 4), Tuple.Create(SlideSquaresDirection.Right, 4), Tuple.Create(SlideSquaresDirection.Down, 1), Tuple.Create(SlideSquaresDirection.Left, 4), Tuple.Create(SlideSquaresDirection.Down, 1), Tuple.Create(SlideSquaresDirection.Right, 4), Tuple.Create(SlideSquaresDirection.Down, 1), Tuple.Create(SlideSquaresDirection.Left, 4), Tuple.Create(SlideSquaresDirection.Down, 1), Tuple.Create(SlideSquaresDirection.Right, 4), Tuple.Create(SlideSquaresDirection.Up, 4), Tuple.Create(SlideSquaresDirection.Left, 1), Tuple.Create(SlideSquaresDirection.Down, 4), Tuple.Create(SlideSquaresDirection.Left, 1), Tuple.Create(SlideSquaresDirection.Up, 4), Tuple.Create(SlideSquaresDirection.Left, 1), Tuple.Create(SlideSquaresDirection.Down, 4), Tuple.Create(SlideSquaresDirection.Left, 1), Tuple.Create(SlideSquaresDirection.Up, 4), Tuple.Create(SlideSquaresDirection.Right, 4), Tuple.Create(SlideSquaresDirection.Down, 4), Tuple.Create(SlideSquaresDirection.Left, 4), Tuple.Create(SlideSquaresDirection.Up, 4), Tuple.Create(SlideSquaresDirection.Left, 0) };
 
 			var time = 0;
 			var segment = new Segment();
@@ -574,7 +574,7 @@ namespace Shelfinator.Creator.Songs
 				time += Delay;
 
 				var direction = new Vector(0, 0);
-				switch (move)
+				switch (move.Item1)
 				{
 					case SlideSquaresDirection.Up: direction = new Vector(0, -1); break;
 					case SlideSquaresDirection.Down: direction = new Vector(0, 1); break;
@@ -582,11 +582,17 @@ namespace Shelfinator.Creator.Songs
 					case SlideSquaresDirection.Right: direction = new Vector(1, 0); break;
 				}
 
-				empty -= direction * 19;
-				var square = positions.Select((point, index) => new { point, index }).OrderBy(obj => (obj.point - empty).LengthSquared).Select(obj => obj.index).First();
+				var squares = new List<int>();
+				for (var ctr = 0; ctr < move.Item2; ++ctr)
+				{
+					empty -= direction * 19;
+					var square = positions.Select((point, index) => new { point, index }).OrderBy(obj => (obj.point - empty).LengthSquared).Select(obj => obj.index).First();
+					squares.Add(square);
+				}
 				for (var ctr = 0; ctr < 19; ++ctr)
 				{
-					positions[square] += direction;
+					foreach (var square in squares)
+						positions[square] += direction;
 					drawBoard();
 					++time;
 				}
