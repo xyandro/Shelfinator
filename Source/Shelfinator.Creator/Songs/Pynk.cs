@@ -236,7 +236,7 @@ namespace Shelfinator.Creator.Songs
 
 			foreach (var light in middleLights)
 			{
-				segment.AddLight(light, 16038, 20790, 0x040102, 0x401020);
+				segment.AddLight(light, 16038, 20790, 0x040203, 0x402633);
 				segment.AddLight(light, 20790, 0x000000);
 			}
 
@@ -343,7 +343,7 @@ namespace Shelfinator.Creator.Songs
 
 					if (show)
 					{
-						segment.AddLight(light, note.StartTime, note.StartTime + 198, 0x100408, 0x040102);
+						segment.AddLight(light, note.StartTime, note.StartTime + 198, 0x100a0d, 0x040203);
 						segment.AddLight(light, note.EndTime, 0x000000);
 					}
 				}
@@ -352,7 +352,7 @@ namespace Shelfinator.Creator.Songs
 			var endTimes = new List<int> { 58212, 58361, 58509, 58658 };
 			for (int i = 0; i < endTimes.Count; i++)
 				foreach (var light in bodyLayout.GetAllLights())
-					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x080204 : 0x040102);
+					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x080506 : 0x040203);
 
 			return segment;
 		}
@@ -367,8 +367,8 @@ namespace Shelfinator.Creator.Songs
 
 			var segment = new Segment();
 			var color = new LightColor(0, NumSquares - 1,
-				new List<int> { 0x080204, 0x080204, 0x080204, 0x080204, 0x080204 },
-				new List<int> { 0x080204, 0x000000, 0x080204, 0x000000, 0x080204 },
+				new List<int> { 0x080506, 0x080506, 0x080506, 0x080506, 0x080506 },
+				new List<int> { 0x080506, 0x000000, 0x080506, 0x000000, 0x080506 },
 				new List<int> { 0x100010, 0x000000, 0x001010, 0x000000, 0x100010 },
 				new List<int> { 0x100000, 0x000000, 0x001000, 0x000000, 0x000010 },
 				new List<int> { 0x100000, 0x101000, 0x001000, 0x000010, 0x090010 });
@@ -507,7 +507,7 @@ namespace Shelfinator.Creator.Songs
 			time = 0;
 			var color = new LightColor(0, 1,
 				new List<int> { 0x101010, 0x100000 },
-				new List<int> { 0x100408, 0x091009 });
+				new List<int> { 0x100a0d, 0x091009 });
 			var segment = new Segment();
 			foreach (var path in paths)
 				for (var ctr = 0; ctr <= 19; ++ctr)
@@ -696,7 +696,7 @@ namespace Shelfinator.Creator.Songs
 		Segment RingPulse()
 		{
 			var segment = new Segment();
-			var color1 = new LightColor(0, 2000, new List<int> { 0x000000, 0x100408, 0x000000, 0x100408, 0x000000, 0x100408, 0x000000, 0x100408, 0x000000 });
+			var color1 = new LightColor(0, 2000, new List<int> { 0x000000, 0x100a0d, 0x000000, 0x100a0d, 0x000000, 0x100a0d, 0x000000, 0x100a0d, 0x000000 });
 			var color2 = new LightColor(0, 2000, new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 });
 			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
 			foreach (var light in bodyLayout.GetAllLights())
@@ -725,7 +725,7 @@ namespace Shelfinator.Creator.Songs
 
 			var diff = new Vector(47.5, 47.5);
 			var segment = new Segment();
-			var color = new LightColor(0, path.Count - Length, new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010, 0x100000 }, new List<int> { 0x401020 });
+			var color = new LightColor(0, path.Count - Length, new List<int> { 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x090010, 0x100000 }, new List<int> { 0x402633 });
 			time = 0;
 			while (true)
 			{
