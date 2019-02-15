@@ -95,6 +95,33 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment CircleDot()
+		{
+			const int Segments = 4;
+			const double MinDistance = 9;
+			const double MaxDistance = 48;
+			const double Width = 5;
+			var segment = new Segment();
+			for (var angle = 0; angle < 360; angle += 5)
+			{
+				//var minDistance = (1d - Math.Cos(angle / 180d * Math.PI)) / 2d * (MaxDistance - Width - MinDistance) + MinDistance;
+				var minDistance = MaxDistance-Width;
+				segment.Clear(angle);
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var p = bodyLayout.GetLightPosition(light);
+					var distance = (p - Helpers.Center).Length.Round();
+					if ((distance < minDistance) || (distance > minDistance + Width))
+						continue;
+					var pAngle = Helpers.GetAngle(p, Helpers.Center) + 360d - angle / Segments;
+					if (pAngle * Segments / 360d % 1d > 0.5)
+						continue;
+					segment.AddLight(light, angle, 0x101010);
+				}
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("new.ogg");
@@ -107,9 +134,13 @@ namespace Shelfinator.Creator.Songs
 			//var wipe = Wipe(out var wipeTime);
 			//song.AddSegment(wipe, 0, wipeTime, 0, wipeTime);
 
-			// Shift (0)
-			var shift = Shift(out var shiftTime);
-			song.AddSegment(shift, 0, shiftTime, 0, 1000, 10);
+			//// Shift (0)
+			//var shift = Shift(out var shiftTime);
+			//song.AddSegment(shift, 0, shiftTime, 0, 1000, 10);
+
+			// CircleDot (0)
+			var circleDot = CircleDot();
+			song.AddSegment(circleDot, 0, 360, 0, 1000, 10);
 
 			return song;
 		}
