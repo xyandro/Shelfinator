@@ -18,6 +18,8 @@ namespace Shelfinator
 			void Stop();
 			int GetTime();
 			void SetTime(int time);
+			int GetVolume();
+			void SetVolume(int volume);
 			bool Playing();
 			bool Finished();
 		private:
@@ -27,11 +29,13 @@ namespace Shelfinator
 			enum { IsStopped, IsPlaying, IsStopping } playing = IsStopped;
 			std::mutex mutex;
 			std::condition_variable condVar;
-			int startTime = 0, currentTime = 0, dataOffset = 0;
+			int startTime = 0, currentTime = 0, dataOffset = 0, volume;
 			FILE *file;
 
+			Audio();
 			void ValidateHeader();
 			void PlayWAVThread();
+			void AdjustVolume(short *data, int size);
 		};
 	}
 }

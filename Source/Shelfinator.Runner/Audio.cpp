@@ -8,9 +8,16 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
+		const int VolumeStep = 5;
+
 		Audio::ptr Audio::Create()
 		{
 			return ptr(new Audio());
+		}
+
+		Audio::Audio()
+		{
+			volume = VolumeStep;
 		}
 
 		void Audio::Open(std::string fileName)
@@ -174,6 +181,7 @@ namespace Shelfinator
 					readCount += (int)block;
 				}
 
+				AdjustVolume(buffer, readCount / 2);
 				readCount /= frameSize;
 
 				if (readCount == 0)
@@ -208,6 +216,22 @@ namespace Shelfinator
 			condVar.notify_all();
 		}
 
+		void Audio::AdjustVolume(short *data, int size)
+		{
+			if (volume == VolumeStep)
+				return;
+
+			for (auto ctr = 0; ctr < size; ++ctr)
+			{
+				auto value = data[ctr] * volume / VolumeStep;
+				if (value < -32768)
+					value = -32768;
+				if (value > 32767)
+					value = 32767;
+				data[ctr] = (short)value;
+			}
+		}
+
 		void Audio::Stop()
 		{
 			std::unique_lock<std::mutex> lock(mutex);
@@ -233,6 +257,18 @@ namespace Shelfinator
 			startTime = currentTime = std::max(0, time - time % 10);
 			if (playing)
 				Play();
+		}
+
+		int Audio::GetVolume()
+		{
+			return volume;
+		}
+
+		void Audio::SetVolume(int volume)
+		{
+			if (volume < 0)
+				volume = 0;
+			this->volume = volume;
 		}
 
 		bool Audio::Playing()

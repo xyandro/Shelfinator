@@ -19,6 +19,8 @@ namespace Shelfinator
 			void Stop();
 			int GetTime();
 			void SetTime(int time);
+			int GetVolume();
+			void SetVolume(int volume);
 			bool Playing();
 			bool Finished();
 		private:

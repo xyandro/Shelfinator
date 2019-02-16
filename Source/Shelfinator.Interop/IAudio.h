@@ -10,8 +10,8 @@ namespace Shelfinator
 			void Close();
 			void Play();
 			void Stop();
-			int GetTime();
-			void SetTime(int time);
+			property int Time;
+			property int Volume;
 			bool Playing();
 			bool Finished();
 		};

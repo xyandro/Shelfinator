@@ -36,12 +36,22 @@ namespace Shelfinator
 
 		int Audio::GetTime()
 		{
-			return audio->GetTime();
+			return audio->Time;
 		}
 
 		void Audio::SetTime(int time)
 		{
-			return audio->SetTime(time);
+			return audio->Time = time;
+		}
+
+		int Audio::GetVolume()
+		{
+			return audio->Volume;
+		}
+
+		void Audio::SetVolume(int volume)
+		{
+			return audio->Volume = volume;
 		}
 
 		bool Audio::Playing()

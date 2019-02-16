@@ -115,6 +115,8 @@ namespace Shelfinator
 						banner = Banner::Create(std::to_wstring(selectedSong), 0, 1000, 1);
 					break;
 				case Enter: useSelectedSong = true; break;
+				case VolumeUp: audio->SetVolume(audio->GetVolume() + 1); break;
+				case VolumeDown: audio->SetVolume(audio->GetVolume() - 1); break;
 				}
 
 				if (useSelectedSong)

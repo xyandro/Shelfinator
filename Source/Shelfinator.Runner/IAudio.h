@@ -16,6 +16,8 @@ namespace Shelfinator
 			virtual void Stop() = 0;
 			virtual int GetTime() = 0;
 			virtual void SetTime(int time) = 0;
+			virtual int GetVolume() = 0;
+			virtual void SetVolume(int time) = 0;
 			virtual bool Playing() = 0;
 			virtual bool Finished() = 0;
 		};

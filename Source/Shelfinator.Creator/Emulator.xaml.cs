@@ -88,7 +88,7 @@ namespace Shelfinator.Creator
 						continue;
 					}
 
-					var time = GetTime() + 200 * mediaPlayer.SpeedRatio;
+					var time = Time + 200 * mediaPlayer.SpeedRatio;
 					var notes = TestNotes.Where(note => (time >= note.StartTime) && (time < note.EndTime)).ToList();
 					foreach (var note in playing.Except(notes))
 						midi.NoteOff(note.NoteValue);
@@ -123,7 +123,7 @@ namespace Shelfinator.Creator
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
 				case Key.S: controller.Stop(); break;
 				case Key.P: CopyPosition(); break;
-				case Key.T: SetTime(TestPosition); break;
+				case Key.T: Time = TestPosition; break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
@@ -194,9 +194,17 @@ namespace Shelfinator.Creator
 			playing = false;
 		}
 
-		public int GetTime() => Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
+		public int Time
+		{
+			get => Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
+			set => Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(value));
+		}
 
-		public void SetTime(int time = 0) => Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(time));
+		public int Volume
+		{
+			get => Dispatcher.Invoke(() => (mediaPlayer.Volume * 10).Round());
+			set => Dispatcher.Invoke(() => mediaPlayer.Volume = value / 10d);
+		}
 
 		public bool Playing() => playing;
 		public bool Finished() => finished;
