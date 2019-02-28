@@ -53,7 +53,7 @@ file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "orchestra.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence1.wav"
-ffmpeg.exe -y -ss 22.563 -t 239.537 -i "Janelle Monáe - PYNK [Official Music Video]-PaYvlVR_BEc.mkv" -ar 44100 -filter:a loudnorm "pynk.wav"
+ffmpeg.exe -y -ss 22.563 -t 240.037 -i "Janelle Monáe - PYNK [Official Music Video]-PaYvlVR_BEc.mkv" -ar 44100 -filter:a loudnorm "pynk.wav"
 (The following byte positions are based on the data starting at 78. Adjust as necessary.)
 copy pynk.wav bytes 1467022-1571802 to bytes 78-104858
 copy pynk.wav bytes 1467022-1571802 to bytes 209642-314422
