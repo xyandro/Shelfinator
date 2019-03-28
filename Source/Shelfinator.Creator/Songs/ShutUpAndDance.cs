@@ -517,7 +517,7 @@ namespace Shelfinator.Creator.Songs
 				new List<int> { 0x001000 },
 				new List<int> { 0x050008 },
 				new List<int> { 0x050008 },
-				new List<int> { 0x000000 },
+				new List<int> { 0x100000 },
 			});
 
 			foreach (var light in bodyLayout.GetAllLights())
