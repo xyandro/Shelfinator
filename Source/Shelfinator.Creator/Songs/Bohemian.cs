@@ -772,7 +772,7 @@ namespace Shelfinator.Creator.Songs
 			});
 			var segment = new Segment();
 			foreach (var result in results)
-				for (var time = 0; time < Concurrency * 4; ++time)
+				for (var time = 0; time <= Concurrency * 4; ++time)
 				{
 					foreach (var light in result.SelectMany(x => x))
 						segment.AddLight(light, time, 0x000000);
@@ -928,7 +928,7 @@ namespace Shelfinator.Creator.Songs
 			// Runner (265045)
 			var runner = Runner();
 			song.AddSegment(runner, 0, 76, 265045, 6924, 4);
-			song.AddSegmentByVelocity(runner, 0, 76, 19, 292741, 2947, 76, 0, 6924);
+			song.AddSegmentByVelocity(runner, 0, 76, 20, 292741, 2947, 76, 0, 6924);
 			song.AddPaletteChange(265045, 0);
 			song.AddPaletteChange(271469, 272469, 1);
 			song.AddPaletteChange(278393, 279393, 2);
