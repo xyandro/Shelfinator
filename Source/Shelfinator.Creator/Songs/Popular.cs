@@ -189,14 +189,17 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var color = new LightColor(0, 5, Helpers.Rainbow6);
-			var order = new List<int> { 1, 5, 25, 21, 8, 14, 18, 12, 3, 15, 23, 11, 7, 9, 19, 17, 2, 10, 24, 16, 4, 20, 22, 6, 13 };
-			var times = new List<int> { 29588, 30194, 30649, 30800, 31103, 31406, 31709, 32012, 32618, 33073, 33224, 33527, 33830, 34133, 34436, 35042, 35497, 35648, 35951, 36254, 36557, 36860, 37466, 37769, 38224, 38375, 38678, 38981, 39284, 39890, 40496, 40799, 41102, 41405, 41708, 42314, 42920, 43223, 43526, 43829, 44132, 44738, 45344, 45647, 45950, 46253, 46556, 47162, 47465, 47920, 48071 };
+			var order = "1,5,25,21,8,14,18,12,3,15,23,11,7,9,19,17,2,10,24,16,4,20,22,6,13,1,5,25,21,8,14,18,12,3,15,23,11,7,9,19,17,2,10,24,16,4,20,22,6,13,1&5&21&25".Split(',').Select(x => x.Split('&').Select(int.Parse).ToList()).ToList();
+			var times = "29588,30194,30649,30800,31103,31406,31709,32012,32618,33073,33224,33527,33830,34133,34436,35042,35497,35648,35951,36254,36557,36860,37466,37769,38224,38375,38678,38981,39284,39890,40496,40799,41102,41405,41708,42314,42920,43223,43526,43829,44132,44738,45344,45647,45950,46253,46556,47162,47465,47920,48071".Split(',').Select(int.Parse).ToList();
+			var onColor = -1;
 			for (var ctr = 0; ctr < times.Count; ctr++)
-			{
-				var lights = bodyLayout.GetMappedLights(squaresLayout, order[ctr % 25]);
-				foreach (var light in lights)
-					segment.AddLight(light, times[ctr], times[ctr] + 606, color, ctr % 6, 0x000000);
-			}
+				foreach (var square in order[ctr])
+				{
+					++onColor;
+					var lights = bodyLayout.GetMappedLights(squaresLayout, square);
+					foreach (var light in lights)
+						segment.AddLight(light, times[ctr], times[ctr] + 606, color, onColor % 6, 0x000000);
+				}
 			return segment;
 		}
 
@@ -204,9 +207,9 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var color = new LightColor(0, 192,
+				new List<int> { 0x000010, 0x000000, 0x000000, 0x000010, 0x000000, 0x000000, 0x000010 },
 				new List<int> { 0x100000, 0x001000, 0x100000, 0x001000, 0x100000, 0x001000, 0x100000, 0x001000, 0x100000 },
 				new List<int> { 0x100010, 0x001010, 0x100010, 0x001010, 0x100010, 0x001010, 0x100010, 0x001010, 0x100010 },
-				new List<int> { 0x000010, 0x000000, 0x000000, 0x000010, 0x000000, 0x000000, 0x000010 },
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).ToList()
 			);
 			for (var ctr = 0; ctr < 97; ++ctr)
@@ -272,8 +275,8 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var lightColor = new LightColor(0, 291, new List<IReadOnlyList<int>> {
-				new List<int> { 0x101000, 0x000010, 0x101000, 0x000010, 0x101000, 0x000010, 0x101000 },
 				new List<int> { 0x001010, 0x000000, 0x001010, 0x000000, 0x001010, 0x000000, 0x001010 },
+				new List<int> { 0x101000, 0x000010, 0x101000, 0x000010, 0x101000, 0x000010, 0x101000 },
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).ToList(),
 			});
 			for (var x = 0; x < 97; ++x)
