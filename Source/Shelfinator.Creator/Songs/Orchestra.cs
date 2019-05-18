@@ -65,6 +65,9 @@ namespace Shelfinator.Creator.Songs
 				new LightColor(0, 1, new List<int> { 0x010000, 0x100000 }),
 				new LightColor(0, 1, new List<int> { 0x000001, 0x000010 }),
 				new LightColor(0, 1, new List<int> { 0x000100, 0x001000 }),
+				new LightColor(0, 1, new List<int> { 0x010001, 0x100010 }),
+				new LightColor(0, 1, new List<int> { 0x010100, 0x101000 }),
+				new LightColor(0, 1, new List<int> { 0x000101, 0x001010 }),
 			};
 			for (var square = 0; square < 49; square += 2)
 			{
@@ -98,23 +101,27 @@ namespace Shelfinator.Creator.Songs
 
 		Segment BeatCircles()
 		{
+			const int ShowTime = 800;
+
 			var beatTimes = new List<int> { 0, 709, 1418, 2126, 2835, 3308, 3780, 4489, 5198, 5906, 6615, 7088, 7560, 8269, 8978, 9686, 10395, 10868, 11340, 12049, 12758, 13230 };
-			var points = new List<Point> { new Point(0, 0), new Point(96, 0), new Point(96, 96), new Point(0, 96) };
+			var beatPoints = new List<List<Point>> { new List<Point> { new Point(0, 0) }, new List<Point> { new Point(96, 0) }, new List<Point> { new Point(96, 96) }, new List<Point> { new Point(0, 96) }, new List<Point> { new Point(19, 19) }, new List<Point> { new Point(77, 19) }, new List<Point> { new Point(77, 77) }, new List<Point> { new Point(19, 77) }, new List<Point> { new Point(0, 0), new Point(96, 96) }, new List<Point> { new Point(96, 0), new Point(0, 96) }, new List<Point> { new Point(19, 19), new Point(77, 77) }, new List<Point> { new Point(77, 19), new Point(19, 77) }, new List<Point> { new Point(48, 19), new Point(48, 77) }, new List<Point> { new Point(19, 48), new Point(77, 48) }, new List<Point> { new Point(48, 0), new Point(48, 96) }, new List<Point> { new Point(0, 48), new Point(96, 48) }, new List<Point> { new Point(0, 0), new Point(96, 96) }, new List<Point> { new Point(96, 0), new Point(0, 96) }, new List<Point> { new Point(19, 19), new Point(77, 77) }, new List<Point> { new Point(77, 19), new Point(19, 77) }, new List<Point> { new Point(48, 19), new Point(48, 77) }, new List<Point> { new Point(19, 48), new Point(77, 48) } };
 
 			var colors = new List<int> { 0xff0000, 0x00ff00, 0x0000ff };
-			var distances = bodyLayout.GetAllLights().ToDictionary(light => light, light => points.ToDictionary(point => point, point => (bodyLayout.GetLightPosition(light) - point).Length - 9));
+			var distances = bodyLayout.GetAllLights().ToDictionary(light => light, light => beatPoints.SelectMany(x => x).Distinct().ToDictionary(point => point, point => (bodyLayout.GetLightPosition(light) - point).Length - 9));
 			var segment = new Segment();
 			for (var time = 0; time < 15120; time += 10)
 				foreach (var light in bodyLayout.GetAllLights())
 				{
+					var colorIndex = 0;
 					var color = 0x000000;
 					for (var beatCtr = 0; beatCtr < beatTimes.Count; beatCtr++)
-					{
-						var lightDist = distances[light][points[beatCtr % points.Count]];
-						var dist = time - lightDist * 10 - beatTimes[beatCtr];
-						if ((dist >= 0) && (dist < 800))
-							color = Helpers.AddColor(color, Helpers.MultiplyColor(colors[beatCtr % colors.Count], 1 - lightDist / 135.764501987817));
-					}
+						foreach (var beatPoint in beatPoints[beatCtr])
+						{
+							var dist = time - distances[light][beatPoint] * 10 - beatTimes[beatCtr];
+							if ((dist >= 0) && (dist < ShowTime))
+								color = Helpers.AddColor(color, Helpers.MultiplyColor(colors[colorIndex % colors.Count], 1 - dist / ShowTime));
+							++colorIndex;
+						}
 					segment.AddLight(light, time, Helpers.MultiplyColor(color, 1d / 16));
 				}
 			return segment;
@@ -166,10 +173,10 @@ namespace Shelfinator.Creator.Songs
 			};
 			var color = new LightColor(0, 3, new List<IReadOnlyList<int>>
 			{
-				new List<int> { 0x101010, 0x100000, 0x001000, 0x000010 },
-				new List<int> { 0x100000, 0x001000, 0x000010, 0x101010 },
-				new List<int> { 0x001000, 0x000010, 0x101010, 0x100000 },
-				new List<int> { 0x000010, 0x101010, 0x100000, 0x001000 },
+				new List<int> { 0x080010, 0x001010, 0x100010, 0x000010 },
+				new List<int> { 0x001010, 0x100010, 0x000010, 0x080010 },
+				new List<int> { 0x100010, 0x000010, 0x080010, 0x001010 },
+				new List<int> { 0x000010, 0x080010, 0x001010, 0x100010 },
 			});
 			time = 0;
 			double distance, angle;
@@ -270,7 +277,7 @@ namespace Shelfinator.Creator.Songs
 				new List<int> { 0x101010, 0x000000, 0x000000 },
 				new List<int> { 0x000010, 0x000010, 0x000000 },
 				new List<int> { 0x100010, 0x001010, 0x000000 },
-				new List<int> { 0x100000, 0x001000, 0x000010 },
+				new List<int> { 0x100000, 0x101000, 0x000010 },
 				new List<int> { 0x000010, 0x001010, 0x040818 },
 			});
 			var colorSpacing = A * 2 * Math.PI / NumArms;
