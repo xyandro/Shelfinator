@@ -694,20 +694,30 @@ namespace Shelfinator.Creator.Songs
 		Segment RingPulse()
 		{
 			var segment = new Segment();
-			var color1 = new LightColor(0, 2000, new List<int> { 0x000000, 0x180408, 0x000000, 0x180408, 0x000000, 0x180408, 0x000000, 0x180408, 0x000000 });
-			var color2 = new LightColor(0, 2000, new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 });
+			var useColors = new List<List<int>>
+			{
+				new List<int> { 0x180408 },
+				new List<int> { 0x180408 },
+				new List<int> { 0x000000, 0x180408, 0x000000, 0x180408, 0x000000 },
+				new List<int> { 0x000000, 0x180408, 0x000000, 0x180408, 0x000000 },
+				new List<int> { 0x000000, 0x180408, 0x000000, 0x180408, 0x000000 },
+				new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 },
+				new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 },
+				new List<int> { 0x000000, 0x001010, 0x000000, 0x100010, 0x000000 },
+			};
+			var colors = Enumerable.Range(0, 3).Select(index => new LightColor(0, 1000, useColors.Skip(index).Take(useColors.Count - 2))).ToList();
 			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
 			foreach (var light in bodyLayout.GetAllLights())
 			{
 				var distance = middleLights.Select(middleLight => (bodyLayout.GetLightPosition(light) - bodyLayout.GetLightPosition(middleLight)).LengthSquared).OrderBy(len => len).Select(len => (Math.Sqrt(len) * 37.216146378239344).Round()).First();
-
-				// The 250 added to all the numbers is for the snaps, which are on the 2nd and 4th beats
-				segment.AddLight(light, 0, color1, 250);
-				segment.AddLight(light, 250 + distance, 1250, color1, 0, color1, 1000 - distance, true);
-				segment.AddLight(light, 1250, 2250, color1, 1000 - distance, color1, 2000 - distance, true);
-				segment.AddLight(light, 2250, 2250 + distance, color1, 2000 - distance, color1, 2000, true);
-				segment.AddLight(light, 2250 + distance, 3250, color2, 0, color2, 1000 - distance, true);
-				segment.AddLight(light, 3250, 4250, color2, 1000 - distance, color2, 2000 - distance, true);
+				for (var color = 0; color < colors.Count; ++color)
+				{
+					var startTime = Math.Max(0, Math.Min(distance - 1750 + color * 1000, 1000));
+					var endTime = Math.Max(0, Math.Min(distance - 750 + color * 1000, 1000));
+					var startColorValue = startTime - distance + 1750 - color * 1000;
+					var endColorValue = endTime - distance + 1750 - color * 1000;
+					segment.AddLight(light, startTime, endTime, colors[color], startColorValue, colors[color], endColorValue, true);
+				}
 			}
 			return segment;
 		}
@@ -800,10 +810,14 @@ namespace Shelfinator.Creator.Songs
 
 			// RingPulse (202366)
 			var ringPulse = RingPulse();
-			song.AddSegment(ringPulse, 0, 1000, 202366, 2376);
-			song.AddSegment(ringPulse, 1000, 2000, song.MaxTime(), 2376, 4);
-			song.AddSegment(ringPulse, 2000, 3000, song.MaxTime(), 2376);
-			song.AddSegment(ringPulse, 3000, 4000, song.MaxTime(), 2376, 3);
+			song.AddSegment(ringPulse, 0, 1000, 202366, 2376, 9);
+			song.AddPaletteChange(202366, 0);
+			song.AddPaletteChange(204742, 1);
+			song.AddPaletteChange(207118, 2);
+			song.AddPaletteChange(214246, 3);
+			song.AddPaletteChange(216622, 4);
+			song.AddPaletteChange(218998, 5);
+			song.AddPaletteChange(223750, 0);
 
 			// SquarePath (223750)
 			var squarePath = SquarePath(out var squarePathTime);
