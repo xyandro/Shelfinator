@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using Shelfinator.Creator.Songs;
 
@@ -47,8 +48,10 @@ namespace Shelfinator.Creator
 				if (!match.Any())
 					throw new Exception($"Song(s) not found");
 
-				foreach (var song in match)
-					song.Render().Save(song.SongNumber);
+				var threads = match.Select(song => new Thread(() => song.Render().Save(song.SongNumber))).ToList();
+				threads.ForEach(thread => thread.SetApartmentState(ApartmentState.STA));
+				threads.ForEach(thread => thread.Start());
+				threads.ForEach(thread => thread.Join());
 			}
 
 			var window = new Emulator(small, songNumbers, startPaused);
