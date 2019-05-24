@@ -1,11 +1,11 @@
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence.wav"
-ffmpeg.exe -y -ss 34.35 -t 217.65 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm "rainbow.wav"
+ffmpeg.exe -y -ss 34.35 -t 217.65 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "rainbow.wav"
 Write a.txt:
 file 'silence.wav'
 file 'rainbow.wav'
 ffmpeg.exe -y -f concat -i a.txt "rainbow.ogg"
 
-ffmpeg.exe -y -ss 4.6 -t 355.5 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm -vn "bohemian.ogg"
+ffmpeg.exe -y -ss 4.6 -t 355.5 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 -vn "bohemian.ogg"
 
 ffmpeg.exe -y -t 176.877 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "1.wav"
 ffmpeg.exe -y -ss 197.401 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "2.wav"
@@ -15,7 +15,7 @@ file '2.wav'
 ffmpeg.exe -y -f concat -i a.txt -c copy "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence.wav"
-ffmpeg.exe -y -ss 17.502 -t 197.5 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav" -ar 44100 -filter:a loudnorm "shutupanddance.wav"
+ffmpeg.exe -y -ss 17.502 -t 197.5 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q-2.wav" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "shutupanddance.wav"
 Write a.txt:
 file 'silence.wav'
 file 'shutupanddance.wav'
@@ -24,7 +24,7 @@ ffmpeg.exe -y -f concat -i a.txt "shutupanddance.ogg"
 ffmpeg.exe -y -f lavfi -i anullsrc -t 9.5 -ar 44100 "hello.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence1.wav"
-ffmpeg.exe -y -ss 0.082 -i "MIKA feat Ariana Grande 'Popular Song' [audio]-4H6qwPJT9W0.mkv" -ar 44100 -filter:a loudnorm "popular.wav"
+ffmpeg.exe -y -ss 0.082 -i "MIKA feat Ariana Grande 'Popular Song' [audio]-4H6qwPJT9W0.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "popular.wav"
 ffmpeg.exe -y -f lavfi -i anullsrc -t 0.5 -ar 44100 "silence2.wav"
 Write a.txt:
 file 'silence1.wav'
@@ -32,9 +32,9 @@ file 'popular.wav'
 file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "popular.ogg"
 
-ffmpeg.exe -y -ss 4.8 -t 266.2 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-LRP8d7hhpoQ.webm" -ar 44100 -filter:a loudnorm -vn "hallelujah.ogg"
+ffmpeg.exe -y -ss 4.8 -t 266.2 -i "[OFFICIAL VIDEO] Hallelujah - Pentatonix-LRP8d7hhpoQ.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 -vn "hallelujah.ogg"
 
-ffmpeg.exe -y -i "beep-07.wav" -ar 44100 -ac 2 -filter:a loudnorm "beep.wav"
+ffmpeg.exe -y -i "beep-07.wav" -ar 44100 -ac 2 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "beep.wav"
 ffmpeg.exe -y -f lavfi -i anullsrc -t 10 -ar 44100 "silence.wav"
 Write a.txt:
 file 'silence.wav'
@@ -44,7 +44,7 @@ ffmpeg.exe -y -f concat -i a.txt "beep2.wav"
 ffmpeg.exe -y -ss 9 -t 5 -i "beep2.wav" "test.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 0.9 -ar 44100 "silence1.wav"
-ffmpeg.exe -y -i "Sound Of An Orchestra-201kDUdQFqU.webm" -ar 44100 -filter:a loudnorm "orchestra.wav"
+ffmpeg.exe -y -i "Sound Of An Orchestra-201kDUdQFqU.webm" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "orchestra.wav"
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1.5 -ar 44100 "silence2.wav"
 Write a.txt:
 file 'silence1.wav'
@@ -53,7 +53,7 @@ file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "orchestra.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence1.wav"
-ffmpeg.exe -y -ss 22.563 -t 240.037 -i "Janelle Monáe - PYNK [Official Music Video]-PaYvlVR_BEc.mkv" -ar 44100 -filter:a loudnorm "pynk.wav"
+ffmpeg.exe -y -ss 22.563 -t 240.037 -i "Janelle Monáe - PYNK [Official Music Video]-PaYvlVR_BEc.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "pynk.wav"
 (The following byte positions are based on the data starting at 78. Adjust as necessary.)
 copy pynk.wav bytes 1467022-1571802 to bytes 78-104858
 copy pynk.wav bytes 1467022-1571802 to bytes 209642-314422
