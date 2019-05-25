@@ -5,6 +5,13 @@ file 'silence.wav'
 file 'rainbow.wav'
 ffmpeg.exe -y -f concat -i a.txt "rainbow.ogg"
 
+ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence.wav"
+ffmpeg.exe -y -t 217.65 -i "08 Rainbow.mp3" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "rainbow.wav"
+Write a.txt:
+file 'silence.wav'
+file 'rainbow.wav'
+ffmpeg.exe -y -f concat -i a.txt "rainbow-edit.ogg"
+
 ffmpeg.exe -y -ss 4.6 -t 355.5 -i "Queen - Bohemian Rhapsody (Official Video)-fJ9rUzIMcZQ.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 -vn "bohemian.ogg"
 
 ffmpeg.exe -y -t 176.877 -i "WALK THE MOON - Shut Up and Dance (Official Video)-6JCLY0Rlx6Q.mkv" "1.wav"

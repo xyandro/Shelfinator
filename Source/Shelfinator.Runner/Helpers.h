@@ -21,6 +21,7 @@ namespace Shelfinator
 			static double FPart(double value);
 
 			static std::string GetRunPath();
+			static const char *PathSeparator;
 		private:
 			static int ToByte(double value);
 		};

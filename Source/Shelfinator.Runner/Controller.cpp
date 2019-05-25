@@ -117,6 +117,10 @@ namespace Shelfinator
 				case Enter: useSelectedSong = true; break;
 				case VolumeUp: audio->SetVolume(audio->GetVolume() + 1); break;
 				case VolumeDown: audio->SetVolume(audio->GetVolume() - 1); break;
+				case Edited:
+					audio->SetEdited(!audio->GetEdited());
+					banner = Banner::Create(audio->GetEdited() ? L"EDITED" : L"NORMAL", 500, 500, 1);
+					break;
 				}
 
 				if (useSelectedSong)
@@ -137,7 +141,7 @@ namespace Shelfinator
 			runStatus = Running;
 			audio->Stop();
 			song = songs->LoadSong();
-			audio->Open(song->SongFileName());
+			audio->Open(song->NormalSongFileName(), song->EditedSongFileName());
 			audio->Play();
 			fprintf(stderr, "Playing song %s\n", song->FileName.c_str());
 		}
@@ -146,7 +150,7 @@ namespace Shelfinator
 		{
 			auto fileName = Helpers::GetRunPath() + "0.pat";
 			song = SongData::Song::Read(fileName.c_str());
-			audio->Open(song->SongFileName());
+			audio->Open(song->NormalSongFileName(), song->EditedSongFileName());
 			audio->Play();
 		}
 

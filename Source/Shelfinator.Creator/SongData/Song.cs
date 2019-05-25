@@ -8,15 +8,16 @@ namespace Shelfinator.Creator.SongData
 {
 	class Song
 	{
-		readonly string songFileName;
+		readonly string normalSongFileName, editSongFileName;
 		readonly List<Segment> segments = new List<Segment>();
 		readonly List<SegmentItem> segmentItems = new List<SegmentItem>();
 		readonly List<PaletteSequence> paletteSequences = new List<PaletteSequence>();
 		readonly Dictionary<int, int> currentIndex = new Dictionary<int, int>();
 
-		public Song(string songFileName = null)
+		public Song(string normalSongFileName, string editSongFileName = null)
 		{
-			this.songFileName = songFileName;
+			this.normalSongFileName = normalSongFileName;
+			this.editSongFileName = editSongFileName;
 			paletteSequences.Add(new PaletteSequence(0, int.MaxValue, 0, 0));
 		}
 
@@ -102,20 +103,37 @@ namespace Shelfinator.Creator.SongData
 		{
 			Directory.CreateDirectory(Helpers.PatternDirectory);
 			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.PatternDirectory, $"{songNumber}.pat"))))
-				Save(output);
+				Save(output, songNumber);
+		}
 
-			var audioFile = Path.Combine(Helpers.PatternDirectory, $"{songNumber}.wav");
-			if (!File.Exists(audioFile))
+		void SaveAudio(string inputFileName, string outputFileName)
+		{
+			var inputFile = Path.Combine(Helpers.AudioDirectory, inputFileName);
+			var outputFile = Path.Combine(Helpers.PatternDirectory, outputFileName);
+			if (!File.Exists(outputFile))
 			{
 				var ffmpegs = new List<string> { @"C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe", @"C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe" };
 				var ffmpeg = ffmpegs.Where(File.Exists).First();
-				using (var process = Process.Start(ffmpeg, $@"-i ""{Path.Combine(Helpers.AudioDirectory, songFileName)}"" ""{audioFile}"""))
+				using (var process = Process.Start(ffmpeg, $@"-i ""{Path.Combine(Helpers.AudioDirectory, inputFile)}"" ""{Path.Combine(Helpers.PatternDirectory, outputFile)}"""))
 					process.WaitForExit();
 			}
 		}
 
-		public void Save(BinaryWriter output)
+		public void Save(BinaryWriter output, int songNumber)
 		{
+			var normalFileName = $"{songNumber}.wav";
+			var editFileName = normalFileName;
+
+			SaveAudio(normalSongFileName, normalFileName);
+			if (editSongFileName != null)
+			{
+				editFileName = $"{songNumber}e.wav";
+				SaveAudio(editSongFileName, editFileName);
+			}
+
+			output.Write(normalFileName);
+			output.Write(editFileName);
+
 			output.Write(segments.Count);
 			foreach (var segment in segments)
 				segment.Save(output);

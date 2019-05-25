@@ -11,6 +11,12 @@ namespace Shelfinator
 {
 	namespace Runner
 	{
+#ifdef _WIN32
+		const char *Helpers::PathSeparator = "\\";
+#else
+		const char *Helpers::PathSeparator = "/";
+#endif
+
 		void Helpers::MultiplyColor(double red1, double green1, double blue1, double multiplier, double &red, double &green, double &blue)
 		{
 			red = red1 * multiplier;

@@ -450,7 +450,7 @@ namespace Shelfinator.Creator.Songs
 
 		public override Song Render()
 		{
-			var song = new Song("rainbow.ogg");
+			var song = new Song("rainbow.ogg", "rainbow-edit.ogg");
 
 			// Squares
 			var squares = Squares();

@@ -14,9 +14,9 @@ namespace Shelfinator
 			return ptr(new Audio(audio));
 		}
 
-		void Audio::Open(std::string fileName)
+		void Audio::Open(std::string normalFileName, std::string editedFileName)
 		{
-			return audio->Open(gcnew System::String(fileName.c_str()));
+			return audio->Open(gcnew System::String(normalFileName.c_str()), gcnew System::String(editedFileName.c_str()));
 		}
 
 		void Audio::Close()
@@ -52,6 +52,16 @@ namespace Shelfinator
 		void Audio::SetVolume(int volume)
 		{
 			return audio->Volume = volume;
+		}
+
+		bool Audio::GetEdited()
+		{
+			return audio->Edited;
+		}
+
+		void Audio::SetEdited(bool edited)
+		{
+			return audio->Edited = edited;
 		}
 
 		bool Audio::Playing()

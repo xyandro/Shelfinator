@@ -21,7 +21,8 @@ namespace Shelfinator.Creator
 		readonly Dictionary<int, List<int>> bufferPosition = new Dictionary<int, List<int>>();
 		readonly WriteableBitmap bitmap;
 		readonly uint[] buffer;
-		bool playing = false, finished = true;
+		bool playing = false, finished = true, edited = false;
+		string normalFileName, editedFileName;
 
 		public Emulator(bool small, List<int> songNumbers, bool startPaused)
 		{
@@ -121,6 +122,7 @@ namespace Shelfinator.Creator
 				case Key.D8: controller.AddRemoteCode(RemoteCode.D8); break;
 				case Key.D9: controller.AddRemoteCode(RemoteCode.D9); break;
 				case Key.I: controller.AddRemoteCode(RemoteCode.Info); break;
+				case Key.E: controller.AddRemoteCode(RemoteCode.Edited); break;
 				case Key.S: controller.Stop(); break;
 				case Key.P: CopyPosition(); break;
 				case Key.T: Time = TestPosition; break;
@@ -162,15 +164,24 @@ namespace Shelfinator.Creator
 			Dispatcher.Invoke(() => bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), buffer, bitmap.BackBufferStride, 0));
 		}
 
-		public void Open(string fileName)
+		void SetupInput(int? pos = null)
 		{
-			Close();
-
 			Dispatcher.Invoke(() =>
 			{
 				//mediaPlayer.SpeedRatio = 0.8;
-				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, fileName));
+				var usePos = pos ?? mediaPlayer.Position.TotalMilliseconds.Round();
+				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, Edited ? editedFileName : normalFileName));
+				mediaPlayer.Position = TimeSpan.FromMilliseconds(usePos);
 			});
+		}
+
+		public void Open(string normalFileName, string editedFileName)
+		{
+			Close();
+
+			this.normalFileName = normalFileName;
+			this.editedFileName = editedFileName;
+			SetupInput(0);
 
 			finished = false;
 		}
@@ -204,6 +215,12 @@ namespace Shelfinator.Creator
 		{
 			get => Dispatcher.Invoke(() => (mediaPlayer.Volume * 10).Round());
 			set => Dispatcher.Invoke(() => mediaPlayer.Volume = value / 10d);
+		}
+
+		public bool Edited
+		{
+			get => edited;
+			set { edited = value; SetupInput(); }
 		}
 
 		public bool Playing() => playing;

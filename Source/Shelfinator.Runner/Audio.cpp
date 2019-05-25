@@ -20,14 +20,11 @@ namespace Shelfinator
 			volume = VolumeStep;
 		}
 
-		void Audio::Open(std::string fileName)
+		void Audio::Open(std::string normalFileName, std::string editedFileName)
 		{
 			Close();
-
-			file = fopen(fileName.c_str(), "rb");
-			if (file == nullptr)
-				throw "Invalid audio file";
-			ValidateHeader();
+			this->normalFileName = normalFileName;
+			this->editedFileName = editedFileName;
 
 			startTime = currentTime = 0;
 			finished = false;
@@ -122,12 +119,29 @@ namespace Shelfinator
 		void Audio::Close()
 		{
 			Stop();
+			SetFile("");
+			finished = true;
+		}
+
+		void Audio::SetFile(std::string fileName)
+		{
+			if (curFileName == fileName)
+				return;
+			curFileName = fileName;
+
 			if (file != nullptr)
 			{
 				fclose(file);
 				file = nullptr;
 			}
-			finished = true;
+
+			if (fileName.length() != 0)
+			{
+				file = fopen(curFileName.c_str(), "rb");
+				if (file == nullptr)
+					throw "Invalid audio file";
+				ValidateHeader();
+			}
 		}
 
 		void Audio::Play()
@@ -139,6 +153,8 @@ namespace Shelfinator
 
 		void Audio::PlayWAVThread()
 		{
+			SetFile(edited ? editedFileName : normalFileName);
+
 			const auto frameSize = (int)sizeof(short) * 2;
 			fseek(file, dataOffset + startTime / 10 * 441 * frameSize, SEEK_SET);
 
@@ -269,6 +285,21 @@ namespace Shelfinator
 			if (volume < 0)
 				volume = 0;
 			this->volume = volume;
+		}
+
+		bool Audio::GetEdited()
+		{
+			return edited;
+		}
+
+		void Audio::SetEdited(bool edited)
+		{
+			auto playing = Playing();
+			if (playing)
+				Stop();
+			this->edited = edited;
+			if (playing)
+				Play();
 		}
 
 		bool Audio::Playing()

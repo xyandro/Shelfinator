@@ -22,9 +22,11 @@ namespace Shelfinator
 				static ptr Read(BufferFile::ptr file);
 
 				std::string FileName = "";
-				std::string SongFileName();
+				std::string NormalSongFileName();
+				std::string EditedSongFileName();
 				void SetLights(int time, double brightness, Lights::ptr lights);
 			private:
+				std::string normalAudioFile, editedAudioFile;
 				std::vector<Segment> segments;
 				void ReadSegments(BufferFile::ptr file);
 

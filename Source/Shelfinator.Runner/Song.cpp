@@ -32,6 +32,8 @@ namespace Shelfinator
 
 			void Song::ReadFile(BufferFile::ptr file)
 			{
+				normalAudioFile = file->GetString();
+				editedAudioFile = file->GetString();
 				ReadSegments(file);
 				segmentItems.Read(file);
 				paletteSequences.Read(file);
@@ -44,9 +46,14 @@ namespace Shelfinator
 					segments[ctr].Read(file);
 			}
 
-			std::string Song::SongFileName()
+			std::string Song::NormalSongFileName()
 			{
-				return FileName.substr(0, FileName.find_last_of(".")) + ".wav";
+				return FileName.substr(0, FileName.find_last_of(Helpers::PathSeparator)) + Helpers::PathSeparator + normalAudioFile;
+			}
+
+			std::string Song::EditedSongFileName()
+			{
+				return FileName.substr(0, FileName.find_last_of(Helpers::PathSeparator)) + Helpers::PathSeparator + editedAudioFile;
 			}
 
 			void Song::SetLights(int time, double brightness, Lights::ptr lights)
