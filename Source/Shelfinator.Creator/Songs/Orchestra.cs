@@ -340,7 +340,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment BeatSquares()
 		{
-			const int FadeTime = 200;
+			const int FadeTime = 400;
 			var times = new List<int> { 0, 300, 600, 900, 1200, 1400, 1600, 1900, 2200, 2500, 2800, 3000, 3200, 3500, 3800, 4100, 4400, 4600, 4800, 5100, 5400, 5600 };
 
 			var squareTimes = "13/3/15/23/11/7/9/19/17/1/5/25/21/8/14/18/12/2&4/10&20/22&24/16&6/0".Split('/').Select(x => x.Split('&').Select(int.Parse).ToList()).ToList();
@@ -371,12 +371,13 @@ namespace Shelfinator.Creator.Songs
 					}
 			}
 
-			var clearSquares = squareTimes.SelectMany(x => x).Reverse().ToList();
-			for (var ctr = 0; ctr < clearSquares.Count; ctr++)
+			var fadeOrder = "19/0/18/1/17/2/16/3/15/4/14/5/13/6/12/7/11/8/10/9";
+			var fadeTimes = fadeOrder.Split('/').Select(int.Parse).ToList();
+			fadeTimes = fadeTimes.Select(x => x * FadeTime / fadeTimes.Count + 6400 - FadeTime).ToList();
+			foreach (var light in bodyLayout.GetAllLights())
 			{
-				var time = ctr * FadeTime / clearSquares.Count + 6400 - FadeTime;
-				foreach (var light in squareLights[clearSquares[ctr]])
-					segment.AddLight(light, time, 0x000000);
+				var time = fadeTimes[(int)Math.Floor(((bodyLayout.GetLightPosition(light) - new Point(48, 48)).Length - 9) / 58.8822509939086 * fadeTimes.Count)];
+				segment.AddLight(light, time, 0x000000);
 			}
 			return segment;
 		}
