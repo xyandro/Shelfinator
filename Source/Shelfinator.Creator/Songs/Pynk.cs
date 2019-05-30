@@ -26,13 +26,12 @@ namespace Shelfinator.Creator.Songs
 			const int SnapTime = 198;
 			const int SnapFadeTime = 99;
 			const int BeatSize = 20;
+			const int BeatFadeTime = 198;
 			const int NoteSize = 9;
+			const int NoteFadeTime = 198;
 			var segment = new Segment();
 
 			var innerLights = bodyLayout.GetPositionLights(38, 38, 21, 21).Except(bodyLayout.GetPositionLights(40, 40, 17, 17)).ToList();
-			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
-			var outerLights = bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(2, 2, 93, 93)).ToList();
-
 			var snapColor = new LightColor(0, 1000, new List<int> { 0x000010, 0x000001 });
 			for (var time = 0; time <= 58806; time += 1188)
 				if ((time != 20196) && (time != 58212))
@@ -205,38 +204,35 @@ namespace Shelfinator.Creator.Songs
 				new MidiNote(MidiNote.PianoNote.EFlat, 3, 57915, 297),
 			};
 
+			var beatStartColor = new LightColor(0, BeatSize - 1, new List<int> { 0x001010, 0x100010, 0x100010, 0x001010 });
+			var beatEndColor = new LightColor(0, BeatSize - 1, new List<int> { 0x040004, 0x000404, 0x000404, 0x040004 });
 			var minBeatValue = beats.Min(beat => beat.NoteValue);
 			var maxBeatValue = beats.Max(beat => beat.NoteValue);
 			var beatDist = (89d - BeatSize) / (maxBeatValue - minBeatValue);
 			foreach (var beat in beats)
 			{
-				var minVal = (beatDist * (beat.NoteValue - minBeatValue)).Round() + 4;
-				var maxVal = minVal + BeatSize - 1;
-				foreach (var light in outerLights)
+				var pos = (beatDist * (beat.NoteValue - minBeatValue)).Round() + 4;
+				for (var ctr = 0; ctr < BeatSize; ++ctr)
 				{
-					var pos = bodyLayout.GetLightPosition(light);
-					var show = false;
-
-					if ((pos.Y < 2) && (pos.X >= minVal) && (pos.X <= maxVal))
-						show = true;
-					if ((pos.Y >= 95) && ((96 - pos.X) >= minVal) && ((96 - pos.X) <= maxVal))
-						show = true;
-					if ((pos.X < 2) && ((96 - pos.Y) >= minVal) && ((96 - pos.Y) <= maxVal))
-						show = true;
-					if ((pos.X >= 95) && (pos.Y >= minVal) && (pos.Y <= maxVal))
-						show = true;
-
-					if (show)
+					var lights = new List<int>();
+					lights.AddRange(bodyLayout.GetPositionLights(ctr + pos, 0, 1, 2));
+					lights.AddRange(bodyLayout.GetPositionLights(96 - ctr - pos, 95, 1, 2));
+					lights.AddRange(bodyLayout.GetPositionLights(0, 96 - ctr - pos, 2, 1));
+					lights.AddRange(bodyLayout.GetPositionLights(95, ctr + pos, 2, 1));
+					foreach (var light in lights)
 					{
-						segment.AddLight(light, beat.StartTime, beat.StartTime + 198, 0x001000, 0x000400);
+						segment.AddLight(light, beat.StartTime, beat.StartTime + BeatFadeTime, beatStartColor, ctr, beatEndColor, ctr);
 						segment.AddLight(light, beat.EndTime, 0x000000);
 					}
 				}
 			}
 
-			foreach (var light in middleLights)
+			var startBrightLight = new LightColor(0, 1000, new List<int> { 0x0c0204, 0x060102 });
+			var endBrightLight = new LightColor(0, 1000, new List<int> { 0x601020, 0x300810 });
+			foreach (var light in bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList())
 			{
-				segment.AddLight(light, 16038, 20790, 0x060102, 0x601020);
+				var dist = (((bodyLayout.GetLightPosition(light) - Helpers.Center).Length - 28) / 13.0121933088198 * 1000).Round();
+				segment.AddLight(light, 16038, 20790, startBrightLight, dist, endBrightLight, dist);
 				segment.AddLight(light, 20790, 0x000000);
 			}
 
@@ -319,31 +315,24 @@ namespace Shelfinator.Creator.Songs
 				new MidiNote(MidiNote.PianoNote.EFlat, 5, 56133, 297),
 			};
 
+			var noteStartColor = new LightColor(0, NoteSize - 1, new List<int> { 0x100010, 0x180408, 0x180408, 0x100010 });
+			var noteEndColor = new LightColor(0, NoteSize - 1, new List<int> { 0x040004, 0x0c0204, 0x0c0204, 0x040004 });
 			var minNoteValue = notes.Min(note => note.NoteValue);
 			var maxNoteValue = notes.Max(note => note.NoteValue);
 			var noteDist = (51d - NoteSize) / (maxNoteValue - minNoteValue);
-
 			foreach (var note in notes)
 			{
-				var minVal = (noteDist * (note.NoteValue - minNoteValue)).Round() + 23;
-				var maxVal = minVal + NoteSize - 1;
-				foreach (var light in middleLights)
+				var pos = (noteDist * (note.NoteValue - minNoteValue)).Round() + 23;
+				for (var ctr = 0; ctr < NoteSize; ++ctr)
 				{
-					var pos = bodyLayout.GetLightPosition(light);
-					var show = false;
-
-					if ((pos.Y <= 20) && (pos.X >= minVal) && (pos.X <= maxVal))
-						show = true;
-					if ((pos.Y >= 76) && ((96 - pos.X) >= minVal) && ((96 - pos.X) <= maxVal))
-						show = true;
-					if ((pos.X <= 20) && ((96 - pos.Y) >= minVal) && ((96 - pos.Y) <= maxVal))
-						show = true;
-					if ((pos.X >= 76) && (pos.Y >= minVal) && (pos.Y <= maxVal))
-						show = true;
-
-					if (show)
+					var lights = new List<int>();
+					lights.AddRange(bodyLayout.GetPositionLights(ctr + pos, 19, 1, 2));
+					lights.AddRange(bodyLayout.GetPositionLights(96 - ctr - pos, 76, 1, 2));
+					lights.AddRange(bodyLayout.GetPositionLights(19, 96 - ctr - pos, 2, 1));
+					lights.AddRange(bodyLayout.GetPositionLights(76, ctr + pos, 2, 1));
+					foreach (var light in lights)
 					{
-						segment.AddLight(light, note.StartTime, note.StartTime + 198, 0x180408, 0x060102);
+						segment.AddLight(light, note.StartTime, note.StartTime + NoteFadeTime, noteStartColor, ctr, noteEndColor, ctr);
 						segment.AddLight(light, note.EndTime, 0x000000);
 					}
 				}
@@ -395,58 +384,64 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		int? GetSquare(Point point, bool horiz)
-		{
-			var x = point.X.Round();
-			var y = point.Y.Round();
-			if ((x < 0) || (y < 0) || (x > 96) || (y > 96))
-				return null;
-			if ((!horiz) && (x % 19 < 2) && (y % 19 < 2))
-				return null;
-			if ((x == 0) || (y == 0) || (x == 96) || (y == 96))
-				return 0;
-			return (y - 1) / 19 * 5 + (x - 1) / 19 + 1;
-		}
-
 		Segment Wavy()
 		{
 			const int TotalTime = 600;
 			var segment = new Segment();
 			var color = new LightColor(0, 1000, Helpers.Rainbow6);
-			var lines = new List<Tuple<Point, Size, int, int, bool>>
+			var lines = new List<Tuple<Point, Size, int>>
 			{
-				Tuple.Create(new Point(0, 0), new Size(2, 97), -97, 12, false),
-				Tuple.Create(new Point(19, 0), new Size(2, 97), 97, 16, false),
-				Tuple.Create(new Point(38, 0), new Size(2, 97), 97, 14, false),
-				Tuple.Create(new Point(57, 0), new Size(2, 97), -97, 17, false),
-				Tuple.Create(new Point(76, 0), new Size(2, 97), -97, 20, false),
-				Tuple.Create(new Point(95, 0), new Size(2, 97), 97, 13, false),
-				Tuple.Create(new Point(0, 0), new Size(97, 2), -97, 15, true),
-				Tuple.Create(new Point(0, 19), new Size(97, 2), -97, 12, true),
-				Tuple.Create(new Point(0, 38), new Size(97, 2), 97, 10, true),
-				Tuple.Create(new Point(0, 57), new Size(97, 2), -97, 15, true),
-				Tuple.Create(new Point(0, 76), new Size(97, 2), 97, 17, true),
-				Tuple.Create(new Point(0, 95), new Size(97, 2), 97, 13, true),
+				Tuple.Create(new Point(0, 0), new Size(2, 97), -1056),
+				Tuple.Create(new Point(19, 0), new Size(2, 97), 1509),
+				Tuple.Create(new Point(38, 0), new Size(2, 97), -1615),
+				Tuple.Create(new Point(57, 0), new Size(2, 97), 1738),
+				Tuple.Create(new Point(76, 0), new Size(2, 97), -1771),
+				Tuple.Create(new Point(95, 0), new Size(2, 97), 1872),
+				Tuple.Create(new Point(0, 0), new Size(97, 2), -1360),
+				Tuple.Create(new Point(0, 19), new Size(97, 2), 1026),
+				Tuple.Create(new Point(0, 38), new Size(97, 2), -1694),
+				Tuple.Create(new Point(0, 57), new Size(97, 2), 1441),
+				Tuple.Create(new Point(0, 76), new Size(97, 2), -1155),
+				Tuple.Create(new Point(0, 95), new Size(97, 2), 1219),
 			};
 			var colors = new List<int> { 0x180408, 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x050008, 0x09000d };
 			var squareColor = "0/1&2&6/3&7&11/4&8&12&16/5&9&13&17&21/10&14&18&22/15&19&23/20&24&25".Split('/').SelectMany((l, index) => l.Split('&').Select(s => new { square = int.Parse(s), color = colors[index] })).ToDictionary(obj => obj.square, obj => obj.color);
-			for (var time = 0; time < TotalTime; ++time)
+			for (var time = 0; time <= TotalTime; ++time)
 			{
+				var mult = (double)(TotalTime - time) / TotalTime;
+				mult = (2 * Math.PI * mult - Math.Sin(2 * Math.PI * mult)) / (2 * Math.PI);
 				segment.Clear(time);
 				foreach (var line in lines)
 				{
-					var amplitude = line.Item3 * Math.Pow(Math.E, -Math.Pow(time * 2.4 / TotalTime, 2d)) * Math.Cos(line.Item4 * 2d * Math.PI * time / TotalTime);
+					var distance = (line.Item3 * mult).Round();
 					foreach (var light in bodyLayout.GetPositionLights(line.Item1, line.Item2))
 					{
 						var point = bodyLayout.GetLightPosition(light);
-						if (line.Item5)
-							point.X += amplitude;
+						var x = point.X.Round();
+						var y = point.Y.Round();
+
+						if (line.Item2.Width == 97)
+						{
+							x += distance;
+							while (x < 0)
+								x += 97;
+							while (x >= 97)
+								x -= 97;
+						}
 						else
-							point.Y += amplitude;
-						var square = GetSquare(point, line.Item5);
-						if (!square.HasValue)
-							continue;
-						segment.AddLight(light, time, squareColor[square.Value]);
+						{
+							y += distance;
+							while (y < 0)
+								y += 97;
+							while (y >= 97)
+								y -= 97;
+						}
+
+						var square = 0;
+						if ((x != 0) && (y != 0) && (x != 96) && (y != 96))
+							square = (y - 1) / 19 * 5 + (x - 1) / 19 + 1;
+
+						segment.AddLight(light, time, squareColor[square]);
 					}
 				}
 			}
@@ -665,7 +660,7 @@ namespace Shelfinator.Creator.Songs
 			const double CircleRadius2 = 30;
 			const double Factor2 = 1.5;
 			const double CircleRadius3 = CircleRadius2 - (CircleRadius1 - CircleRadius2);
-			const double Factor3 = 3;
+			const double Factor3 = 2;
 
 			var segment = new Segment();
 			var centerAdjust = new Vector(48, 48);
