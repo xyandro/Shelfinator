@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Shelfinator.Creator.SongData
 {
@@ -102,8 +103,30 @@ namespace Shelfinator.Creator.SongData
 		public void Save(int songNumber)
 		{
 			Directory.CreateDirectory(Helpers.PatternDirectory);
-			using (var output = new BinaryWriter(File.Create(Path.Combine(Helpers.PatternDirectory, $"{songNumber}.pat"))))
-				Save(output, songNumber);
+			byte[] data;
+			using (var ms = new MemoryStream())
+			{
+				using (var output = new BinaryWriter(ms, Encoding.UTF8, true))
+					Save(output, songNumber);
+				data = ms.ToArray();
+			}
+
+			var outputFile = Path.Combine(Helpers.PatternDirectory, $"{songNumber}.pat");
+			var fi = new FileInfo(outputFile);
+			var write = (!fi.Exists) || (fi.Length != data.Length);
+			if (!write)
+			{
+				var existing = File.ReadAllBytes(outputFile);
+				for (var ctr = 0; ctr < data.Length; ++ctr)
+					if (existing[ctr] != data[ctr])
+					{
+						write = true;
+						break;
+					}
+			}
+
+			if (write)
+				File.WriteAllBytes(outputFile, data);
 		}
 
 		void SaveAudio(string inputFileName, string outputFileName)
