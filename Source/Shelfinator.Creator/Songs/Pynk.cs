@@ -8,7 +8,7 @@ namespace Shelfinator.Creator.Songs
 {
 	class Pynk : SongCreator
 	{
-		public override int SongNumber => 8;
+		public override int SongNumber => 7;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
