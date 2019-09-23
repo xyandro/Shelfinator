@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Shelfinator.Creator.SongData;
@@ -11,6 +12,16 @@ namespace Shelfinator.Creator.Songs
 
 		Segment GetHello()
 		{
+			const int IntroPeriod = 2000;
+			const int IntroFade = 400;
+			const int RandomTime = 3000;
+			const int RandomPeriod = 2000;
+			const int RandomFade = 1800;
+			const int ResolveTime = 12000;
+			const int ResolveFade = 1000;
+			const int DissolveTime = 17000;
+			const int DissolveFade = 2000;
+
 			const string HeaderHelloLights = "2,1/2,2/2,3/2,4/2,5/3,1/3,2/3,3/3,4/3,5/4,3/5,3/6,1/6,2/6,3/6,4/6,5/7,1/7,2/7,3/7,4/7,5/9,1/9,2/9,3/9,4/9,5/10,1/10,2/10,3/10,4/10,5/11,1/11,3/11,5/12,1/12,3/12,5/14,1/14,2/14,3/14,4/14,5/15,1/15,2/15,3/15,4/15,5/16,5/17,5/19,1/19,2/19,3/19,4/19,5/20,1/20,2/20,3/20,4/20,5/21,5/22,5/24,2/24,3/24,4/25,1/25,2/25,3/25,4/25,5/26,1/26,5/27,1/27,5/28,1/28,2/28,3/28,4/28,5/29,2/29,3/29,4";
 			const string BodyHelloLights =
 "0,0/1,0/2,0/3,0/4,0/5,0/6,0/7,0/8,0/9,0/10,0/11,0/12,0/13,0/14,0/15,0/16,0/17,0/18,0/19,0/20,0/38,0/39,0/40,0/41,0/42,0/43,0/44,0/45,0/46,0/47,0/48,0/49,0/50,0/51,0/52,0/53,0/54,0/55,0/56,0/57,0/58,0/76,0/77,0/78,0/79,0/80,0/81,0/82,0/83,0/84,0/85,0/86,0/87,0/88,0/89,0/90,0/91,0/92,0/93,0/94,0/95,0/96,0/0,1/1,1/2,1/3,1/4,1/5,1/6,1/7,1/8,1/9,1/10,1/11,1/12,1/13,1/14,1/15,1/16,1/17,1/18,1/19,1/20,1/38,1/39,1/40,1/41,1/42,1/43,1/44,1/45,1/46,1/47,1/48,1/49,1/50,1/51,1/52,1/53,1/54,1/55,1/56,1/57,1/" +
@@ -31,41 +42,73 @@ namespace Shelfinator.Creator.Songs
 "6/20,96/38,96/39,96/40,96/41,96/42,96/43,96/44,96/45,96/46,96/47,96/48,96/49,96/50,96/51,96/52,96/53,96/54,96/55,96/56,96/57,96/58,96/76,96/77,96/78,96/79,96/80,96/81,96/82,96/83,96/84,96/85,96/86,96/87,96/88,96/89,96/90,96/91,96/92,96/93,96/94,96/95,96/96,96";
 
 			var headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
-			var headerLights = headerLayout.GetAllLights();
-			var headerHelloLights = HeaderHelloLights.Split('/').Select(p => Point.Parse(p)).Select(p => headerLayout.GetPositionLight(p)).ToList();
-			var headerLocations = headerLights.Select(light => headerLayout.GetLightPosition(light)).ToList();
-			var headerOrdered = headerLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
-			var headerTopLeft = headerOrdered.First();
-			var headerBottomRight = headerOrdered.Last();
-			var headerCenter = new Point((headerTopLeft.X + headerBottomRight.X) / 2, (headerTopLeft.Y + headerBottomRight.Y) / 2);
-			var headerDistances = headerLocations.Select(p => (p - headerCenter)).Select(p => new Vector(p.X / 32, p.Y / 8).Length).ToList();
-			var headerDistanceInts = headerDistances.Select(l => Helpers.Scale(l, headerDistances.Min(), headerDistances.Max(), 0, 2000).Round()).ToList();
-
 			var bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
-			var bodyLights = bodyLayout.GetAllLights();
-			var bodyHelloLights = new HashSet<int>(BodyHelloLights.Split('/').Select(p => Point.Parse(p)).Select(p => bodyLayout.GetPositionLight(p)));
-			var bodyLocations = bodyLights.Select(light => bodyLayout.GetLightPosition(light)).ToList();
-			var bodyOrdered = bodyLocations.OrderBy(p => p.X).ThenBy(p => p.Y);
-			var bodyTopLeft = bodyOrdered.First();
-			var bodyBottomRight = bodyOrdered.Last();
-			var bodyCenter = new Point((bodyTopLeft.X + bodyBottomRight.X) / 2, (bodyTopLeft.Y + bodyBottomRight.Y) / 2);
-			var bodyDistances = bodyLocations.Select(p => (p - bodyCenter).Length).ToList();
-			var bodyDistanceInts = bodyDistances.Select(l => Helpers.Scale(l, bodyDistances.Min(), bodyDistances.Max(), 0, 2000).Round()).ToList();
+			var rand = new Random(0xc0c0a);
+
+			var points = new List<Tuple<Point, Layout>>();
+			points.AddRange(HeaderHelloLights.Split('/').Select(p => Point.Parse(p)).Select(p => Tuple.Create(p, headerLayout)));
+			points.AddRange(BodyHelloLights.Split('/').Select(p => Point.Parse(p)).Select(p => Tuple.Create(p, bodyLayout)));
+			points = points.OrderBy(p => rand.Next()).ToList();
+
+			var centers = new Dictionary<Layout, Point>
+			{
+				[headerLayout] = new Point(15.5, 3.5),
+				[bodyLayout] = new Point(48, 48),
+			};
+
+			var minDist = new Dictionary<Layout, double>
+			{
+				[headerLayout] = 0.707106781186548,
+				[bodyLayout] = 9,
+			};
+
+			var spread = new Dictionary<Layout, double>
+			{
+				[headerLayout] = 15.1831418008842,
+				[bodyLayout] = 58.8822509939086,
+			};
 
 			var segment = new Segment();
-			var color = new LightColor(0, 1000, Helpers.Rainbow7, new List<int> { 0x101010 }, new List<int> { 0x000000 });
-			for (var ctr = 0; ctr < headerLights.Count; ++ctr)
-			{
-				segment.AddLight(headerLights[ctr], headerDistanceInts[ctr], headerDistanceInts[ctr] + 400, null, 0, color, headerLocations[ctr].X.Round() * 1000 / headerBottomRight.X.Round());
-				if (!headerHelloLights.Contains(headerLights[ctr]))
-					segment.AddLight(headerLights[ctr], headerDistanceInts[ctr] + 1000, headerDistanceInts[ctr] + 1400, null, 0, 0x000000);
-			}
 
-			for (var ctr = 0; ctr < bodyLights.Count; ++ctr)
+			var colors = Helpers.Rainbow6;
+			var color = new LightColor(0, 1000, colors);
+
+			var fadeOut = DissolveTime;
+			foreach (var point in points)
 			{
-				segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr], bodyDistanceInts[ctr] + 400, null, 0, color, bodyLocations[ctr].X.Round() * 1000 / bodyBottomRight.X.Round());
-				if (!bodyHelloLights.Contains(bodyLights[ctr]))
-					segment.AddLight(bodyLights[ctr], bodyDistanceInts[ctr] + 1000, bodyDistanceInts[ctr] + 1400, null, 0, 0x000000);
+				var center = centers[point.Item2];
+				var light = point.Item2.GetPositionLight(point.Item1);
+				var dist = ((point.Item1 - center).Length - minDist[point.Item2]) / spread[point.Item2];
+
+				// Initial white fade in
+				var time = (dist * (IntroPeriod - IntroFade)).Round();
+				segment.AddLight(light, time, time + IntroFade, null, 0, 0x101010);
+
+				// Random colors in the middle
+				time = RandomTime + rand.Next(RandomPeriod);
+				var curColor = -1;
+				while (time < ResolveTime)
+				{
+					++curColor;
+					while (true)
+					{
+						var nextColor = rand.Next(colors.Count);
+						if (nextColor == curColor)
+							continue;
+						curColor = nextColor;
+						break;
+					}
+					segment.AddLight(light, time, time + RandomFade, null, 0, colors[curColor]);
+					time += RandomPeriod;
+				}
+
+				// Circle colors at end
+				segment.AddLight(light, ResolveTime - ResolveFade, ResolveTime, null, 0, color, 1000 - (dist * 1000).Round());
+
+				// Dissolve
+				segment.AddLight(light, fadeOut, 0x000000);
+
+				fadeOut += DissolveFade / points.Count;
 			}
 
 			return segment;
@@ -75,12 +118,8 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("hello.ogg");
 			var hello = GetHello();
-			song.AddSegment(hello, 0, 0, 0, 1500);
-			song.AddSegment(hello, 0, 8000, song.MaxTime());
-
-			song.AddPaletteChange(0, 0);
-			song.AddPaletteChange(5000, 6000, 1);
-			song.AddPaletteChange(7000, 8000, 2);
+			song.AddSegment(hello, 0, 100000, 1000);
+			Emulator.TestPosition = 4000;
 			return song;
 		}
 	}
