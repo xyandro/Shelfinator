@@ -15,10 +15,10 @@ namespace Shelfinator.Creator.Songs
 			const int IntroPeriod = 2000;
 			const int IntroFade = 400;
 			const int RandomTime = 3000;
-			const int RandomPeriod = 2000;
-			const int RandomFade = 1800;
-			const int ResolveTime = 12000;
-			const int ResolveFade = 1000;
+			const int RandomPeriod = 800;
+			const int RandomFade = 600;
+			const int ResolveTime = 10000;
+			const int ResolveFade = 2000;
 			const int DissolveTime = 17000;
 			const int DissolveFade = 2000;
 
