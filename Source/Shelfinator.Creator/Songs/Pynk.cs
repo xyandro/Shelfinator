@@ -402,67 +402,32 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment Wavy()
+		Segment RotateSections()
 		{
-			const int TotalTime = 600;
+			const int Sections = 4;
+
 			var segment = new Segment();
-			var color = new LightColor(0, 1000, Helpers.Rainbow6);
-			var lines = new List<Tuple<Point, Size, int>>
+			var color = new LightColor(0, 96, Helpers.Rainbow7);
+
+			var center = new Point(48, 48);
+			for (var angle = 0; angle < 360; ++angle)
 			{
-				Tuple.Create(new Point(0, 0), new Size(2, 97), -1056),
-				Tuple.Create(new Point(19, 0), new Size(2, 97), 1509),
-				Tuple.Create(new Point(38, 0), new Size(2, 97), -1615),
-				Tuple.Create(new Point(57, 0), new Size(2, 97), 1738),
-				Tuple.Create(new Point(76, 0), new Size(2, 97), -1771),
-				Tuple.Create(new Point(95, 0), new Size(2, 97), 1872),
-				Tuple.Create(new Point(0, 0), new Size(97, 2), -1360),
-				Tuple.Create(new Point(0, 19), new Size(97, 2), 1026),
-				Tuple.Create(new Point(0, 38), new Size(97, 2), -1694),
-				Tuple.Create(new Point(0, 57), new Size(97, 2), 1441),
-				Tuple.Create(new Point(0, 76), new Size(97, 2), -1155),
-				Tuple.Create(new Point(0, 95), new Size(97, 2), 1219),
-			};
-			var colors = new List<int> { 0x180408, 0x100000, 0x100800, 0x101000, 0x001000, 0x000010, 0x050008, 0x09000d };
-			var squareColor = "0/1&2&6/3&7&11/4&8&12&16/5&9&13&17&21/10&14&18&22/15&19&23/20&24&25".Split('/').SelectMany((l, index) => l.Split('&').Select(s => new { square = int.Parse(s), color = colors[index] })).ToDictionary(obj => obj.square, obj => obj.color);
-			for (var time = 0; time <= TotalTime; ++time)
-			{
-				var mult = (double)(TotalTime - time) / TotalTime;
-				mult = (2 * Math.PI * mult - Math.Sin(2 * Math.PI * mult)) / (2 * Math.PI);
-				segment.Clear(time);
-				foreach (var line in lines)
+				var sin1 = Math.Sin(angle * Math.PI / 180);
+				var cos1 = Math.Cos(angle * Math.PI / 180);
+				var sin2 = Math.Sin(-angle * Math.PI / 180);
+				var cos2 = Math.Cos(-angle * Math.PI / 180);
+				segment.Clear(angle);
+				foreach (var light in bodyLayout.GetAllLights())
 				{
-					var distance = (line.Item3 * mult).Round();
-					foreach (var light in bodyLayout.GetPositionLights(line.Item1, line.Item2))
-					{
-						var point = bodyLayout.GetLightPosition(light);
-						var x = point.X.Round();
-						var y = point.Y.Round();
-
-						if (line.Item2.Width == 97)
-						{
-							x += distance;
-							while (x < 0)
-								x += 97;
-							while (x >= 97)
-								x -= 97;
-						}
-						else
-						{
-							y += distance;
-							while (y < 0)
-								y += 97;
-							while (y >= 97)
-								y -= 97;
-						}
-
-						var square = 0;
-						if ((x != 0) && (y != 0) && (x != 96) && (y != 96))
-							square = (y - 1) / 19 * 5 + (x - 1) / 19 + 1;
-
-						segment.AddLight(light, time, squareColor[square]);
-					}
+					var pos = bodyLayout.GetLightPosition(light) - center;
+					var len = Math.Floor((pos.Length - 9) / 58.8822509939086 * Sections).Round();
+					if (len % 2 == 0)
+						segment.AddLight(light, angle, color, (pos.X * cos1 - pos.Y * sin1 + 48).Round());
+					else
+						segment.AddLight(light, angle, color, (pos.X * cos2 - pos.Y * sin2 + 48).Round());
 				}
 			}
+
 			return segment;
 		}
 
@@ -777,10 +742,9 @@ namespace Shelfinator.Creator.Songs
 			var explodeSquares = ExplodeSquares();
 			song.AddSegment(explodeSquares, 0, 960, 59806, 19008);
 
-			// Wavy (78814)
-			var wavy = Wavy();
-			song.AddSegment(wavy, 0, 600, 78814, 17820);
-			song.AddSegment(wavy, 600, 600, song.MaxTime(), 1188);
+			// RotateSections (78814)
+			var rotateSections = RotateSections();
+			song.AddSegment(rotateSections, 0, 360, 78814, 2376, 8);
 
 			// MoveBoxes (97822)
 			var moveBoxes = MoveBoxes(out var moveBoxesTime);
