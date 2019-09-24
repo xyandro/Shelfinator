@@ -338,49 +338,67 @@ namespace Shelfinator.Creator.Songs
 				}
 			}
 
-			var endTimes = new List<int> { 58212, 58361, 58509, 58658 };
-			for (int i = 0; i < endTimes.Count; i++)
-				foreach (var light in bodyLayout.GetAllLights())
-					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x0c0204 : 0x060102);
-
 			return segment;
 		}
 
-		Segment SineSquares()
+		Segment ExplodeSquares()
 		{
-			const int NumSquares = 5;
-			const double MinRadius = 8.999;
-			const double MaxRadius = 48.001;
-			const double MaxVariance = 30;
-			const double EvenSize = (MaxRadius - MinRadius) / NumSquares;
-
+			const int Thickness = 5;
+			const int StartRadius = 9;
+			const int EndRadius = 136;
+			const int LaunchTime = 60;
 			var segment = new Segment();
-			var color = new LightColor(0, NumSquares - 1,
-				new List<int> { 0x0c0204, 0x0c0204, 0x0c0204, 0x0c0204, 0x0c0204 },
-				new List<int> { 0x0c0204, 0x000000, 0x0c0204, 0x000000, 0x0c0204 },
-				new List<int> { 0x100000, 0x101000, 0x001000, 0x000010, 0x090010 });
-			for (var angle = 0; angle < 360; ++angle)
+			var addPoints = new List<List<Point>>
 			{
-				segment.Clear(angle);
-				var variance = Math.Pow(MaxVariance, Math.Sin(angle * Math.PI / 180));
-				var multValue = Math.Pow(variance, 1d / (NumSquares - 1));
-				var firstLen = (MaxRadius - MinRadius) / ((Math.Pow(multValue, NumSquares) - multValue) / (multValue - 1) + 1);
+				new List<Point> { new Point(48, 29) },
+				new List<Point> { new Point(48, 67) },
+				new List<Point> { new Point(29, 48) },
+				new List<Point> { new Point(67, 48) },
+				new List<Point> { new Point(29, 29) },
+				new List<Point> { new Point(67, 67) },
+				new List<Point> { new Point(67, 29) },
+				new List<Point> { new Point(29, 67) },
+				new List<Point> { new Point(48, 29), new Point(48, 67) },
+				new List<Point> { new Point(29, 48), new Point(67, 48) },
+				new List<Point> { new Point(29, 29), new Point(67, 67) },
+				new List<Point> { new Point(67, 29), new Point(29, 67) },
+				new List<Point> { new Point(48, 10), new Point(48, 86) },
+				new List<Point> { new Point(10, 48), new Point(86, 48) },
+				new List<Point> { new Point(10, 10), new Point(86, 10), new Point(10, 86), new Point(86, 86) },
+			};
+			var color = new LightColor(StartRadius - Thickness, EndRadius, new List<int> { 0x0c0204, 0x0c0204, 0x100000, 0x101000, 0x100010, 0x001000, 0x001010, 0x000010 });
+			var addPointCtr = -1;
+			var time = -1;
+			var points = new List<Tuple<Point, int>>();
+			while (time < 960)
+			{
+				++time;
+				segment.Clear(time);
+
+				// Move points, remove out of bounds
+				points = points.Select(t => Tuple.Create(t.Item1, t.Item2 + 1)).Where(t => t.Item2 < EndRadius).ToList();
+
+				if (time % LaunchTime == 0)
+				{
+					++addPointCtr;
+					if (addPointCtr < addPoints.Count)
+						points.AddRange(addPoints[addPointCtr].Select(p => Tuple.Create(p, StartRadius - Thickness)));
+				}
+
 				foreach (var light in bodyLayout.GetAllLights())
 				{
-					var point = bodyLayout.GetLightPosition(light);
-					var distance = Math.Max(Math.Abs(point.X - 48), Math.Abs(point.Y - 48));
-
-					int square;
-					if (double.IsNaN(firstLen))
-						square = (int)Math.Floor((distance - MinRadius) / EvenSize);
-					else
-						square = (int)Math.Floor(Math.Log(((distance - MinRadius) / firstLen - 1) * (multValue - 1) / multValue + 1) / Math.Log(multValue) + 1);
-
-					if ((square >= 0) && (square < NumSquares))
-						segment.AddLight(light, angle, color, square);
+					var minDist = default(double?);
+					var pos = bodyLayout.GetLightPosition(light);
+					foreach (var point in points)
+					{
+						var dist = (pos - point.Item1).Length;
+						if ((dist >= point.Item2) && (dist <= point.Item2 + Thickness))
+							minDist = Math.Min(minDist ?? dist, dist);
+					}
+					if (minDist.HasValue)
+						segment.AddLight(light, time, color, minDist.Value.Round());
 				}
 			}
-
 			return segment;
 		}
 
@@ -755,13 +773,9 @@ namespace Shelfinator.Creator.Songs
 			var intro = Intro();
 			song.AddSegment(intro, 0, 58806, 1000);
 
-			// SineSquares (59806)
-			var sineSquares = SineSquares();
-			song.AddSegment(sineSquares, 0, 360, 59806, 4752, 4);
-			song.AddPaletteChange(59806, 0);
-			song.AddPaletteChange(59806, 60306, 1);
-			song.AddPaletteChange(68810, 69810, 2);
-			song.AddPaletteChange(78814, 0);
+			// ExplodeSquares (59806)
+			var explodeSquares = ExplodeSquares();
+			song.AddSegment(explodeSquares, 0, 960, 59806, 19008);
 
 			// Wavy (78814)
 			var wavy = Wavy();
