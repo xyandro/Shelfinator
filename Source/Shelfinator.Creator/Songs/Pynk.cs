@@ -229,7 +229,8 @@ namespace Shelfinator.Creator.Songs
 
 			var startBrightLight = new LightColor(0, 1000, new List<int> { 0x0c0204, 0x060102 });
 			var endBrightLight = new LightColor(0, 1000, new List<int> { 0x601020, 0x300810 });
-			foreach (var light in bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList())
+			var middleLights = bodyLayout.GetPositionLights(19, 19, 59, 59).Except(bodyLayout.GetPositionLights(21, 21, 55, 55)).ToList();
+			foreach (var light in middleLights)
 			{
 				var dist = (((bodyLayout.GetLightPosition(light) - Helpers.Center).Length - 28) / 13.0121933088198 * 1000).Round();
 				segment.AddLight(light, 16038, 20790, startBrightLight, dist, endBrightLight, dist);
@@ -337,6 +338,11 @@ namespace Shelfinator.Creator.Songs
 					}
 				}
 			}
+
+			var endTimes = new List<int> { 58212, 58361, 58509, 58658 };
+			for (int i = 0; i < endTimes.Count; i++)
+				foreach (var light in middleLights)
+					segment.AddLight(light, endTimes[i], i % 2 == 0 ? 0x0c0204 : 0x060102);
 
 			return segment;
 		}
