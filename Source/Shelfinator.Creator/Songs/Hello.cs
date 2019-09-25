@@ -12,14 +12,14 @@ namespace Shelfinator.Creator.Songs
 
 		Segment GetHello()
 		{
-			const int IntroPeriod = 2000;
-			const int IntroFade = 400;
-			const int RandomTime = 3000;
-			const int RandomPeriod = 800;
-			const int RandomFade = 600;
-			const int ResolveTime = 10000;
-			const int ResolveFade = 2000;
-			const int DissolveTime = 17000;
+			const int IntroPeriod = 3000;
+			const int IntroFade = 1000;
+			const int RandomTime = 5500;
+			const int RandomPeriod = 1200;
+			const int RandomFade = 800;
+			const int ResolveTime = 23000;
+			const int ResolveFade = 3000;
+			const int DissolveTime = 31000;
 			const int DissolveFade = 2000;
 
 			const string HeaderHelloLights = "2,1/2,2/2,3/2,4/2,5/3,1/3,2/3,3/3,4/3,5/4,3/5,3/6,1/6,2/6,3/6,4/6,5/7,1/7,2/7,3/7,4/7,5/9,1/9,2/9,3/9,4/9,5/10,1/10,2/10,3/10,4/10,5/11,1/11,3/11,5/12,1/12,3/12,5/14,1/14,2/14,3/14,4/14,5/15,1/15,2/15,3/15,4/15,5/16,5/17,5/19,1/19,2/19,3/19,4/19,5/20,1/20,2/20,3/20,4/20,5/21,5/22,5/24,2/24,3/24,4/25,1/25,2/25,3/25,4/25,5/26,1/26,5/27,1/27,5/28,1/28,2/28,3/28,4/28,5/29,2/29,3/29,4";
@@ -118,8 +118,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("hello.ogg");
 			var hello = GetHello();
-			song.AddSegment(hello, 0, 100000, 1000);
-			Emulator.TestPosition = 4000;
+			song.AddSegment(hello, 0, hello.MaxTime(), 0);
 			return song;
 		}
 	}

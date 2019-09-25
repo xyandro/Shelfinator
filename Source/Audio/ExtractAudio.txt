@@ -1,9 +1,4 @@
-ffmpeg.exe -y -f lavfi -i anullsrc -t 4 -ar 44100 "silence.wav"
-ffmpeg.exe -y -ss 63 -t 17 -i "A THX sound system test-Rt6fXa60Y8A.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "hello.wav"
-Write a.txt:
-file 'silence.wav'
-file 'hello.wav'
-ffmpeg.exe -y -f concat -i a.txt "hello.ogg"
+ffmpeg.exe -y -i "THX Sound Effect (Full HD)-86IrVpIY3tY.webm" -ar 44100 -filter:a "volume=3" "hello.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence.wav"
 ffmpeg.exe -y -ss 34.35 -t 217.65 -i "Kesha - Rainbow (Official Video)-sd5dcjXzuGk.webm" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "rainbow.wav"
