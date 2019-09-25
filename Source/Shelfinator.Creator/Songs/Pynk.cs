@@ -404,7 +404,7 @@ namespace Shelfinator.Creator.Songs
 
 		Segment RotateSections()
 		{
-			const int Sections = 4;
+			const int Sections = 3;
 
 			var segment = new Segment();
 			var color = new LightColor(0, 96, Helpers.Rainbow7);
