@@ -72,4 +72,13 @@ file 'pynk.wav'
 file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "pynk.ogg"
 
+ffmpeg.exe -y -f lavfi -i anullsrc -t 1 -ar 44100 "silence1.wav"
+ffmpeg.exe -y -ss 0.2 -i "04 Sober Up.mp3" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11 "soberup.wav"
+ffmpeg.exe -y -f lavfi -i anullsrc -t 2 -ar 44100 "silence2.wav"
+Write a.txt:
+file 'silence1.wav'
+file 'soberup.wav'
+file 'silence2.wav'
+ffmpeg.exe -y -f concat -i a.txt "soberup.ogg"
+
 ffmpeg.exe -y -f lavfi -i anullsrc -t 240 -ar 44100 "new.ogg"

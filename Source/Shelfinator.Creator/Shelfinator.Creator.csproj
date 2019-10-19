@@ -106,6 +106,7 @@
     <Compile Include="Songs\New.cs" />
     <Compile Include="Songs\Orchestra.cs" />
     <Compile Include="Songs\Popular.cs" />
+    <Compile Include="Songs\SoberUp.cs" />
     <Compile Include="Songs\Pynk.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
