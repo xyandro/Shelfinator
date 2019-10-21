@@ -42,12 +42,12 @@ namespace Shelfinator.Creator.Songs
 
 			var zigZagTimes = new List<Tuple<int, double>>
 			{
-				Tuple.Create(0, 3.1),
-				Tuple.Create(200, 2.1),
-				Tuple.Create(300, 2.6),
-				Tuple.Create(500, 2.1),
-				Tuple.Create(600, 2.1),
-				Tuple.Create(700, 2.1),
+				Tuple.Create(0, 4.1),
+				Tuple.Create(200, 2.77741935483871),
+				Tuple.Create(300, 3.43870967741935),
+				Tuple.Create(500, 2.77741935483871),
+				Tuple.Create(600, 2.77741935483871),
+				Tuple.Create(700, 2.77741935483871),
 			};
 
 			zigZagTimes = Enumerable.Range(0, 20).SelectMany(x => zigZagTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
@@ -59,9 +59,9 @@ namespace Shelfinator.Creator.Songs
 				Tuple.Create(9900, new Point(96, 96)),
 			};
 
-			var borderColor = new LightColor(0x100d04);
-			var bodyColor = new LightColor(0x020101);
-			var zigZagColor = new LightColor(0, 1, new List<int> { 0x000304, 0x040e20 });
+			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x100d04 }, new List<int> { 0x00000c } });
+			var bodyColor = new LightColor(new List<List<int>> { new List<int> { 0x020101 }, new List<int> { 0x00000c } });
+			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000304, 0x040e20 }, new List<int> { 0x00000c } });
 			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
 
 			var onZigZagIndex = -1;
@@ -159,15 +159,17 @@ namespace Shelfinator.Creator.Songs
 			var flashTimes = new List<int> { 14400, 14600, 14800, 15000 };
 			var flashColor = new LightColor(900, 6788, new List<int> { 0x101010, 0x101000 });
 
-			var wavyColors = new List<List<int>>
+			var wavyColors = new List<LightColor>
 			{
-				 new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c },
-				 new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 },
+				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c }}),
+				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }}),
 			};
 			int flashTime = 0;
 			for (var time = 0; time < 16000; time += 20)
 			{
 				segment.Clear(time);
+
+				bodyLayout.GetAllLights().ForEach(light => segment.AddLight(light, time, 0x00000c));
 
 				if (sparkleTimes.Contains(time))
 					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
@@ -192,8 +194,8 @@ namespace Shelfinator.Creator.Songs
 					{
 						foreach (var light in bodyLayout.GetPositionLights(x[ctr], y, x[ctr + 1] - x[ctr], 1))
 						{
-							var usePal = sparkleLights.ContainsKey(light) ? 1 : 0;
-							segment.AddLight(light, time, wavyColors[usePal][ctr]);
+							var useColor = sparkleLights.ContainsKey(light) ? 1 : 0;
+							segment.AddLight(light, time, wavyColors[useColor], ctr);
 						}
 					}
 				}
@@ -245,10 +247,16 @@ namespace Shelfinator.Creator.Songs
 			// HelloHello (1000)
 			var helloHello = HelloHello();
 			song.AddSegment(helloHello, 0, 16000, 1000, 25800);
+			song.AddPaletteChange(1000, 0);
+			song.AddPaletteChange(25510, 26800, 1);
+			song.AddPaletteChange(26800, 0);
 
 			// Waves (26800)
 			var waves = Waves();
 			song.AddSegment(waves, 0, 16000, 26800, 25800);
+			song.AddPaletteChange(26800, 0);
+			song.AddPaletteChange(26800, 28090, 1);
+			song.AddPaletteChange(52600, 0);
 
 			// Next (52600)
 
