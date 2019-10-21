@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Shelfinator.Creator.SongData;
@@ -18,7 +17,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			const int StartY = 48;
 			const int Height = 9;
-			const int ZigZagBorder = 2;
+			const int ZigZagBorder = 4;
 			const double Fade = .4;
 			const int TotalBubbleTime = 300;
 			const double BubbleWidth = 10;
@@ -61,8 +60,8 @@ namespace Shelfinator.Creator.Songs
 			};
 
 			var borderColor = new LightColor(0x100d04);
-			var bodyColor = new LightColor(0x040101);
-			var zigZagColor = new LightColor(0, 1, new List<int> { 0x000c10, 0x020710 });
+			var bodyColor = new LightColor(0x020101);
+			var zigZagColor = new LightColor(0, 1, new List<int> { 0x000304, 0x040e20 });
 			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
 
 			var onZigZagIndex = -1;
@@ -133,6 +132,112 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Waves()
+		{
+			const int Width = 5;
+			const double MinAmplitude = 8;
+			const double MaxAmplitude = 17;
+			const double AmplitudeFrequency = 1600d;
+			const double NumWaves = 2;
+			const double Start1 = 0;
+			const double Start2 = 120;
+			const double X1 = 29;
+			const double X2 = 67;
+
+			const int MinSparkleTime = 15;
+			const int MaxSparkleTime = 45;
+
+			const int FlashTime = 5;
+
+			var rand = new Random(0xf0dface);
+
+			var segment = new Segment();
+
+			var sparkleTimes = new HashSet<int> { 3600, 10000, 13200 };
+			var sparkleLights = new Dictionary<int, int>();
+
+			var flashTimes = new List<int> { 14400, 14600, 14800, 15000 };
+			var flashColor = new LightColor(900, 6788, new List<int> { 0x101010, 0x101000 });
+
+			var wavyColors = new List<List<int>>
+			{
+				 new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c },
+				 new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 },
+			};
+			int flashTime = 0;
+			for (var time = 0; time < 16000; time += 20)
+			{
+				segment.Clear(time);
+
+				if (sparkleTimes.Contains(time))
+					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
+
+				var startAngle = -(time % 800) * 360 / 800;
+				var amplitude = (Math.Sin((time % AmplitudeFrequency) / AmplitudeFrequency * 360 / 180 * Math.PI) + 1) / 2 * (MaxAmplitude - MinAmplitude) + MinAmplitude;
+
+				for (var y = 0; y < 97; ++y)
+				{
+					var x = new List<int> { 0 };
+					var angle = (Start1 + startAngle + 360 * NumWaves * (y / 96d)) / 180 * Math.PI;
+					x.Add((X1 + Math.Sin(angle) * amplitude - (Width - 1) / 2).Round());
+					x.Add(x.Last() + Width);
+
+					angle = (Start2 + startAngle + 360 * NumWaves * (y / 96d)) / 180 * Math.PI;
+					x.Add((X2 + Math.Sin(angle) * amplitude - (Width - 1) / 2).Round());
+					x.Add(x.Last() + Width);
+
+					x.Add(97);
+
+					for (var ctr = 0; ctr < x.Count - 1; ++ctr)
+					{
+						foreach (var light in bodyLayout.GetPositionLights(x[ctr], y, x[ctr + 1] - x[ctr], 1))
+						{
+							var usePal = sparkleLights.ContainsKey(light) ? 1 : 0;
+							segment.AddLight(light, time, wavyColors[usePal][ctr]);
+						}
+					}
+				}
+
+				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
+
+				if (flashTimes.Contains(time))
+					flashTime = FlashTime;
+				if (flashTime > 0)
+				{
+					var center = new Point(48, 48);
+					foreach (var light in bodyLayout.GetAllLights())
+					{
+						var pos = bodyLayout.GetLightPosition(light);
+						segment.AddLight(light, time, flashColor, ((pos - center).Length * 100).Round());
+					}
+					--flashTime;
+				}
+			}
+
+			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
+				segment.AddLight(light, 15200, 15400, 0x101010, 0x000000);
+
+			var qmPoints = new List<Point>
+			{
+				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
+				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
+				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
+				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
+				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
+				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
+				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
+				new Point(24, 7),
+			};
+
+			foreach (var point in qmPoints)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				segment.AddLight(light, 15200, 0x101010);
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -140,9 +245,14 @@ namespace Shelfinator.Creator.Songs
 			// HelloHello (1000)
 			var helloHello = HelloHello();
 			song.AddSegment(helloHello, 0, 16000, 1000, 25800);
-			Emulator.TestPosition = 1000 + 2580 * 2;
 
-			//// End (217720)
+			// Waves (26800)
+			var waves = Waves();
+			song.AddSegment(waves, 0, 16000, 26800, 25800);
+
+			// Next (52600)
+
+			// End (217720)
 
 			return song;
 		}
