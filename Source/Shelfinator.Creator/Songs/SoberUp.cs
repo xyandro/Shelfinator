@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator.Songs
@@ -240,6 +244,172 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		void ShapeChangeRender(Canvas canvas, Segment segment, Layout layout, int time)
+		{
+			canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
+			canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
+
+			var rtb = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, 96, 96, PixelFormats.Pbgra32);
+			rtb.Render(canvas);
+			var buffer = new uint[rtb.PixelWidth * rtb.PixelHeight];
+			rtb.CopyPixels(buffer, rtb.PixelWidth * 4, 0);
+
+			var bufferPos = 0;
+			for (var y = 0; y < rtb.PixelHeight; ++y)
+				for (var x = 0; x < rtb.PixelWidth; ++x)
+				{
+					var value = (int)(buffer[bufferPos++] & 0xffffff);
+					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
+						segment.AddLight(light, time, value);
+				}
+		}
+
+		Segment Goodbye()
+		{
+			const double LineWidth = 5;
+			const double Fade = 0.7;
+			const double Size1 = 40;
+			const double Size2 = 28;
+			const double MaxDist = 8;
+			const double Ratio2 = .8;
+			const int NumPoints = 16;
+			const int TotalBubbleTime = 300;
+			const double BubbleWidth = 10;
+			const double BubbleBorder = 2;
+
+			var goodbyeLights = new List<Point>
+			{
+				new Point(1, 0), new Point(2, 0), new Point(6, 0), new Point(7, 0), new Point(11, 0), new Point(12, 0), new Point(15, 0), new Point(16, 0),
+				new Point(17, 0), new Point(20, 0), new Point(21, 0), new Point(22, 0), new Point(25, 0), new Point(27, 0), new Point(29, 0), new Point(30, 0),
+				new Point(31, 0), new Point(0, 1), new Point(3, 1), new Point(5, 1), new Point(8, 1), new Point(10, 1), new Point(13, 1), new Point(15, 1),
+				new Point(18, 1), new Point(20, 1), new Point(23, 1), new Point(25, 1), new Point(27, 1), new Point(29, 1), new Point(0, 2), new Point(3, 2),
+				new Point(5, 2), new Point(8, 2), new Point(10, 2), new Point(13, 2), new Point(15, 2), new Point(18, 2), new Point(20, 2), new Point(23, 2),
+				new Point(25, 2), new Point(27, 2), new Point(29, 2), new Point(0, 3), new Point(5, 3), new Point(8, 3), new Point(10, 3), new Point(13, 3),
+				new Point(15, 3), new Point(18, 3), new Point(20, 3), new Point(21, 3), new Point(22, 3), new Point(26, 3), new Point(29, 3), new Point(30, 3),
+				new Point(0, 4), new Point(2, 4), new Point(3, 4), new Point(5, 4), new Point(8, 4), new Point(10, 4), new Point(13, 4), new Point(15, 4),
+				new Point(18, 4), new Point(20, 4), new Point(23, 4), new Point(26, 4), new Point(29, 4), new Point(0, 5), new Point(3, 5), new Point(5, 5),
+				new Point(8, 5), new Point(10, 5), new Point(13, 5), new Point(15, 5), new Point(18, 5), new Point(20, 5), new Point(23, 5), new Point(26, 5),
+				new Point(29, 5), new Point(0, 6), new Point(3, 6), new Point(5, 6), new Point(8, 6), new Point(10, 6), new Point(13, 6), new Point(15, 6),
+				new Point(18, 6), new Point(20, 6), new Point(23, 6), new Point(26, 6), new Point(29, 6), new Point(1, 7), new Point(2, 7), new Point(6, 7),
+				new Point(7, 7), new Point(11, 7), new Point(12, 7), new Point(15, 7), new Point(16, 7), new Point(17, 7), new Point(20, 7), new Point(21, 7),
+				new Point(22, 7), new Point(26, 7), new Point(29, 7), new Point(30, 7), new Point(31, 7),
+			};
+
+			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
+
+			var backgroundBrush = new SolidColorBrush(Color.FromRgb(2, 1, 1));
+			var polygonFill1 = new SolidColorBrush(Color.FromRgb(0, 3, 4));
+			var polygonFill2 = new SolidColorBrush(Color.FromRgb(3, 3, 1));
+			var polygonStroke1 = new SolidColorBrush(Color.FromRgb(5, 19, 43));
+			var polygonStroke2 = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+
+			backgroundBrush.Freeze();
+			polygonFill1.Freeze();
+			polygonFill2.Freeze();
+			polygonStroke1.Freeze();
+			polygonStroke2.Freeze();
+
+			var segment = new Segment();
+			var center = new Point(48, 48);
+
+			var zigZagTimes = new List<Tuple<int, double>>
+			{
+				Tuple.Create(0, 1d),
+				Tuple.Create(200, 0.67741935483871d),
+				Tuple.Create(300, 0.838709677419355d),
+				Tuple.Create(500, 0.67741935483871d),
+				Tuple.Create(600, 0.67741935483871d),
+				Tuple.Create(700, 0.67741935483871d),
+			};
+
+			zigZagTimes = Enumerable.Range(0, 20).SelectMany(x => zigZagTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
+
+			var bubbleTimes = new List<Tuple<int, Point>>
+			{
+				Tuple.Create(3200, center),
+				Tuple.Create(3500, center),
+			};
+
+			var onZigZagIndex = -1;
+			var onBubbleIndex = 0;
+			var amp = 0d;
+			for (var time = 0; time < 16000; time += 20)
+			{
+				if ((onZigZagIndex + 1 < zigZagTimes.Count) && (time >= zigZagTimes[onZigZagIndex + 1].Item1))
+				{
+					++onZigZagIndex;
+					amp = zigZagTimes[onZigZagIndex].Item2 * MaxDist;
+				}
+				else
+					amp = Math.Max(0, amp - Fade);
+
+				var canvas = new Canvas { Width = 97, Height = 97 };
+
+				var background = new Rectangle { Width = 97, Height = 97, Fill = backgroundBrush };
+				Canvas.SetLeft(background, 0);
+				Canvas.SetTop(background, 0);
+				canvas.Children.Add(background);
+
+				{
+					var points = new List<Point>();
+					for (var point = 0; point < NumPoints; ++point)
+					{
+						var angle = point * 360d / NumPoints / 180d * Math.PI;
+						var direction = new Vector(Math.Sin(angle), -Math.Cos(angle));
+						points.Add(center + direction * (Size1 + amp));
+						amp = -amp;
+					}
+
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = polygonFill1, Stroke = polygonStroke1, StrokeThickness = LineWidth };
+					canvas.Children.Add(polygon);
+				}
+				{
+					var points = new List<Point>();
+					for (var point = 0; point < NumPoints; ++point)
+					{
+						var angle = point * 360d / NumPoints / 180d * Math.PI;
+						var direction = new Vector(Math.Sin(angle), -Math.Cos(angle));
+						points.Add(center + direction * (Size2 + amp) * Ratio2);
+						amp = -amp;
+					}
+
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = polygonFill2, Stroke = polygonStroke2, StrokeThickness = LineWidth };
+					canvas.Children.Add(polygon);
+				}
+
+				ShapeChangeRender(canvas, segment, bodyLayout, time);
+
+				if (onBubbleIndex < bubbleTimes.Count)
+				{
+					var bubbleTime = time - bubbleTimes[onBubbleIndex].Item1;
+					if (bubbleTime >= 0)
+					{
+						var point = bubbleTimes[onBubbleIndex].Item2;
+						var useDist = bubbleTime * (135.764501987817 + BubbleWidth + BubbleBorder * 2) / TotalBubbleTime;
+						foreach (var light in bodyLayout.GetAllLights())
+						{
+							var pos = bodyLayout.GetLightPosition(light);
+							var dist = (pos - point).Length;
+							if ((dist > useDist - BubbleWidth - BubbleBorder * 2) && (dist < useDist))
+								segment.AddLight(light, time, bubbleColor, 1);
+							if ((dist > useDist - BubbleWidth - BubbleBorder) && (dist < useDist - BubbleBorder))
+								segment.AddLight(light, time, bubbleColor, 0);
+						}
+					}
+					if (bubbleTime >= TotalBubbleTime)
+						++onBubbleIndex;
+				}
+			}
+
+			foreach (var point in goodbyeLights)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				foreach (var bubbleTime in bubbleTimes)
+					segment.AddLight(light, bubbleTime.Item1, bubbleTime.Item1 + TotalBubbleTime, bubbleColor, 0, 0x000000);
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -258,7 +428,12 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(26800, 28090, 1);
 			song.AddPaletteChange(52600, 0);
 
-			// Next (52600)
+			// Goodbye (52600)
+			var goodbye = Goodbye();
+			song.AddSegment(goodbye, 0, 16000, 52600, 25800);
+			Emulator.TestPosition = 52600;
+
+			// Next (78400)
 
 			// End (217720)
 
