@@ -540,6 +540,85 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Lines()
+		{
+			var lineTimes = new List<int>
+			{
+				0, 200, 300, 500, 600, 700,
+				800, 1000, 1100, 1300, 1400, 1500,
+				1600, 1800, 1900, 2100, 2200, 2300,
+				2400, 2600, 2700, 2900, 3000, 3100,
+				3200, 3400, 3500, 3700, 3800, 3900,
+				4000, 4200, 4300, 4500, 4600, 4700,
+				4800, 5000, 5100, 5300, 5400, 5500,
+				5600, 5800, 5800, 6000, 6000, 6200,
+			};
+
+			var segment = new Segment();
+
+			var corner = new Point(0, 0);
+			var color = new LightColor(0, 13576, new List<int> { 0x101010, 0x000020 });
+
+			for (var pass = 0; pass < 2; ++pass)
+			{
+				for (var ctr = 0; ctr < 6; ++ctr)
+				{
+					var time = lineTimes[ctr + 0 + 24 * pass];
+					foreach (var light in bodyLayout.GetPositionLights(ctr * 19, 0, 2, 97))
+					{
+						var value = ((bodyLayout.GetLightPosition(light) - corner).Length * 100).Round();
+						segment.AddLight(light, time, color, value);
+					}
+				}
+
+				for (var ctr = 0; ctr < 6; ++ctr)
+				{
+					var time = lineTimes[ctr + 6 + 24 * pass];
+					foreach (var light in bodyLayout.GetPositionLights(0, ctr * 19, 97, 2))
+					{
+						var value = ((bodyLayout.GetLightPosition(light) - corner).Length * 100).Round();
+						segment.AddLight(light, time, color, value);
+					}
+				}
+
+				for (var ctr = 0; ctr < 6; ++ctr)
+				{
+					var time = lineTimes[ctr + 12 + 24 * pass];
+					for (var ctr2 = 2; ctr2 < 97; ctr2 += 19)
+						foreach (var light in bodyLayout.GetPositionLights(ctr * 19, ctr2, 2, 17))
+							segment.AddLight(light, time, 0x000000);
+				}
+
+				for (var ctr = 0; ctr < 6; ++ctr)
+				{
+					var time = lineTimes[ctr + 18 + 24 * pass];
+					foreach (var light in bodyLayout.GetPositionLights(0, ctr * 19, 97, 2))
+						segment.AddLight(light, time, 0x000000);
+				}
+			}
+
+			var qmPoints = new List<Point>
+			{
+				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
+				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
+				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
+				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
+				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
+				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
+				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
+				new Point(24, 7),
+			};
+
+			foreach (var point in qmPoints)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				segment.AddLight(light, 2600, 0x101010);
+				segment.AddLight(light, 3200, 0x000000);
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -566,7 +645,11 @@ namespace Shelfinator.Creator.Songs
 			var ocean = Ocean();
 			song.AddSegment(ocean, 0, 16000, 78400, 25800);
 
-			// Next (182600)
+			// Lines (104200)
+			var lines = Lines();
+			song.AddSegment(lines, 0, 6400, 104200, 10320);
+
+			// Next (114520)
 
 			// End (217720)
 
