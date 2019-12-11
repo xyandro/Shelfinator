@@ -619,6 +619,67 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment FavoriteColor()
+		{
+			const double Frequency = 50;
+			const double Amplitude = 3;
+			const double FadeSpeed = 1200;
+			const int ShrinkStartTime = 4200;
+			const double ShrinkLength = 2000;
+
+			var segment = new Segment();
+
+			var squares = new List<Tuple<Point, Size, int>>
+			{
+				Tuple.Create(new Point(-37, -37), new Size(171, 171), 0x000000),
+				Tuple.Create(new Point(-18, -18), new Size(133, 133), 0x000011),
+				Tuple.Create(new Point(1, 1), new Size(95, 95), 0x00131c),
+				Tuple.Create(new Point(20, 20), new Size(57, 57), 0x000011),
+				Tuple.Create(new Point(39, 39), new Size(19, 19), 0x00131c),
+			};
+
+			void DrawSquares(int time, int startSquare, int stopSquare, double brightness)
+			{
+				segment.Clear(time);
+				for (var ctr = startSquare; ctr <= stopSquare; ++ctr)
+					bodyLayout.GetPositionLights(squares[ctr].Item1, squares[ctr].Item2).ForEach(light => segment.AddLight(light, time, Helpers.MultiplyColor(squares[ctr].Item3, brightness)));
+			}
+
+			DrawSquares(0, 4, 4, .5);
+			DrawSquares(200, 3, 4, .5);
+			DrawSquares(400, 2, 4, .5);
+			DrawSquares(600, 1, 4, .5);
+			DrawSquares(800, 0, 4, 1);
+
+			for (var beat = 1200; beat < 1600 + FadeSpeed; beat += 20)
+			{
+				var brightness = 1 - (beat - 1600) / FadeSpeed;
+				var positionOffset = Math.Sin(beat / 800d * Frequency * Math.PI) * Amplitude;
+				squares.ForEach(square => bodyLayout.GetPositionLights(square.Item1 + new Vector(positionOffset, 0), square.Item2).ForEach(light => segment.AddLight(light, beat, Helpers.MultiplyColor(square.Item3, brightness))));
+			}
+
+			DrawSquares(3200, 4, 4, .5);
+			DrawSquares(3400, 3, 4, .5);
+			DrawSquares(3600, 2, 4, .5);
+			DrawSquares(3800, 1, 4, .5);
+			DrawSquares(4000, 0, 4, 1);
+
+			var centerOffset = new Vector(-48, -48);
+			for (var beat = 0; beat < ShrinkLength; beat += 20)
+			{
+				segment.Clear(ShrinkStartTime + beat);
+				var scale = 1 - beat / ShrinkLength;
+				foreach (var square in squares)
+				{
+					var x = ((square.Item1.X - 48) * scale + 48).Round();
+					var width = 97 - x * 2;
+					bodyLayout.GetPositionLights(x, x, width, width).ForEach(light => segment.AddLight(light, ShrinkStartTime + beat, square.Item3));
+				}
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -649,7 +710,11 @@ namespace Shelfinator.Creator.Songs
 			var lines = Lines();
 			song.AddSegment(lines, 0, 6400, 104200, 10320);
 
-			// Next (114520)
+			// FavoriteColor (114520)
+			var favoriteColor = FavoriteColor();
+			song.AddSegment(favoriteColor, 0, 6400, 114520, 20640, 2);
+
+			// Next (155800)
 
 			// End (217720)
 
