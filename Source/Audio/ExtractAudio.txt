@@ -82,3 +82,5 @@ file 'silence2.wav'
 ffmpeg.exe -y -f concat -i a.txt "soberup.ogg"
 
 ffmpeg.exe -y -f lavfi -i anullsrc -t 240 -ar 44100 "new.ogg"
+
+ffmpeg.exe -y -i "MIKA - Tiny Love-GmVOp7mqjP8.mkv" -ar 44100 -filter:a loudnorm=I=-16:TP=-1.5:LRA=11  -vn "tinylove.ogg"
