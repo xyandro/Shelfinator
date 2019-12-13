@@ -48,6 +48,55 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Runners()
+		{
+			var segment = new Segment();
+			var aroundSquare = new Dictionary<int, List<Vector>>
+			{
+				[4] = new List<Vector> { new Vector(0, 0), new Vector(0, 1), new Vector(0, 2), new Vector(0, 3), new Vector(0, 4), new Vector(0, 5), new Vector(0, 6), new Vector(0, 7), new Vector(0, 8), new Vector(0, 9), new Vector(0, 10), new Vector(0, 11), new Vector(0, 12), new Vector(0, 13), new Vector(0, 14), new Vector(0, 15), new Vector(0, 16), new Vector(0, 17), new Vector(0, 18), new Vector(0, 19), new Vector(1, 19), new Vector(2, 19), new Vector(3, 19), new Vector(4, 19), new Vector(5, 19), new Vector(6, 19), new Vector(7, 19), new Vector(8, 19), new Vector(9, 19), new Vector(10, 19), new Vector(11, 19), new Vector(12, 19), new Vector(13, 19), new Vector(14, 19), new Vector(15, 19), new Vector(16, 19), new Vector(17, 19), new Vector(18, 19), new Vector(19, 19), new Vector(19, 18), new Vector(19, 17), new Vector(19, 16), new Vector(19, 15), new Vector(19, 14), new Vector(19, 13), new Vector(19, 12), new Vector(19, 11), new Vector(19, 10), new Vector(19, 9), new Vector(19, 8), new Vector(19, 7), new Vector(19, 6), new Vector(19, 5), new Vector(19, 4), new Vector(19, 3), new Vector(19, 2), new Vector(19, 1), new Vector(19, 0), new Vector(18, 0), new Vector(17, 0), new Vector(16, 0), new Vector(15, 0), new Vector(14, 0), new Vector(13, 0), new Vector(12, 0), new Vector(11, 0), new Vector(10, 0), new Vector(9, 0), new Vector(8, 0), new Vector(7, 0), new Vector(6, 0), new Vector(5, 0), new Vector(4, 0), new Vector(3, 0), new Vector(2, 0), new Vector(1, 0) },
+				[6] = new List<Vector> { new Vector(0, 0), new Vector(0, 1), new Vector(0, 2), new Vector(0, 3), new Vector(0, 4), new Vector(0, 5), new Vector(0, 6), new Vector(0, 7), new Vector(0, 8), new Vector(0, 9), new Vector(0, 10), new Vector(0, 11), new Vector(0, 12), new Vector(0, 13), new Vector(0, 14), new Vector(0, 15), new Vector(0, 16), new Vector(0, 17), new Vector(0, 18), new Vector(0, 19), new Vector(0, 20), new Vector(0, 21), new Vector(0, 22), new Vector(0, 23), new Vector(0, 24), new Vector(0, 25), new Vector(0, 26), new Vector(0, 27), new Vector(0, 28), new Vector(0, 29), new Vector(0, 30), new Vector(0, 31), new Vector(0, 32), new Vector(0, 33), new Vector(0, 34), new Vector(0, 35), new Vector(0, 36), new Vector(0, 37), new Vector(0, 38), new Vector(0, 39), new Vector(0, 40), new Vector(0, 41), new Vector(0, 42), new Vector(0, 43), new Vector(0, 44), new Vector(0, 45), new Vector(0, 46), new Vector(0, 47), new Vector(0, 48), new Vector(0, 49), new Vector(0, 50), new Vector(0, 51), new Vector(0, 52), new Vector(0, 53), new Vector(0, 54), new Vector(0, 55), new Vector(0, 56), new Vector(0, 57), new Vector(1, 57), new Vector(2, 57), new Vector(3, 57), new Vector(4, 57), new Vector(5, 57), new Vector(6, 57), new Vector(7, 57), new Vector(8, 57), new Vector(9, 57), new Vector(10, 57), new Vector(11, 57), new Vector(12, 57), new Vector(13, 57), new Vector(14, 57), new Vector(15, 57), new Vector(16, 57), new Vector(17, 57), new Vector(18, 57), new Vector(19, 57), new Vector(20, 57), new Vector(21, 57), new Vector(22, 57), new Vector(23, 57), new Vector(24, 57), new Vector(25, 57), new Vector(26, 57), new Vector(27, 57), new Vector(28, 57), new Vector(29, 57), new Vector(30, 57), new Vector(31, 57), new Vector(32, 57), new Vector(33, 57), new Vector(34, 57), new Vector(35, 57), new Vector(36, 57), new Vector(37, 57), new Vector(38, 57), new Vector(39, 57), new Vector(40, 57), new Vector(41, 57), new Vector(42, 57), new Vector(43, 57), new Vector(44, 57), new Vector(45, 57), new Vector(46, 57), new Vector(47, 57), new Vector(48, 57), new Vector(49, 57), new Vector(50, 57), new Vector(51, 57), new Vector(52, 57), new Vector(53, 57), new Vector(54, 57), new Vector(55, 57), new Vector(56, 57), new Vector(57, 57), new Vector(57, 56), new Vector(57, 55), new Vector(57, 54), new Vector(57, 53), new Vector(57, 52), new Vector(57, 51), new Vector(57, 50), new Vector(57, 49), new Vector(57, 48), new Vector(57, 47), new Vector(57, 46), new Vector(57, 45), new Vector(57, 44), new Vector(57, 43), new Vector(57, 42), new Vector(57, 41), new Vector(57, 40), new Vector(57, 39), new Vector(57, 38), new Vector(57, 37), new Vector(57, 36), new Vector(57, 35), new Vector(57, 34), new Vector(57, 33), new Vector(57, 32), new Vector(57, 31), new Vector(57, 30), new Vector(57, 29), new Vector(57, 28), new Vector(57, 27), new Vector(57, 26), new Vector(57, 25), new Vector(57, 24), new Vector(57, 23), new Vector(57, 22), new Vector(57, 21), new Vector(57, 20), new Vector(57, 19), new Vector(57, 18), new Vector(57, 17), new Vector(57, 16), new Vector(57, 15), new Vector(57, 14), new Vector(57, 13), new Vector(57, 12), new Vector(57, 11), new Vector(57, 10), new Vector(57, 9), new Vector(57, 8), new Vector(57, 7), new Vector(57, 6), new Vector(57, 5), new Vector(57, 4), new Vector(57, 3), new Vector(57, 2), new Vector(57, 1), new Vector(57, 0), new Vector(56, 0), new Vector(55, 0), new Vector(54, 0), new Vector(53, 0), new Vector(52, 0), new Vector(51, 0), new Vector(50, 0), new Vector(49, 0), new Vector(48, 0), new Vector(47, 0), new Vector(46, 0), new Vector(45, 0), new Vector(44, 0), new Vector(43, 0), new Vector(42, 0), new Vector(41, 0), new Vector(40, 0), new Vector(39, 0), new Vector(38, 0), new Vector(37, 0), new Vector(36, 0), new Vector(35, 0), new Vector(34, 0), new Vector(33, 0), new Vector(32, 0), new Vector(31, 0), new Vector(30, 0), new Vector(29, 0), new Vector(28, 0), new Vector(27, 0), new Vector(26, 0), new Vector(25, 0), new Vector(24, 0), new Vector(23, 0), new Vector(22, 0), new Vector(21, 0), new Vector(20, 0), new Vector(19, 0), new Vector(18, 0), new Vector(17, 0), new Vector(16, 0), new Vector(15, 0), new Vector(14, 0), new Vector(13, 0), new Vector(12, 0), new Vector(11, 0), new Vector(10, 0), new Vector(9, 0), new Vector(8, 0), new Vector(7, 0), new Vector(6, 0), new Vector(5, 0), new Vector(4, 0), new Vector(3, 0), new Vector(2, 0), new Vector(1, 0) },
+				[8] = new List<Vector> { new Vector(0, 0), new Vector(0, 1), new Vector(0, 2), new Vector(0, 3), new Vector(0, 4), new Vector(0, 5), new Vector(0, 6), new Vector(0, 7), new Vector(0, 8), new Vector(0, 9), new Vector(0, 10), new Vector(0, 11), new Vector(0, 12), new Vector(0, 13), new Vector(0, 14), new Vector(0, 15), new Vector(0, 16), new Vector(0, 17), new Vector(0, 18), new Vector(0, 19), new Vector(0, 20), new Vector(0, 21), new Vector(0, 22), new Vector(0, 23), new Vector(0, 24), new Vector(0, 25), new Vector(0, 26), new Vector(0, 27), new Vector(0, 28), new Vector(0, 29), new Vector(0, 30), new Vector(0, 31), new Vector(0, 32), new Vector(0, 33), new Vector(0, 34), new Vector(0, 35), new Vector(0, 36), new Vector(0, 37), new Vector(0, 38), new Vector(1, 38), new Vector(2, 38), new Vector(3, 38), new Vector(4, 38), new Vector(5, 38), new Vector(6, 38), new Vector(7, 38), new Vector(8, 38), new Vector(9, 38), new Vector(10, 38), new Vector(11, 38), new Vector(12, 38), new Vector(13, 38), new Vector(14, 38), new Vector(15, 38), new Vector(16, 38), new Vector(17, 38), new Vector(18, 38), new Vector(19, 38), new Vector(20, 38), new Vector(21, 38), new Vector(22, 38), new Vector(23, 38), new Vector(24, 38), new Vector(25, 38), new Vector(26, 38), new Vector(27, 38), new Vector(28, 38), new Vector(29, 38), new Vector(30, 38), new Vector(31, 38), new Vector(32, 38), new Vector(33, 38), new Vector(34, 38), new Vector(35, 38), new Vector(36, 38), new Vector(37, 38), new Vector(38, 38), new Vector(38, 37), new Vector(38, 36), new Vector(38, 35), new Vector(38, 34), new Vector(38, 33), new Vector(38, 32), new Vector(38, 31), new Vector(38, 30), new Vector(38, 29), new Vector(38, 28), new Vector(38, 27), new Vector(38, 26), new Vector(38, 25), new Vector(38, 24), new Vector(38, 23), new Vector(38, 22), new Vector(38, 21), new Vector(38, 20), new Vector(38, 19), new Vector(38, 18), new Vector(38, 17), new Vector(38, 16), new Vector(38, 15), new Vector(38, 14), new Vector(38, 13), new Vector(38, 12), new Vector(38, 11), new Vector(38, 10), new Vector(38, 9), new Vector(38, 8), new Vector(38, 7), new Vector(38, 6), new Vector(38, 5), new Vector(38, 4), new Vector(38, 3), new Vector(38, 2), new Vector(38, 1), new Vector(38, 0), new Vector(37, 0), new Vector(36, 0), new Vector(35, 0), new Vector(34, 0), new Vector(33, 0), new Vector(32, 0), new Vector(31, 0), new Vector(30, 0), new Vector(29, 0), new Vector(28, 0), new Vector(27, 0), new Vector(26, 0), new Vector(25, 0), new Vector(24, 0), new Vector(23, 0), new Vector(22, 0), new Vector(21, 0), new Vector(20, 0), new Vector(19, 0), new Vector(18, 0), new Vector(17, 0), new Vector(16, 0), new Vector(15, 0), new Vector(14, 0), new Vector(13, 0), new Vector(12, 0), new Vector(11, 0), new Vector(10, 0), new Vector(9, 0), new Vector(8, 0), new Vector(7, 0), new Vector(6, 0), new Vector(5, 0), new Vector(4, 0), new Vector(3, 0), new Vector(2, 0), new Vector(1, 0) },
+				[19] = new List<Vector> { new Vector(0, 0), new Vector(0, 1), new Vector(0, 2), new Vector(0, 3), new Vector(0, 4), new Vector(0, 5), new Vector(0, 6), new Vector(0, 7), new Vector(0, 8), new Vector(0, 9), new Vector(0, 10), new Vector(0, 11), new Vector(0, 12), new Vector(0, 13), new Vector(0, 14), new Vector(0, 15), new Vector(0, 16), new Vector(0, 17), new Vector(0, 18), new Vector(0, 19), new Vector(1, 19), new Vector(2, 19), new Vector(3, 19), new Vector(4, 19), new Vector(5, 19), new Vector(6, 19), new Vector(7, 19), new Vector(8, 19), new Vector(9, 19), new Vector(10, 19), new Vector(11, 19), new Vector(12, 19), new Vector(13, 19), new Vector(14, 19), new Vector(15, 19), new Vector(16, 19), new Vector(17, 19), new Vector(18, 19), new Vector(19, 19), new Vector(19, 18), new Vector(19, 17), new Vector(19, 16), new Vector(19, 15), new Vector(19, 14), new Vector(19, 13), new Vector(19, 12), new Vector(19, 11), new Vector(19, 10), new Vector(19, 9), new Vector(19, 8), new Vector(19, 7), new Vector(19, 6), new Vector(19, 5), new Vector(19, 4), new Vector(19, 3), new Vector(19, 2), new Vector(19, 1), new Vector(19, 0), new Vector(18, 0), new Vector(17, 0), new Vector(16, 0), new Vector(15, 0), new Vector(14, 0), new Vector(13, 0), new Vector(12, 0), new Vector(11, 0), new Vector(10, 0), new Vector(9, 0), new Vector(8, 0), new Vector(7, 0), new Vector(6, 0), new Vector(5, 0), new Vector(4, 0), new Vector(3, 0), new Vector(2, 0), new Vector(1, 0) },
+			};
+			var useTuples = new Queue<Tuple<Point, int>>(new List<Tuple<Point, int>> { Tuple.Create(new Point(0, 0), 6), null, Tuple.Create(new Point(38, 38), 6), null, Tuple.Create(new Point(38, 0), 6), null, null, null, Tuple.Create(new Point(0, 38), 6), null, Tuple.Create(new Point(19, 19), 4), null, Tuple.Create(new Point(57, 57), 4), null, Tuple.Create(new Point(57, 19), 4), null, Tuple.Create(new Point(19, 57), 4), null, Tuple.Create(default(Point), 0), null, Tuple.Create(default(Point), 0), null, null, null, Tuple.Create(default(Point), 0), null, Tuple.Create(default(Point), 0), null, Tuple.Create(new Point(0, 0), 8), Tuple.Create(default(Point), 0), Tuple.Create(new Point(57, 57), 8), Tuple.Create(default(Point), 0), Tuple.Create(new Point(57, 0), 8), Tuple.Create(default(Point), 0), Tuple.Create(new Point(0, 57), 8), Tuple.Create(default(Point), 0), Tuple.Create(new Point(38, 38), 19) });
+			var lightSize = new Size(2, 2);
+			var curTuples = new Queue<Tuple<Point, int>>();
+			var lightColor = new LightColor(0, 1000, new List<int> { 0x101010 }, new List<int> { 0x100000, 0x100800, 0x101000 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x000010, 0x001010, 0x000010 });
+			var center = new Point(48, 48);
+			var lightDist = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 16.9830463869911).Round());
+			for (var time = 0; time < 4400; time += 5)
+			{
+				if ((time % 100) == 0)
+					if (useTuples.Any())
+					{
+						var tuple = useTuples.Dequeue();
+						if (tuple != null)
+						{
+							if (tuple.Item2 == 0)
+								curTuples.Dequeue();
+							else
+								curTuples.Enqueue(tuple);
+						}
+					}
+
+				segment.Clear(time);
+				foreach (var tuple in curTuples)
+				{
+					var shift = time / 10;
+					if (tuple.Item2 == 19)
+						shift = time * tuple.Item2 / 200;
+					for (var around = 0; around < aroundSquare[tuple.Item2].Count; ++around)
+						if ((around + shift) % tuple.Item2 == 0)
+						{
+							var lights = bodyLayout.GetPositionLights(tuple.Item1 + aroundSquare[tuple.Item2][around], lightSize);
+							foreach (var light in lights)
+								segment.AddLight(light, time, lightColor, lightDist[light]);
+						}
+				}
+			}
+			return segment;
+		}
+
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
 		{
 			foreach (var measure in measures)
@@ -71,19 +120,27 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(5702, 6702, 2);
 			song.AddPaletteChange(10234, 11234, 3);
 			song.AddPaletteChange(14766, 15766, 4);
+			song.AddPaletteChange(19798, 0);
 
-			// Misc (19798)
+			// Runners (19798)
+			var runners = Runners();
+			song.AddSegment(runners, 0, 2800, 19798, 15862);
+			song.AddPaletteChange(19798, 0);
+			song.AddPaletteChange(23830, 24830, 1);
+			song.AddPaletteChange(30628, 31628, 2);
+
+			song.AddSegment(runners, 2800, 4400, 35660, 6712);
+			song.AddPaletteChange(35160, 36160, 3);
+			song.AddPaletteChange(42372, 0);
+
+			// Misc (42372)
 			var segment = new Segment();
 			for (var time = 0; time < 20000; time += 1000)
 				for (var light = 0; light < 2440; ++light)
 					segment.AddLight(light, time, time + 1000, 0x101010, 0x000000);
-			song.AddSegment(segment, 0, 1000, 19798, 2266, 7);
+			song.AddSegment(segment, 0, 1000, 42372, 1678, 31);
 
-			//song.AddSegment(segment, 0, 1000, 35660, 1678, 35);
-
-			//AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
-
-			//Emulator.TestPosition = 100330;
+			AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
 
 			return song;
 		}
