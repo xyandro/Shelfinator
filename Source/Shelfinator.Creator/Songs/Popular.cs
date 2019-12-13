@@ -207,7 +207,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var color = new LightColor(0, 192,
-				new List<int> { 0x000010, 0x000000, 0x000000, 0x000010, 0x000000, 0x000000, 0x000010 },
+				new List<int> { 0x000010, 0x000004, 0x000004, 0x000010, 0x000004, 0x000004, 0x000010 },
 				new List<int> { 0x100000, 0x001000, 0x100000, 0x001000, 0x100000, 0x001000, 0x100000, 0x001000, 0x100000 },
 				new List<int> { 0x100010, 0x001010, 0x100010, 0x001010, 0x100010, 0x001010, 0x100010, 0x001010, 0x100010 },
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).ToList()
@@ -275,7 +275,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var segment = new Segment();
 			var lightColor = new LightColor(0, 291, new List<IReadOnlyList<int>> {
-				new List<int> { 0x001010, 0x000000, 0x001010, 0x000000, 0x001010, 0x000000, 0x001010 },
+				new List<int> { 0x001000, 0x101010, 0x001000, 0x101010, 0x001000, 0x101010, 0x001000 },
 				new List<int> { 0x101000, 0x000010, 0x101000, 0x000010, 0x101000, 0x000010, 0x101000 },
 				Helpers.Rainbow6.Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6).Concat(Helpers.Rainbow6.Take(1)).ToList(),
 			});
