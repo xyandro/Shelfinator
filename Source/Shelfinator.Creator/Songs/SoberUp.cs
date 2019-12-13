@@ -13,6 +13,7 @@ namespace Shelfinator.Creator.Songs
 	class SoberUp : SongCreator
 	{
 		public override int SongNumber => 9;
+		public override bool Test => true;
 
 		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
