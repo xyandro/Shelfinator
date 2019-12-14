@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Shelfinator.Creator.SongData;
 
 namespace Shelfinator.Creator
 {
@@ -128,6 +130,44 @@ namespace Shelfinator.Creator
 			var tmp = item1;
 			item1 = item2;
 			item2 = tmp;
+		}
+
+		public static int[,] LoadImage(string streamName, double brightness)
+		{
+			int[,] pixels;
+			using (var stream = typeof(Helpers).Assembly.GetManifestResourceStream(streamName))
+			using (var image = System.Drawing.Image.FromStream(stream))
+			using (var bmp = new System.Drawing.Bitmap(image))
+			{
+				pixels = new int[bmp.Width, bmp.Height];
+				var lockBits = bmp.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				var data = new byte[lockBits.Stride * bmp.Height];
+				Marshal.Copy(lockBits.Scan0, data, 0, data.Length);
+				bmp.UnlockBits(lockBits);
+
+				var lineSkip = lockBits.Stride - bmp.Width * sizeof(int);
+				var ofs = 0;
+				for (var y = 0; y < bmp.Height; ++y)
+				{
+					for (var x = 0; x < bmp.Width; ++x)
+					{
+						pixels[x, y] = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), brightness);
+						ofs += sizeof(int);
+					}
+					ofs += lineSkip;
+				}
+				var hexChars = Enumerable.Range(0, 16).Select(num => $"{num:x}"[0]).ToArray();
+			}
+
+			return pixels;
+		}
+
+		public static void DrawImage(int[,] pixels, Layout layout, Segment segment, int time, int x, int y)
+		{
+			for (var yCtr = 0; yCtr < pixels.GetLength(1); ++yCtr)
+				for (var xCtr = 0; xCtr < pixels.GetLength(0); ++xCtr)
+					foreach (var light in layout.GetPositionLights((xCtr + x) % 97, (yCtr + y) % 97, 1, 1))
+						segment.AddLight(light, time, pixels[xCtr, yCtr]);
 		}
 	}
 }

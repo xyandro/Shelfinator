@@ -84,13 +84,13 @@
     <Compile Include="SongData\Segment.cs" />
     <Compile Include="SongData\SegmentItem.cs" />
     <Compile Include="SongData\Song.cs" />
-    <Compile Include="Songs\TinyLove.cs" />
     <Compile Include="Songs\Bohemian.cs" />
     <Compile Include="Songs\Hallelujah.cs" />
     <Compile Include="Songs\Hello.cs" />
     <EmbeddedResource Include="Songs\Layout\Clouds.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar.png" />
+    <EmbeddedResource Include="Songs\Layout\Heart.png" />
     <EmbeddedResource Include="Songs\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Songs\Layout\Layout-Header.png" />
     <EmbeddedResource Include="Songs\Layout\Plasma.gif" />
@@ -106,13 +106,14 @@
     <EmbeddedResource Include="Songs\Love\Timo.png" />
     <Compile Include="Songs\Orchestra.cs" />
     <Compile Include="Songs\Popular.cs" />
-    <Compile Include="Songs\SoberUp.cs" />
     <Compile Include="Songs\Pynk.cs" />
     <Compile Include="Songs\Rainbow.cs" />
     <Compile Include="Songs\ShutUpAndDance.cs" />
+    <Compile Include="Songs\SoberUp.cs" />
     <Compile Include="Songs\SongCreator.cs" />
     <Compile Include="Songs\SongHelper.cs" />
     <Compile Include="Songs\Test.cs" />
+    <Compile Include="Songs\TinyLove.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shelfinator.Interop\Shelfinator.Interop.vcxproj">

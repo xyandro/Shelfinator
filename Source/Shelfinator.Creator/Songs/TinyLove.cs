@@ -151,6 +151,29 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment Heart()
+		{
+			var segment = new Segment();
+
+			var pixels = Helpers.LoadImage("Shelfinator.Creator.Songs.Layout.Heart.png", 1d / 16);
+			int x = (97 - pixels.GetLength(1)) / 2, y = 0, xOfs = 1, yOfs = 1;
+			for (var time = 0; time <= 77; ++time)
+			{
+				segment.Clear(time);
+				Helpers.DrawImage(pixels, bodyLayout, segment, time, x, y);
+				if ((x + xOfs < 0) || (x + pixels.GetLength(0) + xOfs > 97))
+					xOfs = -xOfs;
+				else
+					x += xOfs;
+				if ((y + yOfs < 0) || (y + pixels.GetLength(1) + yOfs > 97))
+					yOfs = -yOfs;
+				else
+					y += yOfs;
+			}
+
+			return segment;
+		}
+
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
 		{
 			foreach (var measure in measures)
@@ -191,12 +214,20 @@ namespace Shelfinator.Creator.Songs
 			var lineStop = LineStop();
 			song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
 
-			// Misc (65864)
+			// Heart (65864)
+			var heart = Heart();
+			song.AddSegment(heart, 0, 78, 65864, 3356);
+			song.AddSegment(heart, 78, 0, 69220, 3356);
+			song.AddSegment(heart, 0, 78, 72576, 3356);
+			song.AddSegment(heart, 78, 0, 75932, 3356);
+			song.AddSegment(heart, 0, 78, 79288, 3356);
+
+			// Misc (82644)
 			var segment = new Segment();
 			for (var time = 0; time < 20000; time += 1000)
 				for (var light = 0; light < 2440; ++light)
 					segment.AddLight(light, time, time + 1000, 0x101010, 0x000000);
-			song.AddSegment(segment, 0, 1000, 65864, 1678, 17);
+			song.AddSegment(segment, 0, 1000, 82644, 1678, 7);
 
 			AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
 
