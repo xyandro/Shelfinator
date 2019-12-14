@@ -177,13 +177,11 @@ namespace Shelfinator.Creator.Songs
 			}
 		}
 
-		Segment Traffic(out int cycleLength)
+		Segment Traffic()
 		{
 			const int Size = 5;
 			const int Gap = 1;
 			const int Interval = (Size + 2) * 2 + Gap * 2;
-			const int CycleLength = Interval * 6;
-			cycleLength = CycleLength;
 
 			var diff = 19 % Interval;
 			var diff2 = diff - Interval;
@@ -264,9 +262,9 @@ namespace Shelfinator.Creator.Songs
 
 		static double Mod(double value, double divisor) => (value %= divisor) < 0 ? value + divisor : value;
 
-		Segment Spiral()
+		Segment Spiral(out int length)
 		{
-			const double Radius = 5;
+			const double Radius = 12;
 			var points = bodyLayout.GetAllLights().Select(light => bodyLayout.GetLightPosition(light)).ToList();
 			var angles = points.Select(p => Mod(Math.Atan2(p.Y - 48, p.X - 48), 2 * Math.PI)).ToList();
 			var values = points.Select((p, index) => 2 * Math.PI * (int)((Math.Sqrt(Math.Pow(p.X - 48, 2) + Math.Pow(p.Y - 48, 2)) - angles[index] / 2 / Math.PI * Radius) / Radius) + angles[index]).ToList();
@@ -280,8 +278,8 @@ namespace Shelfinator.Creator.Songs
 				new LightColor(0, 8, new List<IReadOnlyList<int>> { new List<int> { 0x000000 }.Concat(Helpers.Rainbow6).Concat(0x000000).ToList() }),
 			};
 			const int Length = 5000;
-			const int Delay = 2000;
-			const int ColorDuration = 4000;
+			const int Delay = 5000;
+			const int ColorDuration = 5000;
 			var segment = new Segment();
 			for (var ctr = 0; ctr < points.Count; ctr++)
 			{
@@ -292,6 +290,7 @@ namespace Shelfinator.Creator.Songs
 					segment.AddLight(light, time + pass * (Length + Delay), time + pass * (Length + Delay) + ColorDuration, color[pass], 0, color[pass], 8, true);
 			}
 
+			length = (Length + Delay) * color.Count;
 			return segment;
 		}
 
@@ -415,7 +414,7 @@ namespace Shelfinator.Creator.Songs
 			const int Delay = 300;
 
 			var segment = new Segment();
-			var layout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
+			var layout = bodyLayout;
 			var allLights = layout.GetAllLights();
 			var allLocations = allLights.Select(light => layout.GetLightPosition(light)).ToList();
 			var topLeft = allLocations.OrderBy(p => p.X).ThenBy(p => p.Y).First();
@@ -442,90 +441,85 @@ namespace Shelfinator.Creator.Songs
 
 		public override Song Render()
 		{
-			var song = new Song("rainbow.ogg", "rainbow-edit.ogg");
+			var song = new Song("rainbow.ogg", "rainbow-edit.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2000, and stop at 215000
 
 			// Squares
 			var squares = Squares();
-			song.AddSegment(squares, 0, squares.MaxTime(), 1000, 24038);
+			song.AddSegment(squares, 0, squares.MaxTime(), 1000, 24000);
 			song.AddPaletteChange(1000, 0);
-			song.AddPaletteChange(11055, 11255, 1); // "colors are everything"
-			song.AddPaletteChange(12587, 13587, 2);
-			song.AddPaletteChange(16988, 17188, 3);
-			song.AddPaletteChange(20138, 22138, 4);
-			song.AddPaletteChange(22677, 23677, 5);
-			song.AddPaletteChange(25038, 0);
+			song.AddPaletteChange(10900, 11100, 1); // "colors are everything"
+			song.AddPaletteChange(12900, 13100, 2);
+			song.AddPaletteChange(16900, 17100, 3);
+			song.AddPaletteChange(20900, 21100, 4);
+			song.AddPaletteChange(22900, 23100, 5);
+			song.AddPaletteChange(25000, 0);
 
-			// Traffic (25156)
-			var traffic = Traffic(out var trafficLength);
-			var displayTime = 3200;
+			// Traffic (25100)
+			var traffic = Traffic();
+			song.AddSegment(traffic, 0, 492, 25100, 15900);
 
-			song.AddSegment(traffic, 0, trafficLength * 2, 25156, displayTime * 2);
-			song.AddSegment(traffic, trafficLength * 2, trafficLength * 3, song.MaxTime(), displayTime);
-			song.AddSegment(traffic, trafficLength * 3, traffic.MaxTime(), song.MaxTime(), displayTime * (traffic.MaxTime() - trafficLength * 3) / trafficLength);
+			song.AddPaletteChange(25000, 0);
+			song.AddPaletteChange(26800, 27200, 1);
+			song.AddPaletteChange(28800, 29200, 0);
+			song.AddPaletteChange(30800, 31200, 1);
+			song.AddPaletteChange(32800, 33200, 0);
+			song.AddPaletteChange(34800, 35200, 1);
+			song.AddPaletteChange(36800, 37200, 0);
+			song.AddPaletteChange(38800, 39200, 1);
+			song.AddPaletteChange(41000, 0);
 
-			song.AddPaletteChange(25156, 25656, 0);
-			song.AddPaletteChange(27101, 27601, 1);
-			song.AddPaletteChange(29059, 29559, 0);
-			song.AddPaletteChange(31084, 31584, 1);
-			song.AddPaletteChange(33107, 33607, 0);
-			song.AddPaletteChange(35083, 35583, 1);
-			song.AddPaletteChange(37091, 37591, 0);
-			song.AddPaletteChange(39196, 39696, 1);
-			song.AddPaletteChange(41800, 0);
-
-			// RainbowRotate: grow (41800)
+			// RainbowRotate (41000)
 			var rainbowRotate = RainbowRotate();
-			song.AddSegment(rainbowRotate, 0, 360, 41800, 1200); // Grow
+			song.AddSegment(rainbowRotate, 0, 360, 41000, 2000); // Grow
 			song.AddSegment(rainbowRotate, 360, 720, 43000, 2000, 7); // Repeat
-			song.AddSegment(rainbowRotate, 720, 1080, 57000, 1200); // Shrink
+			song.AddSegment(rainbowRotate, 720, 1080, 57000, 2000); // Shrink
 
-			// Spiral 59074
-			var spiral = Spiral();
-			song.AddSegment(spiral, 0, spiral.MaxTime(), 58874, 23994);
+			// Spiral (59000)
+			var spiral = Spiral(out var spiralLength);
+			song.AddSegment(spiral, 0, spiralLength, 59000, 24000);
 
-			// Flex (83068)
+			// Flex (83000)
 			var flex = Flex();
-			song.AddSegment(flex, 0, 1136, 83068, 16029);
+			song.AddSegment(flex, 0, 1136, 83000, 16000);
 
-			// RainbowRotate (99097)
-			song.AddSegment(rainbowRotate, 360, 720, 99097, 2000, 8); // Forward
-			song.AddSegment(rainbowRotate, 720, 360, 115097, 2000, 7); // Reverse
-			song.AddSegment(rainbowRotate, 360, 0, 129097, 1600); // Shrink
+			// RainbowRotate (99000)
+			song.AddSegment(rainbowRotate, 360, 720, 99000, 2000, 8); // Forward
+			song.AddSegment(rainbowRotate, 720, 360, 115000, 2000, 7); // Reverse
+			song.AddSegment(rainbowRotate, 360, 0, 129000, 2000); // Shrink
 
-			// Sweep (131138-147138)
+			// Sweep (131000)
 			var sweep = Sweep();
-			song.AddSegment(sweep, 0, 4320, 131138, 7000, 2); // 14 sweeps
-			song.AddSegment(sweep, 0, 1234, song.MaxTime(), 2000); // 2 more sweeps
+			song.AddSegment(sweep, 0, 4320, 131000, 7000, 2); // 14 sweeps
+			song.AddSegment(sweep, 0, 1234, 145000, 2000); // 2 more sweeps
 
-			song.AddPaletteChange(131138, 0);
-			song.AddPaletteChange(138642, 139642, 1);
-			song.AddPaletteChange(142608, 143608, 2);
-			song.AddPaletteChange(147138, 0);
+			song.AddPaletteChange(131000, 0);
+			song.AddPaletteChange(138800, 139200, 1);
+			song.AddPaletteChange(142800, 143200, 2);
+			song.AddPaletteChange(147000, 0);
 
-			// Plasma (147138)
+			// Plasma (147000)
 			var plasma = Plasma(out var plasmaTime);
-			song.AddSegment(plasma, 0, plasmaTime, 147138, 4000, 4);
+			song.AddSegment(plasma, 0, plasmaTime, 147000, 4000, 4);
+			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 163000, 4000, plasmaTime, 0, 4000); // Slow down
+			song.AddSegment(plasma, 0, 0, 167000, 2000); // Stopped
 
-			// Slow plasma (163138)
-			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 163138, 4000, plasmaTime, 0, 4000);
-			song.AddSegment(plasma, 0, 0, 167138, 738);
+			// RainbowRotate (169000)
+			song.AddSegment(rainbowRotate, 0, 360, 169000, 2000); // Grow
+			song.AddSegment(rainbowRotate, 360, 720, 171000, 2000, 5); // Forward
+			song.AddSegment(rainbowRotate, 720, 360, 181000, 2000, 7); // Reverse
+			song.AddSegment(rainbowRotate, 360, 0, 195000, 2000); // Shrink
 
-			// RainbowRotate (167876)
-			song.AddSegment(rainbowRotate, 0, 360, 167876, 1200); // Grow
-			song.AddSegment(rainbowRotate, 360, 720, 169076, 2000, 6); // Forward
-			song.AddSegment(rainbowRotate, 720, 360, song.MaxTime(), 2000, 7); // Reverse
-			song.AddSegment(rainbowRotate, 360, 0, 195076, 1600); // Shrink
-
-			// Spin (196895)
+			// Spin (197000)
 			var spin = Spin();
-			song.AddSegment(spin, 0, 1000, 196895, 1000);
-			song.AddSegment(spin, 1000, 2000, song.MaxTime(), 1000, 16);
-			song.AddSegment(spin, 2000, 3000, song.MaxTime(), 1000);
+			song.AddSegment(spin, 0, 1000, 197000, 1000);
+			song.AddSegment(spin, 1000, 2000, 198000, 1000, 16);
+			song.AddSegment(spin, 2000, 3000, 214000, 1000);
 
-			song.AddPaletteChange(196895, 0);
-			song.AddPaletteChange(200550, 201550, 1);
-			song.AddPaletteChange(204627, 205627, 2);
-			song.AddPaletteChange(210578, 211578, 3);
+			song.AddPaletteChange(197000, 0);
+			song.AddPaletteChange(200500, 201500, 1);
+			song.AddPaletteChange(204500, 205500, 2);
+			song.AddPaletteChange(210500, 211500, 3);
+			song.AddPaletteChange(215000, 0);
 
 			return song;
 		}
