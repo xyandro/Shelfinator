@@ -174,6 +174,32 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment LinesSparkle(out int totalTime)
+		{
+			const int Duration = 5;
+			const int Timing = 50;
+			var rand = new Random(0xbadbeef);
+			var horiz = Enumerable.Range(0, 6).SelectMany(x => bodyLayout.GetPositionLights(x * 19, 0, 2, 97)).ToList();
+			var vert = Enumerable.Range(0, 6).SelectMany(y => bodyLayout.GetPositionLights(0, y * 19, 97, 2)).ToList();
+			var segment = new Segment();
+			for (var time = 0; time < 360; ++time)
+			{
+				var mixPercent = (Math.Cos(time * Math.PI / 180) + 1) / 2;
+				var lights = new List<int>();
+				lights.AddRange(horiz.OrderBy(x => rand.Next()).Take((horiz.Count * mixPercent).Round()));
+				lights.AddRange(vert.OrderBy(x => rand.Next()).Take((vert.Count * (1 - mixPercent)).Round()));
+				lights = lights.OrderBy(x => rand.Next()).ToList();
+				var baseTime = time * Timing;
+				for (var ctr = 0; ctr < lights.Count; ++ctr)
+				{
+					var lightTime = (baseTime + (double)ctr / lights.Count * Timing).Round();
+					segment.AddLight(lights[ctr], lightTime, lightTime + Duration, 0x101010, 0x000000);
+				}
+			}
+			totalTime = 360 * Timing;
+			return segment;
+		}
+
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
 		{
 			foreach (var measure in measures)
@@ -221,6 +247,10 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(heart, 0, 78, 72576, 3356);
 			song.AddSegment(heart, 78, 0, 75932, 3356);
 			song.AddSegment(heart, 0, 78, 79288, 3356);
+
+			// LinesSparkle (82644)
+			var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			song.AddSegment(linesSparkle, 0, linesSparkleLength, 82644, 1678 * 2, 8 / 2);
 
 			// Misc (82644)
 			var segment = new Segment();
