@@ -235,35 +235,27 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment RainbowGrow()
-		{
-			var segment = new Segment();
-			var lights = bodyLayout.GetAllLights();
-
-			var color = new LightColor(0, 96, Helpers.Rainbow7);
-
-			var center = new Point(48, 48);
-			foreach (var light in lights)
-				segment.AddLight(light, ((bodyLayout.GetLightPosition(light) - center).Length * 1000).Round(), color, bodyLayout.GetLightPosition(light).X.Round());
-
-			return segment;
-		}
-
 		Segment RainbowRotate()
 		{
 			var segment = new Segment();
 			var lights = bodyLayout.GetAllLights();
 
 			var color = new LightColor(0, 96, Helpers.Rainbow7);
+			var center = new Point(48, 48);
 
-			for (var angle = 0; angle <= 360; ++angle)
+			for (var angle = 0; angle <= 1080; ++angle)
 			{
+				var dist = (540 - Math.Abs(540 - angle)) * 58.8822509939086 / 360 + 9;
 				var sin = Math.Sin(angle * Math.PI / 180);
 				var cos = Math.Cos(angle * Math.PI / 180);
 				foreach (var light in lights)
 				{
-					var location = bodyLayout.GetLightPosition(light);
-					segment.AddLight(light, angle, color, ((location.X - 48) * cos - (location.Y - 48) * sin + 48).Round());
+					var point = bodyLayout.GetLightPosition(light);
+					var vect = point - center;
+					if (dist >= vect.Length)
+						segment.AddLight(light, angle, color, (vect.X * cos - vect.Y * sin + 48).Round());
+					else
+						segment.AddLight(light, angle, 0x000000);
 				}
 			}
 
@@ -481,16 +473,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(39196, 39696, 1);
 			song.AddPaletteChange(41800, 0);
 
-			// Grow (41800)
-			var rainbowGrow = RainbowGrow();
-			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 41800, 1200);
-
-			// Rainbow, chorus (43000)
+			// RainbowRotate: grow (41800)
 			var rainbowRotate = RainbowRotate();
-			song.AddSegment(rainbowRotate, 0, 360, 43000, 2000, 7);
-
-			// Shrink (57000)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 57000, 1200);
+			song.AddSegment(rainbowRotate, 0, 360, 41800, 1200); // Grow
+			song.AddSegment(rainbowRotate, 360, 720, 43000, 2000, 7); // Repeat
+			song.AddSegment(rainbowRotate, 720, 1080, 57000, 1200); // Shrink
 
 			// Spiral 59074
 			var spiral = Spiral();
@@ -500,12 +487,10 @@ namespace Shelfinator.Creator.Songs
 			var flex = Flex();
 			song.AddSegment(flex, 0, 1136, 83068, 16029);
 
-			// Rainbow (99097)
-			song.AddSegment(rainbowRotate, 0, 360, 99097, 2000, 8);
-			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
-
-			// Shrink (127097)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 129097, 1600);
+			// RainbowRotate (99097)
+			song.AddSegment(rainbowRotate, 360, 720, 99097, 2000, 8); // Forward
+			song.AddSegment(rainbowRotate, 720, 360, 115097, 2000, 7); // Reverse
+			song.AddSegment(rainbowRotate, 360, 0, 129097, 1600); // Shrink
 
 			// Sweep (131138-147138)
 			var sweep = Sweep();
@@ -525,15 +510,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 163138, 4000, plasmaTime, 0, 4000);
 			song.AddSegment(plasma, 0, 0, 167138, 738);
 
-			// Grow (167876)
-			song.AddSegment(rainbowGrow, 0, rainbowGrow.MaxTime(), 167876, 1200);
-
-			// Rainbow, chorus (169076)
-			song.AddSegment(rainbowRotate, 0, 360, 169076, 2000, 6);
-			song.AddSegment(rainbowRotate, 360, 0, song.MaxTime(), 2000, 7);
-
-			// Shrink (195076)
-			song.AddSegment(rainbowGrow, rainbowGrow.MaxTime(), 0, 195076, 1600);
+			// RainbowRotate (167876)
+			song.AddSegment(rainbowRotate, 0, 360, 167876, 1200); // Grow
+			song.AddSegment(rainbowRotate, 360, 720, 169076, 2000, 6); // Forward
+			song.AddSegment(rainbowRotate, 720, 360, song.MaxTime(), 2000, 7); // Reverse
+			song.AddSegment(rainbowRotate, 360, 0, 195076, 1600); // Shrink
 
 			// Spin (196895)
 			var spin = Spin();
