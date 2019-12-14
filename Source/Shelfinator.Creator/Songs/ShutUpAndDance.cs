@@ -674,12 +674,12 @@ namespace Shelfinator.Creator.Songs
 			// ShapeChange (1000)
 			var shapeChange = ShapeChange();
 			song.AddSegment(shapeChange, 0, 360, 1000, 1875);
-			song.AddSegment(shapeChange, 360, 720, song.MaxTime(), 1875, 3);
-			song.AddSegment(shapeChange, 720, 1080, song.MaxTime(), 1875);
-			song.AddSegment(shapeChange, 1080, 1440, song.MaxTime(), 1875, 3);
-			song.AddSegment(shapeChange, 1440, 1800, song.MaxTime(), 1875);
-			song.AddSegment(shapeChange, 1800, 2160, song.MaxTime(), 1875, 3);
-			song.AddSegment(shapeChange, 2160, 2880, song.MaxTime(), 3750);
+			song.AddSegment(shapeChange, 360, 720, 2875, 1875, 4);
+			song.AddSegment(shapeChange, 720, 1080, 10375, 1875);
+			song.AddSegment(shapeChange, 1080, 1440, 12250, 1875, 3);
+			song.AddSegment(shapeChange, 1440, 1800, 17875, 1875);
+			song.AddSegment(shapeChange, 1800, 2160, 19750, 1875, 2);
+			song.AddSegment(shapeChange, 2160, 2880, 23500, 3750);
 
 			// Randomized (27250)
 			var randomized = Randomized();
@@ -709,11 +709,11 @@ namespace Shelfinator.Creator.Songs
 			var circleWarp = CircleWarp();
 			song.AddSegment(circleWarp, 0, 340, 91000, 18750);
 
-			// Bounce (109750) Duration: 30500
+			// Bounce (109750)
 			var bounce = Bounce();
 			song.AddSegment(bounce, 0, 96, 109750, 3750);
-			song.AddSegment(bounce, 96, 196, song.MaxTime(), 1875);
-			song.AddSegment(bounce, 196, 292, song.MaxTime(), 1875, 13);
+			song.AddSegment(bounce, 96, 196, 113500, 1875);
+			song.AddSegment(bounce, 196, 292, 115375, 1875, 13);
 
 			// Flash (139750)
 			var flash = Flash();
@@ -746,7 +746,7 @@ namespace Shelfinator.Creator.Songs
 			// Corners2 (173500)
 			var corners2 = Corners2();
 			song.AddSegment(corners2, 0, 3360, 173500, 3750);
-			song.AddSegment(corners2, 3360, 6720, song.MaxTime(), 3750, 2);
+			song.AddSegment(corners2, 3360, 6720, 177250, 3750, 2);
 
 			// Randomized2 (184750)
 			var randomized2 = Randomized2();
