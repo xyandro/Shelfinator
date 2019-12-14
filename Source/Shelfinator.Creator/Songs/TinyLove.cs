@@ -174,7 +174,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment LinesSparkle(out int totalTime)
+		Segment LinesSparkle(out int time)
 		{
 			const int Duration = 5;
 			const int Timing = 50;
@@ -182,25 +182,30 @@ namespace Shelfinator.Creator.Songs
 			var horiz = Enumerable.Range(0, 6).SelectMany(x => bodyLayout.GetPositionLights(x * 19, 0, 2, 97)).ToList();
 			var vert = Enumerable.Range(0, 6).SelectMany(y => bodyLayout.GetPositionLights(0, y * 19, 97, 2)).ToList();
 			var segment = new Segment();
-			for (var time = 0; time < 360; ++time)
+			var isHorizes = new List<bool?> { true, true, false, false, true, true, false, false, true, false, true, false, true, false, false, false, null, null, null, null };
+			time = 0;
+			foreach (var isHoriz in isHorizes)
 			{
-				var mixPercent = (Math.Cos(time * Math.PI / 180) + 1) / 2;
-				var lights = new List<int>();
-				lights.AddRange(horiz.OrderBy(x => rand.Next()).Take((horiz.Count * mixPercent).Round()));
-				lights.AddRange(vert.OrderBy(x => rand.Next()).Take((vert.Count * (1 - mixPercent)).Round()));
+				List<int> lights;
+				switch (isHoriz)
+				{
+					case true: lights = horiz; break;
+					case false: lights = vert; break;
+					case null: lights = horiz.Concat(vert).Distinct().ToList(); break;
+					default: throw new Exception();
+				}
 				lights = lights.OrderBy(x => rand.Next()).ToList();
-				var baseTime = time * Timing;
 				for (var ctr = 0; ctr < lights.Count; ++ctr)
 				{
-					var lightTime = (baseTime + (double)ctr / lights.Count * Timing).Round();
+					var lightTime = (time + (double)ctr / lights.Count * Timing).Round();
 					segment.AddLight(lights[ctr], lightTime, lightTime + Duration, 0x101010, 0x000000);
 				}
+				time += Timing;
 			}
-			totalTime = 360 * Timing;
 			return segment;
 		}
 
-		Segment Gravity(out int time)
+		void AddGravity(Song song, Point center, int startTime, int duration, int reverseDuration)
 		{
 			const double Accel = 0.003;
 
@@ -217,8 +222,8 @@ namespace Shelfinator.Creator.Songs
 								points.Add(Tuple.Create(new Point(x1, y1), colors[(col + row) % colors.Count]));
 						}
 
-			var center = new Point(48, 48);
 			var segment = new Segment();
+			int time;
 			for (time = 0; ; ++time)
 			{
 				var done = true;
@@ -232,15 +237,19 @@ namespace Shelfinator.Creator.Songs
 					if (newDist > dist)
 						continue;
 
-					done = false;
 					var newPoint = point.Item1 + vector * newDist;
 					foreach (var light in bodyLayout.GetPositionLights(newPoint, 1, 1))
+					{
 						segment.AddLight(light, time, point.Item2);
+						done = false;
+					}
 				}
 				if (done)
 					break;
 			}
-			return segment;
+
+			song.AddSegment(segment, 0, time, startTime, duration);
+			song.AddSegment(segment, time, 0, startTime + duration, reverseDuration);
 		}
 
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
@@ -291,14 +300,26 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(heart, 78, 0, 75932, 3356);
 			//song.AddSegment(heart, 0, 78, 79288, 3356);
 
-			//// LinesSparkle (82644)
-			//var linesSparkle = LinesSparkle(out int linesSparkleLength);
-			//song.AddSegment(linesSparkle, 0, linesSparkleLength, 82644, 1678 * 2, 8 / 2);
+			// LinesSparkle (82644)
+			var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
+			Emulator.TestPosition = 82644;
 
-			// Gravity (96068)
-			var gravity = Gravity(out var gravityLength);
-			song.AddSegment(gravity, 0, gravityLength, 96068, 1678 * 2);
-			Emulator.TestPosition = 96068;
+			//// Gravity (101330)
+			//AddGravity(song, new Point(48, 48), 101330, 3122, 3031);
+			//AddGravity(song, new Point(29, 29), 107483, 2975, 2789);
+			//AddGravity(song, new Point(29, 67), 113247, 2809, 2746);
+			//AddGravity(song, new Point(67, 67), 118802, 2822, 2758);
+			//AddGravity(song, new Point(67, 29), 124382, 2801, 2863);
+			//AddGravity(song, new Point(48, 48), 130046, 2821, 2929);
+			//AddGravity(song, new Point(48, 48), 135796, 2830, 2863);
+			//AddGravity(song, new Point(48, 48), 141489, 2851, 3003);
+			//AddGravity(song, new Point(48, 48), 147343, 2865, 2847);
+
+			////song.AddSegment(gravity, 0, gravityLength, 153055, 2779);
+			//Emulator.TestPosition = 101330;
+
+			//101651
 
 			//// Misc (82644)
 			//var segment = new Segment();
@@ -308,6 +329,7 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(segment, 0, 1000, 82644, 1678, 7);
 
 			//AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
+
 
 			return song;
 		}
