@@ -97,6 +97,60 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		class LineStopPoint
+		{
+			public Point Point { get; set; }
+			public Point Dest { get; set; }
+			public Vector Direction { get; set; }
+			public int Color { get; set; }
+
+			public LineStopPoint(Point point, Point dest, Vector direction, int color)
+			{
+				Point = point;
+				Dest = dest;
+				Direction = direction;
+				Color = color;
+			}
+		}
+
+		Segment LineStop()
+		{
+			var segment = new Segment();
+			var lineStopPoints = new List<LineStopPoint>();
+			for (var time = 0; time < 970; ++time)
+			{
+				if (time % 10 == 0)
+				{
+					for (var y = 0; y < 97; y += 19)
+						lineStopPoints.Add(new LineStopPoint(new Point(-1, y), new Point(96 - time / 10, y), new Vector(1, 0), (y % 38 == 0) == (time % 20 == 0) ? 0x101010 : 0x100000));
+					for (var y = 1; y < 97; y += 19)
+						lineStopPoints.Add(new LineStopPoint(new Point(97, y), new Point(time / 10, y), new Vector(-1, 0), ((y - 1) % 38 == 0) == (time % 20 == 0) ? 0x100000 : 0x101010));
+					for (var x = 0; x < 97; x += 19)
+						lineStopPoints.Add(new LineStopPoint(new Point(x, -1), new Point(x, 96 - time / 10), new Vector(0, 1), (x % 38 == 0) == (time % 20 == 0) ? 0x101010 : 0x100000));
+					for (var x = 1; x < 97; x += 19)
+						lineStopPoints.Add(new LineStopPoint(new Point(x, 97), new Point(x, time / 10), new Vector(0, -1), ((x - 1) % 38 == 0) == (time % 20 == 0) ? 0x100000 : 0x101010));
+				}
+
+				segment.Clear(time);
+
+				for (var ctr = 0; ctr < lineStopPoints.Count; ++ctr)
+				{
+					var lineStopPoint = lineStopPoints[ctr];
+					if (lineStopPoint.Point == lineStopPoint.Dest)
+						lineStopPoint.Direction = new Vector(0, 0);
+
+					var newPoint = lineStopPoint.Point + lineStopPoint.Direction;
+					var light = bodyLayout.TryGetPositionLight(newPoint) ?? int.MinValue;
+					if (light != int.MinValue)
+					{
+						lineStopPoint.Point = newPoint;
+						segment.AddLight(light, time, lineStopPoint.Color);
+					}
+				}
+			}
+			return segment;
+		}
+
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
 		{
 			foreach (var measure in measures)
@@ -133,12 +187,16 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(35160, 36160, 3);
 			song.AddPaletteChange(42372, 0);
 
-			// Misc (42372)
+			// LineStop (42372)
+			var lineStop = LineStop();
+			song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
+
+			// Misc (65864)
 			var segment = new Segment();
 			for (var time = 0; time < 20000; time += 1000)
 				for (var light = 0; light < 2440; ++light)
 					segment.AddLight(light, time, time + 1000, 0x101010, 0x000000);
-			song.AddSegment(segment, 0, 1000, 42372, 1678, 31);
+			song.AddSegment(segment, 0, 1000, 65864, 1678, 17);
 
 			AddIrregularBeats(song, segment, 0, 1000, 101330, new List<int> { 3122, 3031, 2975, 2789, 2809, 2746, 2822, 2758, 2801, 2863, 2821, 2929, 2830, 2863, 2851, 3003, 2865, 2847, 2779 });
 

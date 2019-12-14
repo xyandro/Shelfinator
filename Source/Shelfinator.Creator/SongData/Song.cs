@@ -135,7 +135,7 @@ namespace Shelfinator.Creator.SongData
 			var outputFile = Path.Combine(Helpers.PatternDirectory, outputFileName);
 			if (!File.Exists(outputFile))
 			{
-				var ffmpegs = new List<string> { @"C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe", @"C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe" };
+				var ffmpegs = new List<string> { @"C:\Users\rspackma\Documents\YouTubeDL\bin\ffmpeg.exe", @"C:\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe", @"C:\Users\rspackma\Documents\YouTubeDL\ffmpeg\bin\ffmpeg.exe" };
 				var ffmpeg = ffmpegs.Where(File.Exists).First();
 				using (var process = Process.Start(ffmpeg, $@"-i ""{Path.Combine(Helpers.AudioDirectory, inputFile)}"" ""{Path.Combine(Helpers.PatternDirectory, outputFile)}"""))
 					process.WaitForExit();
