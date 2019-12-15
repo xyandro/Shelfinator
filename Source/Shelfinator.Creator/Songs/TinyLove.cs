@@ -303,6 +303,7 @@ namespace Shelfinator.Creator.Songs
 			// LinesSparkle (82644)
 			var linesSparkle = LinesSparkle(out int linesSparkleLength);
 			song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
+			song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 			Emulator.TestPosition = 82644;
 
 			//// Gravity (101330)
