@@ -205,7 +205,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		void AddGravity(Song song, Point center, int startTime, int duration, int reverseDuration)
+		void AddGravity(Song song, Point center, int startTime, int duration, bool reverse)
 		{
 			const double Accel = 0.003;
 
@@ -239,17 +239,14 @@ namespace Shelfinator.Creator.Songs
 
 					var newPoint = point.Item1 + vector * newDist;
 					foreach (var light in bodyLayout.GetPositionLights(newPoint, 1, 1))
-					{
 						segment.AddLight(light, time, point.Item2);
-						done = false;
-					}
+					done = false;
 				}
 				if (done)
 					break;
 			}
 
-			song.AddSegment(segment, 0, time, startTime, duration);
-			song.AddSegment(segment, time, 0, startTime + duration, reverseDuration);
+			song.AddSegment(segment, reverse ? time : 0, reverse ? 0 : time, startTime, duration);
 		}
 
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
@@ -300,25 +297,31 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(heart, 78, 0, 75932, 3356);
 			//song.AddSegment(heart, 0, 78, 79288, 3356);
 
-			// LinesSparkle (82644)
-			var linesSparkle = LinesSparkle(out int linesSparkleLength);
-			song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
-			song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
-			Emulator.TestPosition = 82644;
+			//// LinesSparkle (82644)
+			//var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
+			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
-			//// Gravity (101330)
-			//AddGravity(song, new Point(48, 48), 101330, 3122, 3031);
-			//AddGravity(song, new Point(29, 29), 107483, 2975, 2789);
-			//AddGravity(song, new Point(29, 67), 113247, 2809, 2746);
-			//AddGravity(song, new Point(67, 67), 118802, 2822, 2758);
-			//AddGravity(song, new Point(67, 29), 124382, 2801, 2863);
-			//AddGravity(song, new Point(48, 48), 130046, 2821, 2929);
-			//AddGravity(song, new Point(48, 48), 135796, 2830, 2863);
-			//AddGravity(song, new Point(48, 48), 141489, 2851, 3003);
-			//AddGravity(song, new Point(48, 48), 147343, 2865, 2847);
-
-			////song.AddSegment(gravity, 0, gravityLength, 153055, 2779);
-			//Emulator.TestPosition = 101330;
+			// Gravity (101330)
+			AddGravity(song, new Point(48, 48), 101330, 3122, false);
+			AddGravity(song, new Point(29, 29), 104452, 3031, true);
+			AddGravity(song, new Point(29, 67), 107483, 2975, false);
+			AddGravity(song, new Point(67, 67), 110458, 2789, true);
+			AddGravity(song, new Point(67, 29), 113247, 2809, false);
+			AddGravity(song, new Point(29, 48), 116056, 2746, true);
+			AddGravity(song, new Point(48, 29), 118802, 2822, false);
+			AddGravity(song, new Point(48, 67), 121624, 2758, true);
+			AddGravity(song, new Point(67, 48), 124382, 2801, false);
+			AddGravity(song, new Point(48, 48), 127183, 2863, true);
+			AddGravity(song, new Point(29, 29), 130046, 2821, false);
+			AddGravity(song, new Point(29, 67), 132867, 2929, true);
+			AddGravity(song, new Point(67, 67), 135796, 2830, false);
+			AddGravity(song, new Point(67, 29), 138626, 2863, true);
+			AddGravity(song, new Point(29, 48), 141489, 2851, false);
+			AddGravity(song, new Point(48, 29), 144340, 3003, true);
+			AddGravity(song, new Point(48, 67), 147343, 2865, false);
+			AddGravity(song, new Point(67, 48), 150208, 2847, true);
+			Emulator.TestPosition = 101330;
 
 			//101651
 
