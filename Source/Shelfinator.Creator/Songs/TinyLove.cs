@@ -156,16 +156,34 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var pixels = Helpers.LoadImage("Shelfinator.Creator.Songs.Layout.Heart.png", 1d / 16);
-			int x = (97 - pixels.GetLength(1)) / 2, y = 0, xOfs = 1, yOfs = 1;
+			var width = pixels.GetLength(0);
+			var height = pixels.GetLength(1);
+
+			int x = (97 - height) / 2, y = 0, xOfs = 1, yOfs = 1;
 			for (var time = 0; time <= 77; ++time)
 			{
+				var angle = -(double)time / 77 * 2 * Math.PI;
+				var cos = Math.Cos(angle);
+				var sin = Math.Sin(angle);
+
 				segment.Clear(time);
-				Helpers.DrawImage(pixels, bodyLayout, segment, time, x, y);
-				if ((x + xOfs < 0) || (x + pixels.GetLength(0) + xOfs > 97))
+
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var point = bodyLayout.GetLightPosition(light);
+					point.X -= x + width / 2;
+					point.Y -= y + height / 2;
+					var xVal = (point.X * cos - point.Y * sin + width / 2).Round();
+					var yVal = (point.X * sin + point.Y * cos + height / 2).Round();
+					if ((xVal >= 0) && (yVal >= 0) && (xVal < width) && (yVal < height))
+						segment.AddLight(light, time, pixels[xVal, yVal]);
+				}
+
+				if ((x + xOfs < 0) || (x + width + xOfs > 97))
 					xOfs = -xOfs;
 				else
 					x += xOfs;
-				if ((y + yOfs < 0) || (y + pixels.GetLength(1) + yOfs > 97))
+				if ((y + yOfs < 0) || (y + height + yOfs > 97))
 					yOfs = -yOfs;
 				else
 					y += yOfs;
@@ -459,11 +477,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Heart (65864)
 			var heart = Heart();
-			song.AddSegment(heart, 0, 78, 65864, 3356);
-			song.AddSegment(heart, 78, 0, 69220, 3356);
-			song.AddSegment(heart, 0, 78, 72576, 3356);
-			song.AddSegment(heart, 78, 0, 75932, 3356);
-			song.AddSegment(heart, 0, 78, 79288, 3356);
+			song.AddSegment(heart, 0, 78, 65864, 3356, 5);
 
 			// LinesSparkle (82644)
 			var linesSparkle = LinesSparkle(out int linesSparkleLength);
