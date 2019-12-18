@@ -382,6 +382,52 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment RotateSquares()
+		{
+			var center = new Point(48, 48);
+			var segment = new Segment();
+			for (var angle = 0; angle < 360; ++angle)
+			{
+				segment.Clear(angle);
+				var radians = angle * Math.PI / 180;
+				var cos1 = Math.Cos(-radians);
+				var cos2 = Math.Cos(radians);
+				var sin1 = Math.Sin(-radians);
+				var sin2 = Math.Sin(radians);
+
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var point = bodyLayout.GetLightPosition(light) - center;
+					var point1 = new Point(Math.Abs((point.X * cos1 - point.Y * sin1).Round()), Math.Abs((point.X * sin1 + point.Y * cos1).Round()));
+					var point2 = new Point(Math.Abs((point.X * cos2 - point.Y * sin2).Round()), Math.Abs((point.X * sin2 + point.Y * cos2).Round()));
+
+					var add = false;
+
+					// Outer square
+					if ((point1.X >= 0) && (point1.X <= 48) && (point1.Y >= 47) && (point1.Y <= 48))
+						add = true;
+					if ((point1.Y >= 0) && (point1.Y <= 48) && (point1.X >= 47) && (point1.X <= 48))
+						add = true;
+
+					// Middle square
+					if ((point2.X >= 0) && (point2.X <= 29) && (point2.Y >= 28) && (point2.Y <= 29))
+						add = true;
+					if ((point2.Y >= 0) && (point2.Y <= 29) && (point2.X >= 28) && (point2.X <= 29))
+						add = true;
+
+					// Inner square
+					if ((point1.X >= 0) && (point1.X <= 10) && (point1.Y >= 9) && (point1.Y <= 10))
+						add = true;
+					if ((point1.Y >= 0) && (point1.Y <= 10) && (point1.X >= 9) && (point1.X <= 10))
+						add = true;
+
+					if (add)
+						segment.AddLight(light, angle, 0x101010);
+				}
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("tinylove.ogg");
@@ -452,7 +498,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
 			song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
 
-			// Next (163983)
+			// RotateSquares (163983)
+			var rotateSquares = RotateSquares();
+			song.AddSegment(rotateSquares, 0, 360, 163983, 2922, 8);
+
+			// Next (187359)
 
 			return song;
 		}
