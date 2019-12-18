@@ -287,26 +287,29 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
 			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
-			// Shrink (101330)
-			Shrink(song, new Point(48, 48), 101330, 3122, false);
-			Shrink(song, new Point(29, 29), 104452, 3031, true);
-			Shrink(song, new Point(29, 67), 107483, 2975, false);
-			Shrink(song, new Point(67, 67), 110458, 2789, true);
-			Shrink(song, new Point(67, 29), 113247, 2809, false);
-			Shrink(song, new Point(29, 48), 116056, 2746, true);
-			Shrink(song, new Point(48, 29), 118802, 2822, false);
-			Shrink(song, new Point(48, 67), 121624, 2758, true);
-			Shrink(song, new Point(67, 48), 124382, 2801, false);
-			Shrink(song, new Point(48, 48), 127183, 2863, true);
-			Shrink(song, new Point(29, 29), 130046, 2821, false);
-			Shrink(song, new Point(29, 67), 132867, 2929, true);
-			Shrink(song, new Point(67, 67), 135796, 2830, false);
-			Shrink(song, new Point(67, 29), 138626, 2863, true);
-			Shrink(song, new Point(29, 48), 141489, 2851, false);
-			Shrink(song, new Point(48, 29), 144340, 3003, true);
-			Shrink(song, new Point(48, 67), 147343, 2865, false);
-			Shrink(song, new Point(67, 48), 150208, 2847, true);
+			// Chorus (101330)
 			Emulator.TestPosition = 101330;
+			
+			//// Shrink (101330)
+			//Shrink(song, new Point(48, 48), 101330, 3122, false);
+			//Shrink(song, new Point(29, 29), 104452, 3031, true);
+			//Shrink(song, new Point(29, 67), 107483, 2975, false);
+			//Shrink(song, new Point(67, 67), 110458, 2789, true);
+			//Shrink(song, new Point(67, 29), 113247, 2809, false);
+			//Shrink(song, new Point(29, 48), 116056, 2746, true);
+			//Shrink(song, new Point(48, 29), 118802, 2822, false);
+			//Shrink(song, new Point(48, 67), 121624, 2758, true);
+			//Shrink(song, new Point(67, 48), 124382, 2801, false);
+			//Shrink(song, new Point(48, 48), 127183, 2863, true);
+			//Shrink(song, new Point(29, 29), 130046, 2821, false);
+			//Shrink(song, new Point(29, 67), 132867, 2929, true);
+			//Shrink(song, new Point(67, 67), 135796, 2830, false);
+			//Shrink(song, new Point(67, 29), 138626, 2863, true);
+			//Shrink(song, new Point(29, 48), 141489, 2851, false);
+			//Shrink(song, new Point(48, 29), 144340, 3003, true);
+			//Shrink(song, new Point(48, 67), 147343, 2865, false);
+			//Shrink(song, new Point(67, 48), 150208, 2847, true);
+			//Emulator.TestPosition = 101330;
 
 			//101651
 
