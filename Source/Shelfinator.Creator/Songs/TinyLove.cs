@@ -205,48 +205,33 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		void AddGravity(Song song, Point center, int startTime, int duration, bool reverse)
+		void Shrink(Song song, Point center, int startTime, int duration, bool reverse)
 		{
-			const double Accel = 0.003;
-
-			var colors = Helpers.Rainbow6;
-			var points = new List<Tuple<Point, int>>();
-			for (var col = 0; col < 7; ++col)
-				for (var row = 0; row < 7; ++row)
-					for (var x = 0; x < 19; ++x)
-						for (var y = 0; y < 19; ++y)
-						{
-							var x1 = col * 19 + x - 18;
-							var y1 = row * 19 + y - 18;
-							if ((x1 >= 0) && (x1 < 97) && (y1 >= 0) && (y1 < 97))
-								points.Add(Tuple.Create(new Point(x1, y1), colors[(col + row) % colors.Count]));
-						}
+			const int DelayTime = 10;
+			const int TotalTime = 100 + DelayTime * 2 + 1;
 
 			var segment = new Segment();
-			int time;
-			for (time = 0; ; ++time)
+			var colors = Helpers.Rainbow6;
+			for (var time = 0; time < TotalTime; ++time)
 			{
-				var done = true;
 				segment.Clear(time);
-				foreach (var point in points)
+				var percent = Math.Max(0, Math.Min((double)(time - DelayTime) / 100, 1));
+				foreach (var light in bodyLayout.GetAllLights())
 				{
-					var vector = center - point.Item1;
-					var dist = vector.Length;
-					vector /= dist;
-					var newDist = 0.5 * Accel * time * time;
-					if (newDist > dist)
+					var point = bodyLayout.GetLightPosition(light);
+					var xn = ((point.X - (center.X - 9) * percent) / (1 - percent * 13 / 16)).Round();
+					var yn = ((point.Y - (center.Y - 9) * percent) / (1 - percent * 13 / 16)).Round();
+					if ((xn < 0) || (yn < 0) || (xn > 96) || (yn > 96))
 						continue;
 
-					var newPoint = point.Item1 + vector * newDist;
-					foreach (var light in bodyLayout.GetPositionLights(newPoint, 1, 1))
-						segment.AddLight(light, time, point.Item2);
-					done = false;
+					var col = (xn + 18) / 19;
+					var row = (yn + 18) / 19;
+					var color = colors[(col + row) % colors.Count];
+					segment.AddLight(light, time, color);
 				}
-				if (done)
-					break;
 			}
 
-			song.AddSegment(segment, reverse ? time : 0, reverse ? 0 : time, startTime, duration);
+			song.AddSegment(segment, reverse ? TotalTime : 0, reverse ? 0 : TotalTime, startTime, duration);
 		}
 
 		void AddIrregularBeats(Song song, Segment segment, int segmentMeasureStart, int segmentMeasureLength, int startTime, List<int> measures)
@@ -302,25 +287,25 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
 			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
-			// Gravity (101330)
-			AddGravity(song, new Point(48, 48), 101330, 3122, false);
-			AddGravity(song, new Point(29, 29), 104452, 3031, true);
-			AddGravity(song, new Point(29, 67), 107483, 2975, false);
-			AddGravity(song, new Point(67, 67), 110458, 2789, true);
-			AddGravity(song, new Point(67, 29), 113247, 2809, false);
-			AddGravity(song, new Point(29, 48), 116056, 2746, true);
-			AddGravity(song, new Point(48, 29), 118802, 2822, false);
-			AddGravity(song, new Point(48, 67), 121624, 2758, true);
-			AddGravity(song, new Point(67, 48), 124382, 2801, false);
-			AddGravity(song, new Point(48, 48), 127183, 2863, true);
-			AddGravity(song, new Point(29, 29), 130046, 2821, false);
-			AddGravity(song, new Point(29, 67), 132867, 2929, true);
-			AddGravity(song, new Point(67, 67), 135796, 2830, false);
-			AddGravity(song, new Point(67, 29), 138626, 2863, true);
-			AddGravity(song, new Point(29, 48), 141489, 2851, false);
-			AddGravity(song, new Point(48, 29), 144340, 3003, true);
-			AddGravity(song, new Point(48, 67), 147343, 2865, false);
-			AddGravity(song, new Point(67, 48), 150208, 2847, true);
+			// Shrink (101330)
+			Shrink(song, new Point(48, 48), 101330, 3122, false);
+			Shrink(song, new Point(29, 29), 104452, 3031, true);
+			Shrink(song, new Point(29, 67), 107483, 2975, false);
+			Shrink(song, new Point(67, 67), 110458, 2789, true);
+			Shrink(song, new Point(67, 29), 113247, 2809, false);
+			Shrink(song, new Point(29, 48), 116056, 2746, true);
+			Shrink(song, new Point(48, 29), 118802, 2822, false);
+			Shrink(song, new Point(48, 67), 121624, 2758, true);
+			Shrink(song, new Point(67, 48), 124382, 2801, false);
+			Shrink(song, new Point(48, 48), 127183, 2863, true);
+			Shrink(song, new Point(29, 29), 130046, 2821, false);
+			Shrink(song, new Point(29, 67), 132867, 2929, true);
+			Shrink(song, new Point(67, 67), 135796, 2830, false);
+			Shrink(song, new Point(67, 29), 138626, 2863, true);
+			Shrink(song, new Point(29, 48), 141489, 2851, false);
+			Shrink(song, new Point(48, 29), 144340, 3003, true);
+			Shrink(song, new Point(48, 67), 147343, 2865, false);
+			Shrink(song, new Point(67, 48), 150208, 2847, true);
 			Emulator.TestPosition = 101330;
 
 			//101651
