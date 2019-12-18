@@ -386,43 +386,43 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("tinylove.ogg");
 
-			//// Shift (1670)
-			//var shift = Shift();
-			//song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
-			//song.AddPaletteChange(0, 0);
-			//song.AddPaletteChange(1170, 2170, 1);
-			//song.AddPaletteChange(5702, 6702, 2);
-			//song.AddPaletteChange(10234, 11234, 3);
-			//song.AddPaletteChange(14766, 15766, 4);
-			//song.AddPaletteChange(19798, 0);
+			// Shift (1670)
+			var shift = Shift();
+			song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
+			song.AddPaletteChange(0, 0);
+			song.AddPaletteChange(1170, 2170, 1);
+			song.AddPaletteChange(5702, 6702, 2);
+			song.AddPaletteChange(10234, 11234, 3);
+			song.AddPaletteChange(14766, 15766, 4);
+			song.AddPaletteChange(19798, 0);
 
-			//// Runners (19798)
-			//var runners = Runners();
-			//song.AddSegment(runners, 0, 2800, 19798, 15862);
-			//song.AddPaletteChange(19798, 0);
-			//song.AddPaletteChange(23830, 24830, 1);
-			//song.AddPaletteChange(30628, 31628, 2);
+			// Runners (19798)
+			var runners = Runners();
+			song.AddSegment(runners, 0, 2800, 19798, 15862);
+			song.AddPaletteChange(19798, 0);
+			song.AddPaletteChange(23830, 24830, 1);
+			song.AddPaletteChange(30628, 31628, 2);
 
-			//song.AddSegment(runners, 2800, 4400, 35660, 6712);
-			//song.AddPaletteChange(35160, 36160, 3);
-			//song.AddPaletteChange(42372, 0);
+			song.AddSegment(runners, 2800, 4400, 35660, 6712);
+			song.AddPaletteChange(35160, 36160, 3);
+			song.AddPaletteChange(42372, 0);
 
-			//// LineStop (42372)
-			//var lineStop = LineStop();
-			//song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
+			// LineStop (42372)
+			var lineStop = LineStop();
+			song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
 
-			//// Heart (65864)
-			//var heart = Heart();
-			//song.AddSegment(heart, 0, 78, 65864, 3356);
-			//song.AddSegment(heart, 78, 0, 69220, 3356);
-			//song.AddSegment(heart, 0, 78, 72576, 3356);
-			//song.AddSegment(heart, 78, 0, 75932, 3356);
-			//song.AddSegment(heart, 0, 78, 79288, 3356);
+			// Heart (65864)
+			var heart = Heart();
+			song.AddSegment(heart, 0, 78, 65864, 3356);
+			song.AddSegment(heart, 78, 0, 69220, 3356);
+			song.AddSegment(heart, 0, 78, 72576, 3356);
+			song.AddSegment(heart, 78, 0, 75932, 3356);
+			song.AddSegment(heart, 0, 78, 79288, 3356);
 
-			//// LinesSparkle (82644)
-			//var linesSparkle = LinesSparkle(out int linesSparkleLength);
-			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
-			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
+			// LinesSparkle (82644)
+			var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
+			song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
 			// MoveMelody (101330)
 			var moveMelody = MoveMelody();
@@ -442,16 +442,15 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(moveMelody, 10400, 11200, 138626, 2863);
 			song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
 			song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
-			Emulator.TestPosition = 101330;
 
-			//// Shrink (147343)
-			//var shrink = Shrink(out var shrinkTime);
-			//song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
-			//song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
-			//song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
-			//song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
-			//song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
-			//song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
+			// Shrink (147343)
+			var shrink = Shrink(out var shrinkTime);
+			song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
+			song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
+			song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
+			song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
+			song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
+			song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
 
 			// Next (163983)
 
