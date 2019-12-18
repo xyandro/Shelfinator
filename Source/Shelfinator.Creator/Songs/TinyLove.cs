@@ -211,6 +211,9 @@ namespace Shelfinator.Creator.Songs
 			const int BeatMoveTime = 20;
 			const int Width = 21;
 			const int Height = 21;
+			const int SegmentEndTime = 12800;
+			const int FadeTime = 50;
+
 			var beats = new List<MidiNote>
 			{
 				new MidiNote(MidiNote.PianoNote.G, 4, 100, 0),
@@ -318,13 +321,15 @@ namespace Shelfinator.Creator.Songs
 				new MidiNote(MidiNote.PianoNote.D, 4, 12450, 0),
 			};
 
+			var colors = new List<int> { 0x100000, 0x101000, 0x100010, 0x001000, 0x001010, 0x000010 };
 			var notes = beats.Select(beat => beat.NoteValue).Distinct().OrderByDescending(x => x).ToList();
 			var pos = Enumerable.Range(0, notes.Count).ToDictionary(index => notes[index], index => index * (97 - Height) / (notes.Count - 1));
 			var segment = new Segment();
 			int curX = -1, curY = -1;
 			for (var beatCtr = 0; beatCtr < beats.Count; ++beatCtr)
 			{
-				MidiNote beat = beats[beatCtr];
+				var beatEndTime = beatCtr + 1 < beats.Count ? beats[beatCtr + 1].StartTime : SegmentEndTime;
+				var beat = beats[beatCtr];
 				var newX = (4 - Math.Abs(beatCtr % 8 - 4)) * 19;
 				var newY = pos[beat.NoteValue];
 				if (curX == -1)
@@ -333,12 +338,13 @@ namespace Shelfinator.Creator.Songs
 					curY = newY;
 				for (var time = 0; time <= BeatMoveTime; ++time)
 				{
-					var x = (newX - curX) * time / 20 + curX;
-					var y = (newY - curY) * time / 20 + curY;
+					var percent = (double)time / BeatMoveTime;
+					var x = (newX - curX) * percent + curX;
+					var y = (newY - curY) * percent + curY;
 					var useTime = beat.StartTime - BeatMoveBefore + time;
-					segment.Clear(useTime);
+					var endTime = time == BeatMoveTime ? int.MaxValue : useTime + FadeTime;
 					foreach (var light in bodyLayout.GetPositionLights(x, y, Width, Height))
-						segment.AddLight(light, useTime, 0x101010);
+						segment.AddLight(light, useTime, endTime, Helpers.GradientColor(colors[beatCtr % colors.Count], colors[(beatCtr + 1) % colors.Count], percent), 0x000000);
 				}
 				curX = newX;
 				curY = newY;
@@ -418,34 +424,34 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
 			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
-			//// MoveMelody (101330)
-			//var moveMelody = MoveMelody();
-			//song.AddSegment(moveMelody, 0, 800, 101330, 3122);
-			//song.AddSegment(moveMelody, 800, 1600, 104452, 3031);
-			//song.AddSegment(moveMelody, 1600, 2400, 107483, 2975);
-			//song.AddSegment(moveMelody, 2400, 3200, 110458, 2789);
-			//song.AddSegment(moveMelody, 3200, 4000, 113247, 2809);
-			//song.AddSegment(moveMelody, 4000, 4800, 116056, 2746);
-			//song.AddSegment(moveMelody, 4800, 5600, 118802, 2822);
-			//song.AddSegment(moveMelody, 5600, 6400, 121624, 2758);
-			//song.AddSegment(moveMelody, 6400, 7200, 124382, 2801);
-			//song.AddSegment(moveMelody, 7200, 8000, 127183, 2863);
-			//song.AddSegment(moveMelody, 8000, 8800, 130046, 2821);
-			//song.AddSegment(moveMelody, 8800, 9600, 132867, 2929);
-			//song.AddSegment(moveMelody, 9600, 10400, 135796, 2830);
-			//song.AddSegment(moveMelody, 10400, 11200, 138626, 2863);
-			//song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
-			//song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
+			// MoveMelody (101330)
+			var moveMelody = MoveMelody();
+			song.AddSegment(moveMelody, 0, 800, 101330, 3122);
+			song.AddSegment(moveMelody, 800, 1600, 104452, 3031);
+			song.AddSegment(moveMelody, 1600, 2400, 107483, 2975);
+			song.AddSegment(moveMelody, 2400, 3200, 110458, 2789);
+			song.AddSegment(moveMelody, 3200, 4000, 113247, 2809);
+			song.AddSegment(moveMelody, 4000, 4800, 116056, 2746);
+			song.AddSegment(moveMelody, 4800, 5600, 118802, 2822);
+			song.AddSegment(moveMelody, 5600, 6400, 121624, 2758);
+			song.AddSegment(moveMelody, 6400, 7200, 124382, 2801);
+			song.AddSegment(moveMelody, 7200, 8000, 127183, 2863);
+			song.AddSegment(moveMelody, 8000, 8800, 130046, 2821);
+			song.AddSegment(moveMelody, 8800, 9600, 132867, 2929);
+			song.AddSegment(moveMelody, 9600, 10400, 135796, 2830);
+			song.AddSegment(moveMelody, 10400, 11200, 138626, 2863);
+			song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
+			song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
+			Emulator.TestPosition = 101330;
 
-			// Shrink (147343)
-			var shrink = Shrink(out var shrinkTime);
-			song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
-			song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
-			song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
-			song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
-			song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
-			song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
-			Emulator.TestPosition = 147343;
+			//// Shrink (147343)
+			//var shrink = Shrink(out var shrinkTime);
+			//song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
+			//song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
+			//song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
+			//song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
+			//song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
+			//song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
 
 			// Next (163983)
 
