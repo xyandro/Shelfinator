@@ -79,8 +79,8 @@ namespace Shelfinator
 						banner = Banner::Create(L"▶", 0, 1000);
 					}
 					break;
-				case Rewind: audio->SetTime(audio->GetTime() - 5000); break;
-				case FastForward: audio->SetTime(audio->GetTime() + 5000); break;
+				case Rewind: audio->SetTime(audio->GetTime() - 500); break;
+				case FastForward: audio->SetTime(audio->GetTime() + 500); break;
 				case Previous:
 					if (audio->GetTime() >= 2000)
 					{

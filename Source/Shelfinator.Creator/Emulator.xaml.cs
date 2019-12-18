@@ -78,6 +78,7 @@ namespace Shelfinator.Creator
 
 		void PlayTestNotes()
 		{
+			return;
 			using (var midi = new Midi())
 			{
 				var playing = new List<MidiNote>();
@@ -94,7 +95,7 @@ namespace Shelfinator.Creator
 					foreach (var note in playing.Except(notes))
 						midi.NoteOff(note.NoteValue);
 					foreach (var note in notes.Except(playing))
-						midi.NoteOn(note.NoteValue, 60);
+						midi.NoteOn(note.NoteValue, 120);
 					playing = notes;
 					Thread.Sleep(10);
 				}
@@ -168,7 +169,8 @@ namespace Shelfinator.Creator
 		{
 			Dispatcher.Invoke(() =>
 			{
-				//mediaPlayer.SpeedRatio = 0.8;
+				//mediaPlayer.SpeedRatio = 0.5;
+				//mediaPlayer.Volume = 0.8;
 				var usePos = pos ?? mediaPlayer.Position.TotalMilliseconds.Round();
 				mediaPlayer.Source = new Uri(Path.Combine(Helpers.PatternDirectory, Edited ? editedFileName : normalFileName));
 				mediaPlayer.Position = TimeSpan.FromMilliseconds(usePos);
