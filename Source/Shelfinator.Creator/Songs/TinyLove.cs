@@ -446,77 +446,128 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment ColsToRows(out int time)
+		{
+			const int PauseTime = 50;
+			const int PointCount = 228;
+			const string Data =
+			"19,20/19,21/19,22/19,23/19,24/19,25/19,26/19,27/19,28/19,29/19,30/19,31/19,32/19,33/19,34/19,35/19,36/19,37/19,38/19,39/19,40/19,41/19,42/19,43/19,44/19,45/19,46/19,47/19,48/19,49/19,50/19,51/19,52/19,53/19,54/19,55/19,56/19,57/19,58/19,59/19,60/19,61/19,62/19,63/19,64/19,65/19,66/19,67/19,68/19,69/19,70/19,71/19,72/19,73/19,74/19,75/19,76/19,77/19,78/19,79/19,80/19,81/19,82/19,83/19,84/19,85/19,86/19,87/19,88/19,89/19,90/19,91/19,92/19,93/19,94/19,95/20,95/21,95/22,95/23,95/24,95/25,95/26,95/27" +
+			",95/28,95/29,95/30,95/31,95/32,95/33,95/34,95/35,95/36,95/37,95/38,95/38,94/38,93/38,92/38,91/38,90/38,89/38,88/38,87/38,86/38,85/38,84/38,83/38,82/38,81/38,80/38,79/38,78/38,77/38,76/38,75/38,74/38,73/38,72/38,71/38,70/38,69/38,68/38,67/38,66/38,65/38,64/38,63/38,62/38,61/38,60/38,59/38,58/38,57/38,56/38,55/38,54/38,53/38,52/38,51/38,50/38,49/38,48/38,47/38,46/38,45/38,44/38,43/38,42/38,41/38,40/38,39/38,38/38,37/38,36/38,35/38,34/38,33/38,32/38,31/38,30/38,29/38,28/38,27/38,26/38,25/38,24/38,2" +
+			"3/38,22/38,21/38,20/38,19/38,18/38,17/38,16/38,15/38,14/38,13/38,12/38,11/38,10/38,9/38,8/38,7/38,6/38,5/38,4/38,3/38,2/38,1/38,0/37,0/36,0/35,0/34,0/33,0/32,0/31,0/30,0/29,0/28,0/27,0/26,0/25,0/24,0/23,0/22,0/21,0/20,0/19,0/19,1/19,2/19,3/19,4/19,5/19,6/19,7/19,8/19,9/19,10/19,11/19,12/19,13/19,14/19,15/19,16/19,17/19,18/19,19/18,19/17,19/16,19/15,19/14,19/13,19/12,19/11,19/10,19/9,19/8,19/7,19/6,19/5,19/4,19/3,19/2,19/1,19/0,19/0,20/0,21/0,22/0,23/0,24/0,25/0,26/0,27/0,28/0,29/0,30/0,31/0,32/0" +
+			",33/0,34/0,35/0,36/0,37/0,38/1,38/2,38/3,38/4,38/5,38/6,38/7,38/8,38/9,38/10,38/11,38/12,38/13,38/14,38/15,38/16,38/17,38/18,38/19,38/20,38/21,38/22,38/23,38/24,38/25,38/26,38/27,38/28,38/29,38/30,38/31,38/32,38/33,38/34,38/35,38/36,38/37,38/38,38/39,38/40,38/41,38/42,38/43,38/44,38/45,38/46,38/47,38/48,38/49,38/50,38/51,38/52,38/53,38/54,38/55,38/56,38/57,38/58,38/59,38/60,38/61,38/62,38/63,38/64,38/65,38/66,38/67,38/68,38/69,38/70,38/71,38/72,38/73,38/74,38/75,38/76,38/77,38/78,38/79,38/80,38/" +
+			"81,38/82,38/83,38/84,38/85,38/86,38/87,38/88,38/89,38/90,38/91,38/92,38/93,38/94,38/95,38/95,37/95,36/95,35/95,34/95,33/95,32/95,31/95,30/95,29/95,28/95,27/95,26/95,25/95,24/95,23/95,22/95,21/95,20/95,19/94,19/93,19/92,19/91,19/90,19/89,19/88,19/87,19/86,19/85,19/84,19/83,19/82,19/81,19/80,19/79,19/78,19/77,19/76,19/75,19/74,19/73,19/72,19/71,19/70,19/69,19/68,19/67,19/66,19/65,19/64,19/63,19/62,19/61,19/60,19/59,19/58,19/57,19/56,19/55,19/54,19/53,19/52,19/51,19/50,19/49,19/48,19/47,19/46,19/45" +
+			",19/44,19/43,19/42,19/41,19/40,19/39,19/38,19/37,19/36,19/35,19/34,19/33,19/32,19/31,19/30,19/29,19/28,19/27,19/26,19/25,19/24,19/23,19/22,19/21,19/20,19/19,19";
+			var lights = Data.Split('/').Select(Point.Parse).Select(point => new List<Point> { point, new Point(95 - point.X, 95 - point.Y) }.SelectMany(p => bodyLayout.GetPositionLights(p, 2, 2)).ToList()).ToList();
+			var center = new Point(48, 48);
+			var lightDistance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 10) * 21.7012478066469).Round());
+
+			var lightColor = new LightColor(0, 2000,
+				new List<int> { 0x101010, 0x001010, 0x001008, 0x000010, 0x101010, 0x001010, 0x001008, 0x000010, 0x101010 },
+				new List<int> { 0x101010, 0x100010, 0x100008, 0x000010, 0x101010, 0x100010, 0x100008, 0x000010, 0x101010 },
+				new List<int> { 0x101010, 0x101000, 0x100800, 0x001000, 0x101010, 0x101000, 0x100800, 0x001000, 0x101010 },
+				new List<int> { 0x101010, 0x001010, 0x000810, 0x001000, 0x101010, 0x001010, 0x000810, 0x001000, 0x101010 },
+				new List<int> { 0x101010, 0x100010, 0x080010, 0x100000, 0x101010, 0x100010, 0x080010, 0x100000, 0x101010 }
+			);
+
+			var segment = new Segment();
+			time = 0;
+			for (var start = 0; start < lights.Count; ++start)
+			{
+				segment.Clear(time);
+				for (var ctr = 0; ctr < PointCount; ++ctr)
+					foreach (var light in lights[(start + ctr) % lights.Count])
+					{
+						var useTime = ((double)time / 554 * 1000 + lightDistance[light]).Round();
+						segment.AddLight(light, time, time + 1000, lightColor, useTime, lightColor, useTime + 1000, true);
+					}
+				if (start % (lights.Count / 2) == 0)
+					time += PauseTime;
+				else
+					++time;
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("tinylove.ogg");
 
-			// Shift (1670)
-			var shift = Shift();
-			song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
-			song.AddPaletteChange(0, 0);
-			song.AddPaletteChange(1170, 2170, 1);
-			song.AddPaletteChange(5702, 6702, 2);
-			song.AddPaletteChange(10234, 11234, 3);
-			song.AddPaletteChange(14766, 15766, 4);
-			song.AddPaletteChange(19798, 0);
+			//// Shift (1670)
+			//var shift = Shift();
+			//song.AddSegment(shift, 0, 4300, 1670, 2266, 8);
+			//song.AddPaletteChange(0, 0);
+			//song.AddPaletteChange(1170, 2170, 1);
+			//song.AddPaletteChange(5702, 6702, 2);
+			//song.AddPaletteChange(10234, 11234, 3);
+			//song.AddPaletteChange(14766, 15766, 4);
+			//song.AddPaletteChange(19798, 0);
 
-			// Runners (19798)
-			var runners = Runners();
-			song.AddSegment(runners, 0, 2800, 19798, 15862);
-			song.AddPaletteChange(19798, 0);
-			song.AddPaletteChange(23830, 24830, 1);
-			song.AddPaletteChange(30628, 31628, 2);
+			//// Runners (19798)
+			//var runners = Runners();
+			//song.AddSegment(runners, 0, 2800, 19798, 15862);
+			//song.AddPaletteChange(19798, 0);
+			//song.AddPaletteChange(23830, 24830, 1);
+			//song.AddPaletteChange(30628, 31628, 2);
 
-			song.AddSegment(runners, 2800, 4400, 35660, 6712);
-			song.AddPaletteChange(35160, 36160, 3);
-			song.AddPaletteChange(42372, 0);
+			//song.AddSegment(runners, 2800, 4400, 35660, 6712);
+			//song.AddPaletteChange(35160, 36160, 3);
+			//song.AddPaletteChange(42372, 0);
 
-			// LineStop (42372)
-			var lineStop = LineStop();
-			song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
+			//// LineStop (42372)
+			//var lineStop = LineStop();
+			//song.AddSegment(lineStop, 0, 970 + 100, 42372, 23492);
 
-			// Heart (65864)
-			var heart = Heart();
-			song.AddSegment(heart, 0, 78, 65864, 3356, 5);
+			//// Heart (65864)
+			//var heart = Heart();
+			//song.AddSegment(heart, 0, 78, 65864, 3356, 5);
 
-			// LinesSparkle (82644)
-			var linesSparkle = LinesSparkle(out int linesSparkleLength);
-			song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
-			song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
+			//// LinesSparkle (82644)
+			//var linesSparkle = LinesSparkle(out int linesSparkleLength);
+			//song.AddSegment(linesSparkle, 0, linesSparkleLength * 4 / 5, 82644, 13424);
+			//song.AddSegmentByVelocity(linesSparkle, linesSparkleLength * 4 / 5, linesSparkleLength, linesSparkleLength / 5, 96068, 5261, linesSparkleLength / 5, 0, 5261);
 
-			// MoveMelody (101330)
-			var moveMelody = MoveMelody();
-			song.AddSegment(moveMelody, 0, 800, 101330, 3122);
-			song.AddSegment(moveMelody, 800, 1600, 104452, 3031);
-			song.AddSegment(moveMelody, 1600, 2400, 107483, 2975);
-			song.AddSegment(moveMelody, 2400, 3200, 110458, 2789);
-			song.AddSegment(moveMelody, 3200, 4000, 113247, 2809);
-			song.AddSegment(moveMelody, 4000, 4800, 116056, 2746);
-			song.AddSegment(moveMelody, 4800, 5600, 118802, 2822);
-			song.AddSegment(moveMelody, 5600, 6400, 121624, 2758);
-			song.AddSegment(moveMelody, 6400, 7200, 124382, 2801);
-			song.AddSegment(moveMelody, 7200, 8000, 127183, 2863);
-			song.AddSegment(moveMelody, 8000, 8800, 130046, 2821);
-			song.AddSegment(moveMelody, 8800, 9600, 132867, 2929);
-			song.AddSegment(moveMelody, 9600, 10400, 135796, 2830);
-			song.AddSegment(moveMelody, 10400, 11200, 138626, 2863);
-			song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
-			song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
+			//// MoveMelody (101330)
+			//var moveMelody = MoveMelody();
+			//song.AddSegment(moveMelody, 0, 800, 101330, 3122);
+			//song.AddSegment(moveMelody, 800, 1600, 104452, 3031);
+			//song.AddSegment(moveMelody, 1600, 2400, 107483, 2975);
+			//song.AddSegment(moveMelody, 2400, 3200, 110458, 2789);
+			//song.AddSegment(moveMelody, 3200, 4000, 113247, 2809);
+			//song.AddSegment(moveMelody, 4000, 4800, 116056, 2746);
+			//song.AddSegment(moveMelody, 4800, 5600, 118802, 2822);
+			//song.AddSegment(moveMelody, 5600, 6400, 121624, 2758);
+			//song.AddSegment(moveMelody, 6400, 7200, 124382, 2801);
+			//song.AddSegment(moveMelody, 7200, 8000, 127183, 2863);
+			//song.AddSegment(moveMelody, 8000, 8800, 130046, 2821);
+			//song.AddSegment(moveMelody, 8800, 9600, 132867, 2929);
+			//song.AddSegment(moveMelody, 9600, 10400, 135796, 2830);
+			//song.AddSegment(moveMelody, 10400, 11200, 138626, 2863);
+			//song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
+			//song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
 
-			// Shrink (147343)
-			var shrink = Shrink(out var shrinkTime);
-			song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
-			song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
-			song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
-			song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
-			song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
-			song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
+			//// Shrink (147343)
+			//var shrink = Shrink(out var shrinkTime);
+			//song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
+			//song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
+			//song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
+			//song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
+			//song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
+			//song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
 
-			// RotateSquares (163983)
-			var rotateSquares = RotateSquares();
-			song.AddSegment(rotateSquares, 0, 360, 163983, 2922, 8);
+			//// RotateSquares (163983)
+			//var rotateSquares = RotateSquares();
+			//song.AddSegment(rotateSquares, 0, 360, 163983, 2922, 8);
 
-			// Next (187359)
+			// ColsToRows (????)
+			var colsToRows = ColsToRows(out var colsToRowsTime);
+			song.AddSegment(colsToRows, 0, colsToRowsTime, 1000, 3000, 10);
+			song.AddPaletteChange(1000, 0);
+			song.AddPaletteChange(6800, 7200, 1);
+			song.AddPaletteChange(12800, 13200, 2);
+			song.AddPaletteChange(18800, 19200, 3);
+			song.AddPaletteChange(24800, 25200, 4);
+			song.AddPaletteChange(31000, 0);
+			Emulator.TestPosition = 1000;
 
 			return song;
 		}
