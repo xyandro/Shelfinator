@@ -17,6 +17,33 @@ namespace Shelfinator.Creator.Songs
 		readonly Layout headerLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Header.png");
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 
+		static List<Point> HelloLights = new List<Point>
+		{
+			new Point(2, 1), new Point(2, 2), new Point(2, 3), new Point(2, 4), new Point(2, 5), new Point(3, 1), new Point(3, 2), new Point(3, 3),
+			new Point(3, 4), new Point(3, 5), new Point(4, 3), new Point(5, 3), new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4),
+			new Point(6, 5), new Point(7, 1), new Point(7, 2), new Point(7, 3), new Point(7, 4), new Point(7, 5), new Point(9, 1), new Point(9, 2),
+			new Point(9, 3), new Point(9, 4), new Point(9, 5), new Point(10, 1), new Point(10, 2), new Point(10, 3), new Point(10, 4), new Point(10, 5),
+			new Point(11, 1), new Point(11, 3), new Point(11, 5), new Point(12, 1), new Point(12, 3), new Point(12, 5), new Point(14, 1), new Point(14, 2),
+			new Point(14, 3), new Point(14, 4), new Point(14, 5), new Point(15, 1), new Point(15, 2), new Point(15, 3), new Point(15, 4), new Point(15, 5),
+			new Point(16, 5), new Point(17, 5), new Point(19, 1), new Point(19, 2), new Point(19, 3), new Point(19, 4), new Point(19, 5), new Point(20, 1),
+			new Point(20, 2), new Point(20, 3), new Point(20, 4), new Point(20, 5), new Point(21, 5), new Point(22, 5), new Point(24, 2), new Point(24, 3),
+			new Point(24, 4), new Point(25, 1), new Point(25, 2), new Point(25, 3), new Point(25, 4), new Point(25, 5), new Point(26, 1), new Point(26, 5),
+			new Point(27, 1), new Point(27, 5), new Point(28, 1), new Point(28, 2), new Point(28, 3), new Point(28, 4), new Point(28, 5), new Point(29, 2),
+			new Point(29, 3), new Point(29, 4),
+		};
+
+		static List<Point> QMPoints = new List<Point>
+		{
+			new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
+			new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
+			new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
+			new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
+			new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
+			new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
+			new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
+			new Point(24, 7),
+		};
+
 		Segment HelloHello()
 		{
 			const int StartY = 48;
@@ -28,21 +55,6 @@ namespace Shelfinator.Creator.Songs
 			const double BubbleBorder = 2;
 
 			var segment = new Segment();
-
-			var helloLights = new List<Point>
-			{
-				new Point(2, 1), new Point(2, 2), new Point(2, 3), new Point(2, 4), new Point(2, 5), new Point(3, 1), new Point(3, 2), new Point(3, 3),
-				new Point(3, 4), new Point(3, 5), new Point(4, 3), new Point(5, 3), new Point(6, 1), new Point(6, 2), new Point(6, 3), new Point(6, 4),
-				new Point(6, 5), new Point(7, 1), new Point(7, 2), new Point(7, 3), new Point(7, 4), new Point(7, 5), new Point(9, 1), new Point(9, 2),
-				new Point(9, 3), new Point(9, 4), new Point(9, 5), new Point(10, 1), new Point(10, 2), new Point(10, 3), new Point(10, 4), new Point(10, 5),
-				new Point(11, 1), new Point(11, 3), new Point(11, 5), new Point(12, 1), new Point(12, 3), new Point(12, 5), new Point(14, 1), new Point(14, 2),
-				new Point(14, 3), new Point(14, 4), new Point(14, 5), new Point(15, 1), new Point(15, 2), new Point(15, 3), new Point(15, 4), new Point(15, 5),
-				new Point(16, 5), new Point(17, 5), new Point(19, 1), new Point(19, 2), new Point(19, 3), new Point(19, 4), new Point(19, 5), new Point(20, 1),
-				new Point(20, 2), new Point(20, 3), new Point(20, 4), new Point(20, 5), new Point(21, 5), new Point(22, 5), new Point(24, 2), new Point(24, 3),
-				new Point(24, 4), new Point(25, 1), new Point(25, 2), new Point(25, 3), new Point(25, 4), new Point(25, 5), new Point(26, 1), new Point(26, 5),
-				new Point(27, 1), new Point(27, 5), new Point(28, 1), new Point(28, 2), new Point(28, 3), new Point(28, 4), new Point(28, 5), new Point(29, 2),
-				new Point(29, 3), new Point(29, 4),
-			};
 
 			var zigZagTimes = new List<Tuple<int, double>>
 			{
@@ -126,7 +138,7 @@ namespace Shelfinator.Creator.Songs
 				bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)).ForEach(light => segment.AddLight(light, time, borderColor, 0));
 			}
 
-			foreach (var point in helloLights)
+			foreach (var point in HelloLights)
 			{
 				var light = headerLayout.GetPositionLight(point);
 				foreach (var bubbleTime in bubbleTimes)
@@ -223,19 +235,7 @@ namespace Shelfinator.Creator.Songs
 			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
 				segment.AddLight(light, 15200, 15400, 0x101010, 0x000000);
 
-			var qmPoints = new List<Point>
-			{
-				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
-				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
-				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
-				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
-				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
-				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
-				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
-				new Point(24, 7),
-			};
-
-			foreach (var point in qmPoints)
+			foreach (var point in QMPoints)
 			{
 				var light = headerLayout.GetPositionLight(point);
 				segment.AddLight(light, 15200, 0x101010);
@@ -244,7 +244,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		void ShapeChangeRender(Canvas canvas, Segment segment, Layout layout, int time, Func<int, int, int> substituteColor = null)
+		void ShapeChangeRender(Canvas canvas, Segment segment, Layout layout, int time, Func<int, int, int?> substituteColor = null)
 		{
 			if (substituteColor == null)
 				substituteColor = (light, color) => color;
@@ -263,7 +263,11 @@ namespace Shelfinator.Creator.Songs
 				{
 					var value = (int)(buffer[bufferPos++] & 0xffffff);
 					foreach (var light in layout.GetPositionLights(x, y, 1, 1))
-						segment.AddLight(light, time, substituteColor(light, value));
+					{
+						var color = substituteColor(light, value);
+						if (color.HasValue)
+							segment.AddLight(light, time, color.Value);
+					}
 				}
 		}
 
@@ -474,7 +478,7 @@ namespace Shelfinator.Creator.Songs
 
 			var sparkleLights = new Dictionary<int, int>();
 
-			int SubstituteColor(int light, int color)
+			int? SubstituteColor(int light, int color)
 			{
 				var r = (color >> 16) & 255;
 				var g = (color >> 8) & 255;
@@ -519,19 +523,7 @@ namespace Shelfinator.Creator.Songs
 			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
 				segment.AddLight(light, 15200, 15400, 0x101010, 0x000000);
 
-			var qmPoints = new List<Point>
-			{
-				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
-				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
-				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
-				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
-				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
-				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
-				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
-				new Point(24, 7),
-			};
-
-			foreach (var point in qmPoints)
+			foreach (var point in QMPoints)
 			{
 				var light = headerLayout.GetPositionLight(point);
 				segment.AddLight(light, 15200, 0x101010);
@@ -597,19 +589,7 @@ namespace Shelfinator.Creator.Songs
 				}
 			}
 
-			var qmPoints = new List<Point>
-			{
-				new Point(5, 0), new Point(6, 0), new Point(7, 0), new Point(8, 0), new Point(9, 0), new Point(13, 0), new Point(14, 0), new Point(15, 0),
-				new Point(16, 0), new Point(17, 0), new Point(21, 0), new Point(22, 0), new Point(23, 0), new Point(24, 0), new Point(25, 0), new Point(4, 1),
-				new Point(5, 1), new Point(9, 1), new Point(10, 1), new Point(12, 1), new Point(13, 1), new Point(17, 1), new Point(18, 1), new Point(20, 1),
-				new Point(21, 1), new Point(25, 1), new Point(26, 1), new Point(9, 2), new Point(10, 2), new Point(17, 2), new Point(18, 2), new Point(25, 2),
-				new Point(26, 2), new Point(8, 3), new Point(9, 3), new Point(16, 3), new Point(17, 3), new Point(24, 3), new Point(25, 3), new Point(7, 4),
-				new Point(8, 4), new Point(15, 4), new Point(16, 4), new Point(23, 4), new Point(24, 4), new Point(7, 5), new Point(8, 5), new Point(15, 5),
-				new Point(16, 5), new Point(23, 5), new Point(24, 5), new Point(7, 7), new Point(8, 7), new Point(15, 7), new Point(16, 7), new Point(23, 7),
-				new Point(24, 7),
-			};
-
-			foreach (var point in qmPoints)
+			foreach (var point in QMPoints)
 			{
 				var light = headerLayout.GetPositionLight(point);
 				segment.AddLight(light, 2600, 0x101010);
@@ -680,6 +660,215 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		enum Phase { Start, Vert, Horiz };
+
+		Segment Saws()
+		{
+			const int TotalBubbleTime = 300;
+			const double BubbleWidth = 10;
+			const double BubbleBorder = 2;
+			const double SawThickness = 5;
+			const double Fade = .8;
+			const int Rotations = 2;
+			const int SawBladeSize = 30;
+			const int SawBladeEdgeSize = 2;
+			const int SawBladePoints = 20;
+			const int FinalRotations = 2;
+			const int FlashTime = 5;
+			const int MinSparkleTime = 15;
+			const int MaxSparkleTime = 45;
+
+			var segment = new Segment();
+
+			var zigZagTimes = new List<Tuple<int, double>>
+			{
+				Tuple.Create(0, 8.2),
+				Tuple.Create(200, 5.55483870967742),
+				Tuple.Create(300, 6.8774193548387),
+				Tuple.Create(500, 5.55483870967742),
+				Tuple.Create(600, 5.55483870967742),
+				Tuple.Create(700, 5.55483870967742),
+			};
+
+			zigZagTimes = Enumerable.Range(0, 24).SelectMany(x => zigZagTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
+			var bubbleTimes = new List<Tuple<int, Phase, List<Point>>>
+			{
+				Tuple.Create(0, Phase.Vert, new List<Point> { new Point(0, 48), new Point(96, 48) }),
+				Tuple.Create(300, Phase.Vert, new List<Point> { new Point(0, 48), new Point(96, 48) }),
+				Tuple.Create(6400, Phase.Horiz, new List<Point> { new Point(48, 0), new Point(48, 96) }),
+				Tuple.Create(6700, Phase.Horiz, new List<Point> { new Point(48, 0), new Point(48, 96) }),
+			};
+
+			var flashTimes = new List<int> { 17600, 17800, 18000, 18200 };
+			var flashColor = new LightColor(900, 6788, new List<int> { 0x101010, 0x101000 });
+
+			var sparkleTimes = new HashSet<int> { 13200, 16400 };
+			var sparkleLights = new Dictionary<int, int>();
+
+			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x100d04 }, new List<int> { 0x00000c } });
+			var bodyColor = 0x020101;
+			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000304, 0x040e20 }, new List<int> { 0x00000c } });
+			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
+
+			var rand = new Random(0xf0dface);
+
+			int GetColor(int light, int color)
+			{
+				var r = (color >> 16) & 255;
+				var g = (color >> 8) & 255;
+				var b = (color >> 0) & 255;
+
+				var sparkling = sparkleLights.ContainsKey(light);
+
+				if ((r > g) && (r > b))
+					return sparkling ? 0x101000 : 0x00000c;
+				if (g > b)
+					return sparkling ? 0x0f0a00 : 0x030f0f;
+				return sparkling ? 0x100f09 : 0x100f0d;
+			}
+
+
+			var sawFill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+			var sawStroke = new SolidColorBrush(Color.FromRgb(0, 0, 255));
+			var onZigZagIndex = -1;
+			var onBubbleIndex = 0;
+			int flashTime = 0;
+			var phase = bodyLayout.GetAllLights().ToDictionary(light => light, light => Phase.Start);
+			double amp = 0;
+			for (var time = 0; time < 19200; time += 20)
+			{
+				if (sparkleTimes.Contains(time))
+					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
+
+				bodyLayout.GetAllLights().ForEach(light => segment.AddLight(light, time, GetColor(light, bodyColor)));
+
+				if ((onZigZagIndex + 1 < zigZagTimes.Count) && (time >= zigZagTimes[onZigZagIndex + 1].Item1))
+				{
+					++onZigZagIndex;
+					amp = zigZagTimes[onZigZagIndex].Item2;
+				}
+				else
+					amp = amp - Fade;
+
+				var canvas = new Canvas { Width = 97, Height = 97 };
+				var points = new List<Point>();
+				for (var point = 0; point < SawBladePoints; ++point)
+				{
+					var angle = (double)point / SawBladePoints * 2 * Math.PI;
+					var dist = SawBladeSize + (point % 2 * 2 - 1) * (SawBladeEdgeSize + amp);
+					points.Add(new Point(dist * Math.Sin(angle) + 48, dist * Math.Cos(angle) + 48));
+				}
+				points.Add(points[0]);
+				var saw = new Polygon { Points = new PointCollection(points), Fill = sawFill, Stroke = sawStroke, StrokeThickness = SawThickness };
+				canvas.Children.Add(saw);
+
+				var bladeSpinTransform = new RotateTransform { CenterX = 97d / 2, CenterY = 97d / 2 };
+				var translateTransform = new TranslateTransform();
+				var rotateTransform = new RotateTransform { CenterX = 97d / 2, CenterY = 97d / 2 };
+
+				var transformGroup = new TransformGroup();
+				transformGroup.Children.Add(bladeSpinTransform);
+				transformGroup.Children.Add(translateTransform);
+				transformGroup.Children.Add(rotateTransform);
+
+				canvas.RenderTransform = transformGroup;
+
+				rotateTransform.Angle = time < 12800 ? 0d : (time - 12800d) / 6400 * FinalRotations * 360;
+
+				bladeSpinTransform.Angle = (double)time / 800 / Rotations * 360;
+
+				var used = new HashSet<int>();
+				int? SubstituteColor(Phase inPhase, int light, int color)
+				{
+					if ((color == 0x000000) || (phase[light] != inPhase) || (used.Contains(light)))
+						return default(int?);
+					used.Add(light);
+
+					return GetColor(light, color);
+				}
+
+				if (phase.Values.Any(x => x == Phase.Vert))
+				{
+					translateTransform.X = 0;
+					translateTransform.Y = -48;
+					ShapeChangeRender(canvas, segment, bodyLayout, time, (light, color) => SubstituteColor(Phase.Vert, light, color));
+					translateTransform.Y = 48;
+					ShapeChangeRender(canvas, segment, bodyLayout, time, (light, color) => SubstituteColor(Phase.Vert, light, color));
+				}
+				if (phase.Values.Any(x => x == Phase.Horiz))
+				{
+					translateTransform.X = -48;
+					translateTransform.Y = 0;
+					ShapeChangeRender(canvas, segment, bodyLayout, time, (light, color) => SubstituteColor(Phase.Horiz, light, color));
+					translateTransform.X = 48;
+					ShapeChangeRender(canvas, segment, bodyLayout, time, (light, color) => SubstituteColor(Phase.Horiz, light, color));
+				}
+				if (onBubbleIndex < bubbleTimes.Count)
+				{
+					var bubbleTime = time - bubbleTimes[onBubbleIndex].Item1;
+					if (bubbleTime >= 0)
+					{
+						foreach (var point in bubbleTimes[onBubbleIndex].Item3)
+						{
+							var useDist = bubbleTime * (135.764501987817 + BubbleWidth + BubbleBorder * 2) / TotalBubbleTime;
+							foreach (var light in bodyLayout.GetAllLights())
+							{
+								var pos = bodyLayout.GetLightPosition(light);
+								var dist = (pos - point).Length;
+								if ((dist > useDist - BubbleWidth - BubbleBorder * 2) && (dist < useDist))
+								{
+									phase[light] = bubbleTimes[onBubbleIndex].Item2;
+									segment.AddLight(light, time, bubbleColor, 1);
+								}
+								if ((dist > useDist - BubbleWidth - BubbleBorder) && (dist < useDist - BubbleBorder))
+								{
+									phase[light] = bubbleTimes[onBubbleIndex].Item2;
+									segment.AddLight(light, time, bubbleColor, 0);
+								}
+							}
+						}
+					}
+					if (bubbleTime >= TotalBubbleTime)
+						++onBubbleIndex;
+				}
+
+				if (flashTimes.Contains(time))
+					flashTime = FlashTime;
+				if (flashTime > 0)
+				{
+					var center = new Point(48, 48);
+					foreach (var light in bodyLayout.GetAllLights())
+					{
+						var pos = bodyLayout.GetLightPosition(light);
+						segment.AddLight(light, time, flashColor, ((pos - center).Length * 100).Round());
+					}
+					--flashTime;
+				}
+
+				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
+			}
+
+			bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)).ForEach(light => segment.AddLight(light, 0, borderColor, 0));
+
+			foreach (var point in HelloLights)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				foreach (var bubbleTime in bubbleTimes)
+					segment.AddLight(light, bubbleTime.Item1, bubbleTime.Item1 + TotalBubbleTime, bubbleColor, 0, 0x000000);
+			}
+
+			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
+				segment.AddLight(light, 18400, 18600, 0x101010, 0x000000);
+
+			foreach (var point in QMPoints)
+			{
+				var light = headerLayout.GetPositionLight(point);
+				segment.AddLight(light, 18400, 0x101010);
+			}
+
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
@@ -714,7 +903,11 @@ namespace Shelfinator.Creator.Songs
 			var favoriteColor = FavoriteColor();
 			song.AddSegment(favoriteColor, 0, 6400, 114520, 20640, 2);
 
-			// Next (155800)
+			// Saws (155800)
+			var saws = Saws();
+			song.AddSegment(saws, 0, 19200, 155800, 30960);
+
+			// Next (186760)
 
 			// End (217720)
 
