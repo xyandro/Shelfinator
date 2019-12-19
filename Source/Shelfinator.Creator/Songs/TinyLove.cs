@@ -488,6 +488,41 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		Segment RotateLines()
+		{
+			const double FreezeTime = 0.05;
+			var color = new LightColor(0, 2, new List<int> { 0x101010, 0x000000, 0x101010 }, new List<int> { 0x001000, 0x000000, 0x001008 }, new List<int> { 0x100000, 0x101000, 0x100010 }, new List<int> { 0x000010, 0x001010, 0x100010 });
+			var segment = new Segment();
+			for (var time = 0; time < 360; ++time)
+			{
+				segment.Clear(time);
+
+				var angle = 90 - Math.Max(0, Math.Min((Math.Cos(time * Math.PI / 180) * (1 + FreezeTime * 2) / 2 + 0.5) * 90, 90));
+				var cos = Math.Cos(angle * Math.PI / 180);
+				var sin = Math.Sin(angle * Math.PI / 180);
+				var rects = new List<Tuple<Rect, Point, int>>
+				{
+					Tuple.Create(new Rect(0.6, -1000, 18.8, 2000), new Point(29, 10), 1),
+					Tuple.Create(new Rect(76.6, -1000, 18.8, 2000), new Point(67, 86), 1),
+					Tuple.Create(new Rect(19.6, -1000, 18.8, 2000), new Point(86, 29), 2),
+					Tuple.Create(new Rect(57.6, -1000, 18.8, 2000), new Point(10, 67), 2),
+					Tuple.Create(new Rect(38.6, -1000, 18.8, 2000), new Point(48, 48), 0),
+				};
+
+				foreach (var light in bodyLayout.GetAllLights())
+				{
+					var point = bodyLayout.GetLightPosition(light);
+					foreach (var rect in rects)
+					{
+						var newPoint = new Point((point.X - rect.Item2.X) * cos - (point.Y - rect.Item2.Y) * sin + rect.Item2.X, (point.X - rect.Item2.X) * sin + (point.Y - rect.Item2.Y) * cos + rect.Item2.Y);
+						if (rect.Item1.Contains(newPoint))
+							segment.AddLight(light, time, color, rect.Item3);
+					}
+				}
+			}
+			return segment;
+		}
+
 		public override Song Render()
 		{
 			var song = new Song("tinylove.ogg");
@@ -558,15 +593,24 @@ namespace Shelfinator.Creator.Songs
 			//var rotateSquares = RotateSquares();
 			//song.AddSegment(rotateSquares, 0, 360, 163983, 2922, 8);
 
-			// ColsToRows (????)
-			var colsToRows = ColsToRows(out var colsToRowsTime);
-			song.AddSegment(colsToRows, 0, colsToRowsTime, 1000, 3000, 10);
+			//// ColsToRows (????)
+			//var colsToRows = ColsToRows(out var colsToRowsTime);
+			//song.AddSegment(colsToRows, 0, colsToRowsTime, 1000, 3000, 10);
+			//song.AddPaletteChange(1000, 0);
+			//song.AddPaletteChange(6800, 7200, 1);
+			//song.AddPaletteChange(12800, 13200, 2);
+			//song.AddPaletteChange(18800, 19200, 3);
+			//song.AddPaletteChange(24800, 25200, 4);
+			//song.AddPaletteChange(31000, 0);
+
+			// RotateLines (????)
+			var rotateLines = RotateLines();
+			song.AddSegment(rotateLines, 0, 360, 1000, 3000, 8);
 			song.AddPaletteChange(1000, 0);
 			song.AddPaletteChange(6800, 7200, 1);
 			song.AddPaletteChange(12800, 13200, 2);
 			song.AddPaletteChange(18800, 19200, 3);
-			song.AddPaletteChange(24800, 25200, 4);
-			song.AddPaletteChange(31000, 0);
+			song.AddPaletteChange(25000, 0);
 			Emulator.TestPosition = 1000;
 
 			return song;
