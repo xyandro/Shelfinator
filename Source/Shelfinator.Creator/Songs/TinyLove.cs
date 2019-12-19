@@ -404,6 +404,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var center = new Point(48, 48);
 			var segment = new Segment();
+			var lightColor = new LightColor(0, 2, new List<int> { 0x101010, 0x101010, 0x101010 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x000010, 0x001000, 0x001010 }, new List<int> { 0x001010, 0x001000, 0x000010 });
 			for (var angle = 0; angle < 360; ++angle)
 			{
 				segment.Clear(angle);
@@ -419,28 +420,28 @@ namespace Shelfinator.Creator.Songs
 					var point1 = new Point(Math.Abs((point.X * cos1 - point.Y * sin1).Round()), Math.Abs((point.X * sin1 + point.Y * cos1).Round()));
 					var point2 = new Point(Math.Abs((point.X * cos2 - point.Y * sin2).Round()), Math.Abs((point.X * sin2 + point.Y * cos2).Round()));
 
-					var add = false;
+					var add = -1;
 
 					// Outer square
 					if ((point1.X >= 0) && (point1.X <= 48) && (point1.Y >= 47) && (point1.Y <= 48))
-						add = true;
+						add = 0;
 					if ((point1.Y >= 0) && (point1.Y <= 48) && (point1.X >= 47) && (point1.X <= 48))
-						add = true;
+						add = 0;
 
 					// Middle square
 					if ((point2.X >= 0) && (point2.X <= 29) && (point2.Y >= 28) && (point2.Y <= 29))
-						add = true;
+						add = 1;
 					if ((point2.Y >= 0) && (point2.Y <= 29) && (point2.X >= 28) && (point2.X <= 29))
-						add = true;
+						add = 1;
 
 					// Inner square
 					if ((point1.X >= 0) && (point1.X <= 10) && (point1.Y >= 9) && (point1.Y <= 10))
-						add = true;
+						add = 2;
 					if ((point1.Y >= 0) && (point1.Y <= 10) && (point1.X >= 9) && (point1.X <= 10))
-						add = true;
+						add = 2;
 
-					if (add)
-						segment.AddLight(light, angle, 0x101010);
+					if (add != -1)
+						segment.AddLight(light, angle, lightColor, add);
 				}
 			}
 			return segment;
@@ -589,9 +590,21 @@ namespace Shelfinator.Creator.Songs
 			//song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
 			//song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
 
-			//// RotateSquares (163983)
-			//var rotateSquares = RotateSquares();
-			//song.AddSegment(rotateSquares, 0, 360, 163983, 2922, 8);
+			// RotateSquares (163983)
+			var rotateSquares = RotateSquares();
+			song.AddSegment(rotateSquares, 0, 360, 163983, 3211);
+			song.AddSegment(rotateSquares, 0, 360, 167194, 3302);
+			song.AddSegment(rotateSquares, 0, 360, 170496, 3160);
+			song.AddSegment(rotateSquares, 0, 360, 173656, 3213);
+			song.AddSegment(rotateSquares, 0, 360, 176869, 3582);
+			song.AddSegment(rotateSquares, 0, 360, 180451, 3324);
+			song.AddSegment(rotateSquares, 0, 360, 183775, 3606);
+			song.AddPaletteChange(163983, 0);
+			song.AddPaletteChange(170296, 170696, 1);
+			song.AddPaletteChange(176669, 177069, 2);
+			song.AddPaletteChange(183575, 183975, 3);
+			song.AddPaletteChange(187381, 0);
+			Emulator.TestPosition = 163983;
 
 			//// ColsToRows (????)
 			//var colsToRows = ColsToRows(out var colsToRowsTime);
@@ -603,15 +616,14 @@ namespace Shelfinator.Creator.Songs
 			//song.AddPaletteChange(24800, 25200, 4);
 			//song.AddPaletteChange(31000, 0);
 
-			// RotateLines (????)
-			var rotateLines = RotateLines();
-			song.AddSegment(rotateLines, 0, 360, 1000, 3000, 8);
-			song.AddPaletteChange(1000, 0);
-			song.AddPaletteChange(6800, 7200, 1);
-			song.AddPaletteChange(12800, 13200, 2);
-			song.AddPaletteChange(18800, 19200, 3);
-			song.AddPaletteChange(25000, 0);
-			Emulator.TestPosition = 1000;
+			//// RotateLines (????)
+			//var rotateLines = RotateLines();
+			//song.AddSegment(rotateLines, 0, 360, 1000, 3000, 8);
+			//song.AddPaletteChange(1000, 0);
+			//song.AddPaletteChange(6800, 7200, 1);
+			//song.AddPaletteChange(12800, 13200, 2);
+			//song.AddPaletteChange(18800, 19200, 3);
+			//song.AddPaletteChange(25000, 0);
 
 			return song;
 		}
