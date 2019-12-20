@@ -439,33 +439,106 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment Shrink(out int totalTime)
+		class MovingLine
 		{
-			const int DelayTime = 10;
-			totalTime = 100 + DelayTime * 2 + 1;
+			public Point Center { get; set; }
+			public int StartTime { get; set; }
+			public int EndTime { get; set; }
+			public double StartAngle { get; set; }
+			public double EndAngle { get; set; }
+		}
+
+		Segment MovingLines()
+		{
+			const int Width = 4;
+
+			var segment = new Segment();
+			var lines = new List<MovingLine>
+			{
+				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = 10, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = 10, StartAngle = 90, EndAngle = 90 },
+
+				new MovingLine { Center = new Point(48, 48), StartTime = 10, EndTime = 90, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 10, EndTime = 90, StartAngle = 90, EndAngle = 135 },
+
+				new MovingLine { Center = new Point(29, 29), StartTime = 100, EndTime = 180, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 100, EndTime = 180, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 100, EndTime = 180, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 100, EndTime = 180, StartAngle = 45, EndAngle = 90 },
+
+				new MovingLine { Center = new Point(29, 29), StartTime = 190, EndTime = 270, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 190, EndTime = 270, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 190, EndTime = 270, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 190, EndTime = 270, StartAngle = 90, EndAngle = 135 },
+
+				new MovingLine { Center = new Point(10, 48), StartTime = 280, EndTime = 360, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(86, 48), StartTime = 280, EndTime = 360, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 10), StartTime = 280, EndTime = 360, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(48, 86), StartTime = 280, EndTime = 360, StartAngle = 135, EndAngle = 180 },
+
+				new MovingLine { Center = new Point(10, 48), StartTime = 370, EndTime = 450, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(86, 48), StartTime = 370, EndTime = 450, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(48, 10), StartTime = 370, EndTime = 450, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(48, 86), StartTime = 370, EndTime = 450, StartAngle = 0, EndAngle = 45 },
+
+				new MovingLine { Center = new Point(29, 29), StartTime = 460, EndTime = 540, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 460, EndTime = 540, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 460, EndTime = 540, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 460, EndTime = 540, StartAngle = 135, EndAngle = 180 },
+
+				new MovingLine { Center = new Point(29, 29), StartTime = 550, EndTime = 630, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 550, EndTime = 630, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 550, EndTime = 630, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 550, EndTime = 630, StartAngle = 0, EndAngle = 45 },
+
+				new MovingLine { Center = new Point(0, 0), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(96, 0), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(96, 96), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(0, 96), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
+
+				new MovingLine { Center = new Point(0, 0), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(96, 0), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
+				new MovingLine { Center = new Point(96, 96), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(0, 96), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
+
+				new MovingLine { Center = new Point(48, 48), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 270 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 180 },
+			};
 
 			var center = new Point(48, 48);
-			var segment = new Segment();
-			var colors = Helpers.Rainbow6;
-			for (var time = 0; time < totalTime; ++time)
+			var lightDistance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 16.9830463869911).Round());
+			var lightColor = new LightColor(0, 1000, new List<int> { 0x101010 }, new List<int> { 0x000010, 0x101010, 0x000010 }, new List<int> { 0x001000, 0x101010, 0x001000 }, new List<int> { 0x100000, 0x101010, 0x100000 }, new List<int> { 0x100808, 0x081008, 0x080810 }, new List<int> { 0x100010, 0x001010, 0x100010, 0x001010, 0x100010 });
+			var maxTime = lines.Max(line => line.EndTime);
+			for (var time = 0; time <= maxTime; time += 5)
 			{
-				segment.Clear(time);
-				var percent = Math.Max(0, Math.Min((double)(time - DelayTime) / 100, 1));
-				foreach (var light in bodyLayout.GetAllLights())
+				var first = true;
+
+				foreach (var line in lines)
 				{
-					var point = bodyLayout.GetLightPosition(light);
-					var xn = ((point.X - (center.X - 9) * percent) / (1 - percent * 13 / 16)).Round();
-					var yn = ((point.Y - (center.Y - 9) * percent) / (1 - percent * 13 / 16)).Round();
-					if ((xn < 0) || (yn < 0) || (xn > 96) || (yn > 96))
+					if ((time < line.StartTime) || (time > line.EndTime))
 						continue;
 
-					var col = (xn + 18) / 19;
-					var row = (yn + 18) / 19;
-					var color = colors[(col + row) % colors.Count];
-					segment.AddLight(light, time, color);
+					if (first)
+					{
+						segment.Clear(time);
+						first = false;
+					}
+
+					foreach (var light in bodyLayout.GetAllLights())
+					{
+						var point = bodyLayout.GetLightPosition(light);
+						var useAngle = (((double)time - line.StartTime) / (line.EndTime - line.StartTime) * (line.EndAngle - line.StartAngle) + line.StartAngle) * Math.PI / 180;
+						var sin = Math.Sin(useAngle);
+						var cos = Math.Cos(useAngle);
+						var t = (line.Center.Y - point.Y) * sin - (line.Center.X - point.X) * cos;
+						var dist = Math.Sqrt(Math.Pow(t * cos + line.Center.X - point.X, 2) + Math.Pow(-t * sin + line.Center.Y - point.Y, 2)).Round();
+						if (dist < Width / 2)
+							segment.AddLight(light, time, lightColor, lightDistance[light]);
+					}
 				}
 			}
-
 			return segment;
 		}
 
@@ -473,7 +546,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var center = new Point(48, 48);
 			var segment = new Segment();
-			var lightColor = new LightColor(0, 2, new List<int> { 0x101010, 0x101010, 0x101010 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x000010, 0x001000, 0x001010 }, new List<int> { 0x001010, 0x001000, 0x000010 });
+			var lightColor = new LightColor(0, 2, new List<int> { 0x101010, 0x101010, 0x101010 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x100000, 0x101000, 0x000010 }, new List<int> { 0x100010, 0x000010, 0x001010 });
 			for (var angle = 0; angle < 360; ++angle)
 			{
 				segment.Clear(angle);
@@ -672,14 +745,21 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(moveMelody, 11200, 12000, 141489, 2851);
 			song.AddSegment(moveMelody, 12000, 12800, 144340, 3003);
 
-			// Shrink (147343)
-			var shrink = Shrink(out var shrinkTime);
-			song.AddSegment(shrink, 0, shrinkTime, 147343, 2865);
-			song.AddSegment(shrink, shrinkTime, 0, 150208, 2847);
-			song.AddSegment(shrink, 0, shrinkTime, 153055, 2779);
-			song.AddSegment(shrink, shrinkTime, 0, 155834, 2839);
-			song.AddSegment(shrink, 0, shrinkTime, 158673, 2655);
-			song.AddSegment(shrink, shrinkTime, 0, 161328, 2655);
+			// MovingLines (147343)
+			var movingLines = MovingLines();
+			song.AddSegment(movingLines, 0, 180, 147343, 2865);
+			song.AddSegment(movingLines, 180, 360, 150208, 2847);
+			song.AddSegment(movingLines, 360, 540, 153055, 2779);
+			song.AddSegment(movingLines, 540, 720, 155834, 2839);
+			song.AddSegment(movingLines, 720, 900, 158673, 2655);
+			song.AddSegment(movingLines, 900, 1080, 161328, 2655);
+			song.AddPaletteChange(147343, 0);
+			song.AddPaletteChange(150008, 150408, 1);
+			song.AddPaletteChange(152855, 153255, 2);
+			song.AddPaletteChange(155634, 156034, 3);
+			song.AddPaletteChange(158473, 158873, 4);
+			song.AddPaletteChange(161128, 161528, 5);
+			song.AddPaletteChange(163983, 0);
 
 			// RotateSquares (163983)
 			var rotateSquares = RotateSquares();
