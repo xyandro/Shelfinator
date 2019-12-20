@@ -720,8 +720,8 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(rotateLines, 180, 360, 220283, 2192);
 			song.AddSegment(rotateLines, 0, 360, 222475, 4735);
 			song.AddSegment(rotateLines, 0, 360, 227210, 4965);
-			song.AddSegment(rotateLines, 0, 180, 232175, 4458);
-			song.AddSegment(rotateLines, 180, 180, 236633, 2500);
+			song.AddSegment(rotateLines, 0, 180, 232175, 3500);
+			song.AddSegment(rotateLines, 180, 180, 235675, 3458);
 			song.AddPaletteChange(216901, 0);
 			song.AddPaletteChange(222275, 222675, 1);
 			song.AddPaletteChange(227010, 227410, 2);
