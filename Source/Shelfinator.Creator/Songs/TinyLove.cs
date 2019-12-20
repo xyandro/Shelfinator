@@ -265,7 +265,7 @@ namespace Shelfinator.Creator.Songs
 			var horiz = Enumerable.Range(0, 6).SelectMany(x => bodyLayout.GetPositionLights(x * 19, 0, 2, 97)).ToList();
 			var vert = Enumerable.Range(0, 6).SelectMany(y => bodyLayout.GetPositionLights(0, y * 19, 97, 2)).ToList();
 			var segment = new Segment();
-			var lightColor = new LightColor(0, 6, new List<int> { 0x101010 }, new List<int> { 0x100808, 0x100000 }, new List<int> { 0x100010, 0x001010 }, new List<int> { 0x001000, 0x081008, 0x081000, 0x001008 }, new List<int> { 0x000010, 0x100010, 0x101010 }, Helpers.Rainbow6);
+			var lightColor = new LightColor(0, 6, new List<int> { 0x101010 }, new List<int> { 0x100808, 0x100000 }, new List<int> { 0x100010, 0x001010 }, new List<int> { 0x001000, 0x081008, 0x081000, 0x001008 }, new List<int> { 0x000010, 0x100010, 0x101010 }, new List<int> { 0x101010, 0x100808, 0x100000, 0x100010, 0x001010, 0x001000, 0x081008, 0x081000, 0x001008, 0x000010 });
 			var isHorizes = new List<bool?> { true, true, false, false, true, true, false, false, true, false, true, false, true, false, false, null, null, null, null, null };
 			time = 0;
 			foreach (var isHoriz in isHorizes)
