@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using Shelfinator.Creator.SongData;
 
@@ -497,20 +498,55 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
+		int[,] CloudsGetPixels(string fileName, double brightness)
+		{
+			int[,] pixels;
+			using (var stream = typeof(Bohemian).Assembly.GetManifestResourceStream(fileName))
+			using (var image = System.Drawing.Image.FromStream(stream))
+			using (var bmp = new System.Drawing.Bitmap(image))
+			{
+				if ((bmp.Width != 97) || (bmp.Height != 97))
+					throw new Exception("Invalid image");
+
+				pixels = new int[bmp.Width, bmp.Height];
+				var lockBits = bmp.LockBits(new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				var data = new byte[lockBits.Stride * bmp.Height];
+				Marshal.Copy(lockBits.Scan0, data, 0, data.Length);
+				bmp.UnlockBits(lockBits);
+
+				var lineSkip = lockBits.Stride - bmp.Width * sizeof(int);
+				var ofs = 0;
+				for (var y = 0; y < bmp.Height; ++y)
+				{
+					for (var x = 0; x < bmp.Width; ++x)
+					{
+						pixels[x, y] = Helpers.MultiplyColor(BitConverter.ToInt32(data, ofs), brightness);
+						ofs += sizeof(int);
+					}
+					ofs += lineSkip;
+				}
+				var hexChars = Enumerable.Range(0, 16).Select(num => $"{num:x}"[0]).ToArray();
+			}
+
+			return pixels;
+		}
+
 		Segment Clouds()
 		{
-			var pixels = Helpers.LoadImage("Shelfinator.Creator.Songs.Layout.Clouds.png", 1d / 16);
-
-			if ((pixels.GetLength(0) != 97) || (pixels.GetLength(1) != 97))
-				throw new Exception("Invalid image");
+			var empty = new int[97, 97];
+			var pixels = CloudsGetPixels("Shelfinator.Creator.Songs.Layout.Clouds.png", 1d / 16);
 
 			var segment = new Segment();
 
 			for (var offset = 0; offset < 97; ++offset)
-				Helpers.DrawImage(pixels, bodyLayout, segment, offset, offset, offset);
+				for (var y = 0; y < 97; ++y)
+					for (var x = 0; x < 97; ++x)
+						foreach (var light in bodyLayout.GetPositionLights((x + offset) % 97, (y + offset) % 97, 1, 1))
+							segment.AddLight(light, offset, pixels[x, y]);
 
 			return segment;
 		}
+
 
 		class FloodPoint
 		{

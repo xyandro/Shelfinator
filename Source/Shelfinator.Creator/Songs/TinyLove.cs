@@ -9,7 +9,6 @@ namespace Shelfinator.Creator.Songs
 	class TinyLove : SongCreator
 	{
 		public override int SongNumber => 10;
-		public override bool Test => true;
 
 		readonly Layout bodyLayout;
 
