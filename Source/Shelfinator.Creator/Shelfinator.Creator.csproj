@@ -90,7 +90,6 @@
     <EmbeddedResource Include="Songs\Layout\Clouds.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar-Small.png" />
     <EmbeddedResource Include="Songs\Layout\DotStar.png" />
-    <EmbeddedResource Include="Songs\Layout\Heart.png" />
     <EmbeddedResource Include="Songs\Layout\Layout-Body.png" />
     <EmbeddedResource Include="Songs\Layout\Layout-Header.png" />
     <EmbeddedResource Include="Songs\Layout\Plasma.gif" />
