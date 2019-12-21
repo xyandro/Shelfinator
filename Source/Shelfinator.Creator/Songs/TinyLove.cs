@@ -511,7 +511,7 @@ namespace Shelfinator.Creator.Songs
 			var lightDistance = bodyLayout.GetAllLights().ToDictionary(light => light, light => (((bodyLayout.GetLightPosition(light) - center).Length - 9) * 16.9830463869911).Round());
 			var lightColor = new LightColor(0, 1000, new List<int> { 0x101010 }, new List<int> { 0x000010, 0x101010, 0x000010 }, new List<int> { 0x001000, 0x101010, 0x001000 }, new List<int> { 0x100000, 0x101010, 0x100000 }, new List<int> { 0x100808, 0x081008, 0x080810 }, new List<int> { 0x100010, 0x001010, 0x100010, 0x001010, 0x100010 });
 			var maxTime = lines.Max(line => line.EndTime);
-			for (var time = 0; time <= maxTime; time += 5)
+			for (var time = 0; time <= maxTime; ++time)
 			{
 				var first = true;
 
