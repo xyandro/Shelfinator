@@ -8,7 +8,7 @@ namespace Shelfinator.Creator.Songs
 {
 	class Orchestra : SongCreator
 	{
-		public override int SongNumber => 8;
+		public override int SongNumber => 10;
 
 		readonly Layout bodyLayout = new Layout("Shelfinator.Creator.Songs.Layout.Layout-Body.png");
 		readonly Layout squaresLayout = new Layout("Shelfinator.Creator.Songs.Layout.Squares.png");
