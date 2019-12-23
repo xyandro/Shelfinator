@@ -646,36 +646,72 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment RotateLines()
+		class FinalePoint
 		{
-			const double FreezeTime = 0.05;
-			var color = new LightColor(0, 1, new List<int> { 0x101010, 0x101010 }, new List<int> { 0x100000, 0x101000 }, new List<int> { 0x001000, 0x081008 }, new List<int> { 0x100010, 0x001010 });
-			var segment = new Segment();
-			for (var time = 0; time < 360; ++time)
+			public Point Point { get; set; }
+			public Size MinSize { get; set; }
+			public Size MaxSize { get; set; }
+			public double Phase { get; set; }
+			public int Color { get; set; }
+
+			public FinalePoint(Point point, Size minSize, Size maxSize, double phase, int color)
 			{
-				segment.Clear(time);
-
-				var angle = 90 - Math.Max(0, Math.Min((Math.Cos(time * Math.PI / 180) * (1 + FreezeTime * 2) / 2 + 0.5) * 90, 90));
-				var cos = Math.Cos(angle * Math.PI / 180);
-				var sin = Math.Sin(angle * Math.PI / 180);
-				var rects = new List<Tuple<Rect, Point, int>>
-				{
-					Tuple.Create(new Rect(19.6, -1000, 18.8, 2000), new Point(86, 29), 1),
-					Tuple.Create(new Rect(57.6, -1000, 18.8, 2000), new Point(10, 67), 1),
-					Tuple.Create(new Rect(38.6, -1000, 18.8, 2000), new Point(48, 48), 0),
-				};
-
-				foreach (var light in bodyLayout.GetAllLights())
-				{
-					var point = bodyLayout.GetLightPosition(light);
-					foreach (var rect in rects)
-					{
-						var newPoint = new Point((point.X - rect.Item2.X) * cos - (point.Y - rect.Item2.Y) * sin + rect.Item2.X, (point.X - rect.Item2.X) * sin + (point.Y - rect.Item2.Y) * cos + rect.Item2.Y);
-						if (rect.Item1.Contains(newPoint))
-							segment.AddLight(light, time, color, rect.Item3);
-					}
-				}
+				Point = point;
+				MinSize = minSize;
+				MaxSize = maxSize;
+				Phase = phase;
+				Color = color;
 			}
+		}
+
+		Segment Finale(out int moveTime, out int dissolveTime)
+		{
+			const int Pause = 120;
+
+			var finalePoints = new List<FinalePoint>
+			{
+				new FinalePoint(new Point(48.5, 1), new Size(0, 2), new Size(97, 2), 180, 0),
+				new FinalePoint(new Point(48.5, 96), new Size(0, 2), new Size(97, 2), 180, 0),
+				new FinalePoint(new Point(1, 48.5), new Size(2, 0), new Size(2, 97), 180, 0),
+				new FinalePoint(new Point(96, 48.5), new Size(2, 0), new Size(2, 97), 180, 0),
+
+				new FinalePoint(new Point(48.5, 20), new Size(0, 2), new Size(97, 2), 102.503241, 1),
+				new FinalePoint(new Point(48.5, 77), new Size(0, 2), new Size(97, 2), 102.503241, 1),
+				new FinalePoint(new Point(20, 48.5), new Size(2, 0), new Size(2, 97), 102.503241, 1),
+				new FinalePoint(new Point(77, 48.5), new Size(2, 0), new Size(2, 97), 102.503241, 1),
+
+				new FinalePoint(new Point(48.5, 39), new Size(0, 2), new Size(97, 2), 55.456992, 0),
+				new FinalePoint(new Point(48.5, 58), new Size(0, 2), new Size(97, 2), 55.456992, 0),
+				new FinalePoint(new Point(39, 48.5), new Size(2, 0), new Size(2, 97), 55.456992, 0),
+				new FinalePoint(new Point(58, 48.5), new Size(2, 0), new Size(2, 97), 55.456992, 0),
+			};
+
+			var color = new LightColor(0, 1, new List<int> { 0x101010, 0x101010 }, new List<int> { 0x100000, 0x101000 }, new List<int> { 0x001000, 0x081008 }, new List<int> { 0x100010, 0x001010 });
+
+			var segment = new Segment();
+			moveTime = 0;
+			for (var angle = 0; angle < 360; ++angle)
+			{
+				segment.Clear(moveTime);
+				foreach (var finalePoint in finalePoints)
+				{
+					var percent = Math.Max(0, Math.Min((-Math.Cos((angle + finalePoint.Phase) / 180d * Math.PI) + 1) / 2, 1));
+					var width = (finalePoint.MaxSize.Width - finalePoint.MinSize.Width) * percent + finalePoint.MinSize.Width;
+					var height = (finalePoint.MaxSize.Height - finalePoint.MinSize.Height) * percent + finalePoint.MinSize.Height;
+					foreach (var light in bodyLayout.GetPositionLights(finalePoint.Point.X - width / 2, finalePoint.Point.Y - height / 2, width, height))
+						segment.AddLight(light, moveTime, color, finalePoint.Color);
+				}
+				if (angle == 0)
+					moveTime += Pause;
+				else
+					++moveTime;
+			}
+
+			dissolveTime = moveTime;
+			var rand = new Random(0xbadbeef);
+			foreach (var light in bodyLayout.GetAllLights().OrderBy(x => rand.Next()))
+				segment.AddLight(light, dissolveTime++, 0x000000);
+
 			return segment;
 		}
 
@@ -798,19 +834,22 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteChange(212628, 213028, 4);
 			song.AddPaletteChange(216901, 0);
 
-			// RotateLines (216901)
-			var rotateLines = RotateLines();
-			song.AddSegment(rotateLines, 0, 180, 216901, 3382);
-			song.AddSegment(rotateLines, 180, 360, 220283, 2192);
-			song.AddSegment(rotateLines, 0, 360, 222475, 4735);
-			song.AddSegment(rotateLines, 0, 360, 227210, 4965);
-			song.AddSegment(rotateLines, 0, 180, 232175, 3500);
-			song.AddSegment(rotateLines, 180, 180, 235675, 3458);
+			// Finale (216901)
+			var finale = Finale(out var finaleMoveTime, out var finaleDissolveTime);
+			song.AddSegment(finale, 0, finaleMoveTime, 216901, 2842);
+			song.AddSegment(finale, 0, finaleMoveTime, 219743, 2629);
+			song.AddSegment(finale, 0, finaleMoveTime, 222372, 2302);
+			song.AddSegment(finale, 0, finaleMoveTime, 224674, 2485);
+			song.AddSegment(finale, 0, finaleMoveTime, 227159, 2515);
+			song.AddSegment(finale, 0, finaleMoveTime, 229674, 2467);
+			song.AddSegment(finale, 0, finaleMoveTime, 232141, 3270);
+			song.AddSegment(finale, 0, 0, 235411, 3000);
+			song.AddSegment(finale, finaleMoveTime, finaleDissolveTime, 238411, 2000);
 			song.AddPaletteChange(216901, 0);
-			song.AddPaletteChange(222275, 222675, 1);
-			song.AddPaletteChange(227010, 227410, 2);
-			song.AddPaletteChange(231975, 232375, 3);
-			song.AddPaletteChange(239133, 0);
+			song.AddPaletteChange(222172, 222572, 1);
+			song.AddPaletteChange(226959, 227359, 2);
+			song.AddPaletteChange(231941, 232341, 3);
+			song.AddPaletteChange(240411, 0);
 
 			return song;
 		}
