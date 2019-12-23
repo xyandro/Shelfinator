@@ -451,60 +451,64 @@ namespace Shelfinator.Creator.Songs
 		Segment MovingLines()
 		{
 			const int Width = 4;
+			const int PauseTime = 45;
 
 			var segment = new Segment();
 			var lines = new List<MovingLine>
 			{
-				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = 10, StartAngle = 0, EndAngle = 0 },
-				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = 10, StartAngle = 90, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = PauseTime, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 0, EndTime = PauseTime, StartAngle = 90, EndAngle = 90 },
 
-				new MovingLine { Center = new Point(48, 48), StartTime = 10, EndTime = 90, StartAngle = 0, EndAngle = 45 },
-				new MovingLine { Center = new Point(48, 48), StartTime = 10, EndTime = 90, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(48, 48), StartTime = PauseTime, EndTime = 90, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(48, 48), StartTime = PauseTime, EndTime = 90, StartAngle = 90, EndAngle = 135 },
 
-				new MovingLine { Center = new Point(29, 29), StartTime = 100, EndTime = 180, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(67, 67), StartTime = 100, EndTime = 180, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(67, 29), StartTime = 100, EndTime = 180, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(29, 67), StartTime = 100, EndTime = 180, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(29, 29), StartTime = 90 + PauseTime, EndTime = 180, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 90 + PauseTime, EndTime = 180, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 90 + PauseTime, EndTime = 180, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 90 + PauseTime, EndTime = 180, StartAngle = 45, EndAngle = 90 },
 
-				new MovingLine { Center = new Point(29, 29), StartTime = 190, EndTime = 270, StartAngle = 0, EndAngle = 45 },
-				new MovingLine { Center = new Point(67, 67), StartTime = 190, EndTime = 270, StartAngle = 0, EndAngle = 45 },
-				new MovingLine { Center = new Point(67, 29), StartTime = 190, EndTime = 270, StartAngle = 90, EndAngle = 135 },
-				new MovingLine { Center = new Point(29, 67), StartTime = 190, EndTime = 270, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(29, 29), StartTime = 180 + PauseTime, EndTime = 270, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 180 + PauseTime, EndTime = 270, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 180 + PauseTime, EndTime = 270, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 180 + PauseTime, EndTime = 270, StartAngle = 90, EndAngle = 135 },
 
-				new MovingLine { Center = new Point(10, 48), StartTime = 280, EndTime = 360, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(86, 48), StartTime = 280, EndTime = 360, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(48, 10), StartTime = 280, EndTime = 360, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(48, 86), StartTime = 280, EndTime = 360, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(10, 48), StartTime = 270 + PauseTime, EndTime = 360, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(86, 48), StartTime = 270 + PauseTime, EndTime = 360, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 10), StartTime = 270 + PauseTime, EndTime = 360, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(48, 86), StartTime = 270 + PauseTime, EndTime = 360, StartAngle = 135, EndAngle = 180 },
 
-				new MovingLine { Center = new Point(10, 48), StartTime = 370, EndTime = 450, StartAngle = 90, EndAngle = 135 },
-				new MovingLine { Center = new Point(86, 48), StartTime = 370, EndTime = 450, StartAngle = 90, EndAngle = 135 },
-				new MovingLine { Center = new Point(48, 10), StartTime = 370, EndTime = 450, StartAngle = 0, EndAngle = 45 },
-				new MovingLine { Center = new Point(48, 86), StartTime = 370, EndTime = 450, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(10, 48), StartTime = 360 + PauseTime, EndTime = 450, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(86, 48), StartTime = 360 + PauseTime, EndTime = 450, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(48, 10), StartTime = 360 + PauseTime, EndTime = 450, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(48, 86), StartTime = 360 + PauseTime, EndTime = 450, StartAngle = 0, EndAngle = 45 },
 
-				new MovingLine { Center = new Point(29, 29), StartTime = 460, EndTime = 540, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(67, 67), StartTime = 460, EndTime = 540, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(67, 29), StartTime = 460, EndTime = 540, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(29, 67), StartTime = 460, EndTime = 540, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(29, 29), StartTime = 450 + PauseTime, EndTime = 540, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 450 + PauseTime, EndTime = 540, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 450 + PauseTime, EndTime = 540, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 450 + PauseTime, EndTime = 540, StartAngle = 135, EndAngle = 180 },
 
-				new MovingLine { Center = new Point(29, 29), StartTime = 550, EndTime = 630, StartAngle = 90, EndAngle = 135 },
-				new MovingLine { Center = new Point(67, 67), StartTime = 550, EndTime = 630, StartAngle = 90, EndAngle = 135 },
-				new MovingLine { Center = new Point(67, 29), StartTime = 550, EndTime = 630, StartAngle = 0, EndAngle = 45 },
-				new MovingLine { Center = new Point(29, 67), StartTime = 550, EndTime = 630, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(29, 29), StartTime = 540 + PauseTime, EndTime = 630, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(67, 67), StartTime = 540 + PauseTime, EndTime = 630, StartAngle = 90, EndAngle = 135 },
+				new MovingLine { Center = new Point(67, 29), StartTime = 540 + PauseTime, EndTime = 630, StartAngle = 0, EndAngle = 45 },
+				new MovingLine { Center = new Point(29, 67), StartTime = 540 + PauseTime, EndTime = 630, StartAngle = 0, EndAngle = 45 },
 
-				new MovingLine { Center = new Point(0, 0), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(96, 0), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(96, 96), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
-				new MovingLine { Center = new Point(0, 96), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(48, 48), StartTime = 640, EndTime = 720, StartAngle = 45, EndAngle = 90 },
-				new MovingLine { Center = new Point(48, 48), StartTime = 640, EndTime = 720, StartAngle = 135, EndAngle = 180 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 630 + PauseTime, EndTime = 720, StartAngle = 45, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 630 + PauseTime, EndTime = 720, StartAngle = 135, EndAngle = 180 },
 
-				new MovingLine { Center = new Point(0, 0), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
-				new MovingLine { Center = new Point(96, 0), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
-				new MovingLine { Center = new Point(96, 96), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
-				new MovingLine { Center = new Point(0, 96), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 0), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 90, EndAngle = 180 },
+				new MovingLine { Center = new Point(0, 48), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 0, EndAngle = 90 },
+				new MovingLine { Center = new Point(96, 48), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 0, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 96), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 90, EndAngle = 180 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 0, EndAngle = 90 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 720 + PauseTime, EndTime = 900, StartAngle = 90, EndAngle = 180 },
 
-				new MovingLine { Center = new Point(48, 48), StartTime = 720, EndTime = 1080, StartAngle = 90, EndAngle = 270 },
-				new MovingLine { Center = new Point(48, 48), StartTime = 720, EndTime = 1080, StartAngle = 0, EndAngle = 180 },
+				new MovingLine { Center = new Point(0, 0), StartTime = 900, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(96, 0), StartTime = 900, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
+				new MovingLine { Center = new Point(96, 96), StartTime = 900, EndTime = 1080, StartAngle = 0, EndAngle = 0 },
+				new MovingLine { Center = new Point(0, 96), StartTime = 900, EndTime = 1080, StartAngle = 90, EndAngle = 90 },
+
+				new MovingLine { Center = new Point(48, 48), StartTime = 900, EndTime = 1080, StartAngle = 90, EndAngle = 180 },
+				new MovingLine { Center = new Point(48, 48), StartTime = 900, EndTime = 1080, StartAngle = 0, EndAngle = 90 },
 			};
 
 			var center = new Point(48, 48);
