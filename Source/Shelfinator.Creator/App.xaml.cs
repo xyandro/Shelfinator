@@ -39,6 +39,7 @@ namespace Shelfinator.Creator
 			var all = CheckExistsAndRemove(args, "all");
 			var small = CheckExistsAndRemove(args, "small");
 			var startPaused = CheckExistsAndRemove(args, "pause");
+			var norun = CheckExistsAndRemove(args, "norun");
 
 			var songNumbers = args.Select(arg => { try { return int.Parse(arg); } catch { throw new Exception($"Unable to parse number: {arg}"); } }).ToList();
 
@@ -54,7 +55,10 @@ namespace Shelfinator.Creator
 				threads.ForEach(thread => thread.Join());
 			}
 
-			var window = new Emulator(small, songNumbers, startPaused);
+			if (norun)
+				Environment.Exit(0);
+
+			new Emulator(small, songNumbers, startPaused);
 		}
 
 		protected override void OnExit(ExitEventArgs e)

@@ -75,10 +75,10 @@ namespace Shelfinator.Creator.Songs
 				Tuple.Create(9900, new Point(96, 96)),
 			};
 
-			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x100d04 }, new List<int> { 0x00000c } });
-			var bodyColor = new LightColor(new List<List<int>> { new List<int> { 0x020101 }, new List<int> { 0x00000c } });
-			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000304, 0x040e20 }, new List<int> { 0x00000c } });
-			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
+			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x020101 }, new List<int> { 0x00000c } });
+			var bodyColor = new LightColor(new List<List<int>> { new List<int> { 0x040301 }, new List<int> { 0x00000c } });
+			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000c10, 0x040e20 }, new List<int> { 0x00000c } });
+			var bubbleColor = new LightColor(0, 1, new List<int> { 0x201e0b, 0x1a1a15 });
 
 			var onZigZagIndex = -1;
 			var onBubbleIndex = 0;
@@ -177,8 +177,8 @@ namespace Shelfinator.Creator.Songs
 
 			var wavyColors = new List<LightColor>
 			{
-				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c }}),
-				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }}),
+				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c }, new List<int> { 0x060d10, 0x200b0c, 0x101010, 0x200b0c, 0x060d10 }}),
+				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }}),
 			};
 			int flashTime = 0;
 			for (var time = 0; time < 16000; time += 20)
@@ -302,13 +302,13 @@ namespace Shelfinator.Creator.Songs
 				new Point(22, 7), new Point(26, 7), new Point(29, 7), new Point(30, 7), new Point(31, 7),
 			};
 
-			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
+			var bubbleColor = new LightColor(0, 1, new List<int> { 0x201e0b, 0x1a1a15 });
 
 			var backgroundBrush = new SolidColorBrush(Color.FromRgb(2, 1, 1));
-			var polygonFill1 = new SolidColorBrush(Color.FromRgb(0, 3, 4));
-			var polygonFill2 = new SolidColorBrush(Color.FromRgb(3, 3, 1));
+			var polygonFill1 = new SolidColorBrush(Color.FromRgb(0, 12, 16));
+			var polygonFill2 = new SolidColorBrush(Color.FromRgb(16, 16, 5));
 			var polygonStroke1 = new SolidColorBrush(Color.FromRgb(5, 19, 43));
-			var polygonStroke2 = new SolidColorBrush(Color.FromRgb(23, 23, 23));
+			var polygonStroke2 = new SolidColorBrush(Color.FromRgb(32, 32, 32));
 
 			backgroundBrush.Freeze();
 			polygonFill1.Freeze();
@@ -476,7 +476,7 @@ namespace Shelfinator.Creator.Songs
 
 			canvas.RenderTransform = transformGroup;
 
-			var sparkleLights = new Dictionary<int, int>();
+			var sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => Tuple.Create(0, int.MaxValue));
 
 			int? SubstituteColor(int light, int color)
 			{
@@ -484,20 +484,47 @@ namespace Shelfinator.Creator.Songs
 				var g = (color >> 8) & 255;
 				var b = (color >> 0) & 255;
 
-				var sparkling = sparkleLights.ContainsKey(light);
+				var sparkle = sparkleLights[light].Item1;
 
 				if ((r > g) && (r > b))
-					return sparkling ? 0x101000 : 0x00000c;
-				if (g > b)
-					return sparkling ? 0x0f0a00 : 0x030f0f;
-				return sparkling ? 0x100f09 : 0x100f0d;
+				{
+					switch (sparkle)
+					{
+						case 0: return 0x00000c;
+						case 2: return 0x100008;
+						case 4: return 0x100008;
+						case 6: return 0x00000c;
+						case 1: case 3: case 5: return 0x101000;
+					}
+				}
+				if (g <= b)
+				{
+					switch (sparkle)
+					{
+						case 0: return 0x100f0d;
+						case 2: return 0x150720;
+						case 4: return 0x150720;
+						case 6: return 0x100f0d;
+						case 1: case 3: case 5: return 0x100f09;
+					}
+				}
+				switch (sparkle)
+				{
+					case 0: return 0x030f0f;
+					case 2: return 0x000510;
+					case 4: return 0x000510;
+					case 6: return 0x030f0f;
+					case 1: case 3: case 5: return 0x0f0a00;
+				}
+
+				throw new Exception("Weird stuff happened");
 			}
 
 			int flashTime = 0;
 			for (var time = 0; time < 16000; time += 20)
 			{
 				if (sparkleTimes.Contains(time))
-					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
+					sparkleLights = sparkleLights.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Item1 + 1, rand.Next(MinSparkleTime, MaxSparkleTime)));
 
 				var dist = Math.Cos(time % WaveTime / WaveTime * 360d / 180d * Math.PI);
 				rotateTransform.Angle = dist * Rotate;
@@ -517,7 +544,7 @@ namespace Shelfinator.Creator.Songs
 					--flashTime;
 				}
 
-				sparkleLights = sparkleLights.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value - 1);
+				sparkleLights = sparkleLights.ToDictionary(pair => pair.Key, pair => pair.Value.Item2 > 0 ? Tuple.Create(pair.Value.Item1, pair.Value.Item2 - 1) : Tuple.Create(pair.Value.Item1 + 1, int.MaxValue));
 			}
 
 			foreach (var light in bodyLayout.GetAllLights().Concat(headerLayout.GetAllLights()))
@@ -549,7 +576,7 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 
 			var corner = new Point(0, 0);
-			var color = new LightColor(0, 13576, new List<int> { 0x101010, 0x000020 });
+			var color = new LightColor(0, 13576, new List<int> { 0x101010, 0x000020 }, new List<int> { 0x002020, 0x000020 });
 
 			for (var pass = 0; pass < 2; ++pass)
 			{
@@ -601,48 +628,51 @@ namespace Shelfinator.Creator.Songs
 
 		Segment FavoriteColor()
 		{
-			const double Frequency = 50;
-			const double Amplitude = 3;
+			const double XFrequency = 50;
+			const double YFrequency = 20;
+			const double XAmplitude = 3;
+			const double YAmplitude = .75;
 			const double FadeSpeed = 1200;
 			const int ShrinkStartTime = 4200;
 			const double ShrinkLength = 2000;
 
 			var segment = new Segment();
 
-			var squares = new List<Tuple<Point, Size, int>>
+			var squares = new List<Tuple<Point, Size, List<int>>>
 			{
-				Tuple.Create(new Point(-37, -37), new Size(171, 171), 0x000000),
-				Tuple.Create(new Point(-18, -18), new Size(133, 133), 0x000011),
-				Tuple.Create(new Point(1, 1), new Size(95, 95), 0x00131c),
-				Tuple.Create(new Point(20, 20), new Size(57, 57), 0x000011),
-				Tuple.Create(new Point(39, 39), new Size(19, 19), 0x00131c),
+				Tuple.Create(new Point(-37, -37), new Size(171, 171), new List<int> { 0x000000, 0x000000, 0x000000, 0x000000 }),
+				Tuple.Create(new Point(-18, -18), new Size(133, 133), new List<int> { 0x000008, 0x000011, 0x000606, 0x000c0c }),
+				Tuple.Create(new Point(1, 1), new Size(95, 95), new List<int> { 0x00090e, 0x00131c, 0x060006, 0x0c000c }),
+				Tuple.Create(new Point(20, 20), new Size(57, 57), new List<int> { 0x000008, 0x000011, 0x060600, 0x0c0c00 }),
+				Tuple.Create(new Point(39, 39), new Size(19, 19), new List<int> { 0x00090e, 0x00131c, 0x000606, 0x000c0c }),
 			};
 
-			void DrawSquares(int time, int startSquare, int stopSquare, double brightness)
+			void DrawSquares(int time, int startSquare, int stopSquare, int useColor)
 			{
 				segment.Clear(time);
 				for (var ctr = startSquare; ctr <= stopSquare; ++ctr)
-					bodyLayout.GetPositionLights(squares[ctr].Item1, squares[ctr].Item2).ForEach(light => segment.AddLight(light, time, Helpers.MultiplyColor(squares[ctr].Item3, brightness)));
+					bodyLayout.GetPositionLights(squares[ctr].Item1, squares[ctr].Item2).ForEach(light => segment.AddLight(light, time, squares[ctr].Item3[useColor]));
 			}
 
-			DrawSquares(0, 4, 4, .5);
-			DrawSquares(200, 3, 4, .5);
-			DrawSquares(400, 2, 4, .5);
-			DrawSquares(600, 1, 4, .5);
+			DrawSquares(0, 4, 4, 0);
+			DrawSquares(200, 3, 4, 0);
+			DrawSquares(400, 2, 4, 0);
+			DrawSquares(600, 1, 4, 0);
 			DrawSquares(800, 0, 4, 1);
 
 			for (var beat = 1200; beat < 1600 + FadeSpeed; beat += 20)
 			{
 				var brightness = 1 - (beat - 1600) / FadeSpeed;
-				var positionOffset = Math.Sin(beat / 800d * Frequency * Math.PI) * Amplitude;
-				squares.ForEach(square => bodyLayout.GetPositionLights(square.Item1 + new Vector(positionOffset, 0), square.Item2).ForEach(light => segment.AddLight(light, beat, Helpers.MultiplyColor(square.Item3, brightness))));
+				var xPositionOffset = Math.Sin(beat / 800d * XFrequency * Math.PI) * XAmplitude;
+				var yPositionOffset = Math.Sin(beat / 800d * YFrequency * Math.PI) * YAmplitude;
+				squares.ForEach(square => bodyLayout.GetPositionLights(square.Item1 + new Vector(xPositionOffset, yPositionOffset), square.Item2).ForEach(light => segment.AddLight(light, beat, Helpers.MultiplyColor(square.Item3[1], brightness))));
 			}
 
-			DrawSquares(3200, 4, 4, .5);
-			DrawSquares(3400, 3, 4, .5);
-			DrawSquares(3600, 2, 4, .5);
-			DrawSquares(3800, 1, 4, .5);
-			DrawSquares(4000, 0, 4, 1);
+			DrawSquares(3200, 4, 4, 2);
+			DrawSquares(3400, 3, 4, 2);
+			DrawSquares(3600, 2, 4, 2);
+			DrawSquares(3800, 1, 4, 2);
+			DrawSquares(4000, 0, 4, 3);
 
 			var centerOffset = new Vector(-48, -48);
 			for (var beat = 0; beat < ShrinkLength; beat += 20)
@@ -653,7 +683,7 @@ namespace Shelfinator.Creator.Songs
 				{
 					var x = ((square.Item1.X - 48) * scale + 48).Round();
 					var width = 97 - x * 2;
-					bodyLayout.GetPositionLights(x, x, width, width).ForEach(light => segment.AddLight(light, ShrinkStartTime + beat, square.Item3));
+					bodyLayout.GetPositionLights(x, x, width, width).ForEach(light => segment.AddLight(light, ShrinkStartTime + beat, square.Item3[3]));
 				}
 			}
 
@@ -707,7 +737,6 @@ namespace Shelfinator.Creator.Songs
 
 			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x100d04 }, new List<int> { 0x00000c } });
 			var bodyColor = 0x020101;
-			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000304, 0x040e20 }, new List<int> { 0x00000c } });
 			var bubbleColor = new LightColor(0, 1, new List<int> { 0x151407, 0x11110e });
 
 			var rand = new Random(0xf0dface);
@@ -724,7 +753,7 @@ namespace Shelfinator.Creator.Songs
 					return sparkling ? 0x101000 : 0x00000c;
 				if (g > b)
 					return sparkling ? 0x0f0a00 : 0x030f0f;
-				return sparkling ? 0x100f09 : 0x100f0d;
+				return sparkling ? 0x100f09 : 0x201e1a;
 			}
 
 
@@ -910,30 +939,17 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 			var drops = new List<Drop>
 			{
-				new Drop(new Point(86, 67), 0),
-				new Drop(new Point(29, 86), 400),
-				new Drop(new Point(29, 10), 800),
-				new Drop(new Point(29, 67), 1200),
-				new Drop(new Point(67, 86), 1600),
-				new Drop(new Point(48, 67), 2000),
-				new Drop(new Point(48, 48), 2400),
-				new Drop(new Point(10, 86), 2800),
-				new Drop(new Point(29, 29), 3200),
-				new Drop(new Point(86, 10), 3600),
-				new Drop(new Point(48, 10), 4000),
-				new Drop(new Point(86, 48), 4400),
-				new Drop(new Point(86, 29), 4800),
-				new Drop(new Point(10, 29), 5200),
-				new Drop(new Point(67, 10), 5600),
-				new Drop(new Point(67, 48), 6000),
-				new Drop(new Point(48, 86), 6400),
-				new Drop(new Point(67, 67), 6800),
-				new Drop(new Point(29, 48), 7200),
-				new Drop(new Point(67, 29), 7600),
-				new Drop(new Point(48, 29), 8000),
-				new Drop(new Point(86, 86), 8400),
-				new Drop(new Point(10, 10), 8800),
-				new Drop(new Point(10, 48), 9200),
+				new Drop(new Point(48, 48), 0),
+				new Drop(new Point(48, 10), 800),
+				new Drop(new Point(48, 86), 1600),
+				new Drop(new Point(86, 48), 2400),
+				new Drop(new Point(10, 48), 3200),
+				new Drop(new Point(67, 29), 4000),
+				new Drop(new Point(29, 67), 4800),
+				new Drop(new Point(29, 29), 5600),
+				new Drop(new Point(67, 67), 6400),
+				new Drop(new Point(10, 48), 7200),
+				new Drop(new Point(48, 48), 8000),
 			};
 
 			var changeLights = new Dictionary<int, List<ChangeLight>>();
@@ -948,16 +964,23 @@ namespace Shelfinator.Creator.Songs
 			}
 
 			var favoriteColorTimes = new List<int> { 2400, 5600, 7200 };
-			foreach (var favoriteColorTime in favoriteColorTimes)
+			var favoriteColorColors = new List<List<int>>
 			{
-				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTime, favoriteColorTime + 800, 0x000008, 0x000008));
-				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTime + 200, favoriteColorTime + 800, 0x080808, 0x080808));
-				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTime + 400, favoriteColorTime + 800, 0x000008, 0x000008));
-				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTime + 600, favoriteColorTime + 800, 0x080808, 0x080808));
-				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x000011, Background));
-				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x101010, Background));
-				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x000011, Background));
-				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTime + 800, favoriteColorTime + 1200, 0x101010, Background));
+				new List<int> { 0x000208, 0x0a0310, 0x080004, 0x000208, 0x000510, 0x150720, 0x100008, 0x000510 },
+				new List<int> { 0x030610, 0x100506, 0x080808, 0x030610, 0x060d20, 0x200b0c, 0x101010, 0x060d20 },
+				new List<int> { 0x000008, 0x080808, 0x000008, 0x080808, 0x000011, 0x101010, 0x000011, 0x101010 },
+			};
+			for (var ctr = 0; ctr < favoriteColorTimes.Count; ++ctr)
+			{
+				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTimes[ctr], favoriteColorTimes[ctr] + 800, favoriteColorColors[ctr][0], favoriteColorColors[ctr][0]));
+				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTimes[ctr] + 200, favoriteColorTimes[ctr] + 800, favoriteColorColors[ctr][1], favoriteColorColors[ctr][1]));
+				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTimes[ctr] + 400, favoriteColorTimes[ctr] + 800, favoriteColorColors[ctr][2], favoriteColorColors[ctr][2]));
+				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTimes[ctr] + 600, favoriteColorTimes[ctr] + 800, favoriteColorColors[ctr][3], favoriteColorColors[ctr][3]));
+
+				AddChangeLights(bodyLayout.GetPositionLights(39, 39, 19, 19), new ChangeLight(favoriteColorTimes[ctr] + 800, favoriteColorTimes[ctr] + 1200, favoriteColorColors[ctr][4], Background));
+				AddChangeLights(bodyLayout.GetPositionLights(20, 20, 57, 57).Except(bodyLayout.GetPositionLights(39, 39, 19, 19)), new ChangeLight(favoriteColorTimes[ctr] + 800, favoriteColorTimes[ctr] + 1200, favoriteColorColors[ctr][5], Background));
+				AddChangeLights(bodyLayout.GetPositionLights(1, 1, 95, 95).Except(bodyLayout.GetPositionLights(20, 20, 57, 57)), new ChangeLight(favoriteColorTimes[ctr] + 800, favoriteColorTimes[ctr] + 1200, favoriteColorColors[ctr][6], Background));
+				AddChangeLights(bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)), new ChangeLight(favoriteColorTimes[ctr] + 800, favoriteColorTimes[ctr] + 1200, favoriteColorColors[ctr][7], Background));
 			}
 
 			var rand = new Random(0xf0dface);
@@ -1027,6 +1050,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(waves, 0, 16000, 26800, 25800);
 			song.AddPaletteChange(26800, 0);
 			song.AddPaletteChange(26800, 28090, 1);
+			song.AddPaletteChange(32605, 2);
+			song.AddPaletteChange(42925, 2);
+			song.AddPaletteChange(48085, 1);
 			song.AddPaletteChange(52600, 0);
 
 			// Goodbye (52600)
@@ -1036,10 +1062,18 @@ namespace Shelfinator.Creator.Songs
 			// Ocean (78400)
 			var ocean = Ocean();
 			song.AddSegment(ocean, 0, 16000, 78400, 25800);
+			song.AddPaletteChange(78400, 0);
+			song.AddPaletteChange(84205, 1);
+			song.AddPaletteChange(94525, 2);
+			song.AddPaletteChange(99685, 3);
+			song.AddPaletteChange(104200, 0);
 
 			// Lines (104200)
 			var lines = Lines();
 			song.AddSegment(lines, 0, 6400, 104200, 10320);
+			song.AddPaletteChange(104200, 0);
+			song.AddPaletteChange(109360, 1);
+			song.AddPaletteChange(114520, 0);
 
 			// FavoriteColor (114520)
 			var favoriteColor = FavoriteColor();
