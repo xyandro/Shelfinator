@@ -1,6 +1,6 @@
 ﻿#include "SegmentItem.h"
 
-#include <math.h>
+#include <cmath>
 #include "Helpers.h"
 
 namespace Shelfinator
