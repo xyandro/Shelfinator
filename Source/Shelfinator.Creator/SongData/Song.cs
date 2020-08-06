@@ -14,6 +14,7 @@ namespace Shelfinator.Creator.SongData
 		readonly List<SegmentItem> segmentItems = new List<SegmentItem>();
 		readonly List<PaletteSequence> paletteSequences = new List<PaletteSequence>();
 		readonly Dictionary<int, int> currentIndex = new Dictionary<int, int>();
+		readonly List<int> measures = new List<int> { 0 };
 
 		public Song(string normalSongFileName, string editSongFileName = null)
 		{
@@ -42,6 +43,23 @@ namespace Shelfinator.Creator.SongData
 				AddSegment(segment, segmentStartTime, segmentEndTime, startTime, duration);
 				startTime += duration;
 			}
+		}
+
+		int GetMeasureTime(double measureTime)
+		{
+			var measure = (int)measureTime;
+			measureTime -= measure;
+			var result = measures[measure];
+			if (measureTime != 0)
+				result += (int)((measures[measure + 1] - measures[measure]) * measureTime + 0.5);
+			return result;
+		}
+
+		public void AddSegmentByMeasure(Segment segment, int segmentStartTime, int segmentEndTime, double startMeasure, double numMeasures, int repeat = 1)
+		{
+			var startTime = GetMeasureTime(startMeasure);
+			var duration = GetMeasureTime(startMeasure + numMeasures) - startTime;
+			AddSegment(segment, segmentStartTime, segmentEndTime, startTime, duration, repeat);
 		}
 
 		public void AddSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int segmentTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)
@@ -106,6 +124,15 @@ namespace Shelfinator.Creator.SongData
 			paletteSequences.Add(new PaletteSequence(startTime, endTime, startPaletteIndex, endPaletteIndex));
 			if (endTime != int.MaxValue)
 				paletteSequences.Add(new PaletteSequence(endTime, int.MaxValue, endPaletteIndex, endPaletteIndex));
+		}
+
+		public void AddPaletteChangeByMeasure(double measureTime, int paletteIndex) => AddPaletteChangeByMeasure(measureTime, measureTime, paletteIndex);
+
+		public void AddPaletteChangeByMeasure(double measureStartTime, double measureEndTime, int endPaletteIndex)
+		{
+			var startTime = GetMeasureTime(measureStartTime);
+			var endTime = GetMeasureTime(measureEndTime);
+			AddPaletteChange(startTime, endTime, endPaletteIndex);
 		}
 
 		public void Save(int songNumber)
@@ -176,6 +203,12 @@ namespace Shelfinator.Creator.SongData
 			output.Write(paletteSequences.Count);
 			foreach (var paletteSequence in paletteSequences)
 				paletteSequence.Save(output);
+		}
+
+		public void AddMeasure(int length, int count = 1)
+		{
+			for (var ctr = 0; ctr < count; ++ctr)
+				measures.Add(measures[measures.Count - 1] + length);
 		}
 	}
 }
