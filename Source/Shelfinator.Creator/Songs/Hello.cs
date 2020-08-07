@@ -117,8 +117,11 @@ namespace Shelfinator.Creator.Songs
 		public override Song Render()
 		{
 			var song = new Song("hello.ogg");
+
+			song.AddMeasure(32500);
+
 			var hello = GetHello();
-			song.AddSegment(hello, 0, hello.MaxTime(), 0, hello.MaxTime());
+			song.AddSegmentByMeasure(hello, 0, hello.MaxTime(), 0, 1);
 			return song;
 		}
 	}
