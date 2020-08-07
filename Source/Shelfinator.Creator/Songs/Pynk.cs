@@ -742,7 +742,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Intro (1000)
 			var intro = Intro();
-			song.AddSegment(intro, 0, 58806, 1000);
+			song.AddSegment(intro, 0, 58806, 1000, 58806);
 
 			// ExplodeSquares (59806)
 			var explodeSquares = ExplodeSquares();

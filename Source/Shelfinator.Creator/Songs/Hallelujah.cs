@@ -581,7 +581,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Fireworks (208400)
 			var fireworks = Fireworks(out var fireworksTime);
-			song.AddSegment(fireworks, 0, fireworksTime, 208400);
+			song.AddSegment(fireworks, 0, fireworksTime, 208400, fireworksTime);
 
 			// Sunset (249400)
 			var sunset = Sunset(out var sunTime);

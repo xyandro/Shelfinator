@@ -912,7 +912,7 @@ namespace Shelfinator.Creator.Songs
 
 			// Flashy (238504)
 			var flashy = Flashy();
-			song.AddSegment(flashy, 0, 10000, 238504);
+			song.AddSegment(flashy, 0, 10000, 238504, 10000);
 
 			// Clock (248504)
 			var clock = Clock();
@@ -941,7 +941,7 @@ namespace Shelfinator.Creator.Songs
 
 			// SquareFlash (312348) 355400
 			var squareFlash = SquareFlash();
-			song.AddSegment(squareFlash, 311948, 355000, 312348);
+			song.AddSegment(squareFlash, 311948, 355000, 312348, 43052);
 
 			return song;
 		}

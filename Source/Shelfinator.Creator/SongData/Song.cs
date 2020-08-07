@@ -29,11 +29,10 @@ namespace Shelfinator.Creator.SongData
 			return segments.IndexOf(segment);
 		}
 
-		public void AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int? duration = null, int repeat = 1)
+		public void AddSegment(Segment segment, int segmentStartTime, int segmentEndTime, int startTime, int duration, int repeat = 1)
 		{
 			var segmentDuration = Math.Abs(segmentEndTime - segmentStartTime);
-			duration = duration ?? segmentDuration;
-			InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, Math.Abs(segmentEndTime - segmentStartTime) * repeat, startTime, startTime + duration.Value * repeat, segmentDuration, segmentDuration, duration.Value));
+			InsertSegment(new SegmentItem(GetSegmentIndex(segment), segmentStartTime, segmentEndTime, Math.Abs(segmentEndTime - segmentStartTime) * repeat, startTime, startTime + duration * repeat, segmentDuration, segmentDuration, duration));
 		}
 
 		public void AddSegmentByVelocity(Segment segment, int segmentStartTime, int segmentEndTime, int segmentTime, int startTime, int duration, int startVelocity, int endVelocity, int baseVelocity)

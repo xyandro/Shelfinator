@@ -399,11 +399,11 @@ namespace Shelfinator.Creator.Songs
 
 			// BeatPattern (17340)
 			var beatPattern = BeatPattern(out int beatPatternTime);
-			song.AddSegment(beatPattern, 0, beatPatternTime, 17340);
+			song.AddSegment(beatPattern, 0, beatPatternTime, 17340, beatPatternTime);
 
 			// BeatCircles (45690)
 			var beatCircles = BeatCircles();
-			song.AddSegment(beatCircles, 0, 15120, 45690);
+			song.AddSegment(beatCircles, 0, 15120, 45690, 15120);
 
 			// Corners (60810)
 			var corners = Corners();
