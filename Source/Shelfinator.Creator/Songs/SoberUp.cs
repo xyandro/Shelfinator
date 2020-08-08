@@ -1038,56 +1038,60 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("soberup.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2580, and stop at 217720. Beats appear quantized to 2580/16 = 161.25
 
-			// HelloHello (1000)
+			song.AddMeasure(1000); // Empty lead-in time
+			song.AddMeasure(2580, 84); // Measures
+			// Beats appear quantized to 1/16
+
+			// HelloHello (1)
 			var helloHello = HelloHello();
-			song.AddSegment(helloHello, 0, 16000, 1000, 25800);
-			song.AddPaletteChange(1000, 0);
-			song.AddPaletteChange(25510, 26800, 1);
-			song.AddPaletteChange(26800, 0);
+			song.AddSegmentByMeasure(helloHello, 0, 16000, 1, 10);
+			song.AddPaletteChangeByMeasure(1, 0);
+			song.AddPaletteChangeByMeasure(10.5, 11, 1);
+			song.AddPaletteChangeByMeasure(11, 0);
 
-			// Waves (26800)
+			// Waves (11)
 			var waves = Waves();
-			song.AddSegment(waves, 0, 16000, 26800, 25800);
-			song.AddPaletteChange(26800, 0);
-			song.AddPaletteChange(26800, 28090, 1);
-			song.AddPaletteChange(32605, 2);
-			song.AddPaletteChange(42925, 2);
-			song.AddPaletteChange(48085, 1);
-			song.AddPaletteChange(52600, 0);
+			song.AddSegmentByMeasure(waves, 0, 16000, 11, 10);
+			song.AddPaletteChangeByMeasure(11, 0);
+			song.AddPaletteChangeByMeasure(11, 11.5, 1);
+			song.AddPaletteChangeByMeasure(13.25, 2);
+			song.AddPaletteChangeByMeasure(17.25, 2);
+			song.AddPaletteChangeByMeasure(19.25, 1);
+			song.AddPaletteChangeByMeasure(21, 0);
 
-			// Goodbye (52600)
+			// Goodbye (21)
 			var goodbye = Goodbye();
-			song.AddSegment(goodbye, 0, 16000, 52600, 25800);
+			song.AddSegmentByMeasure(goodbye, 0, 16000, 21, 10);
 
-			// Ocean (78400)
+			// Ocean (31)
 			var ocean = Ocean();
-			song.AddSegment(ocean, 0, 16000, 78400, 25800);
-			song.AddPaletteChange(78400, 0);
-			song.AddPaletteChange(84205, 1);
-			song.AddPaletteChange(94525, 2);
-			song.AddPaletteChange(99685, 3);
-			song.AddPaletteChange(104200, 0);
+			song.AddSegmentByMeasure(ocean, 0, 16000, 31, 10);
+			song.AddPaletteChangeByMeasure(31, 0);
+			song.AddPaletteChangeByMeasure(33.25, 1);
+			song.AddPaletteChangeByMeasure(37.25, 2);
+			song.AddPaletteChangeByMeasure(39.25, 3);
+			song.AddPaletteChangeByMeasure(41, 0);
 
-			// Lines (104200)
+			// Lines (41)
 			var lines = Lines();
-			song.AddSegment(lines, 0, 6400, 104200, 10320);
-			song.AddPaletteChange(104200, 0);
-			song.AddPaletteChange(109360, 1);
-			song.AddPaletteChange(114520, 0);
+			song.AddSegmentByMeasure(lines, 0, 6400, 41, 4);
+			song.AddPaletteChangeByMeasure(41, 0);
+			song.AddPaletteChangeByMeasure(43, 1);
+			song.AddPaletteChangeByMeasure(45, 0);
 
-			// FavoriteColor (114520)
+			// FavoriteColor (45)
 			var favoriteColor = FavoriteColor();
-			song.AddSegment(favoriteColor, 0, 6400, 114520, 20640, 2);
+			song.AddSegmentByMeasure(favoriteColor, 0, 6400, 45, 8, 2);
 
-			// Saws (155800)
+			// Saws (61)
 			var saws = Saws();
-			song.AddSegment(saws, 0, 19200, 155800, 30960);
+			song.AddSegmentByMeasure(saws, 0, 19200, 61, 12);
 
-			// Finale (186760)
+			// Finale (73)
 			var finale = Finale(out var finaleTime);
-			song.AddSegment(finale, 0, 9600, 186760, 30960);
+			song.AddSegmentByMeasure(finale, 0, 9600, 73, 12);
 
-			// End (217720)
+			// End (85)
 
 			return song;
 		}
