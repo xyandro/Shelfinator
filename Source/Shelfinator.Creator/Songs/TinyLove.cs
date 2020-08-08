@@ -835,21 +835,21 @@ namespace Shelfinator.Creator.Songs
 			var shift = Shift(out var shiftTime);
 			song.AddSegment(shift, 0, shiftTime, 2, 1, 8);
 			song.AddPaletteChange(0, 0);
-			song.AddPaletteChange(1.25373134328358, 2.22065313327449, 1);
-			song.AddPaletteChange(3.77934686672551, 4.22065313327449, 2);
-			song.AddPaletteChange(5.77934686672551, 6.22065313327449, 3);
-			song.AddPaletteChange(7.77934686672551, 8.22065313327449, 4);
+			song.AddPaletteFade(2, 1000, 1);
+			song.AddPaletteFade(4, 1000, 2);
+			song.AddPaletteFade(6, 1000, 3);
+			song.AddPaletteFade(8, 1000, 4);
 			song.AddPaletteChange(10, 0);
 
 			// Runners (10)
 			var runners = Runners();
 			song.AddSegment(runners, 0, 2800, 10, 7);
 			song.AddPaletteChange(10, 0);
-			song.AddPaletteChange(11.7793468667255, 12.2206531332745, 1);
-			song.AddPaletteChange(14.7793468667255, 15.2206531332745, 2);
+			song.AddPaletteFade(12, 1000, 1);
+			song.AddPaletteFade(15, 1000, 2);
 
 			song.AddSegment(runners, 2800, 4400, 17, 4);
-			song.AddPaletteChange(16.7793468667255, 17.2979737783075, 3);
+			song.AddPaletteFade(17, 1000, 3);
 			song.AddPaletteChange(21, 0);
 
 			// LineStop (21)
@@ -860,10 +860,10 @@ namespace Shelfinator.Creator.Songs
 			var heart = Heart();
 			song.AddSegment(heart, 0, 78, 35, 2, 5);
 			song.AddPaletteChange(35, 0);
-			song.AddPaletteChange(36.880810488677, 37.119189511323, 1);
-			song.AddPaletteChange(38.880810488677, 39.119189511323, 2);
-			song.AddPaletteChange(40.880810488677, 41.119189511323, 3);
-			song.AddPaletteChange(42.880810488677, 43.119189511323, 4);
+			song.AddPaletteFade(37, 400, 1);
+			song.AddPaletteFade(39, 400, 2);
+			song.AddPaletteFade(41, 400, 3);
+			song.AddPaletteFade(43, 400, 4);
 			song.AddPaletteChange(45, 0);
 
 			// PointLines (45)
@@ -906,11 +906,11 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(movingLines, 720, 900, 75, 1);
 			song.AddSegment(movingLines, 900, 1080, 76, 1);
 			song.AddPaletteChange(71, 0);
-			song.AddPaletteChange(71.9301919720768, 72.0702493853179, 1);
-			song.AddPaletteChange(72.9297506146821, 73.0719683339331, 2);
-			song.AddPaletteChange(73.9280316660669, 74.0704473406129, 3);
-			song.AddPaletteChange(74.9295526593871, 75.075329566855, 4);
-			song.AddPaletteChange(75.924670433145, 76.075329566855, 5);
+			song.AddPaletteFade(72, 400, 1);
+			song.AddPaletteFade(73, 400, 2);
+			song.AddPaletteFade(74, 400, 3);
+			song.AddPaletteFade(75, 400, 4);
+			song.AddPaletteFade(76, 400, 5);
 			song.AddPaletteChange(77, 0);
 
 			// RotateSquares (77)
@@ -923,9 +923,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(rotateSquares, 0, 180, 82, 1);
 			song.AddSegment(rotateSquares, 0, 180, 83, 1);
 			song.AddPaletteChange(77, 0);
-			song.AddPaletteChange(78.9394306480921, 79.0632911392405, 1);
-			song.AddPaletteChange(80.9377528789293, 81.0558347292016, 2);
-			song.AddPaletteChange(82.9398315282792, 83.0554631170272, 3);
+			song.AddPaletteFade(79, 400, 1);
+			song.AddPaletteFade(81, 400, 2);
+			song.AddPaletteFade(83, 400, 3);
 			song.AddPaletteChange(84, 0);
 
 			// ColsToRows (84)
@@ -940,10 +940,10 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(colsToRows, 0, colsToRowsMoveTime / 2, 91, 1);
 			song.AddSegment(colsToRows, colsToRowsMoveTime, colsToRowsStopTime, 92, 1);
 			song.AddPaletteChange(84, 0);
-			song.AddPaletteChange(85.9403341288783, 86.0592943966795, 1);
-			song.AddPaletteChange(87.9405646359584, 88.054333061668, 2);
-			song.AddPaletteChange(89.9389126450825, 90.0596658711217, 3);
-			song.AddPaletteChange(91.8916576381365, 92.0491038546526, 4);
+			song.AddPaletteFade(86, 400, 1);
+			song.AddPaletteFade(88, 400, 2);
+			song.AddPaletteFade(90, 400, 3);
+			song.AddPaletteFade(92, 400, 4);
 			song.AddPaletteChange(93, 0);
 
 			// Finale (93)
@@ -958,9 +958,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(finale, 0, 0, 100, 1);
 			song.AddSegment(finale, finaleMoveTime, finaleDissolveTime, 101, 1);
 			song.AddPaletteChange(93, 0);
-			song.AddPaletteChange(94.923925446938, 95.0868809730669, 1);
-			song.AddPaletteChange(96.9195171026157, 97.0795228628231, 2);
-			song.AddPaletteChange(98.9189298743413, 99.0611620795107, 3);
+			song.AddPaletteFade(95, 400, 1);
+			song.AddPaletteFade(97, 400, 2);
+			song.AddPaletteFade(99, 400, 3);
 			song.AddPaletteChange(102, 0);
 
 			return song;

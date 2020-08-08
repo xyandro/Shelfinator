@@ -88,7 +88,17 @@ namespace Shelfinator.Creator.SongData
 		{
 			var startTime = GetMeasureTime(measureStartTime);
 			var endTime = GetMeasureTime(measureEndTime);
+			AddPaletteChangeAbs(startTime, endTime, endPaletteIndex);
+		}
 
+		public void AddPaletteFade(double measure, int fadeTime, int endPaletteIndex)
+		{
+			var time = GetMeasureTime(measure);
+			AddPaletteChangeAbs(time - fadeTime / 2, time + fadeTime / 2, endPaletteIndex);
+		}
+
+		public void AddPaletteChangeAbs(int startTime, int endTime, int endPaletteIndex)
+		{
 			if (startTime > endTime)
 				throw new ArgumentException("startTime > endTime");
 

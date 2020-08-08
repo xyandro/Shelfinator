@@ -524,18 +524,18 @@ namespace Shelfinator.Creator.Songs
 			var spinColor = FourCircle();
 			song.AddSegment(spinColor, 0, 360, 10, 4, 2);
 			song.AddPaletteChange(10, 0);
-			song.AddPaletteChange(11.75, 12.25, 1);
-			song.AddPaletteChange(13.75, 14.25, 2);
-			song.AddPaletteChange(15.75, 16.25, 3);
+			song.AddPaletteFade(12, 1000, 1);
+			song.AddPaletteFade(14, 1000, 2);
+			song.AddPaletteFade(16, 1000, 3);
 			song.AddPaletteChange(18, 0);
 
 			// LinesSquares (18)
 			var fourCircle = LinesSquares();
 			song.AddSegment(fourCircle, 0, 38, 18, 2, 4);
 			song.AddPaletteChange(18, 0);
-			song.AddPaletteChange(19.75, 20.25, 1);
-			song.AddPaletteChange(21.75, 22.25, 2);
-			song.AddPaletteChange(23.75, 24.25, 3);
+			song.AddPaletteFade(20, 1000, 1);
+			song.AddPaletteFade(22, 1000, 2);
+			song.AddPaletteFade(24, 1000, 3);
 			song.AddPaletteChange(26, 0);
 
 			// SnowFall (26)
@@ -550,9 +550,9 @@ namespace Shelfinator.Creator.Songs
 			var rotateSquares = RotateSquares(out var rotateSquaresTime);
 			song.AddSegment(rotateSquares, 0, rotateSquaresTime, 58, 2, 8);
 			song.AddPaletteChange(58, 0);
-			song.AddPaletteChange(61.75, 62.25, 1);
-			song.AddPaletteChange(65.75, 66.25, 2);
-			song.AddPaletteChange(69.75, 70.25, 3);
+			song.AddPaletteFade(62, 1000, 1);
+			song.AddPaletteFade(66, 1000, 2);
+			song.AddPaletteFade(70, 1000, 3);
 			song.AddPaletteChange(74, 0);
 
 			// SineMix (74)

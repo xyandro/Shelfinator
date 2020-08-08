@@ -450,11 +450,11 @@ namespace Shelfinator.Creator.Songs
 			var squares = Squares();
 			song.AddSegment(squares, 0, squares.MaxTime(), 1, 12);
 			song.AddPaletteChange(1, 0);
-			song.AddPaletteChange(5.95, 6.05, 1); // "colors are everything"
-			song.AddPaletteChange(6.95, 7.05, 2);
-			song.AddPaletteChange(8.95, 9.05, 3);
-			song.AddPaletteChange(10.95, 11.05, 4);
-			song.AddPaletteChange(11.95, 12.05, 5);
+			song.AddPaletteFade(6, 200, 1); // "colors are everything"
+			song.AddPaletteFade(7, 200, 2);
+			song.AddPaletteFade(9, 200, 3);
+			song.AddPaletteFade(11, 200, 4);
+			song.AddPaletteFade(12, 200, 5);
 			song.AddPaletteChange(13, 0);
 
 			// Traffic (13.05)
@@ -462,13 +462,13 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(traffic, 0, 492, 13.05, 7.95);
 
 			song.AddPaletteChange(13, 0);
-			song.AddPaletteChange(13.9, 14.1, 1);
-			song.AddPaletteChange(14.9, 15.1, 0);
-			song.AddPaletteChange(15.9, 16.1, 1);
-			song.AddPaletteChange(16.9, 17.1, 0);
-			song.AddPaletteChange(17.9, 18.1, 1);
-			song.AddPaletteChange(18.9, 19.1, 0);
-			song.AddPaletteChange(19.9, 20.1, 1);
+			song.AddPaletteFade(14, 400, 1);
+			song.AddPaletteFade(15, 400, 0);
+			song.AddPaletteFade(16, 400, 1);
+			song.AddPaletteFade(17, 400, 0);
+			song.AddPaletteFade(18, 400, 1);
+			song.AddPaletteFade(19, 400, 0);
+			song.AddPaletteFade(20, 400, 1);
 			song.AddPaletteChange(21, 0);
 
 			// RainbowRotate (21)
@@ -496,8 +496,8 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(sweep, 0, 1234, 73, 1); // 2 more sweeps
 
 			song.AddPaletteChange(66, 0);
-			song.AddPaletteChange(69.9, 70.1, 1);
-			song.AddPaletteChange(71.9, 72.1, 2);
+			song.AddPaletteFade(70, 400, 1);
+			song.AddPaletteFade(72, 400, 2);
 			song.AddPaletteChange(74, 0);
 
 			// Plasma (74)
@@ -519,9 +519,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(spin, 2000, 3000, 107.5, 0.5);
 
 			song.AddPaletteChange(99, 0);
-			song.AddPaletteChange(100.75, 101.25, 1);
-			song.AddPaletteChange(102.75, 103.25, 2);
-			song.AddPaletteChange(105.75, 106.25, 3);
+			song.AddPaletteFade(101, 1000, 1);
+			song.AddPaletteFade(103, 1000, 2);
+			song.AddPaletteFade(106, 1000, 3);
 			song.AddPaletteChange(108, 0);
 
 			return song;

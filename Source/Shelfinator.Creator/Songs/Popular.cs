@@ -436,13 +436,13 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(moveSquares[1], moveSquares[1].MaxTime(), 0, 11, 1);
 			song.AddSegment(moveSquares[0], moveSquares[0].MaxTime(), 0, 12, 1);
 			song.AddPaletteChange(5, 0);
-			song.AddPaletteChange(5.79372937293729, 6.20627062706271, 1);
-			song.AddPaletteChange(6.79372937293729, 7.20627062706271, 2);
-			song.AddPaletteChange(7.79372937293729, 8.20627062706271, 3);
-			song.AddPaletteChange(8.79372937293729, 9.20627062706271, 4);
-			song.AddPaletteChange(9.79372937293729, 10.2062706270627, 5);
-			song.AddPaletteChange(10.7937293729373, 11.2062706270627, 6);
-			song.AddPaletteChange(11.7937293729373, 12.2062706270627, 7);
+			song.AddPaletteFade(6, 1000, 1);
+			song.AddPaletteFade(7, 1000, 2);
+			song.AddPaletteFade(8, 1000, 3);
+			song.AddPaletteFade(9, 1000, 4);
+			song.AddPaletteFade(10, 1000, 5);
+			song.AddPaletteFade(11, 1000, 6);
+			song.AddPaletteFade(12, 1000, 7);
 			song.AddPaletteChange(13, 0);
 
 			// SyncSquares (13)
@@ -453,8 +453,8 @@ namespace Shelfinator.Creator.Songs
 			var sineShine = SineShine();
 			song.AddSegment(sineShine, 0, 1, 21, 1, 12);
 			song.AddPaletteChange(21, 0);
-			song.AddPaletteChange(24.7937293729373, 25.2062706270627, 1);
-			song.AddPaletteChange(28.7937293729373, 29.2062706270627, 2);
+			song.AddPaletteFade(25, 1000, 1);
+			song.AddPaletteFade(29, 1000, 2);
 			song.AddPaletteChange(33, 0);
 
 			// Crowd (33)
@@ -465,30 +465,30 @@ namespace Shelfinator.Creator.Songs
 			var wavey = Wavey();
 			song.AddSegment(wavey, 0, 1, 45, 1, 8);
 			song.AddPaletteChange(45, 0);
-			song.AddPaletteChange(45.8968646864686, 46.1031353135314, 1);
-			song.AddPaletteChange(46.8968646864686, 47.1031353135314, 2);
-			song.AddPaletteChange(47.8968646864686, 48.1031353135314, 3);
-			song.AddPaletteChange(48.8968646864686, 49.1031353135314, 4);
-			song.AddPaletteChange(49.8968646864686, 50.1031353135314, 5);
-			song.AddPaletteChange(50.8968646864686, 51.1031353135314, 6);
-			song.AddPaletteChange(51.8968646864686, 52.1031353135314, 7);
+			song.AddPaletteFade(46, 500, 1);
+			song.AddPaletteFade(47, 500, 2);
+			song.AddPaletteFade(48, 500, 3);
+			song.AddPaletteFade(49, 500, 4);
+			song.AddPaletteFade(50, 500, 5);
+			song.AddPaletteFade(51, 500, 6);
+			song.AddPaletteFade(52, 500, 7);
 			song.AddPaletteChange(53, 0);
 
 			// RainbowSquare (53)
 			var rainbowSquare = RainbowSquare();
 			song.AddSegment(rainbowSquare, 0, 1000, 53, 1, 16);
 			song.AddPaletteChange(53, 0);
-			song.AddPaletteChange(56.7937293729373, 57.2062706270627, 1);
-			song.AddPaletteChange(60.7937293729373, 61.2062706270627, 2);
-			song.AddPaletteChange(64.7937293729373, 65.2062706270627, 3);
+			song.AddPaletteFade(57, 1000, 1);
+			song.AddPaletteFade(61, 1000, 2);
+			song.AddPaletteFade(65, 1000, 3);
 			song.AddPaletteChange(69, 0);
 
 			// Stairs (69)
 			var stairs = Stairs();
 			song.AddSegment(stairs, 0, 360, 69, 1, 13);
 			song.AddPaletteChange(69, 0);
-			song.AddPaletteChange(72.7937293729373, 73.2062706270627, 1);
-			song.AddPaletteChange(76.7937293729373, 77.2062706270627, 2);
+			song.AddPaletteFade(73, 1000, 1);
+			song.AddPaletteFade(77, 1000, 2);
 			song.AddPaletteChange(81.25, 81.5, 3);
 			song.AddPaletteChange(82, 0);
 
