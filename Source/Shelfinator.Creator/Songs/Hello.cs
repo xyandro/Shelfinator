@@ -121,7 +121,7 @@ namespace Shelfinator.Creator.Songs
 			song.AddMeasure(32500);
 
 			var hello = GetHello();
-			song.AddSegmentByMeasure(hello, 0, hello.MaxTime(), 0, 1);
+			song.AddSegment(hello, 0, hello.MaxTime(), 0, 1);
 			return song;
 		}
 	}

@@ -323,19 +323,19 @@ namespace Shelfinator.Creator.Songs
 					}
 					var segLen = Math.Min(Math.Max(0, nextSegPos), 360) - segPos;
 					var absLen = segLen / multiplier;
-					song.AddSegmentByMeasure(segment, segPos, segPos + segLen, startTime + absPos / 360d, absLen / 360d);
+					song.AddSegment(segment, segPos, segPos + segLen, startTime + absPos / 360d, absLen / 360d);
 					segPos += segLen;
 					absPos += absLen;
 				}
 				clockwise = !clockwise;
 			}
 			const double FadeTime = 0.1;
-			song.AddPaletteChangeByMeasure(startTime, 0);
-			song.AddPaletteChangeByMeasure(startTime + 2 - FadeTime / 2, startTime + 2 + FadeTime / 2, 1);
-			song.AddPaletteChangeByMeasure(startTime + 4 - FadeTime / 2, startTime + 4 + FadeTime / 2, 2);
-			song.AddPaletteChangeByMeasure(startTime + 6 - FadeTime / 2, startTime + 6 + FadeTime / 2, 3);
-			song.AddPaletteChangeByMeasure(startTime + 8 - FadeTime / 2, startTime + 8 + FadeTime / 2, 4);
-			song.AddPaletteChangeByMeasure(startTime + 11, 0);
+			song.AddPaletteChange(startTime, 0);
+			song.AddPaletteChange(startTime + 2 - FadeTime / 2, startTime + 2 + FadeTime / 2, 1);
+			song.AddPaletteChange(startTime + 4 - FadeTime / 2, startTime + 4 + FadeTime / 2, 2);
+			song.AddPaletteChange(startTime + 6 - FadeTime / 2, startTime + 6 + FadeTime / 2, 3);
+			song.AddPaletteChange(startTime + 8 - FadeTime / 2, startTime + 8 + FadeTime / 2, 4);
+			song.AddPaletteChange(startTime + 11, 0);
 		}
 
 		Segment BeatSquares()
@@ -393,60 +393,60 @@ namespace Shelfinator.Creator.Songs
 
 			// Lines (intro: 1; measures: 2)
 			var lines = Lines();
-			song.AddSegmentByMeasure(lines, 259, 382, 1, 1);
-			song.AddSegmentByMeasure(lines, 0, 382, 2, 2, 4);
-			song.AddPaletteChangeByMeasure(1, 0);
-			song.AddPaletteChangeByMeasure(1, 2, 1);
-			song.AddPaletteChangeByMeasure(3.75, 4.25, 2);
-			song.AddPaletteChangeByMeasure(5.75, 6.25, 3);
-			song.AddPaletteChangeByMeasure(7.75, 8.25, 4);
-			song.AddPaletteChangeByMeasure(10, 0);
+			song.AddSegment(lines, 259, 382, 1, 1);
+			song.AddSegment(lines, 0, 382, 2, 2, 4);
+			song.AddPaletteChange(1, 0);
+			song.AddPaletteChange(1, 2, 1);
+			song.AddPaletteChange(3.75, 4.25, 2);
+			song.AddPaletteChange(5.75, 6.25, 3);
+			song.AddPaletteChange(7.75, 8.25, 4);
+			song.AddPaletteChange(10, 0);
 
 			// BeatPattern (10)
 			var beatPattern = BeatPattern(out int beatPatternTime);
-			song.AddSegmentByMeasure(beatPattern, 0, beatPatternTime, 10, 15);
+			song.AddSegment(beatPattern, 0, beatPatternTime, 10, 15);
 
 			// BeatCircles (25)
 			var beatCircles = BeatCircles();
-			song.AddSegmentByMeasure(beatCircles, 0, 15120, 25, 8);
+			song.AddSegment(beatCircles, 0, 15120, 25, 8);
 
 			// Corners (33)
 			var corners = Corners();
-			song.AddSegmentByMeasure(corners, 0, 19, 33, 1, 12);
-			song.AddPaletteChangeByMeasure(33, 0);
-			song.AddPaletteChangeByMeasure(34.75, 35.25, 1);
-			song.AddPaletteChangeByMeasure(36.75, 37.25, 2);
-			song.AddPaletteChangeByMeasure(38.75, 39.25, 3);
-			song.AddPaletteChangeByMeasure(40.75, 41.25, 4);
-			song.AddPaletteChangeByMeasure(42.75, 43.25, 5);
-			song.AddPaletteChangeByMeasure(45, 0);
+			song.AddSegment(corners, 0, 19, 33, 1, 12);
+			song.AddPaletteChange(33, 0);
+			song.AddPaletteChange(34.75, 35.25, 1);
+			song.AddPaletteChange(36.75, 37.25, 2);
+			song.AddPaletteChange(38.75, 39.25, 3);
+			song.AddPaletteChange(40.75, 41.25, 4);
+			song.AddPaletteChange(42.75, 43.25, 5);
+			song.AddPaletteChange(45, 0);
 
 			// SquareCircles (45)
 			var squareCircles = SquareCircles(out var squareCirclesTime);
-			song.AddSegmentByMeasure(squareCircles, 100, 400, 45, 3);
-			song.AddSegmentByMeasure(squareCircles, 0, 400, 48, 4, 2);
-			song.AddPaletteChangeByMeasure(45, 0);
-			new List<double> { 0, 0.375, 0.75, 1.125, 1.5, 1.75, 2, 2.375, 2.75, 3.125, 3.5, 3.75, 4, 4.375, 4.75, 5, 5.375, 5.75, 6, 6.375, 6.75, 7, 7.375, 7.75, 8, 8.375, 8.75, 9, 9.375, 9.75, 10 }.Skip(1).Select(x => x + 45).ForEach((x, index) => song.AddPaletteChangeByMeasure(x - 0.05, x + 0.05, (index + 1) % 4));
-			song.AddPaletteChangeByMeasure(56, 0);
+			song.AddSegment(squareCircles, 100, 400, 45, 3);
+			song.AddSegment(squareCircles, 0, 400, 48, 4, 2);
+			song.AddPaletteChange(45, 0);
+			new List<double> { 0, 0.375, 0.75, 1.125, 1.5, 1.75, 2, 2.375, 2.75, 3.125, 3.5, 3.75, 4, 4.375, 4.75, 5, 5.375, 5.75, 6, 6.375, 6.75, 7, 7.375, 7.75, 8, 8.375, 8.75, 9, 9.375, 9.75, 10 }.Skip(1).Select(x => x + 45).ForEach((x, index) => song.AddPaletteChange(x - 0.05, x + 0.05, (index + 1) % 4));
+			song.AddPaletteChange(56, 0);
 
 			// BeatGrow (56)
 			var beatGrow = BeatGrow();
-			song.AddSegmentByMeasure(beatGrow, 0, 64, 56, 8);
+			song.AddSegment(beatGrow, 0, 64, 56, 8);
 
 			// Blinds (64)
 			var blinds = Blinds();
-			song.AddSegmentByMeasure(blinds, 0, 1440, 64, 6, 2);
-			song.AddPaletteChangeByMeasure(64, 0);
-			song.AddPaletteChangeByMeasure(67.75, 68.25, 1);
-			song.AddPaletteChangeByMeasure(71.75, 72.25, 2);
-			song.AddPaletteChangeByMeasure(76, 0);
+			song.AddSegment(blinds, 0, 1440, 64, 6, 2);
+			song.AddPaletteChange(64, 0);
+			song.AddPaletteChange(67.75, 68.25, 1);
+			song.AddPaletteChange(71.75, 72.25, 2);
+			song.AddPaletteChange(76, 0);
 
 			// Spiral (76)
 			AddSpiral(song, 76);
 
 			// BeatSquares (87)
 			var beatSquares = BeatSquares();
-			song.AddSegmentByMeasure(beatSquares, 0, 6400, 87, 8);
+			song.AddSegment(beatSquares, 0, 6400, 87, 8);
 
 			// End (95)
 

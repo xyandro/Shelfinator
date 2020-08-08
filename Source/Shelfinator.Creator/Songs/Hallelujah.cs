@@ -517,82 +517,82 @@ namespace Shelfinator.Creator.Songs
 
 			// Bounce (0)
 			var bounce = Bounce();
-			song.AddSegmentByMeasure(bounce, 0, 0, 0, 2);
-			song.AddSegmentByMeasure(bounce, 0, 750 * 4, 2, 8);
+			song.AddSegment(bounce, 0, 0, 0, 2);
+			song.AddSegment(bounce, 0, 750 * 4, 2, 8);
 
 			// FourCircle (10)
 			var spinColor = FourCircle();
-			song.AddSegmentByMeasure(spinColor, 0, 360, 10, 4, 2);
-			song.AddPaletteChangeByMeasure(10, 0);
-			song.AddPaletteChangeByMeasure(11.75, 12.25, 1);
-			song.AddPaletteChangeByMeasure(13.75, 14.25, 2);
-			song.AddPaletteChangeByMeasure(15.75, 16.25, 3);
-			song.AddPaletteChangeByMeasure(18, 0);
+			song.AddSegment(spinColor, 0, 360, 10, 4, 2);
+			song.AddPaletteChange(10, 0);
+			song.AddPaletteChange(11.75, 12.25, 1);
+			song.AddPaletteChange(13.75, 14.25, 2);
+			song.AddPaletteChange(15.75, 16.25, 3);
+			song.AddPaletteChange(18, 0);
 
 			// LinesSquares (18)
 			var fourCircle = LinesSquares();
-			song.AddSegmentByMeasure(fourCircle, 0, 38, 18, 2, 4);
-			song.AddPaletteChangeByMeasure(18, 0);
-			song.AddPaletteChangeByMeasure(19.75, 20.25, 1);
-			song.AddPaletteChangeByMeasure(21.75, 22.25, 2);
-			song.AddPaletteChangeByMeasure(23.75, 24.25, 3);
-			song.AddPaletteChangeByMeasure(26, 0);
+			song.AddSegment(fourCircle, 0, 38, 18, 2, 4);
+			song.AddPaletteChange(18, 0);
+			song.AddPaletteChange(19.75, 20.25, 1);
+			song.AddPaletteChange(21.75, 22.25, 2);
+			song.AddPaletteChange(23.75, 24.25, 3);
+			song.AddPaletteChange(26, 0);
 
 			// SnowFall (26)
 			var snowFall = SnowFall();
-			song.AddSegmentByMeasure(snowFall, 0, 16000, 26, 19.5);
+			song.AddSegment(snowFall, 0, 16000, 26, 19.5);
 
 			// SyncFlash (45.5)
 			var syncFlash = SyncFlash();
-			song.AddSegmentByMeasure(syncFlash, 0, 25000, 45.5, 12.5);
+			song.AddSegment(syncFlash, 0, 25000, 45.5, 12.5);
 
 			// RotateSquares (58)
 			var rotateSquares = RotateSquares(out var rotateSquaresTime);
-			song.AddSegmentByMeasure(rotateSquares, 0, rotateSquaresTime, 58, 2, 8);
-			song.AddPaletteChangeByMeasure(58, 0);
-			song.AddPaletteChangeByMeasure(61.75, 62.25, 1);
-			song.AddPaletteChangeByMeasure(65.75, 66.25, 2);
-			song.AddPaletteChangeByMeasure(69.75, 70.25, 3);
-			song.AddPaletteChangeByMeasure(74, 0);
+			song.AddSegment(rotateSquares, 0, rotateSquaresTime, 58, 2, 8);
+			song.AddPaletteChange(58, 0);
+			song.AddPaletteChange(61.75, 62.25, 1);
+			song.AddPaletteChange(65.75, 66.25, 2);
+			song.AddPaletteChange(69.75, 70.25, 3);
+			song.AddPaletteChange(74, 0);
 
 			// SineMix (74)
 			var sineMix = SineMix();
-			song.AddSegmentByMeasure(sineMix, 0, 360, 74, 2, 4);
+			song.AddSegment(sineMix, 0, 360, 74, 2, 4);
 
 			// WalkAround (82)
 			var walkAround = WalkAround();
-			song.AddSegmentByMeasure(walkAround, 0, 360, 82, 2, 8);
-			song.AddPaletteChangeByMeasure(82, 0);
-			song.AddPaletteChangeByMeasure(84, 1);
-			song.AddPaletteChangeByMeasure(86, 2);
-			song.AddPaletteChangeByMeasure(88, 3);
-			song.AddPaletteChangeByMeasure(90, 4);
-			song.AddPaletteChangeByMeasure(92, 5);
-			song.AddPaletteChangeByMeasure(94, 6);
-			song.AddPaletteChangeByMeasure(96, 7);
-			song.AddPaletteChangeByMeasure(98, 0);
+			song.AddSegment(walkAround, 0, 360, 82, 2, 8);
+			song.AddPaletteChange(82, 0);
+			song.AddPaletteChange(84, 1);
+			song.AddPaletteChange(86, 2);
+			song.AddPaletteChange(88, 3);
+			song.AddPaletteChange(90, 4);
+			song.AddPaletteChange(92, 5);
+			song.AddPaletteChange(94, 6);
+			song.AddPaletteChange(96, 7);
+			song.AddPaletteChange(98, 0);
 
 			// AllSquares (98)
 			var allSquares = AllSquares(out var moveSquaresTime);
-			song.AddSegmentByMeasure(allSquares, 0, moveSquaresTime, 98, 4);
-			song.AddSegmentByMeasure(allSquares, 0, moveSquaresTime * 7 / 8, 102, 3.5);
-			song.AddPaletteChangeByMeasure(98, 0);
-			song.AddPaletteChangeByMeasure(100, 1);
-			song.AddPaletteChangeByMeasure(102, 2);
-			song.AddPaletteChangeByMeasure(104, 3);
-			song.AddPaletteChangeByMeasure(106, 0);
+			song.AddSegment(allSquares, 0, moveSquaresTime, 98, 4);
+			song.AddSegment(allSquares, 0, moveSquaresTime * 7 / 8, 102, 3.5);
+			song.AddPaletteChange(98, 0);
+			song.AddPaletteChange(100, 1);
+			song.AddPaletteChange(102, 2);
+			song.AddPaletteChange(104, 3);
+			song.AddPaletteChange(106, 0);
 
 			// Fireworks (105.5)
 			var fireworks = Fireworks(out var fireworksTime);
-			song.AddSegmentByMeasure(fireworks, 0, fireworksTime, 105.5, 20.35);
+			song.AddSegment(fireworks, 0, fireworksTime, 105.5, 20.35);
 
 			// Sunset (126)
 			var sunset = Sunset(out var sunTime);
-			song.AddSegmentByMeasure(sunset, 0, sunTime, 126, 7);
-			song.AddPaletteChangeByMeasure(126, 0);
-			song.AddPaletteChangeByMeasure(126, 126.5, 1);
-			song.AddPaletteChangeByMeasure(132.75, 133, 2);
-			song.AddPaletteChangeByMeasure(133, 0);
+			song.AddSegment(sunset, 0, sunTime, 126, 7);
+			song.AddPaletteChange(126, 0);
+			song.AddPaletteChange(126, 126.5, 1);
+			song.AddPaletteChange(132.75, 133, 2);
+			song.AddPaletteChange(133, 0);
 
 			// End (133)
 

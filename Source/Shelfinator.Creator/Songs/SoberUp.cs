@@ -1044,52 +1044,52 @@ namespace Shelfinator.Creator.Songs
 
 			// HelloHello (1)
 			var helloHello = HelloHello();
-			song.AddSegmentByMeasure(helloHello, 0, 16000, 1, 10);
-			song.AddPaletteChangeByMeasure(1, 0);
-			song.AddPaletteChangeByMeasure(10.5, 11, 1);
-			song.AddPaletteChangeByMeasure(11, 0);
+			song.AddSegment(helloHello, 0, 16000, 1, 10);
+			song.AddPaletteChange(1, 0);
+			song.AddPaletteChange(10.5, 11, 1);
+			song.AddPaletteChange(11, 0);
 
 			// Waves (11)
 			var waves = Waves();
-			song.AddSegmentByMeasure(waves, 0, 16000, 11, 10);
-			song.AddPaletteChangeByMeasure(11, 0);
-			song.AddPaletteChangeByMeasure(11, 11.5, 1);
-			song.AddPaletteChangeByMeasure(13.25, 2);
-			song.AddPaletteChangeByMeasure(17.25, 2);
-			song.AddPaletteChangeByMeasure(19.25, 1);
-			song.AddPaletteChangeByMeasure(21, 0);
+			song.AddSegment(waves, 0, 16000, 11, 10);
+			song.AddPaletteChange(11, 0);
+			song.AddPaletteChange(11, 11.5, 1);
+			song.AddPaletteChange(13.25, 2);
+			song.AddPaletteChange(17.25, 2);
+			song.AddPaletteChange(19.25, 1);
+			song.AddPaletteChange(21, 0);
 
 			// Goodbye (21)
 			var goodbye = Goodbye();
-			song.AddSegmentByMeasure(goodbye, 0, 16000, 21, 10);
+			song.AddSegment(goodbye, 0, 16000, 21, 10);
 
 			// Ocean (31)
 			var ocean = Ocean();
-			song.AddSegmentByMeasure(ocean, 0, 16000, 31, 10);
-			song.AddPaletteChangeByMeasure(31, 0);
-			song.AddPaletteChangeByMeasure(33.25, 1);
-			song.AddPaletteChangeByMeasure(37.25, 2);
-			song.AddPaletteChangeByMeasure(39.25, 3);
-			song.AddPaletteChangeByMeasure(41, 0);
+			song.AddSegment(ocean, 0, 16000, 31, 10);
+			song.AddPaletteChange(31, 0);
+			song.AddPaletteChange(33.25, 1);
+			song.AddPaletteChange(37.25, 2);
+			song.AddPaletteChange(39.25, 3);
+			song.AddPaletteChange(41, 0);
 
 			// Lines (41)
 			var lines = Lines();
-			song.AddSegmentByMeasure(lines, 0, 6400, 41, 4);
-			song.AddPaletteChangeByMeasure(41, 0);
-			song.AddPaletteChangeByMeasure(43, 1);
-			song.AddPaletteChangeByMeasure(45, 0);
+			song.AddSegment(lines, 0, 6400, 41, 4);
+			song.AddPaletteChange(41, 0);
+			song.AddPaletteChange(43, 1);
+			song.AddPaletteChange(45, 0);
 
 			// FavoriteColor (45)
 			var favoriteColor = FavoriteColor();
-			song.AddSegmentByMeasure(favoriteColor, 0, 6400, 45, 8, 2);
+			song.AddSegment(favoriteColor, 0, 6400, 45, 8, 2);
 
 			// Saws (61)
 			var saws = Saws();
-			song.AddSegmentByMeasure(saws, 0, 19200, 61, 12);
+			song.AddSegment(saws, 0, 19200, 61, 12);
 
 			// Finale (73)
 			var finale = Finale(out var finaleTime);
-			song.AddSegmentByMeasure(finale, 0, 9600, 73, 12);
+			song.AddSegment(finale, 0, 9600, 73, 12);
 
 			// End (85)
 
