@@ -14,7 +14,7 @@ namespace Shelfinator.Creator.SongData
 		readonly List<SegmentItem> segmentItems = new List<SegmentItem>();
 		readonly List<PaletteSequence> paletteSequences = new List<PaletteSequence>();
 		readonly Dictionary<int, int> currentIndex = new Dictionary<int, int>();
-		readonly List<int> measures = new List<int> { 0 };
+		readonly List<double> measures = new List<double> { 0 };
 
 		public Song(string normalSongFileName, string editSongFileName = null)
 		{
@@ -51,8 +51,8 @@ namespace Shelfinator.Creator.SongData
 			measureTime -= measure;
 			var result = measures[measure];
 			if (measureTime != 0)
-				result += (int)((measures[measure + 1] - measures[measure]) * measureTime + 0.5);
-			return result;
+				result += (measures[measure + 1] - measures[measure]) * measureTime;
+			return (int)(result + 0.5);
 		}
 
 		public void AddSegmentByMeasure(Segment segment, int segmentStartTime, int segmentEndTime, double startMeasure, double numMeasures, int repeat = 1)
@@ -205,13 +205,13 @@ namespace Shelfinator.Creator.SongData
 				paletteSequence.Save(output);
 		}
 
-		public void AddMeasure(int length, int count = 1)
+		public void AddMeasure(double length, int count = 1)
 		{
 			for (var ctr = 0; ctr < count; ++ctr)
 				measures.Add(measures[measures.Count - 1] + length);
 		}
 
-		public void AddMeasures(params int[] lengths)
+		public void AddMeasures(params double[] lengths)
 		{
 			for (var ctr = 0; ctr < lengths.Length; ++ctr)
 				measures.Add(measures[measures.Count - 1] + lengths[ctr]);
