@@ -738,98 +738,103 @@ namespace Shelfinator.Creator.Songs
 
 		public override Song Render()
 		{
-			var song = new Song("pynk.ogg"); // First sound is at 1000; Measures start at 2782, repeat every 2376, and stop at 240382. Beats appear quantized to 2376/24 = 99
+			var song = new Song("pynk.ogg");
 
-			// Intro (1000)
+			song.AddMeasure(1000); // Empty lead-in time
+			song.AddMeasure(1782); // Pickup
+			song.AddMeasure(2376, 101); // Measures
+			// Beats appear quantized to 1/24
+
+			// Intro (1)
 			var intro = Intro();
-			song.AddSegment(intro, 0, 58806, 1000, 58806);
+			song.AddSegmentByMeasure(intro, 0, 58806, 1, 25);
 
-			// ExplodeSquares (59806)
+			// ExplodeSquares (26)
 			var explodeSquares = ExplodeSquares();
-			song.AddSegment(explodeSquares, 0, 960, 59806, 19008);
+			song.AddSegmentByMeasure(explodeSquares, 0, 960, 26, 8);
 
-			// RotateSections (78814)
+			// RotateSections (34)
 			var rotateSections = RotateSections();
-			song.AddSegment(rotateSections, 0, 360, 78814, 2376, 8);
+			song.AddSegmentByMeasure(rotateSections, 0, 360, 34, 1, 8);
 
-			// MoveBoxes (97822)
+			// MoveBoxes (42)
 			var moveBoxes = MoveBoxes(out var moveBoxesTime);
-			song.AddSegment(moveBoxes, 0, moveBoxesTime, 97822, 2376, 4);
-			song.AddPaletteChange(97822, 0);
-			song.AddPaletteChange(102074, 103074, 1);
-			song.AddPaletteChange(107326, 0);
+			song.AddSegmentByMeasure(moveBoxes, 0, moveBoxesTime, 42, 1, 4);
+			song.AddPaletteChangeByMeasure(42, 0);
+			song.AddPaletteChangeByMeasure(43.8, 44.2, 1);
+			song.AddPaletteChangeByMeasure(46, 0);
 
-			// RotateBoxes (107326)
+			// RotateBoxes (46)
 			var rotateBoxes = RotateBoxes(out var rotateBoxesTime);
-			song.AddSegment(rotateBoxes, 0, rotateBoxesTime, 107326, 4752, 4);
-			song.AddPaletteChange(107326, 0);
-			song.AddPaletteChange(116330, 117330, 1);
-			song.AddPaletteChange(126334, 0);
+			song.AddSegmentByMeasure(rotateBoxes, 0, rotateBoxesTime, 46, 2, 4);
+			song.AddPaletteChangeByMeasure(46, 0);
+			song.AddPaletteChangeByMeasure(49.8, 50.2, 1);
+			song.AddPaletteChangeByMeasure(54, 0);
 
-			// Window (126334)
+			// Window (54)
 			var window = Window();
-			song.AddSegment(window, 0, 360, 126334, 2376, 8);
-			song.AddPaletteChange(126334, 0);
-			song.AddPaletteChange(130586, 131586, 1);
-			song.AddPaletteChange(135338, 136338, 2);
-			song.AddPaletteChange(140090, 141090, 3);
-			song.AddPaletteChange(145342, 0);
+			song.AddSegmentByMeasure(window, 0, 360, 54, 1, 8);
+			song.AddPaletteChangeByMeasure(54, 0);
+			song.AddPaletteChangeByMeasure(55.8, 56.2, 1);
+			song.AddPaletteChangeByMeasure(57.8, 58.2, 2);
+			song.AddPaletteChangeByMeasure(59.8, 60.2, 3);
+			song.AddPaletteChangeByMeasure(62, 0);
 
-			// SlideSquares (145342)
+			// SlideSquares (62)
 			var slideSquares = SlideSquares(out var slideSquaresTime);
-			song.AddSegment(slideSquares, 0, slideSquaresTime, 145342, 19008);
+			song.AddSegmentByMeasure(slideSquares, 0, slideSquaresTime, 62, 8);
 
-			// SineWaves (164350)
+			// SineWaves (70)
 			var sineWaves = SineWaves();
-			song.AddSegment(sineWaves, 0, 360, 164350, 4752, 4);
+			song.AddSegmentByMeasure(sineWaves, 0, 360, 70, 2, 4);
 
-			// Circles (183358)
+			// Circles (78)
 			var circles = Circles();
-			song.AddSegment(circles, 0, 720, 183358, 4752, 4);
+			song.AddSegmentByMeasure(circles, 0, 720, 78, 2, 4);
 
-			// RingPulse (202366)
+			// RingPulse (86)
 			var ringPulse = RingPulse();
-			song.AddSegment(ringPulse, 0, 1000, 202366, 2376, 9);
-			song.AddPaletteChange(202366, 0);
-			song.AddPaletteChange(204742, 1);
-			song.AddPaletteChange(207118, 2);
-			song.AddPaletteChange(214246, 3);
-			song.AddPaletteChange(216622, 4);
-			song.AddPaletteChange(218998, 5);
-			song.AddPaletteChange(223750, 0);
+			song.AddSegmentByMeasure(ringPulse, 0, 1000, 86, 1, 9);
+			song.AddPaletteChangeByMeasure(86, 0);
+			song.AddPaletteChangeByMeasure(87, 1);
+			song.AddPaletteChangeByMeasure(88, 2);
+			song.AddPaletteChangeByMeasure(91, 3);
+			song.AddPaletteChangeByMeasure(92, 4);
+			song.AddPaletteChangeByMeasure(93, 5);
+			song.AddPaletteChangeByMeasure(95, 0);
 
-			// SquarePath (223750)
+			// SquarePath (95)
 			var squarePath = SquarePath(out var squarePathTime);
-			song.AddSegment(squarePath, 0, squarePathTime, 223750, 4752, 3);
-			song.AddSegment(squarePath, 0, squarePathTime / 2, song.MaxTime(), 2376);
-			song.AddSegment(squarePath, squarePathTime / 2, squarePathTime / 2, song.MaxTime(), 2376);
-			song.AddPaletteChange(223750, 0);
-			song.AddPaletteChange(224442, 224642, 1);
-			song.AddPaletteChange(225234, 225434, 2);
-			song.AddPaletteChange(226026, 226226, 3);
-			song.AddPaletteChange(226818, 227018, 4);
-			song.AddPaletteChange(227610, 227810, 5);
-			song.AddPaletteChange(228402, 228602, 0);
-			song.AddPaletteChange(229194, 229394, 1);
-			song.AddPaletteChange(229986, 230186, 2);
-			song.AddPaletteChange(230778, 230978, 3);
-			song.AddPaletteChange(231570, 231770, 4);
-			song.AddPaletteChange(232362, 232562, 5);
-			song.AddPaletteChange(233154, 233354, 0);
-			song.AddPaletteChange(233946, 234146, 1);
-			song.AddPaletteChange(234738, 234938, 2);
-			song.AddPaletteChange(235530, 235730, 3);
-			song.AddPaletteChange(236322, 236522, 4);
-			song.AddPaletteChange(237114, 237314, 5);
-			song.AddPaletteChange(237906, 238106, 0);
-			song.AddPaletteChange(238698, 238898, 1);
-			song.AddPaletteChange(239490, 239690, 2);
+			song.AddSegmentByMeasure(squarePath, 0, squarePathTime, 95, 2, 3);
+			song.AddSegmentByMeasure(squarePath, 0, squarePathTime / 2, 101, 1);
+			song.AddSegmentByMeasure(squarePath, squarePathTime / 2, squarePathTime / 2, 102, 1);
+			song.AddPaletteChangeByMeasure(95, 0);
+			song.AddPaletteChangeByMeasure(95.2833333333333, 95.3833333333333, 1);
+			song.AddPaletteChangeByMeasure(95.6166666666667, 95.7166666666667, 2);
+			song.AddPaletteChangeByMeasure(95.95, 96.05, 3);
+			song.AddPaletteChangeByMeasure(96.2833333333333, 96.3833333333333, 4);
+			song.AddPaletteChangeByMeasure(96.6166666666667, 96.7166666666667, 5);
+			song.AddPaletteChangeByMeasure(96.95, 97.05, 0);
+			song.AddPaletteChangeByMeasure(97.2833333333333, 97.3833333333333, 1);
+			song.AddPaletteChangeByMeasure(97.6166666666667, 97.7166666666667, 2);
+			song.AddPaletteChangeByMeasure(97.95, 98.05, 3);
+			song.AddPaletteChangeByMeasure(98.2833333333333, 98.3833333333333, 4);
+			song.AddPaletteChangeByMeasure(98.6166666666667, 98.7166666666667, 5);
+			song.AddPaletteChangeByMeasure(98.95, 99.05, 0);
+			song.AddPaletteChangeByMeasure(99.2833333333333, 99.3833333333333, 1);
+			song.AddPaletteChangeByMeasure(99.6166666666667, 99.7166666666667, 2);
+			song.AddPaletteChangeByMeasure(99.95, 100.05, 3);
+			song.AddPaletteChangeByMeasure(100.283333333333, 100.383333333333, 4);
+			song.AddPaletteChangeByMeasure(100.616666666667, 100.716666666667, 5);
+			song.AddPaletteChangeByMeasure(100.95, 101.05, 0);
+			song.AddPaletteChangeByMeasure(101.283333333333, 101.383333333333, 1);
+			song.AddPaletteChangeByMeasure(101.616666666667, 101.716666666667, 2);
 
-			song.AddPaletteChange(240282, 240482, 6);
-			song.AddPaletteChange(240482, 241570, 7);
-			song.AddPaletteChange(242758, 0);
+			song.AddPaletteChangeByMeasure(101.95, 102.05, 6);
+			song.AddPaletteChangeByMeasure(102.05, 102.5, 7);
+			song.AddPaletteChangeByMeasure(103, 0);
 
-			// End (242758)
+			// End (103)
 
 			return song;
 		}
