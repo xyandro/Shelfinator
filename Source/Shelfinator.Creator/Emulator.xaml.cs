@@ -14,6 +14,8 @@ namespace Shelfinator.Creator
 {
 	partial class Emulator : IDotStar, IAudio
 	{
+		readonly double SpeedAdjust = Math.Pow(2, 1.0/5.0);
+
 		public static int TestPosition { get; set; }
 		public static List<MidiNote> TestNotes { get; set; }
 
@@ -126,6 +128,8 @@ namespace Shelfinator.Creator
 				case Key.S: controller.Stop(); break;
 				case Key.P: CopyPosition(); break;
 				case Key.T: Time = TestPosition; break;
+				case Key.Add: mediaPlayer.SpeedRatio *= SpeedAdjust; break;
+				case Key.Subtract: mediaPlayer.SpeedRatio /= SpeedAdjust; break;
 				default: e.Handled = false; break;
 			}
 			base.OnKeyDown(e);
