@@ -268,7 +268,7 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		void AddSpiral(Song song, double startTime)
+		void AddSpiral(Song song, int startTime)
 		{
 			const double A = 4;
 			const int NumArms = 3;
@@ -329,7 +329,7 @@ namespace Shelfinator.Creator.Songs
 				}
 				clockwise = !clockwise;
 			}
-			const double FadeTime = 0.1;
+			const double FadeTime = 0.105820105820106;
 			song.AddPaletteChange(startTime, 0);
 			song.AddPaletteChange(startTime + 2 - FadeTime / 2, startTime + 2 + FadeTime / 2, 1);
 			song.AddPaletteChange(startTime + 4 - FadeTime / 2, startTime + 4 + FadeTime / 2, 2);
@@ -397,9 +397,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(lines, 0, 382, 2, 2, 4);
 			song.AddPaletteChange(1, 0);
 			song.AddPaletteChange(1, 2, 1);
-			song.AddPaletteChange(3.75, 4.25, 2);
-			song.AddPaletteChange(5.75, 6.25, 3);
-			song.AddPaletteChange(7.75, 8.25, 4);
+			song.AddPaletteChange(3.73544973544973, 4.26455026455027, 2);
+			song.AddPaletteChange(5.73544973544973, 6.26455026455027, 3);
+			song.AddPaletteChange(7.73544973544973, 8.26455026455026, 4);
 			song.AddPaletteChange(10, 0);
 
 			// BeatPattern (10)
@@ -414,11 +414,11 @@ namespace Shelfinator.Creator.Songs
 			var corners = Corners();
 			song.AddSegment(corners, 0, 19, 33, 1, 12);
 			song.AddPaletteChange(33, 0);
-			song.AddPaletteChange(34.75, 35.25, 1);
-			song.AddPaletteChange(36.75, 37.25, 2);
-			song.AddPaletteChange(38.75, 39.25, 3);
-			song.AddPaletteChange(40.75, 41.25, 4);
-			song.AddPaletteChange(42.75, 43.25, 5);
+			song.AddPaletteChange(34.7354497354497, 35.2645502645503, 1);
+			song.AddPaletteChange(36.7354497354497, 37.2645502645503, 2);
+			song.AddPaletteChange(38.7354497354497, 39.2645502645503, 3);
+			song.AddPaletteChange(40.7354497354497, 41.2645502645503, 4);
+			song.AddPaletteChange(42.7354497354497, 43.2645502645503, 5);
 			song.AddPaletteChange(45, 0);
 
 			// SquareCircles (45)
@@ -426,7 +426,7 @@ namespace Shelfinator.Creator.Songs
 			song.AddSegment(squareCircles, 100, 400, 45, 3);
 			song.AddSegment(squareCircles, 0, 400, 48, 4, 2);
 			song.AddPaletteChange(45, 0);
-			new List<double> { 0, 0.375, 0.75, 1.125, 1.5, 1.75, 2, 2.375, 2.75, 3.125, 3.5, 3.75, 4, 4.375, 4.75, 5, 5.375, 5.75, 6, 6.375, 6.75, 7, 7.375, 7.75, 8, 8.375, 8.75, 9, 9.375, 9.75, 10 }.Skip(1).Select(x => x + 45).ForEach((x, index) => song.AddPaletteChange(x - 0.05, x + 0.05, (index + 1) % 4));
+			new List<double> { 0, 0.375, 0.75, 1.125, 1.5, 1.75, 2, 2.375, 2.75, 3.125, 3.5, 3.75, 4, 4.375, 4.75, 5, 5.375, 5.75, 6, 6.375, 6.75, 7, 7.375, 7.75, 8, 8.375, 8.75, 9, 9.375, 9.75, 10 }.Skip(1).Select(x => x + 45).ForEach((x, index) => song.AddPaletteChange(x - 0.0529100529100529, x + 0.0529100529100529, (index + 1) % 4));
 			song.AddPaletteChange(56, 0);
 
 			// BeatGrow (56)
@@ -437,8 +437,8 @@ namespace Shelfinator.Creator.Songs
 			var blinds = Blinds();
 			song.AddSegment(blinds, 0, 1440, 64, 6, 2);
 			song.AddPaletteChange(64, 0);
-			song.AddPaletteChange(67.75, 68.25, 1);
-			song.AddPaletteChange(71.75, 72.25, 2);
+			song.AddPaletteChange(67.7354497354497, 68.2645502645503, 1);
+			song.AddPaletteChange(71.7354497354497, 72.2645502645503, 2);
 			song.AddPaletteChange(76, 0);
 
 			// Spiral (76)

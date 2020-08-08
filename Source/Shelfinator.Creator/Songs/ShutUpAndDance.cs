@@ -691,16 +691,16 @@ namespace Shelfinator.Creator.Songs
 			var cornerRotate = CornerRotate();
 			song.AddSegment(cornerRotate, 0, 360, 27, 2, 4);
 			song.AddPaletteChange(27, 0);
-			song.AddPaletteChange(28.75, 29.25, 1);
-			song.AddPaletteChange(30.75, 31.25, 2);
-			song.AddPaletteChange(32.75, 33.25, 3);
+			song.AddPaletteChange(28.7333333333333, 29.2666666666667, 1);
+			song.AddPaletteChange(30.7333333333333, 31.2666666666667, 2);
+			song.AddPaletteChange(32.7333333333333, 33.2666666666667, 3);
 			song.AddPaletteChange(35, 0);
 
 			// Corners (35)
 			var corners = Corners();
 			song.AddSegment(corners, 200, 400, 35, 2, 5);
 			song.AddPaletteChange(35, 0);
-			song.AddPaletteChange(39.75, 40.25, 1);
+			song.AddPaletteChange(39.7333333333333, 40.2666666666667, 1);
 			song.AddPaletteChange(45, 0);
 
 			// Stars (45)
@@ -729,20 +729,20 @@ namespace Shelfinator.Creator.Songs
 			var halves = Halves();
 			song.AddSegment(halves, 0, 0, 79, 8);
 			song.AddPaletteChange(79, 0);
-			song.AddPaletteChange(79.75, 80.25, 1);
-			song.AddPaletteChange(80.75, 81.25, 2);
-			song.AddPaletteChange(81.75, 82.25, 3);
-			song.AddPaletteChange(82.75, 83.25, 4);
-			song.AddPaletteChange(83.75, 84.25, 5);
-			song.AddPaletteChange(84.75, 85.25, 6);
-			song.AddPaletteChange(85.75, 86.25, 7);
+			song.AddPaletteChange(79.7333333333333, 80.2666666666667, 1);
+			song.AddPaletteChange(80.7333333333333, 81.2666666666667, 2);
+			song.AddPaletteChange(81.7333333333333, 82.2666666666667, 3);
+			song.AddPaletteChange(82.7333333333333, 83.2666666666667, 4);
+			song.AddPaletteChange(83.7333333333333, 84.2666666666667, 5);
+			song.AddPaletteChange(84.7333333333333, 85.2666666666667, 6);
+			song.AddPaletteChange(85.7333333333333, 86.2666666666667, 7);
 			song.AddPaletteChange(87, 0);
 
 			// Paths (87)
 			var paths = Paths();
 			song.AddSegment(paths, 0, 72, 87, 3, 2);
 			song.AddPaletteChange(87, 0);
-			song.AddPaletteChange(89.75, 90.25, 1);
+			song.AddPaletteChange(89.7333333333333, 90.2666666666667, 1);
 			song.AddPaletteChange(93, 0);
 
 			// Corners2 (93)

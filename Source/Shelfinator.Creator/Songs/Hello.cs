@@ -118,7 +118,7 @@ namespace Shelfinator.Creator.Songs
 		{
 			var song = new Song("hello.ogg");
 
-			song.AddMeasure(32500);
+			song.AddMeasure(32449);
 
 			var hello = GetHello();
 			song.AddSegment(hello, 0, hello.MaxTime(), 0, 1);
