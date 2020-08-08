@@ -441,85 +441,88 @@ namespace Shelfinator.Creator.Songs
 
 		public override Song Render()
 		{
-			var song = new Song("rainbow.ogg", "rainbow-edit.ogg"); // First sound is at 1000; Measures start at 1000, repeat every 2000, and stop at 215000
+			var song = new Song("rainbow.ogg", "rainbow-edit.ogg");
 
-			// Squares
+			song.AddMeasure(1000); // Empty lead-in time
+			song.AddMeasure(2000, 107); // Measures
+
+			// Squares (1)
 			var squares = Squares();
-			song.AddSegment(squares, 0, squares.MaxTime(), 1000, 24000);
-			song.AddPaletteChange(1000, 0);
-			song.AddPaletteChange(10900, 11100, 1); // "colors are everything"
-			song.AddPaletteChange(12900, 13100, 2);
-			song.AddPaletteChange(16900, 17100, 3);
-			song.AddPaletteChange(20900, 21100, 4);
-			song.AddPaletteChange(22900, 23100, 5);
-			song.AddPaletteChange(25000, 0);
+			song.AddSegmentByMeasure(squares, 0, squares.MaxTime(), 1, 12);
+			song.AddPaletteChangeByMeasure(1, 0);
+			song.AddPaletteChangeByMeasure(5.95, 6.05, 1); // "colors are everything"
+			song.AddPaletteChangeByMeasure(6.95, 7.05, 2);
+			song.AddPaletteChangeByMeasure(8.95, 9.05, 3);
+			song.AddPaletteChangeByMeasure(10.95, 11.05, 4);
+			song.AddPaletteChangeByMeasure(11.95, 12.05, 5);
+			song.AddPaletteChangeByMeasure(13, 0);
 
-			// Traffic (25100)
+			// Traffic (13.05)
 			var traffic = Traffic();
-			song.AddSegment(traffic, 0, 492, 25100, 15900);
+			song.AddSegmentByMeasure(traffic, 0, 492, 13.05, 7.95);
 
-			song.AddPaletteChange(25000, 0);
-			song.AddPaletteChange(26800, 27200, 1);
-			song.AddPaletteChange(28800, 29200, 0);
-			song.AddPaletteChange(30800, 31200, 1);
-			song.AddPaletteChange(32800, 33200, 0);
-			song.AddPaletteChange(34800, 35200, 1);
-			song.AddPaletteChange(36800, 37200, 0);
-			song.AddPaletteChange(38800, 39200, 1);
-			song.AddPaletteChange(41000, 0);
+			song.AddPaletteChangeByMeasure(13, 0);
+			song.AddPaletteChangeByMeasure(13.9, 14.1, 1);
+			song.AddPaletteChangeByMeasure(14.9, 15.1, 0);
+			song.AddPaletteChangeByMeasure(15.9, 16.1, 1);
+			song.AddPaletteChangeByMeasure(16.9, 17.1, 0);
+			song.AddPaletteChangeByMeasure(17.9, 18.1, 1);
+			song.AddPaletteChangeByMeasure(18.9, 19.1, 0);
+			song.AddPaletteChangeByMeasure(19.9, 20.1, 1);
+			song.AddPaletteChangeByMeasure(21, 0);
 
-			// RainbowRotate (41000)
+			// RainbowRotate (21)
 			var rainbowRotate = RainbowRotate();
-			song.AddSegment(rainbowRotate, 0, 360, 41000, 2000); // Grow
-			song.AddSegment(rainbowRotate, 360, 720, 43000, 2000, 7); // Repeat
-			song.AddSegment(rainbowRotate, 720, 1080, 57000, 2000); // Shrink
+			song.AddSegmentByMeasure(rainbowRotate, 0, 360, 21, 1); // Grow
+			song.AddSegmentByMeasure(rainbowRotate, 360, 720, 22, 1, 7); // Repeat
+			song.AddSegmentByMeasure(rainbowRotate, 720, 1080, 29, 1); // Shrink
 
-			// Spiral (59000)
+			// Spiral (30)
 			var spiral = Spiral(out var spiralLength);
-			song.AddSegment(spiral, 0, spiralLength, 59000, 24000);
+			song.AddSegmentByMeasure(spiral, 0, spiralLength, 30, 12);
 
-			// Flex (83000)
+			// Flex (42)
 			var flex = Flex();
-			song.AddSegment(flex, 0, 1136, 83000, 16000);
+			song.AddSegmentByMeasure(flex, 0, 1136, 42, 8);
 
-			// RainbowRotate (99000)
-			song.AddSegment(rainbowRotate, 360, 720, 99000, 2000, 8); // Forward
-			song.AddSegment(rainbowRotate, 720, 360, 115000, 2000, 7); // Reverse
-			song.AddSegment(rainbowRotate, 360, 0, 129000, 2000); // Shrink
+			// RainbowRotate (50)
+			song.AddSegmentByMeasure(rainbowRotate, 360, 720, 50, 1, 8); // Forward
+			song.AddSegmentByMeasure(rainbowRotate, 720, 360, 58, 1, 7); // Reverse
+			song.AddSegmentByMeasure(rainbowRotate, 360, 0, 65, 1); // Shrink
 
-			// Sweep (131000)
+			// Sweep (66)
 			var sweep = Sweep();
-			song.AddSegment(sweep, 0, 4320, 131000, 7000, 2); // 14 sweeps
-			song.AddSegment(sweep, 0, 1234, 145000, 2000); // 2 more sweeps
+			song.AddSegmentByMeasure(sweep, 0, 4320, 66, 3.5, 2); // 14 sweeps
+			song.AddSegmentByMeasure(sweep, 0, 1234, 73, 1); // 2 more sweeps
 
-			song.AddPaletteChange(131000, 0);
-			song.AddPaletteChange(138800, 139200, 1);
-			song.AddPaletteChange(142800, 143200, 2);
-			song.AddPaletteChange(147000, 0);
+			song.AddPaletteChangeByMeasure(66, 0);
+			song.AddPaletteChangeByMeasure(69.9, 70.1, 1);
+			song.AddPaletteChangeByMeasure(71.9, 72.1, 2);
+			song.AddPaletteChangeByMeasure(74, 0);
 
-			// Plasma (147000)
+			// Plasma (74)
 			var plasma = Plasma(out var plasmaTime);
-			song.AddSegment(plasma, 0, plasmaTime, 147000, 4000, 4);
+			song.AddSegmentByMeasure(plasma, 0, plasmaTime, 74, 2, 4);
 			song.AddSegmentByVelocity(plasma, 0, plasmaTime, plasmaTime, 163000, 4000, plasmaTime, 0, 4000); // Slow down
-			song.AddSegment(plasma, 0, 0, 167000, 2000); // Stopped
+			song.AddSegmentByMeasure(plasma, 0, 0, 84, 1); // Stopped
 
-			// RainbowRotate (169000)
-			song.AddSegment(rainbowRotate, 0, 360, 169000, 2000); // Grow
-			song.AddSegment(rainbowRotate, 360, 720, 171000, 2000, 5); // Forward
-			song.AddSegment(rainbowRotate, 720, 360, 181000, 2000, 7); // Reverse
-			song.AddSegment(rainbowRotate, 360, 0, 195000, 2000); // Shrink
+			// RainbowRotate (85)
+			song.AddSegmentByMeasure(rainbowRotate, 0, 360, 85, 1); // Grow
+			song.AddSegmentByMeasure(rainbowRotate, 360, 720, 86, 1, 5); // Forward
+			song.AddSegmentByMeasure(rainbowRotate, 720, 360, 91, 1, 7); // Reverse
+			song.AddSegmentByMeasure(rainbowRotate, 360, 0, 98, 1); // Shrink
 
-			// Spin (197000)
+			// Spin (99)
 			var spin = Spin();
-			song.AddSegment(spin, 0, 1000, 197000, 1000);
-			song.AddSegment(spin, 1000, 2000, 198000, 1000, 16);
-			song.AddSegment(spin, 2000, 3000, 214000, 1000);
+			song.AddSegmentByMeasure(spin, 0, 1000, 99, 0.5);
+			song.AddSegmentByMeasure(spin, 1000, 2000, 99.5, 0.5, 16);
+			song.AddSegmentByMeasure(spin, 2000, 3000, 107.5, 0.5);
 
-			song.AddPaletteChange(197000, 0);
-			song.AddPaletteChange(200500, 201500, 1);
-			song.AddPaletteChange(204500, 205500, 2);
-			song.AddPaletteChange(210500, 211500, 3);
-			song.AddPaletteChange(215000, 0);
+			song.AddPaletteChangeByMeasure(99, 0);
+			song.AddPaletteChangeByMeasure(100.75, 101.25, 1);
+			song.AddPaletteChangeByMeasure(102.75, 103.25, 2);
+			song.AddPaletteChangeByMeasure(105.75, 106.25, 3);
+			song.AddPaletteChangeByMeasure(108, 0);
 
 			return song;
 		}
