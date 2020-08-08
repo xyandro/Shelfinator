@@ -210,5 +210,11 @@ namespace Shelfinator.Creator.SongData
 			for (var ctr = 0; ctr < count; ++ctr)
 				measures.Add(measures[measures.Count - 1] + length);
 		}
+
+		public void AddMeasures(params int[] lengths)
+		{
+			for (var ctr = 0; ctr < lengths.Length; ++ctr)
+				measures.Add(measures[measures.Count - 1] + lengths[ctr]);
+		}
 	}
 }
