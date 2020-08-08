@@ -669,88 +669,90 @@ namespace Shelfinator.Creator.Songs
 		public override Song Render()
 		{
 			var song = new Song("shutupanddance.ogg");
-			song.AddPaletteChange(0, 0);
 
-			// ShapeChange (1000)
+			song.AddMeasure(1000); // Empty lead-in time
+			song.AddMeasure(1875, 104); // Measures
+
+			// ShapeChange (1)
 			var shapeChange = ShapeChange();
-			song.AddSegment(shapeChange, 0, 360, 1000, 1875);
-			song.AddSegment(shapeChange, 360, 720, 2875, 1875, 4);
-			song.AddSegment(shapeChange, 720, 1080, 10375, 1875);
-			song.AddSegment(shapeChange, 1080, 1440, 12250, 1875, 3);
-			song.AddSegment(shapeChange, 1440, 1800, 17875, 1875);
-			song.AddSegment(shapeChange, 1800, 2160, 19750, 1875, 2);
-			song.AddSegment(shapeChange, 2160, 2880, 23500, 3750);
+			song.AddSegmentByMeasure(shapeChange, 0, 360, 1, 1);
+			song.AddSegmentByMeasure(shapeChange, 360, 720, 2, 1, 4);
+			song.AddSegmentByMeasure(shapeChange, 720, 1080, 6, 1);
+			song.AddSegmentByMeasure(shapeChange, 1080, 1440, 7, 1, 3);
+			song.AddSegmentByMeasure(shapeChange, 1440, 1800, 10, 1);
+			song.AddSegmentByMeasure(shapeChange, 1800, 2160, 11, 1, 2);
+			song.AddSegmentByMeasure(shapeChange, 2160, 2880, 13, 2);
 
-			// Randomized (27250)
+			// Randomized (15)
 			var randomized = Randomized();
-			song.AddSegment(randomized, 0, 2912 * 6, 27250, 3750 * 6);
+			song.AddSegmentByMeasure(randomized, 0, 2912 * 6, 15, 12);
 
-			// CornerRotate (49750)
+			// CornerRotate (27)
 			var cornerRotate = CornerRotate();
-			song.AddSegment(cornerRotate, 0, 360, 49750, 3750, 4);
-			song.AddPaletteChange(49750, 0);
-			song.AddPaletteChange(53000, 54000, 1);
-			song.AddPaletteChange(56750, 57750, 2);
-			song.AddPaletteChange(60500, 61500, 3);
-			song.AddPaletteChange(64750, 0);
+			song.AddSegmentByMeasure(cornerRotate, 0, 360, 27, 2, 4);
+			song.AddPaletteChangeByMeasure(27, 0);
+			song.AddPaletteChangeByMeasure(28.75, 29.25, 1);
+			song.AddPaletteChangeByMeasure(30.75, 31.25, 2);
+			song.AddPaletteChangeByMeasure(32.75, 33.25, 3);
+			song.AddPaletteChangeByMeasure(35, 0);
 
-			// Corners (64750)
+			// Corners (35)
 			var corners = Corners();
-			song.AddSegment(corners, 200, 400, 64750, 3750, 5);
-			song.AddPaletteChange(64750, 0);
-			song.AddPaletteChange(73625, 74625, 1);
-			song.AddPaletteChange(83500, 0);
+			song.AddSegmentByMeasure(corners, 200, 400, 35, 2, 5);
+			song.AddPaletteChangeByMeasure(35, 0);
+			song.AddPaletteChangeByMeasure(39.75, 40.25, 1);
+			song.AddPaletteChangeByMeasure(45, 0);
 
-			// Stars (83500)
+			// Stars (45)
 			var stars = Stars();
-			song.AddSegment(stars, 0, 200, 83500, 7500);
+			song.AddSegmentByMeasure(stars, 0, 200, 45, 4);
 
-			// CircleWarp (91000)
+			// CircleWarp (49)
 			var circleWarp = CircleWarp();
-			song.AddSegment(circleWarp, 0, 340, 91000, 18750);
+			song.AddSegmentByMeasure(circleWarp, 0, 340, 49, 10);
 
-			// Bounce (109750)
+			// Bounce (59)
 			var bounce = Bounce();
-			song.AddSegment(bounce, 0, 96, 109750, 3750);
-			song.AddSegment(bounce, 96, 196, 113500, 1875);
-			song.AddSegment(bounce, 196, 292, 115375, 1875, 13);
+			song.AddSegmentByMeasure(bounce, 0, 96, 59, 2);
+			song.AddSegmentByMeasure(bounce, 96, 196, 61, 1);
+			song.AddSegmentByMeasure(bounce, 196, 292, 62, 1, 13);
 
-			// Flash (139750)
+			// Flash (75)
 			var flash = Flash();
-			song.AddSegment(flash, 0, flash.MaxTime() + 1, 139750, 1875, 4);
+			song.AddSegmentByMeasure(flash, 0, flash.MaxTime() + 1, 75, 1, 4);
 
-			song.AddPaletteChange(139750, 0);
-			song.AddPaletteChange(143500, 1);
-			song.AddPaletteChange(147250, 0);
+			song.AddPaletteChangeByMeasure(75, 0);
+			song.AddPaletteChangeByMeasure(77, 1);
+			song.AddPaletteChangeByMeasure(79, 0);
 
-			// Halves (147250)
+			// Halves (79)
 			var halves = Halves();
-			song.AddSegment(halves, 0, 0, 147250, 15000);
-			song.AddPaletteChange(147250, 0);
-			song.AddPaletteChange(148625, 149625, 1);
-			song.AddPaletteChange(150500, 151500, 2);
-			song.AddPaletteChange(152375, 153375, 3);
-			song.AddPaletteChange(154250, 155250, 4);
-			song.AddPaletteChange(156125, 157125, 5);
-			song.AddPaletteChange(158000, 159000, 6);
-			song.AddPaletteChange(159875, 160875, 7);
-			song.AddPaletteChange(162250, 0);
+			song.AddSegmentByMeasure(halves, 0, 0, 79, 8);
+			song.AddPaletteChangeByMeasure(79, 0);
+			song.AddPaletteChangeByMeasure(79.75, 80.25, 1);
+			song.AddPaletteChangeByMeasure(80.75, 81.25, 2);
+			song.AddPaletteChangeByMeasure(81.75, 82.25, 3);
+			song.AddPaletteChangeByMeasure(82.75, 83.25, 4);
+			song.AddPaletteChangeByMeasure(83.75, 84.25, 5);
+			song.AddPaletteChangeByMeasure(84.75, 85.25, 6);
+			song.AddPaletteChangeByMeasure(85.75, 86.25, 7);
+			song.AddPaletteChangeByMeasure(87, 0);
 
-			// Paths (162250)
+			// Paths (87)
 			var paths = Paths();
-			song.AddSegment(paths, 0, 72, 162250, 5625, 2);
-			song.AddPaletteChange(162250, 0);
-			song.AddPaletteChange(167375, 168375, 1);
-			song.AddPaletteChange(173500, 0);
+			song.AddSegmentByMeasure(paths, 0, 72, 87, 3, 2);
+			song.AddPaletteChangeByMeasure(87, 0);
+			song.AddPaletteChangeByMeasure(89.75, 90.25, 1);
+			song.AddPaletteChangeByMeasure(93, 0);
 
-			// Corners2 (173500)
+			// Corners2 (93)
 			var corners2 = Corners2();
-			song.AddSegment(corners2, 0, 3360, 173500, 3750);
-			song.AddSegment(corners2, 3360, 6720, 177250, 3750, 2);
+			song.AddSegmentByMeasure(corners2, 0, 3360, 93, 2);
+			song.AddSegmentByMeasure(corners2, 3360, 6720, 95, 2, 2);
 
-			// Randomized2 (184750)
+			// Randomized2 (99)
 			var randomized2 = Randomized2();
-			song.AddSegment(randomized2, 0, 80 * 6, 184750, 1875 * 6);
+			song.AddSegmentByMeasure(randomized2, 0, 80 * 6, 99, 6);
 
 			return song;
 		}
