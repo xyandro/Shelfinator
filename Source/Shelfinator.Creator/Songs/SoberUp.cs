@@ -276,11 +276,11 @@ namespace Shelfinator.Creator.Songs
 		{
 			const double LineWidth = 5;
 			const double Fade = 0.7;
-			const double Size1 = 40;
+			const double Size1 = 45;
 			const double Size2 = 28;
 			const double MaxDist = 8;
 			const double Ratio2 = .8;
-			const int NumPoints = 16;
+			const int NumPoints = 8;
 			const int TotalBubbleTime = 300;
 			const double BubbleWidth = 10;
 			const double BubbleBorder = 2;
@@ -305,17 +305,19 @@ namespace Shelfinator.Creator.Songs
 
 			var bubbleColor = new LightColor(0, 1, new List<int> { 0x201e0b, 0x1a1a15 });
 
+			var beatBackgroundBrush = new SolidColorBrush(Color.FromRgb(8, 4, 4));
 			var backgroundBrush = new SolidColorBrush(Color.FromRgb(2, 1, 1));
-			var polygonFill1 = new SolidColorBrush(Color.FromRgb(0, 12, 16));
-			var polygonFill2 = new SolidColorBrush(Color.FromRgb(16, 16, 5));
-			var polygonStroke1 = new SolidColorBrush(Color.FromRgb(5, 19, 43));
-			var polygonStroke2 = new SolidColorBrush(Color.FromRgb(32, 32, 32));
+			var outerPolygonFill = new SolidColorBrush(Color.FromRgb(4, 0, 16));
+			var outerPolygonStroke = new SolidColorBrush(Color.FromRgb(8, 14, 32));
+			var innerPolygonFill = new SolidColorBrush(Color.FromRgb(0, 8, 16));
+			var innerPolygonStroke = new SolidColorBrush(Color.FromRgb(8, 24, 32));
 
+			beatBackgroundBrush.Freeze();
 			backgroundBrush.Freeze();
-			polygonFill1.Freeze();
-			polygonFill2.Freeze();
-			polygonStroke1.Freeze();
-			polygonStroke2.Freeze();
+			outerPolygonFill.Freeze();
+			innerPolygonFill.Freeze();
+			outerPolygonStroke.Freeze();
+			innerPolygonStroke.Freeze();
 
 			var segment = new Segment();
 			var center = new Point(48, 48);
@@ -353,7 +355,8 @@ namespace Shelfinator.Creator.Songs
 
 				var canvas = new Canvas { Width = 97, Height = 97 };
 
-				var background = new Rectangle { Width = 97, Height = 97, Fill = backgroundBrush };
+				var useBrush = time < 9600 ? backgroundBrush : (time % 400) <= 100 ? beatBackgroundBrush : backgroundBrush;
+				var background = new Rectangle { Width = 97, Height = 97, Fill = useBrush };
 				Canvas.SetLeft(background, 0);
 				Canvas.SetTop(background, 0);
 				canvas.Children.Add(background);
@@ -368,7 +371,7 @@ namespace Shelfinator.Creator.Songs
 						amp = -amp;
 					}
 
-					var polygon = new Polygon { Points = new PointCollection(points), Fill = polygonFill1, Stroke = polygonStroke1, StrokeThickness = LineWidth };
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = outerPolygonFill, Stroke = outerPolygonStroke, StrokeThickness = LineWidth };
 					canvas.Children.Add(polygon);
 				}
 				{
@@ -381,7 +384,7 @@ namespace Shelfinator.Creator.Songs
 						amp = -amp;
 					}
 
-					var polygon = new Polygon { Points = new PointCollection(points), Fill = polygonFill2, Stroke = polygonStroke2, StrokeThickness = LineWidth };
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = innerPolygonFill, Stroke = innerPolygonStroke, StrokeThickness = LineWidth };
 					canvas.Children.Add(polygon);
 				}
 

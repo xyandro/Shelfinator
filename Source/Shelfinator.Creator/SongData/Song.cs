@@ -29,7 +29,7 @@ namespace Shelfinator.Creator.SongData
 			return segments.IndexOf(segment);
 		}
 
-		int GetMeasureTime(double measureTime)
+		public int GetMeasureTime(double measureTime)
 		{
 			var measure = (int)measureTime;
 			measureTime -= measure;
