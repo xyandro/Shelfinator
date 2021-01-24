@@ -693,11 +693,11 @@ namespace Shelfinator.Creator.Songs
 			const double BubbleWidth = 10;
 			const double BubbleBorder = 2;
 			const double SawThickness = 5;
-			const double Fade = .8;
+			const double Fade = 1.2;
 			const int Rotations = 2;
 			const int SawBladeSize = 30;
 			const int SawBladeEdgeSize = 2;
-			const int SawBladePoints = 20;
+			const int SawBladePoints = 80;
 			const int FinalRotations = 2;
 			const int FlashTime = 5;
 			const int MinSparkleTime = 15;
@@ -779,7 +779,7 @@ namespace Shelfinator.Creator.Songs
 				for (var point = 0; point < SawBladePoints; ++point)
 				{
 					var angle = (double)point / SawBladePoints * 2 * Math.PI;
-					var dist = SawBladeSize + (point % 2 * 2 - 1) * (SawBladeEdgeSize + amp);
+					var dist = SawBladeSize + (SawBladeEdgeSize + amp);
 					points.Add(new Point(dist * Math.Sin(angle) + 48, dist * Math.Cos(angle) + 48));
 				}
 				points.Add(points[0]);
