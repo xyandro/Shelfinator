@@ -307,17 +307,18 @@ namespace Shelfinator.Creator.Songs
 
 			var beatBackgroundBrush = new SolidColorBrush(Color.FromRgb(8, 4, 4));
 			var backgroundBrush = new SolidColorBrush(Color.FromRgb(2, 1, 1));
-			var outerPolygonFill = new SolidColorBrush(Color.FromRgb(4, 0, 16));
-			var outerPolygonStroke = new SolidColorBrush(Color.FromRgb(8, 14, 32));
-			var innerPolygonFill = new SolidColorBrush(Color.FromRgb(0, 8, 16));
-			var innerPolygonStroke = new SolidColorBrush(Color.FromRgb(8, 24, 32));
+
+			var outerStroke = new SolidColorBrush[] { new SolidColorBrush(Color.FromRgb(0, 0, 12)), new SolidColorBrush(Color.FromRgb(0, 7, 16)) };
+			var outerFill = new SolidColorBrush[] { new SolidColorBrush(Color.FromRgb(0, 8, 8)), new SolidColorBrush(Color.FromRgb(4, 0, 16)) };
+			var innerStroke = new SolidColorBrush[] { new SolidColorBrush(Color.FromRgb(0, 0, 12)), new SolidColorBrush(Color.FromRgb(0, 7, 16)) };
+			var innerFill = new SolidColorBrush[] { new SolidColorBrush(Color.FromRgb(0, 0, 12)), new SolidColorBrush(Color.FromRgb(0, 7, 16)) };
 
 			beatBackgroundBrush.Freeze();
 			backgroundBrush.Freeze();
-			outerPolygonFill.Freeze();
-			innerPolygonFill.Freeze();
-			outerPolygonStroke.Freeze();
-			innerPolygonStroke.Freeze();
+			outerStroke.ForEach(brush => brush.Freeze());
+			outerFill.ForEach(brush => brush.Freeze());
+			innerStroke.ForEach(brush => brush.Freeze());
+			innerFill.ForEach(brush => brush.Freeze());
 
 			var segment = new Segment();
 			var center = new Point(48, 48);
@@ -361,6 +362,12 @@ namespace Shelfinator.Creator.Songs
 				Canvas.SetTop(background, 0);
 				canvas.Children.Add(background);
 
+				var curPalette = 0;
+				if (time >= 3200)
+					curPalette = 1;
+				if (time >= 9600)
+					curPalette = 0;
+
 				{
 					var points = new List<Point>();
 					for (var point = 0; point < NumPoints; ++point)
@@ -371,7 +378,7 @@ namespace Shelfinator.Creator.Songs
 						amp = -amp;
 					}
 
-					var polygon = new Polygon { Points = new PointCollection(points), Fill = outerPolygonFill, Stroke = outerPolygonStroke, StrokeThickness = LineWidth };
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = outerFill[curPalette], Stroke = outerStroke[curPalette], StrokeThickness = LineWidth };
 					canvas.Children.Add(polygon);
 				}
 				{
@@ -384,7 +391,7 @@ namespace Shelfinator.Creator.Songs
 						amp = -amp;
 					}
 
-					var polygon = new Polygon { Points = new PointCollection(points), Fill = innerPolygonFill, Stroke = innerPolygonStroke, StrokeThickness = LineWidth };
+					var polygon = new Polygon { Points = new PointCollection(points), Fill = innerFill[curPalette], Stroke = innerStroke[curPalette], StrokeThickness = LineWidth };
 					canvas.Children.Add(polygon);
 				}
 
