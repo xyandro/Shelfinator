@@ -637,8 +637,6 @@ namespace Shelfinator.Creator.Songs
 			const double XAmplitude = 3;
 			const double YAmplitude = .75;
 			const double FadeSpeed = 1200;
-			const int ShrinkStartTime = 4200;
-			const double ShrinkLength = 2000;
 
 			var segment = new Segment();
 
@@ -678,18 +676,11 @@ namespace Shelfinator.Creator.Songs
 			DrawSquares(3800, 1, 4, 2);
 			DrawSquares(4000, 0, 4, 3);
 
-			var centerOffset = new Vector(-48, -48);
-			for (var beat = 0; beat < ShrinkLength; beat += 20)
-			{
-				segment.Clear(ShrinkStartTime + beat);
-				var scale = 1 - beat / ShrinkLength;
-				foreach (var square in squares)
-				{
-					var x = ((square.Item1.X - 48) * scale + 48).Round();
-					var width = 97 - x * 2;
-					bodyLayout.GetPositionLights(x, x, width, width).ForEach(light => segment.AddLight(light, ShrinkStartTime + beat, square.Item3[3]));
-				}
-			}
+			DrawSquares(4400, 1, 4, 3);
+			DrawSquares(4800, 2, 4, 3);
+			DrawSquares(5200, 3, 4, 3);
+			DrawSquares(5600, 4, 4, 3);
+			segment.Clear(6000);
 
 			return segment;
 		}
