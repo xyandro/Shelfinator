@@ -96,28 +96,53 @@ namespace Shelfinator.Creator.Songs
 
 				for (var ctr = 0; ctr < 3; ++ctr)
 				{
-					var x = ctr * 19;
-					var y = 95 - ctr * 19;
 					var size = ((97 - ctr * 38) * amp).Round();
 					var beatBorder2 = BeatBorder2 - ctr * 2;
 
-					foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2, 2, size))
-						segment.AddLight(light, time, beatColor, 0);
-					foreach (var light in bodyLayout.GetPositionLights(x, y, size, 2))
-						segment.AddLight(light, time, beatColor, 0);
-					foreach (var light in bodyLayout.GetPositionLights(y, x, 2, size))
-						segment.AddLight(light, time, beatColor, 0);
-					foreach (var light in bodyLayout.GetPositionLights(y - size + 2, x, size, 2))
-						segment.AddLight(light, time, beatColor, 0);
+					if (time < 9600)
+					{
+						var x = ctr * 19;
+						var y = 95 - ctr * 19;
+						foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2, 2, size))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(x, y, size, 2))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(y, x, 2, size))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(y - size + 2, x, size, 2))
+							segment.AddLight(light, time, beatColor, 0);
 
-					foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2 + BeatBorder1, 2, beatBorder2))
-						segment.AddLight(light, time, beatColor, 1);
-					foreach (var light in bodyLayout.GetPositionLights(x + size - BeatBorder1 - beatBorder2, y, beatBorder2, 2))
-						segment.AddLight(light, time, beatColor, 1);
-					foreach (var light in bodyLayout.GetPositionLights(y, x + size - BeatBorder1 - beatBorder2, 2, beatBorder2))
-						segment.AddLight(light, time, beatColor, 1);
-					foreach (var light in bodyLayout.GetPositionLights(y - size + 2 + BeatBorder1, x, beatBorder2, 2))
-						segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2 + BeatBorder1, 2, beatBorder2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(x + size - BeatBorder1 - beatBorder2, y, beatBorder2, 2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(y, x + size - BeatBorder1 - beatBorder2, 2, beatBorder2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(y - size + 2 + BeatBorder1, x, beatBorder2, 2))
+							segment.AddLight(light, time, beatColor, 1);
+					}
+					else
+					{
+						var x = ctr * 19;
+						var y = ctr * 19;
+						foreach (var light in bodyLayout.GetPositionLights(x, y, 2, size))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(x, y, size, 2))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(95 - x - size + 2, 95 - y, size, 2))
+							segment.AddLight(light, time, beatColor, 0);
+						foreach (var light in bodyLayout.GetPositionLights(95 - x, 95 - y - size + 2, 2, size))
+							segment.AddLight(light, time, beatColor, 0);
+
+						foreach (var light in bodyLayout.GetPositionLights(x, y + size - BeatBorder1 - beatBorder2, 2, beatBorder2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(x + size - BeatBorder1 - beatBorder2, y, beatBorder2, 2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(95 - x - size + 2 + BeatBorder1, 95 - y, beatBorder2, 2))
+							segment.AddLight(light, time, beatColor, 1);
+						foreach (var light in bodyLayout.GetPositionLights(95 - x, 95 - y - size + 2 + BeatBorder1, 2, beatBorder2))
+							segment.AddLight(light, time, beatColor, 1);
+					}
 				}
 
 				if (onBubbleIndex < bubbleTimes.Count)
