@@ -46,27 +46,26 @@ namespace Shelfinator.Creator.Songs
 
 		Segment HelloHello()
 		{
-			const int StartY = 48;
-			const int Height = 9;
-			const int ZigZagBorder = 4;
-			const double Fade = .4;
+			const int BeatBorder1 = 2;
+			const int BeatBorder2 = 6;
+			const double Fade = 0.9;
 			const int TotalBubbleTime = 300;
 			const double BubbleWidth = 10;
 			const double BubbleBorder = 2;
 
 			var segment = new Segment();
 
-			var zigZagTimes = new List<Tuple<int, double>>
+			var beatTimes = new List<Tuple<int, double>>
 			{
-				Tuple.Create(0, 4.1),
-				Tuple.Create(200, 2.77741935483871),
-				Tuple.Create(300, 3.43870967741935),
-				Tuple.Create(500, 2.77741935483871),
-				Tuple.Create(600, 2.77741935483871),
-				Tuple.Create(700, 2.77741935483871),
+				Tuple.Create(0, 1.0),
+				Tuple.Create(200, 0.6774193548387099),
+				Tuple.Create(300, 0.8387096774193538),
+				Tuple.Create(500, 0.6774193548387099),
+				Tuple.Create(600, 0.6774193548387099),
+				Tuple.Create(700, 0.6774193548387099),
 			};
 
-			zigZagTimes = Enumerable.Range(0, 20).SelectMany(x => zigZagTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
+			beatTimes = Enumerable.Range(0, 20).SelectMany(x => beatTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
 			var bubbleTimes = new List<Tuple<int, Point>>
 			{
 				Tuple.Create(3200, new Point(0, 0)),
@@ -77,41 +76,48 @@ namespace Shelfinator.Creator.Songs
 
 			var borderColor = new LightColor(new List<List<int>> { new List<int> { 0x020101 }, new List<int> { 0x00000c } });
 			var bodyColor = new LightColor(new List<List<int>> { new List<int> { 0x040301 }, new List<int> { 0x00000c } });
-			var zigZagColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000c10, 0x040e20 }, new List<int> { 0x00000c } });
+			var beatColor = new LightColor(0, 1, new List<List<int>> { new List<int> { 0x000010, 0x040e20 }, new List<int> { 0x00000c } });
 			var bubbleColor = new LightColor(0, 1, new List<int> { 0x201e0b, 0x1a1a15 });
 
-			var onZigZagIndex = -1;
+			var onBeatIndex = -1;
 			var onBubbleIndex = 0;
 			double amp = 0;
 			for (var time = 0; time < 16000; time += 20)
 			{
-				bodyLayout.GetPositionLights(1, 1, 95, 95).ForEach(light => segment.AddLight(light, time, bodyColor, 0));
+				bodyLayout.GetPositionLights(0, 0, 97, 97).ForEach(light => segment.AddLight(light, time, bodyColor, 0));
 
-				if ((onZigZagIndex + 1 < zigZagTimes.Count) && (time >= zigZagTimes[onZigZagIndex + 1].Item1))
+				if ((onBeatIndex + 1 < beatTimes.Count) && (time >= beatTimes[onBeatIndex + 1].Item1))
 				{
-					++onZigZagIndex;
-					amp = zigZagTimes[onZigZagIndex].Item2;
+					++onBeatIndex;
+					amp = beatTimes[onBeatIndex].Item2;
 				}
 				else
-					amp = amp - Fade;
+					amp *= Fade;
 
-				var x = 1;
-				var y = 9;
-				for (var ctr = 0; ctr < 5; ++ctr)
+				for (var ctr = 0; ctr < 3; ++ctr)
 				{
-					var direction = (ctr % 2) * 2 - 1;
-					for (var xCtr = 0; xCtr < 19; ++xCtr)
-					{
-						var y1 = StartY + y * amp * ((onZigZagIndex % 2) * 2 - 1) - (Height - 1) / 2;
-						foreach (var light in bodyLayout.GetPositionLights(x, y1 - ZigZagBorder, 1, Height + ZigZagBorder * 2))
-							segment.AddLight(light, time, zigZagColor, 0);
-						foreach (var light in bodyLayout.GetPositionLights(x, y1, 1, Height))
-							segment.AddLight(light, time, zigZagColor, 1);
+					var x = ctr * 19;
+					var y = 95 - ctr * 19;
+					var size = ((97 - ctr * 38) * amp).Round();
+					var beatBorder2 = BeatBorder2 - ctr * 2;
 
-						++x;
-						y += direction;
-					}
-					y -= direction;
+					foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2, 2, size))
+						segment.AddLight(light, time, beatColor, 0);
+					foreach (var light in bodyLayout.GetPositionLights(x, y, size, 2))
+						segment.AddLight(light, time, beatColor, 0);
+					foreach (var light in bodyLayout.GetPositionLights(y, x, 2, size))
+						segment.AddLight(light, time, beatColor, 0);
+					foreach (var light in bodyLayout.GetPositionLights(y - size + 2, x, size, 2))
+						segment.AddLight(light, time, beatColor, 0);
+
+					foreach (var light in bodyLayout.GetPositionLights(x, y - size + 2 + BeatBorder1, 2, beatBorder2))
+						segment.AddLight(light, time, beatColor, 1);
+					foreach (var light in bodyLayout.GetPositionLights(x + size - BeatBorder1 - beatBorder2, y, beatBorder2, 2))
+						segment.AddLight(light, time, beatColor, 1);
+					foreach (var light in bodyLayout.GetPositionLights(y, x + size - BeatBorder1 - beatBorder2, 2, beatBorder2))
+						segment.AddLight(light, time, beatColor, 1);
+					foreach (var light in bodyLayout.GetPositionLights(y - size + 2 + BeatBorder1, x, beatBorder2, 2))
+						segment.AddLight(light, time, beatColor, 1);
 				}
 
 				if (onBubbleIndex < bubbleTimes.Count)
@@ -134,8 +140,6 @@ namespace Shelfinator.Creator.Songs
 					if (bubbleTime >= TotalBubbleTime)
 						++onBubbleIndex;
 				}
-
-				bodyLayout.GetPositionLights(0, 0, 97, 97).Except(bodyLayout.GetPositionLights(1, 1, 95, 95)).ForEach(light => segment.AddLight(light, time, borderColor, 0));
 			}
 
 			foreach (var point in HelloLights)
@@ -319,7 +323,7 @@ namespace Shelfinator.Creator.Songs
 			var segment = new Segment();
 			var center = new Point(48, 48);
 
-			var zigZagTimes = new List<Tuple<int, double>>
+			var beatTimes = new List<Tuple<int, double>>
 			{
 				Tuple.Create(0, 1d),
 				Tuple.Create(200, 0.67741935483871d),
@@ -329,7 +333,7 @@ namespace Shelfinator.Creator.Songs
 				Tuple.Create(700, 0.67741935483871d),
 			};
 
-			zigZagTimes = Enumerable.Range(0, 20).SelectMany(x => zigZagTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
+			beatTimes = Enumerable.Range(0, 20).SelectMany(x => beatTimes.Select(y => Tuple.Create(y.Item1 + x * 800, y.Item2))).ToList();
 
 			var bubbleTimes = new List<Tuple<int, Point>>
 			{
@@ -342,10 +346,10 @@ namespace Shelfinator.Creator.Songs
 			var amp = 0d;
 			for (var time = 0; time < 16000; time += 20)
 			{
-				if ((onZigZagIndex + 1 < zigZagTimes.Count) && (time >= zigZagTimes[onZigZagIndex + 1].Item1))
+				if ((onZigZagIndex + 1 < beatTimes.Count) && (time >= beatTimes[onZigZagIndex + 1].Item1))
 				{
 					++onZigZagIndex;
-					amp = zigZagTimes[onZigZagIndex].Item2 * MaxDist;
+					amp = beatTimes[onZigZagIndex].Item2 * MaxDist;
 				}
 				else
 					amp = Math.Max(0, amp - Fade);
@@ -1040,7 +1044,7 @@ namespace Shelfinator.Creator.Songs
 
 			song.AddMeasure(1000); // Empty lead-in time
 			song.AddMeasure(2580, 84); // Measures
-			// Beats appear quantized to 1/16
+									   // Beats appear quantized to 1/16
 
 			// HelloHello (1)
 			var helloHello = HelloHello();
