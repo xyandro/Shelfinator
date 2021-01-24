@@ -111,6 +111,7 @@
     <Compile Include="Songs\SoberUp.cs" />
     <Compile Include="Songs\SongCreator.cs" />
     <Compile Include="Songs\SongHelper.cs" />
+    <Compile Include="Songs\Test.cs" />
     <Compile Include="Songs\TinyLove.cs" />
   </ItemGroup>
   <ItemGroup>
