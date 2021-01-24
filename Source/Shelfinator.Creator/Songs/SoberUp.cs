@@ -155,9 +155,7 @@ namespace Shelfinator.Creator.Songs
 		Segment Waves()
 		{
 			const int Width = 5;
-			const double MinAmplitude = 8;
-			const double MaxAmplitude = 17;
-			const double AmplitudeFrequency = 1600d;
+			const double Amplitude = 10;
 			const double NumWaves = 2;
 			const double Start1 = 0;
 			const double Start2 = 120;
@@ -181,7 +179,7 @@ namespace Shelfinator.Creator.Songs
 
 			var wavyColors = new List<LightColor>
 			{
-				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c }, new List<int> { 0x060d10, 0x200b0c, 0x101010, 0x200b0c, 0x060d10 }}),
+				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x00000c, 0x100f0d, 0x030f0f, 0x100f0d, 0x00000c }, new List<int> { 0x200b0c, 0x080004, 0x101010, 0x080004, 0x200b0c } }),
 				 new LightColor(0, 4, new List<List<int>> { new List<int> { 0x00000c }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }, new List<int> { 0x101000, 0x100f09, 0x0f0a00, 0x100f09, 0x101000 }}),
 			};
 			int flashTime = 0;
@@ -195,17 +193,16 @@ namespace Shelfinator.Creator.Songs
 					sparkleLights = bodyLayout.GetAllLights().ToDictionary(light => light, light => rand.Next(MinSparkleTime, MaxSparkleTime));
 
 				var startAngle = -(time % 800) * 360 / 800;
-				var amplitude = (Math.Sin((time % AmplitudeFrequency) / AmplitudeFrequency * 360 / 180 * Math.PI) + 1) / 2 * (MaxAmplitude - MinAmplitude) + MinAmplitude;
 
 				for (var y = 0; y < 97; ++y)
 				{
 					var x = new List<int> { 0 };
 					var angle = (Start1 + startAngle + 360 * NumWaves * (y / 96d)) / 180 * Math.PI;
-					x.Add((X1 + Math.Sin(angle) * amplitude - (Width - 1) / 2).Round());
+					x.Add((X1 + Math.Sin(angle) * Amplitude - (Width - 1) / 2).Round());
 					x.Add(x.Last() + Width);
 
 					angle = (Start2 + startAngle + 360 * NumWaves * (y / 96d)) / 180 * Math.PI;
-					x.Add((X2 + Math.Sin(angle) * amplitude - (Width - 1) / 2).Round());
+					x.Add((X2 + Math.Sin(angle) * Amplitude - (Width - 1) / 2).Round());
 					x.Add(x.Last() + Width);
 
 					x.Add(97);
