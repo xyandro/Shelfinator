@@ -34,42 +34,55 @@ namespace Shelfinator
 
 		void Songs::LoadSongsThread()
 		{
-			while (true)
+			try
 			{
-				int loadSong = -1;
+				while (true)
 				{
-					std::unique_lock<decltype(mutex)> lock(mutex);
-
-					for (auto itr = songCache.begin(); itr != songCache.end();)
+					int loadSong = -1;
 					{
-						if (std::find(songQueue.begin(), songQueue.end(), itr->first) == songQueue.end())
-							songCache.erase(itr++);
-						else
-							itr++;
-					}
+						std::unique_lock<decltype(mutex)> lock(mutex);
 
-					for (auto itr = songQueue.begin(); itr != songQueue.end(); ++itr)
-						if (songCache.find(*itr) == songCache.end())
+						for (auto itr = songCache.begin(); itr != songCache.end();)
 						{
-							loadSong = *itr;
-							break;
+							if (std::find(songQueue.begin(), songQueue.end(), itr->first) == songQueue.end())
+								songCache.erase(itr++);
+							else
+								itr++;
 						}
 
-					if (loadSong == -1)
-					{
-						auto oldQueueValue = queueValue;
-						while (oldQueueValue == queueValue)
-							condVar.wait(lock);
-						continue;
+						for (auto itr = songQueue.begin(); itr != songQueue.end(); ++itr)
+							if (songCache.find(*itr) == songCache.end())
+							{
+								loadSong = *itr;
+								break;
+							}
+
+						if (loadSong == -1)
+						{
+							auto oldQueueValue = queueValue;
+							while (oldQueueValue == queueValue)
+								condVar.wait(lock);
+							continue;
+						}
 					}
+
+					auto fileName = path + std::to_string(loadSong) + ".pat";
+					auto result = SongData::Song::Read(fileName.c_str());
+
+					std::unique_lock<decltype(mutex)> lock(mutex);
+					songCache[loadSong] = result;
+					condVar.notify_all();
 				}
-
-				auto fileName = path + std::to_string(loadSong) + ".pat";
-				auto result = SongData::Song::Read(fileName.c_str());
-
-				std::unique_lock<decltype(mutex)> lock(mutex);
-				songCache[loadSong] = result;
-				condVar.notify_all();
+			}
+			catch (char const* str)
+			{
+				fprintf(stderr, "Songs::LoadSongsThread failed: %s\n", str);
+				throw;
+			}
+			catch (...)
+			{
+				fprintf(stderr, "Songs::LoadSongsThread failed\n");
+				throw;
 			}
 		}
 
