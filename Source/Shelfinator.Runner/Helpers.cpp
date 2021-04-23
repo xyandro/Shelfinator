@@ -86,7 +86,7 @@ namespace Shelfinator
 
 		std::string Helpers::GetRunPath()
 		{
-			char buf[1024];
+			char buf[1024] = { 0 };
 #ifdef _WIN32
 			GetModuleFileNameA(NULL, buf, sizeof(buf) / sizeof(*buf));
 			for (auto ctr = 0; ctr < 5; ++ctr)
