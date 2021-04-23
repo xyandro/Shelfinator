@@ -11,7 +11,6 @@ namespace Shelfinator
 			void Play();
 			void Stop();
 			property int Time;
-			property int Volume;
 			property bool Edited;
 			bool Playing();
 			bool Finished();

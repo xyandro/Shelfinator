@@ -22,7 +22,7 @@ namespace Shelfinator.Creator
 		}
 
 		uint MakeDword(int a, int b, int c, int d) => ((uint)d << 24) + ((uint)c << 16) + ((uint)b << 8) + (uint)a;
-		public void NoteOn(int note, int volume) => Win32.midiOutShortMsg(midi, MakeDword(144, note, volume, 0));
+		public void NoteOn(int note) => Win32.midiOutShortMsg(midi, MakeDword(144, note, 60, 0));
 		public void NoteOff(int note) => Win32.midiOutShortMsg(midi, MakeDword(128, note, 0, 0));
 
 		class Win32

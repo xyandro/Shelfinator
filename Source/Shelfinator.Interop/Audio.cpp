@@ -44,16 +44,6 @@ namespace Shelfinator
 			return audio->Time = time;
 		}
 
-		int Audio::GetVolume()
-		{
-			return audio->Volume;
-		}
-
-		void Audio::SetVolume(int volume)
-		{
-			return audio->Volume = volume;
-		}
-
 		bool Audio::GetEdited()
 		{
 			return audio->Edited;

@@ -24,8 +24,6 @@ namespace Shelfinator
 		D8,\
 		D9,\
 		Enter,\
-		VolumeUp,\
-		VolumeDown,\
 		Edited,\
 
 		enum RemoteCode { REMOTE_CODES };

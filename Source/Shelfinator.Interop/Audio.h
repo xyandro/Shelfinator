@@ -19,8 +19,6 @@ namespace Shelfinator
 			void Stop();
 			int GetTime();
 			void SetTime(int time);
-			int GetVolume();
-			void SetVolume(int volume);
 			bool GetEdited();
 			void SetEdited(bool edited);
 			bool Playing();

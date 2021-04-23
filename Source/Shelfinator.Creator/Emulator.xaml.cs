@@ -96,7 +96,7 @@ namespace Shelfinator.Creator
 					foreach (var note in playing.Except(notes))
 						midi.NoteOff(note.NoteValue);
 					foreach (var note in notes.Except(playing))
-						midi.NoteOn(note.NoteValue, 60);
+						midi.NoteOn(note.NoteValue);
 					playing = notes;
 					Thread.Sleep(10);
 				}
@@ -213,12 +213,6 @@ namespace Shelfinator.Creator
 		{
 			get => Dispatcher.Invoke(() => mediaPlayer.Position.TotalMilliseconds.Round());
 			set => Dispatcher.Invoke(() => mediaPlayer.Position = TimeSpan.FromMilliseconds(value));
-		}
-
-		public int Volume
-		{
-			get => Dispatcher.Invoke(() => (mediaPlayer.Volume * 10).Round());
-			set => Dispatcher.Invoke(() => mediaPlayer.Volume = value / 10d);
 		}
 
 		public bool Edited
