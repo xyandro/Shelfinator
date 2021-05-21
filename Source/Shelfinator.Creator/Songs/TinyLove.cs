@@ -399,7 +399,8 @@ namespace Shelfinator.Creator.Songs
 		{
 			const int BeatMoveBefore = 10;
 			const int BeatMoveTime = 20;
-			const int Size = 40;
+			const int InnerSize = 30;
+			const int OuterSize = 40;
 			const int SegmentEndTime = 12800;
 			const int FadeTime = 50;
 
@@ -514,7 +515,7 @@ namespace Shelfinator.Creator.Songs
 
 			var colors = new List<int> { 0x100000, 0x101000, 0x100010, 0x001000, 0x001010, 0x000010 };
 			var notes = beats.Select(beat => beat.Item1.NoteValue).Distinct().OrderByDescending(x => x).ToList();
-			var pos = Enumerable.Range(0, notes.Count).ToDictionary(index => notes[index], index => index * (97 - Size) / (notes.Count - 1));
+			var pos = Enumerable.Range(0, notes.Count).ToDictionary(index => notes[index], index => index * (97 - OuterSize) / (notes.Count - 1));
 			var segment = new Segment();
 			double curX = -1, curY = -1;
 			for (var beatCtr = 0; beatCtr < beats.Count; ++beatCtr)
@@ -534,10 +535,13 @@ namespace Shelfinator.Creator.Songs
 					var y = (newY - curY) * percent + curY;
 					var useTime = beat.StartTime - BeatMoveBefore + time;
 					var endTime = time == BeatMoveTime ? int.MaxValue : useTime + FadeTime;
-					var center = new Point(x + Size / 2, y + Size / 2);
+					var center = new Point(x + OuterSize / 2, y + OuterSize / 2);
 					foreach (var light in bodyLayout.GetAllLights())
-						if ((bodyLayout.GetLightPosition(light) - center).Length <= Size / 2 + .5)
+					{
+						var length = (bodyLayout.GetLightPosition(light) - center).Length;
+						if ((length >= InnerSize / 2 + .5) && (length <= OuterSize / 2 + .5))
 							segment.AddLight(light, useTime, endTime, Helpers.GradientColor(colors[beatCtr % colors.Count], colors[(beatCtr + 1) % colors.Count], percent), 0x000000);
+					}
 				}
 				curX = newX;
 				curY = newY;
