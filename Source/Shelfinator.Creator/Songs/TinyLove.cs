@@ -652,48 +652,26 @@ namespace Shelfinator.Creator.Songs
 			return segment;
 		}
 
-		Segment RotateSquares()
+		Segment Bubbles()
 		{
-			var center = new Point(48, 48);
+			var lightColor = new LightColor(0, 192, new List<int> { 0x101010, 0x101010, 0x101010 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x100000, 0x101000, 0x000010 }, new List<int> { 0x100010, 0x000010, 0x001010 });
 			var segment = new Segment();
-			var lightColor = new LightColor(0, 2, new List<int> { 0x101010, 0x101010, 0x101010 }, new List<int> { 0x101010, 0x100000, 0x101010 }, new List<int> { 0x100000, 0x101000, 0x000010 }, new List<int> { 0x100010, 0x000010, 0x001010 });
-			for (var angle = 0; angle < 360; ++angle)
+			for (var angle = 0; angle < 360 * 7; angle += 5)
 			{
 				segment.Clear(angle);
-				var radians = angle * Math.PI / 180;
-				var cos1 = Math.Cos(-radians);
-				var cos2 = Math.Cos(radians);
-				var sin1 = Math.Sin(-radians);
-				var sin2 = Math.Sin(radians);
-
-				foreach (var light in bodyLayout.GetAllLights())
+				for (var row = 0; row < 6; ++row)
 				{
-					var point = bodyLayout.GetLightPosition(light) - center;
-					var point1 = new Point(Math.Abs((point.X * cos1 - point.Y * sin1).Round()), Math.Abs((point.X * sin1 + point.Y * cos1).Round()));
-					var point2 = new Point(Math.Abs((point.X * cos2 - point.Y * sin2).Round()), Math.Abs((point.X * sin2 + point.Y * cos2).Round()));
-
-					var add = -1;
-
-					// Outer square
-					if ((point1.X >= 0) && (point1.X <= 48) && (point1.Y >= 47) && (point1.Y <= 48))
-						add = 0;
-					if ((point1.Y >= 0) && (point1.Y <= 48) && (point1.X >= 47) && (point1.X <= 48))
-						add = 0;
-
-					// Middle square
-					if ((point2.X >= 0) && (point2.X <= 29) && (point2.Y >= 28) && (point2.Y <= 29))
-						add = 1;
-					if ((point2.Y >= 0) && (point2.Y <= 29) && (point2.X >= 28) && (point2.X <= 29))
-						add = 1;
-
-					// Inner square
-					if ((point1.X >= 0) && (point1.X <= 10) && (point1.Y >= 9) && (point1.Y <= 10))
-						add = 2;
-					if ((point1.Y >= 0) && (point1.Y <= 10) && (point1.X >= 9) && (point1.X <= 10))
-						add = 2;
-
-					if (add != -1)
-						segment.AddLight(light, angle, lightColor, add);
+					var y = row * 19;
+					for (var col = 0; col < 6; ++col)
+					{
+						var x = col * 19;
+						var size = Math.Abs(Math.Cos((angle + (row + col) * -9) * Math.PI / 180) * 21).Round();
+						foreach (var light in bodyLayout.GetPositionLights(x + 10 - (size - 1) / 2, y, size, 2).Concat(bodyLayout.GetPositionLights(x, y + 10 - (size - 1) / 2, 2, size)))
+						{
+							var pos = bodyLayout.GetLightPosition(light);
+							segment.AddLight(light, angle, lightColor, pos.X.Round() + pos.Y.Round());
+						}
+					}
 				}
 			}
 			return segment;
@@ -913,15 +891,9 @@ namespace Shelfinator.Creator.Songs
 			song.AddPaletteFade(76, 400, 5);
 			song.AddPaletteChange(77, 0);
 
-			// RotateSquares (77)
-			var rotateSquares = RotateSquares();
-			song.AddSegment(rotateSquares, 0, 180, 77, 1);
-			song.AddSegment(rotateSquares, 0, 180, 78, 1);
-			song.AddSegment(rotateSquares, 0, 180, 79, 1);
-			song.AddSegment(rotateSquares, 0, 180, 80, 1);
-			song.AddSegment(rotateSquares, 0, 180, 81, 1);
-			song.AddSegment(rotateSquares, 0, 180, 82, 1);
-			song.AddSegment(rotateSquares, 0, 180, 83, 1);
+			// Bubbles (77)
+			var bubbles = Bubbles();
+			song.AddSegment(bubbles, 0, 360 * 7, 77, 7);
 			song.AddPaletteChange(77, 0);
 			song.AddPaletteFade(79, 400, 1);
 			song.AddPaletteFade(81, 400, 2);
