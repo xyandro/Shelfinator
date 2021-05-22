@@ -399,131 +399,159 @@ namespace Shelfinator.Creator.Songs
 		{
 			const int BeatMoveBefore = 10;
 			const int BeatMoveTime = 20;
-			const int InnerSize = 30;
-			const int OuterSize = 40;
 			const int SegmentEndTime = 12800;
 			const int FadeTime = 50;
 
-			var beats = new List<Tuple<MidiNote, double>>
+			var beats = new List<MidiNote>
 			{
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 100), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 200), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 300), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 350), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 500), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 600), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 700), 57d),
+				new MidiNote(MidiNote.PianoNote.G, 4, 100),
+				new MidiNote(MidiNote.PianoNote.G, 4, 200),
+				new MidiNote(MidiNote.PianoNote.G, 4, 300),
+				new MidiNote(MidiNote.PianoNote.G, 4, 350),
+				new MidiNote(MidiNote.PianoNote.F, 4, 500),
+				new MidiNote(MidiNote.PianoNote.E, 4, 600),
+				new MidiNote(MidiNote.PianoNote.D, 4, 700),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 900), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 1000), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 1050), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 1150), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 1300), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 1400), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.B, 3, 1500), 57d),
+				new MidiNote(MidiNote.PianoNote.E, 4, 900),
+				new MidiNote(MidiNote.PianoNote.E, 4, 1000),
+				new MidiNote(MidiNote.PianoNote.E, 4, 1050),
+				new MidiNote(MidiNote.PianoNote.E, 4, 1150),
+				new MidiNote(MidiNote.PianoNote.D, 4, 1300),
+				new MidiNote(MidiNote.PianoNote.C, 4, 1400),
+				new MidiNote(MidiNote.PianoNote.B, 3, 1500),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.A, 3, 1700), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 1800), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 1900), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 2000), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 2100), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 2200), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.A, 3, 2300), 57d),
+				new MidiNote(MidiNote.PianoNote.A, 3, 1700),
+				new MidiNote(MidiNote.PianoNote.C, 4, 1800),
+				new MidiNote(MidiNote.PianoNote.F, 4, 1900),
+				new MidiNote(MidiNote.PianoNote.E, 4, 2000),
+				new MidiNote(MidiNote.PianoNote.D, 4, 2100),
+				new MidiNote(MidiNote.PianoNote.C, 4, 2200),
+				new MidiNote(MidiNote.PianoNote.A, 3, 2300),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 2400), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 2600), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 3, 2800), 57d),
+				new MidiNote(MidiNote.PianoNote.C, 4, 2400),
+				new MidiNote(MidiNote.PianoNote.C, 4, 2600),
+				new MidiNote(MidiNote.PianoNote.G, 3, 2800),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 3300), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 3400), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 3550), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 3600), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 3650), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 3750), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 3900), 57d),
+				new MidiNote(MidiNote.PianoNote.G, 4, 3300),
+				new MidiNote(MidiNote.PianoNote.G, 4, 3400),
+				new MidiNote(MidiNote.PianoNote.G, 4, 3550),
+				new MidiNote(MidiNote.PianoNote.G, 4, 3600),
+				new MidiNote(MidiNote.PianoNote.F, 4, 3650),
+				new MidiNote(MidiNote.PianoNote.E, 4, 3750),
+				new MidiNote(MidiNote.PianoNote.D, 4, 3900),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 4150), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 4200), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 4350), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 4400), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 4500), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 4550), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.B, 3, 4700), 57d),
+				new MidiNote(MidiNote.PianoNote.E, 4, 4150),
+				new MidiNote(MidiNote.PianoNote.E, 4, 4200),
+				new MidiNote(MidiNote.PianoNote.E, 4, 4350),
+				new MidiNote(MidiNote.PianoNote.E, 4, 4400),
+				new MidiNote(MidiNote.PianoNote.D, 4, 4500),
+				new MidiNote(MidiNote.PianoNote.C, 4, 4550),
+				new MidiNote(MidiNote.PianoNote.B, 3, 4700),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.A, 3, 4900), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 5000), 9.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 5100), 19d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 5200), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 5300), 38d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 5400), 47.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.A, 3, 5500), 57d),
+				new MidiNote(MidiNote.PianoNote.A, 3, 4900),
+				new MidiNote(MidiNote.PianoNote.C, 4, 5000),
+				new MidiNote(MidiNote.PianoNote.F, 4, 5100),
+				new MidiNote(MidiNote.PianoNote.E, 4, 5200),
+				new MidiNote(MidiNote.PianoNote.D, 4, 5300),
+				new MidiNote(MidiNote.PianoNote.C, 4, 5400),
+				new MidiNote(MidiNote.PianoNote.A, 3, 5500),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 5600), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.C, 4, 5800), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 3, 6000), 57d),
+				new MidiNote(MidiNote.PianoNote.C, 4, 5600),
+				new MidiNote(MidiNote.PianoNote.C, 4, 5800),
+				new MidiNote(MidiNote.PianoNote.G, 3, 6000),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 6500), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 6600), 5.7d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 6700), 11.4d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 6750), 17.1d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 7000), 22.8d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 7050), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 7150), 34.2d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 7300), 39.9d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 7400), 45.6d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 7450), 51.3d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.DFlat, 4, 7550), 57d),
+				new MidiNote(MidiNote.PianoNote.G, 4, 6500),
+				new MidiNote(MidiNote.PianoNote.G, 4, 6600),
+				new MidiNote(MidiNote.PianoNote.G, 4, 6700),
+				new MidiNote(MidiNote.PianoNote.G, 4, 6750),
+				new MidiNote(MidiNote.PianoNote.E, 4, 7000),
+				new MidiNote(MidiNote.PianoNote.F, 4, 7050),
+				new MidiNote(MidiNote.PianoNote.G, 4, 7150),
+				new MidiNote(MidiNote.PianoNote.F, 4, 7300),
+				new MidiNote(MidiNote.PianoNote.E, 4, 7400),
+				new MidiNote(MidiNote.PianoNote.D, 4, 7450),
+				new MidiNote(MidiNote.PianoNote.DFlat, 4, 7550),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8100), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8200), 5.7d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8300), 11.4d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8350), 17.1d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 8600), 22.8d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 8700), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8750), 34.2d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 8900), 39.9d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 8950), 45.6d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 9100), 51.3d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 9150), 57d),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8100),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8200),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8300),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8350),
+				new MidiNote(MidiNote.PianoNote.D, 4, 8600),
+				new MidiNote(MidiNote.PianoNote.E, 4, 8700),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8750),
+				new MidiNote(MidiNote.PianoNote.G, 4, 8900),
+				new MidiNote(MidiNote.PianoNote.F, 4, 8950),
+				new MidiNote(MidiNote.PianoNote.E, 4, 9100),
+				new MidiNote(MidiNote.PianoNote.D, 4, 9150),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 9700), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 9750), 5.7d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 9850), 11.4d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 9950), 17.1d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 10200), 22.8d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 10250), 28.5d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.G, 4, 10350), 34.2d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 10500), 39.9d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 10550), 45.6d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 10650), 51.3d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.DFlat, 4, 10750), 57d),
+				new MidiNote(MidiNote.PianoNote.G, 4, 9700),
+				new MidiNote(MidiNote.PianoNote.G, 4, 9750),
+				new MidiNote(MidiNote.PianoNote.G, 4, 9850),
+				new MidiNote(MidiNote.PianoNote.G, 4, 9950),
+				new MidiNote(MidiNote.PianoNote.E, 4, 10200),
+				new MidiNote(MidiNote.PianoNote.F, 4, 10250),
+				new MidiNote(MidiNote.PianoNote.G, 4, 10350),
+				new MidiNote(MidiNote.PianoNote.F, 4, 10500),
+				new MidiNote(MidiNote.PianoNote.E, 4, 10550),
+				new MidiNote(MidiNote.PianoNote.D, 4, 10650),
+				new MidiNote(MidiNote.PianoNote.DFlat, 4, 10750),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 11000), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 11050), 11.4d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 11250), 22.8d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 11350), 34.2d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 11500), 45.6d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 11550), 57d),
+				new MidiNote(MidiNote.PianoNote.D, 4, 11000),
+				new MidiNote(MidiNote.PianoNote.E, 4, 11050),
+				new MidiNote(MidiNote.PianoNote.F, 4, 11250),
+				new MidiNote(MidiNote.PianoNote.F, 4, 11350),
+				new MidiNote(MidiNote.PianoNote.F, 4, 11500),
+				new MidiNote(MidiNote.PianoNote.F, 4, 11550),
 
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 12050), 0d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 12150), 11.4d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 12300), 22.8d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.F, 4, 12350), 34.2d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.E, 4, 12400), 45.6d),
-				Tuple.Create(new MidiNote(MidiNote.PianoNote.D, 4, 12450), 57d),
+				new MidiNote(MidiNote.PianoNote.F, 4, 12050),
+				new MidiNote(MidiNote.PianoNote.F, 4, 12150),
+				new MidiNote(MidiNote.PianoNote.F, 4, 12300),
+				new MidiNote(MidiNote.PianoNote.F, 4, 12350),
+				new MidiNote(MidiNote.PianoNote.E, 4, 12400),
+				new MidiNote(MidiNote.PianoNote.D, 4, 12450),
 			};
 
 			var colors = new List<int> { 0x100000, 0x101000, 0x100010, 0x001000, 0x001010, 0x000010 };
-			var notes = beats.Select(beat => beat.Item1.NoteValue).Distinct().OrderByDescending(x => x).ToList();
-			var pos = Enumerable.Range(0, notes.Count).ToDictionary(index => notes[index], index => index * (97 - OuterSize) / (notes.Count - 1));
+			var notes = beats.Select(beat => beat.NoteValue).Distinct().OrderByDescending(x => x).ToList();
+			var pos = Enumerable.Range(0, 3).SelectMany(row => Enumerable.Range(0, 3).Select(col => (col, row))).Zip(notes, (p, n) => (p, n)).ToDictionary(t => t.n, t => t.p);
 			var segment = new Segment();
 			double curX = -1, curY = -1;
+			var offset = 38;
+			var size = 21;
+			var hollow = false;
 			for (var beatCtr = 0; beatCtr < beats.Count; ++beatCtr)
 			{
-				var beatEndTime = beatCtr + 1 < beats.Count ? beats[beatCtr + 1].Item1.StartTime : SegmentEndTime;
-				var beat = beats[beatCtr].Item1;
-				var newX = beats[beatCtr].Item2;
-				var newY = pos[beat.NoteValue];
+				var beat = beats[beatCtr];
+
+				switch (beatCtr)
+				{
+					case 0:
+					case 48:
+					case 70:
+						segment.Clear(beat.StartTime);
+						offset = 38;
+						size = 21;
+						hollow = false;
+						break;
+					case 24:
+					case 59:
+					case 83:
+						segment.Clear(beat.StartTime);
+						offset = 19;
+						size = 59;
+						hollow = true;
+						break;
+					case 92:
+						segment.Clear(beat.StartTime);
+						offset = 0;
+						size = 97;
+						hollow = true;
+						break;
+				}
+
+				var beatEndTime = beatCtr + 1 < beats.Count ? beats[beatCtr + 1].StartTime : SegmentEndTime;
+				var newX = pos[beat.NoteValue].Item1 * offset;
+				var newY = pos[beat.NoteValue].Item2 * offset;
 				if (curX == -1)
 					curX = newX;
 				if (curY == -1)
@@ -535,13 +563,11 @@ namespace Shelfinator.Creator.Songs
 					var y = (newY - curY) * percent + curY;
 					var useTime = beat.StartTime - BeatMoveBefore + time;
 					var endTime = time == BeatMoveTime ? int.MaxValue : useTime + FadeTime;
-					var center = new Point(x + OuterSize / 2, y + OuterSize / 2);
-					foreach (var light in bodyLayout.GetAllLights())
-					{
-						var length = (bodyLayout.GetLightPosition(light) - center).Length;
-						if ((length >= InnerSize / 2 + .5) && (length <= OuterSize / 2 + .5))
-							segment.AddLight(light, useTime, endTime, Helpers.GradientColor(colors[beatCtr % colors.Count], colors[(beatCtr + 1) % colors.Count], percent), 0x000000);
-					}
+					var lights = bodyLayout.GetPositionLights(x, y, size, size).AsEnumerable();
+					if (hollow)
+						lights = lights.Except(bodyLayout.GetPositionLights(x + 2, y + 2, size - 4, size - 4));
+					foreach (var light in lights)
+						segment.AddLight(light, useTime, endTime, Helpers.GradientColor(colors[beatCtr % colors.Count], colors[(beatCtr + 1) % colors.Count], percent), 0x000000);
 				}
 				curX = newX;
 				curY = newY;

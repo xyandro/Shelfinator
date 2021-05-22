@@ -23,12 +23,12 @@
 			B = 11,
 		}
 
-		public int NoteValue { get; set; } = 0;
-		public PianoNote Note { get => (PianoNote)(NoteValue % 12); set => NoteValue = NoteValue / 12 * 12 + (int)value; }
-		public int Octave { get => NoteValue / 12; set => NoteValue = value * 12 + NoteValue % 12; }
-		public int StartTime { get; set; }
-		public int EndTime { get => StartTime + Length; set => Length = value - StartTime; }
-		public int Length { get; set; }
+		public int NoteValue { get; private set; } = 0;
+		public PianoNote Note { get => (PianoNote)(NoteValue % 12); private set => NoteValue = NoteValue / 12 * 12 + (int)value; }
+		public int Octave { get => NoteValue / 12; private set => NoteValue = value * 12 + NoteValue % 12; }
+		public int StartTime { get; private set; }
+		public int EndTime { get => StartTime + Length; private set => Length = value - StartTime; }
+		public int Length { get; private set; }
 
 		public MidiNote(PianoNote note, int octave, int startTime = 0, int length = 0)
 		{
